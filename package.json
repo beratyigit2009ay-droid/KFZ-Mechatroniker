@@ -1,0 +1,48 @@
+{
+  "name": "kfz-premium-websites",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Premium-Websites für Kfz-Werkstätten in Bad Schussenried – eine Codebasis, ein Konfigurationsprofil pro Betrieb.",
+  "scripts": {
+    "dev": "vite",
+    "dev:patran": "vite --mode patran",
+    "dev:abdullahad": "vite --mode abdullahad",
+    "dev:sauter": "vite --mode sauter",
+    "dev:maurer": "vite --mode maurer",
+    "build": "node scripts/build-all.mjs",
+    "build:web": "node scripts/build-all.mjs --no-standalone",
+    "preview": "vite preview --outDir dist",
+    "typecheck": "tsc --noEmit",
+    "renders": "node scripts/render-images.mjs",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@react-three/fiber": "^9.8.1",
+    "lenis": "^1.3.26",
+    "motion": "^13.4.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "playwright": "^1.56.1",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vite-plugin-singlefile": "^2.3.3"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
