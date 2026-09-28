@@ -28,7 +28,7 @@ export function jsonLd(c: Company): Record<string, unknown> {
       addressCountry: 'DE',
     },
   };
-  if (c.email) data.email = c.email;
+  if (c.email && !c.emailPlaceholder) data.email = c.email;
   if (c.website) data.url = c.website;
   if (c.hours) {
     data.openingHoursSpecification = WEEKDAYS.flatMap((d) =>

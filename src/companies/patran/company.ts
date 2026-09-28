@@ -17,7 +17,9 @@ const company: Company = {
   industry: 'Kfz-Werkstatt / Kfz-Service',
   address: { street: 'Rohrwiesenstraße 5', zip: '88427', city: 'Bad Schussenried' },
   phone: { display: '0176 41071605', tel: '+4917641071605', mobile: true },
-  email: null,
+  // Platzhalter für den Entwurf – echte Adresse beim Betrieb erfragen
+  email: 'info@kfz-service-patran.example',
+  emailPlaceholder: true,
   website: null,
   rating: { value: 5.0, count: 17, source: 'Google', asOf: '09/2026' },
   hours: null,

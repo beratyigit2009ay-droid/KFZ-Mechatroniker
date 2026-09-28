@@ -22,7 +22,9 @@ const company: Company = {
     district: 'Reichenbach',
   },
   phone: { display: '07583 1825', tel: '+4975831825', mobile: false },
-  email: null,
+  // Platzhalter für den Entwurf – echte Adresse beim Betrieb erfragen
+  email: 'info@kfz-werkstaette-sauter.example',
+  emailPlaceholder: true,
   website: null,
   rating: { value: 4.9, count: 47, source: 'Google', asOf: '09/2026' },
   hours: {

@@ -8,6 +8,9 @@ import { stopScroll } from '../lib/scroll';
 
 type Page = 'impressum' | 'datenschutz';
 
+/** Platzhalteradressen gehören nicht in Pflichtangaben. */
+const legalEmail = company.email && !company.emailPlaceholder ? company.email : null;
+
 /** Platzhalter für Pflichtangaben, die (noch) nicht belegt sind. */
 function Missing({ children = 'wird vor Veröffentlichung ergänzt' }: { children?: ReactNode }) {
   return (
@@ -57,7 +60,7 @@ function Impressum() {
         <p>
           Telefon: {company.phone.display}
           <br />
-          E-Mail: {company.email ?? <Missing />}
+          E-Mail: {legalEmail ?? <Missing />}
         </p>
       </Block>
       <Block title="Umsatzsteuer-ID">
@@ -95,7 +98,7 @@ function Datenschutz() {
         <p>
           Telefon: {company.phone.display}
           <br />
-          E-Mail: {company.email ?? <Missing />}
+          E-Mail: {legalEmail ?? <Missing />}
         </p>
       </Block>
       <Block title="2. Hosting und Server-Logfiles">

@@ -64,6 +64,7 @@ Alles steht in `src/companies/<slug>/company.ts`. Grundregel: **Es wird nichts e
 - [ ] Freigabe durch den Betrieb einholen
 - [ ] Impressum und Datenschutz vervollständigen (fehlende Pflichtangaben sind auf der Seite **gestrichelt markiert**: E-Mail, USt-IdNr., Kammer, Hosting). Anschließend rechtlich prüfen lassen.
 - [ ] `draft: false` setzen. Im Entwurfsmodus ist die Seite auf `noindex` gestellt und im Footer als „Konzeptentwurf“ markiert.
+- [ ] Platzhalter-E-Mail (`….example`, nicht zustellbar) durch die echte Adresse ersetzen und `emailPlaceholder` entfernen
 - [ ] Domain in `website` eintragen
 - [ ] Echte Werkstattfotos einsetzen (siehe docs/BILDER.md), danach `symbolicImages: false`
 - [ ] Bewertungsstand aktualisieren

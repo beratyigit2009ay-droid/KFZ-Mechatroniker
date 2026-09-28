@@ -16,7 +16,9 @@ const company: Company = {
   industry: 'Kfz-Werkstatt / Kfz-Reparatur / Wartung',
   address: { street: 'Sattenbeuren 14/1', zip: '88427', city: 'Bad Schussenried' },
   phone: { display: '0171 9571473', tel: '+491719571473', mobile: true },
-  email: null,
+  // Platzhalter für den Entwurf – echte Adresse beim Betrieb erfragen
+  email: 'info@maurer-fahrzeugtechnik.example',
+  emailPlaceholder: true,
   website: null,
   rating: { value: 4.9, count: 8, source: 'Google', asOf: '09/2026' },
   hours: {

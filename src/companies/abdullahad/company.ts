@@ -16,7 +16,9 @@ const company: Company = {
   industry: 'Kfz-Reparatur / Fahrzeugreparaturen',
   address: { street: 'Aulendorfer Straße 22a', zip: '88427', city: 'Bad Schussenried' },
   phone: { display: '07583 926114', tel: '+497583926114', mobile: false },
-  email: null,
+  // Platzhalter für den Entwurf – echte Adresse beim Betrieb erfragen
+  email: 'info@kfz-abdullahad.example',
+  emailPlaceholder: true,
   website: null,
   rating: { value: 4.6, count: 46, source: 'Google', asOf: '09/2026' },
   hours: {

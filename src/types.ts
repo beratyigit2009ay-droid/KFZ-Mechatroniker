@@ -88,6 +88,13 @@ export interface Company {
     mobile: boolean;
   };
   email: string | null;
+  /**
+   * `true` = Platzhalteradresse für den Entwurf (reservierte Endung `.example`,
+   * nicht zustellbar). Wird dann nicht ins Impressum und nicht in die
+   * strukturierten Daten übernommen. Vor Veröffentlichung durch die echte
+   * Adresse ersetzen und entfernen.
+   */
+  emailPlaceholder?: boolean;
   website: string | null;
   rating: {
     value: number;
