@@ -4,6 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!--app-head-->
+    <style>
+      /* Notfall-Einblendung: Läuft das Skript nicht (alter Browser, Vorschau-App,
+         Ladefehler), bleiben die Inhalte trotzdem sichtbar statt eines schwarzen Bildschirms. */
+      html.reveal-all #root [style*='opacity'] {
+        opacity: 1 !important;
+      }
+      html.reveal-all #root [style*='transform'] {
+        transform: none !important;
+      }
+      html.reveal-all #root [style*='clip-path'] {
+        clip-path: none !important;
+      }
+    </style>
+    <noscript>
+      <style>
+        #root [style*='opacity'] { opacity: 1 !important; }
+        #root [style*='transform'] { transform: none !important; }
+      </style>
+    </noscript>
+    <script>
+      (function () {
+        var d = document.documentElement;
+        function reveal() {
+          if (!window.__appReady) d.classList.add('reveal-all');
+        }
+        window.addEventListener('error', function () {
+          setTimeout(reveal, 300);
+        });
+        setTimeout(reveal, 4000);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"><!--app-html--></div>

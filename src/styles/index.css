@@ -99,6 +99,23 @@
     overflow-x: clip;
   }
 
+  /* Grid-Spalten dürfen nie breiter als der Bildschirm werden (min-width: auto sprengt sonst das Layout) */
+  .grid > * {
+    min-width: 0;
+  }
+
+  /* Lange deutsche Komposita („Fahrzeugreparaturen“) dürfen auf schmalen Screens umbrechen */
+  h1,
+  h2,
+  h3,
+  p,
+  li,
+  dd,
+  address {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
   ::selection {
     background: var(--color-accent);
     color: var(--color-accent-ink);

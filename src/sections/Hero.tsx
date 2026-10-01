@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Button } from '../components/Button';
 import { OpenStatus } from '../components/OpenStatus';
 import { EASE } from '../components/Reveal';
+import { Safe } from '../components/Safe';
 import { Stars } from '../components/Stars';
 import company, { heroImage } from '../lib/company';
 import { formatRating, telHref } from '../lib/links';
@@ -64,6 +65,10 @@ export function Hero() {
   const [three, setThree] = useState<{ ok: boolean; lowPower: boolean } | null>(null);
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(true);
+  const fallbackToPoster = () => {
+    setReady(false);
+    setThree({ ok: false, lowPower: true });
+  };
 
   useEffect(() => {
     // 3D erst nach dem ersten Rendern laden – das Poster sorgt für einen schnellen ersten Eindruck
@@ -173,20 +178,20 @@ export function Hero() {
             className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${ready ? 'opacity-0' : 'opacity-100'}`}
           />
           {three?.ok && (
-            <Suspense fallback={null}>
-              <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
-                <Hero3D
-                  progress={scrollYProgress}
-                  active={active}
-                  onReady={() => setReady(true)}
-                  onSlow={() => {
-                    setReady(false);
-                    setThree({ ok: false, lowPower: true });
-                  }}
-                  lowPower={three.lowPower}
-                />
-              </div>
-            </Suspense>
+            // WebGL-Fehler (z. B. auf manchen Handys) → zurück zum Poster statt leerer Seite
+            <Safe onError={fallbackToPoster}>
+              <Suspense fallback={null}>
+                <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
+                  <Hero3D
+                    progress={scrollYProgress}
+                    active={active}
+                    onReady={() => setReady(true)}
+                    onSlow={fallbackToPoster}
+                    lowPower={three.lowPower}
+                  />
+                </div>
+              </Suspense>
+            </Safe>
           )}
         </motion.div>
       </motion.div>

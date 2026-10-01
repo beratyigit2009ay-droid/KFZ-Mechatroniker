@@ -1,5 +1,6 @@
 import { MotionConfig, motion, useScroll, useSpring } from 'motion/react';
 import { useEffect } from 'react';
+import { Safe } from './components/Safe';
 import { RequestProvider } from './lib/request';
 import { initSmoothScroll } from './lib/scroll';
 import { About } from './sections/About';
@@ -18,6 +19,12 @@ import { Services } from './sections/Services';
 import { VehicleCheck } from './sections/VehicleCheck';
 import { Why } from './sections/Why';
 
+declare global {
+  interface Window {
+    __appReady?: boolean;
+  }
+}
+
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 });
@@ -25,7 +32,12 @@ function ScrollProgress() {
 }
 
 export default function App() {
-  useEffect(() => initSmoothScroll(), []);
+  useEffect(() => {
+    // App läuft → Notfall-Einblendung aus index.html wieder zurücknehmen
+    window.__appReady = true;
+    document.documentElement.classList.remove('reveal-all');
+    return initSmoothScroll();
+  }, []);
 
   return (
     <MotionConfig reducedMotion="user">
@@ -36,24 +48,56 @@ export default function App() {
         >
           Zum Inhalt springen
         </a>
-        <ScrollProgress />
-        <Nav />
+        <Safe>
+          <ScrollProgress />
+        </Safe>
+        <Safe>
+          <Nav />
+        </Safe>
         <main id="main">
-          <Hero />
-          <Marquee />
-          <Services />
-          <Why />
-          <About />
-          <Gallery />
-          <VehicleCheck />
-          <Reviews />
-          <Process />
-          <FAQ />
-          <Contact />
+          <Safe>
+            <Hero />
+          </Safe>
+          <Safe>
+            <Marquee />
+          </Safe>
+          <Safe>
+            <Services />
+          </Safe>
+          <Safe>
+            <Why />
+          </Safe>
+          <Safe>
+            <About />
+          </Safe>
+          <Safe>
+            <Gallery />
+          </Safe>
+          <Safe>
+            <VehicleCheck />
+          </Safe>
+          <Safe>
+            <Reviews />
+          </Safe>
+          <Safe>
+            <Process />
+          </Safe>
+          <Safe>
+            <FAQ />
+          </Safe>
+          <Safe>
+            <Contact />
+          </Safe>
         </main>
-        <Footer />
-        <MobileDock />
-        <LegalSheet />
+        <Safe>
+          <Footer />
+        </Safe>
+        <Safe>
+          <MobileDock />
+        </Safe>
+        <Safe>
+          <LegalSheet />
+        </Safe>
         <div aria-hidden className="grain" />
       </RequestProvider>
     </MotionConfig>

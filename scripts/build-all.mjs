@@ -9,7 +9,7 @@
  *   node scripts/build-all.mjs --no-standalone
  */
 import { execFileSync } from 'node:child_process';
-import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -56,12 +56,27 @@ for (const slug of slugs) {
   const accent = html.match(/--accent:(#[0-9a-fA-F]{3,8})/)?.[1] ?? '#fff';
   meta.push({ slug, title, accent });
 
-  // 3) Einzeldatei
+  // 3) Einzeldatei – ebenfalls vorgerendert, damit Inhalte auch ohne laufendes Skript sichtbar sind
   if (withStandalone) {
     const tmp = path.join(root, '.standalone', slug);
     vite(['build'], { COMPANY: slug, OUT_DIR: tmp, STANDALONE: '1' });
+    const ssrTmp = path.join(root, '.standalone', `${slug}-ssr`);
+    vite(['build', '--ssr', 'src/entry-server.tsx', '--outDir', ssrTmp], {
+      COMPANY: slug,
+      OUT_DIR: ssrTmp,
+      STANDALONE: '1',
+    });
+    const { render: renderStandalone } = await import(
+      pathToFileURL(path.join(ssrTmp, 'entry-server.js')).href + `?v=${Date.now()}`
+    );
+    const single = await readFile(path.join(tmp, 'index.html'), 'utf8');
+    if (!single.includes('<!--app-html-->')) throw new Error(`${slug}: Platzhalter in Einzeldatei fehlt`);
     await mkdir(path.join(root, 'standalone'), { recursive: true });
-    await copyFile(path.join(tmp, 'index.html'), path.join(root, 'standalone', `${slug}.html`));
+    // Funktions-Ersetzung, damit "$" in Base64-Daten nicht als Ersetzungsmuster gilt
+    await writeFile(
+      path.join(root, 'standalone', `${slug}.html`),
+      single.replace('<!--app-html-->', () => renderStandalone()),
+    );
   }
   console.log(`✓ ${slug} (${((Date.now() - t0) / 1000).toFixed(1)} s)`);
 }

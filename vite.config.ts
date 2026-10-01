@@ -33,19 +33,22 @@ function companyHtml(c: Company): Plugin {
   };
 }
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const { slug, company } = resolveCompany(mode);
   const standalone = process.env.STANDALONE === '1';
   return {
     base: './',
-    plugins: [react(), tailwindcss(), companyHtml(company), standalone ? viteSingleFile() : null],
+    plugins: [react(), tailwindcss(), companyHtml(company), standalone && !isSsrBuild ? viteSingleFile() : null],
     resolve: {
       alias: { '@company': path.resolve(import.meta.dirname, 'src/companies', slug) },
     },
     build: {
       outDir: process.env.OUT_DIR ?? 'dist',
       emptyOutDir: true,
-      target: 'es2022',
+      // Breite Kompatibilität (auch ältere iPhones/Android-Browser)
+      target: ['es2020', 'safari14', 'chrome87', 'firefox78', 'edge88'],
+      // Einzeldatei: Bilder als data:-URI – auch beim Vorrendern, damit HTML und Skript übereinstimmen
+      ...(standalone && isSsrBuild ? { assetsInlineLimit: 100_000_000 } : {}),
       chunkSizeWarningLimit: 1200,
       reportCompressedSize: false,
     },
