@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Beef Brothers Bad Saulgau | Burger, Currywurst &amp; Pommes</title>
+    <meta
+      name="description"
+      content="Beef Brothers in Bad Saulgau: saftige Burger, würzige Currywurst nach eigenem Rezept und knusprige Pommes. Martin-Staud-Straße 10 · Tel. 0175 7426645."
+    />
+    <!-- Designentwurf: erst nach Freigabe durch den Betrieb indexieren lassen -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0a0807" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content="Beef Brothers Bad Saulgau" />
+    <meta property="og:description" content="Burger, Currywurst nach eigenem Rezept und knusprige Pommes – heiß, frisch und mit Liebe gemacht." />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a0807'/%3E%3Cpath d='M32 9c3 9 14 15 14 29a14 14 0 0 1-28 0c0-7 3-11 6-14 0 5 2 8 5 9-2-9 1-17 3-24z' fill='%23ff5a1f'/%3E%3Cpath d='M32 33c2 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3-1-3 0-6 1-8z' fill='%23ffd29a'/%3E%3C/svg%3E"
+    />
+    <link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      // JS verfügbar → Einblend-Animationen aktivieren. Fällt das Skript aus, wird nach 3 s alles gezeigt.
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!window.__bbReady) document.documentElement.classList.add('reveal-all');
+      }, 3000);
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Beef Brothers Bad Saulgau",
+        "servesCuisine": ["Burger", "Currywurst", "Imbiss"],
+        "priceRange": "10–20 €",
+        "telephone": "+49 175 7426645",
+        "url": "https://www.beefbrothersbadsaulgau.de/",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Martin-Staud-Straße 10",
+          "postalCode": "88348",
+          "addressLocality": "Bad Saulgau",
+          "addressCountry": "DE"
+        },
+        "openingHoursSpecification": [
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "11:00", "closes": "22:00" },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "14:00", "closes": "22:00" }
+        ],
+        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "78", "bestRating": "5" }
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Icon-Sprite -->
+    <svg width="0" height="0" class="sr-only" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="g-fire" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd9a6" />
+          <stop offset=".45" stop-color="#ff8a3d" />
+          <stop offset="1" stop-color="#ff4a1a" />
+        </linearGradient>
+        <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffe2b8" />
+          <stop offset=".5" stop-color="#e9b872" />
+          <stop offset="1" stop-color="#ff8a3d" />
+        </linearGradient>
+      </defs>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5 4h3.2l1.6 4-2 1.3a10.5 10.5 0 0 0 6.9 6.9l1.3-2 4 1.6V19a1.6 1.6 0 0 1-1.7 1.6C10.4 20.1 3.9 13.6 3.4 5.7A1.6 1.6 0 0 1 5 4z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M12 7.5V12l3 2"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5c1 3.2 5 5.4 5 10.4a5 5 0 0 1-10 0c0-2.5 1-4 2.2-5 0 1.8.7 2.8 1.8 3.2-.7-3.2.3-6 1-8.6z"/></symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14m0 0 6-6"/></symbol>
+      <symbol id="i-burger" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21c0-7 7.2-11 16-11s16 4 16 11z"/><path d="M7 26c3-2 5 2 8 0s5 2 8 0 5 2 8 0 5 2 8 0 3 0 3 0"/><rect x="8" y="29" width="32" height="5" rx="2.5"/><path d="M9 37h30c0 3-2 5-5 5H14c-3 0-5-2-5-5z"/></g></symbol>
+      <symbol id="i-sausage" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30h36l-3 8H9z"/><rect x="10" y="22" width="7" height="8" rx="3.5"/><rect x="20.5" y="21" width="7" height="9" rx="3.5"/><rect x="31" y="22" width="7" height="8" rx="3.5"/><path d="M12 18c3-3 6 2 9-1s6 2 9-1 5 1 6 0"/><path d="M40 10v12"/><path d="M38 10v4m4-4v4"/></g></symbol>
+      <symbol id="i-fries" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h24l-3 22H15z"/><path d="M16 20 14 8m6 12-1-14m5 14V6m4 14 1-14m4 14 2-12"/><path d="M14 28c6 3 14 3 20 0"/></g></symbol>
+      <symbol id="i-drink" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 14h22l-3 28H16z"/><path d="M11 14h26"/><path d="m26 14 4-9h5"/><path d="M15 24h18"/><circle cx="21" cy="31" r="1"/><circle cx="26" cy="35" r="1"/></g></symbol>
+    </svg>
+
+    <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+    <!-- ── Navigation ── -->
+    <header class="nav" data-nav>
+      <div class="nav__inner wrap">
+        <a href="#start" class="brand" aria-label="Beef Brothers – zum Seitenanfang">
+          <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flame" /></svg>
+          <span class="brand__name">Beef Brothers</span>
+          <span class="brand__place">Bad Saulgau</span>
+        </a>
+        <nav class="nav__links" aria-label="Hauptnavigation">
+          <a href="#speisekarte">Speisekarte</a>
+          <a href="#hausgemacht">Hausgemacht</a>
+          <a href="#ueber-uns">Über uns</a>
+          <a href="#besuch">Öffnungszeiten</a>
+        </nav>
+        <div class="nav__actions">
+          <a class="btn btn--fire btn--sm nav__cta" href="tel:+491757426645">
+            <svg aria-hidden="true"><use href="#i-phone" /></svg>
+            <span>Anrufen</span>
+          </a>
+          <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+            <span class="sr-only">Menü öffnen</span>
+            <i></i><i></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobiles Menü -->
+    <div class="menu" id="menu" data-menu hidden>
+      <nav class="menu__nav wrap" aria-label="Mobile Navigation">
+        <a href="#speisekarte"><span>01</span>Speisekarte</a>
+        <a href="#hausgemacht"><span>02</span>Hausgemacht</a>
+        <a href="#ueber-uns"><span>03</span>Über uns</a>
+        <a href="#besuch"><span>04</span>Öffnungszeiten &amp; Anfahrt</a>
+      </nav>
+      <div class="menu__foot wrap">
+        <a class="btn btn--fire btn--lg" href="tel:+491757426645">
+          <svg aria-hidden="true"><use href="#i-phone" /></svg>
+          0175 7426645
+        </a>
+        <p>Martin-Staud-Straße 10 · 88348 Bad Saulgau</p>
+      </div>
+    </div>
+
+    <main id="inhalt">
+      <!-- ── Hero ── -->
+      <section class="hero" id="start" aria-labelledby="hero-title" data-hero>
+        <div class="hero__bg" aria-hidden="true">
+          <div class="hero__light"></div>
+          <div class="hero__word" data-parallax="-0.12">Brothers</div>
+        </div>
+        <canvas class="embers" data-embers aria-hidden="true"></canvas>
+
+        <div class="hero__grid wrap">
+          <div class="hero__copy">
+            <p class="eyebrow reveal">
+              <span class="eyebrow__line"></span>
+              Imbiss · Bad Saulgau
+            </p>
+            <h1 class="hero__title" id="hero-title">
+              <span class="sr-only">Beef Brothers Bad Saulgau – </span>
+              <span class="line"><span class="line__in">Heiß. Frisch.</span></span>
+              <span class="line"><span class="line__in serif">mit Liebe gemacht.</span></span>
+            </h1>
+            <p class="hero__lead reveal" style="--d: 0.5s">
+              Saftige Burger, würzige Currywurst nach eigenem Rezept und knusprige Pommes – mitten in Bad Saulgau.
+            </p>
+            <div class="hero__cta reveal" style="--d: 0.65s">
+              <a class="btn btn--fire btn--lg" href="#speisekarte">
+                Speisekarte ansehen
+                <svg aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+              <a class="btn btn--ghost btn--lg" href="tel:+491757426645">
+                <svg aria-hidden="true"><use href="#i-phone" /></svg>
+                0175 7426645
+              </a>
+            </div>
+            <ul class="hero__facts reveal" style="--d: 0.8s" aria-label="Auf einen Blick">
+              <li>
+                <span class="stars" aria-hidden="true">
+                  <svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg>
+                </span>
+                <span><strong>4,9</strong> · 78 Google-Rezensionen</span>
+              </li>
+              <li class="status" data-open-status>
+                <span class="status__dot" aria-hidden="true"></span>
+                <span data-open-text>Mo–Fr 11–22 Uhr · Sa 14–22 Uhr</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Zentrales Emblem: rotierender Schriftring, Feuer, Burger -->
+          <div class="hero__visual reveal" style="--d: 0.15s" aria-hidden="true">
+            <div class="emblem" data-parallax="0.06">
+              <div class="emblem__halo"></div>
+              <div class="emblem__fire">
+                <i class="flame f1"></i><i class="flame f2"></i><i class="flame f3"></i><i class="flame f4"></i><i class="flame f5"></i>
+                <i class="flame f6"></i><i class="flame f7"></i>
+              </div>
+              <div class="emblem__disc"></div>
+
+              <svg class="emblem__ring" viewBox="0 0 600 600">
+                <defs>
+                  <path id="ring-path" d="M300,300 m-248,0 a248,248 0 1,1 496,0 a248,248 0 1,1 -496,0" />
+                </defs>
+                <circle cx="300" cy="300" r="284" fill="none" stroke="rgb(255 236 220 / .14)" stroke-width="1" stroke-dasharray="1.5 7.5" />
+                <circle cx="300" cy="300" r="214" fill="none" stroke="rgb(255 236 220 / .1)" stroke-width="1" />
+                <text class="emblem__text">
+                  <textPath href="#ring-path" textLength="1556" lengthAdjust="spacing">&#160;BEEF BROTHERS • BAD SAULGAU • BURGER • CURRYWURST • POMMES •</textPath>
+                </text>
+              </svg>
+
+              <svg class="emblem__orbit" viewBox="0 0 600 600">
+                <circle cx="300" cy="300" r="270" fill="none" stroke="url(#g-gold)" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="120 1576" />
+                <circle cx="300" cy="30" r="3.5" fill="#ffd29a" />
+              </svg>
+              <div class="emblem__sheen"></div>
+
+              <svg class="emblem__core" viewBox="0 0 300 300">
+                <!-- Dampf -->
+                <g class="steam" fill="none" stroke="url(#g-gold)" stroke-width="2" stroke-linecap="round">
+                  <path class="steam__p s1" d="M118 70c-8-10 8-16 0-28s6-16 0-26" />
+                  <path class="steam__p s2" d="M150 64c-8-10 8-16 0-28s6-16 0-26" />
+                  <path class="steam__p s3" d="M182 70c-8-10 8-16 0-28s6-16 0-26" />
+                </g>
+                <g fill="none" stroke="url(#g-fire)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- Brötchen oben -->
+                  <path d="M62 150c0-38 40-60 88-60s88 22 88 60c0 5-3 8-8 8H70c-5 0-8-3-8-8z" fill="rgb(255 138 61 / .07)" />
+                  <!-- Salat -->
+                  <path d="M58 170c8-9 14 6 22-2s14 6 22-2 14 6 22-2 14 6 22-2 14 6 22-2 14 6 22-2 14 6 22-2 14 6 14 0" />
+                  <!-- Käse -->
+                  <path d="M66 178h168l-12 13h-26l-9 12-9-12h-58l-9 10-9-10H78z" fill="rgb(255 210 154 / .1)" />
+                  <!-- Patty -->
+                  <rect x="60" y="192" width="180" height="28" rx="14" fill="rgb(255 90 31 / .08)" />
+                  <!-- Brötchen unten -->
+                  <path d="M66 228h168c0 15-10 26-26 26H92c-16 0-26-11-26-26z" fill="rgb(255 138 61 / .07)" />
+                </g>
+                <!-- Sesam -->
+                <g fill="#ffd29a">
+                  <ellipse cx="112" cy="118" rx="4" ry="2" transform="rotate(-25 112 118)" />
+                  <ellipse cx="140" cy="106" rx="4" ry="2" transform="rotate(-8 140 106)" />
+                  <ellipse cx="170" cy="110" rx="4" ry="2" transform="rotate(14 170 110)" />
+                  <ellipse cx="196" cy="124" rx="4" ry="2" transform="rotate(28 196 124)" />
+                  <ellipse cx="128" cy="134" rx="4" ry="2" transform="rotate(-12 128 134)" />
+                  <ellipse cx="160" cy="132" rx="4" ry="2" transform="rotate(6 160 132)" />
+                  <ellipse cx="94" cy="138" rx="4" ry="2" transform="rotate(-30 94 138)" />
+                  <ellipse cx="210" cy="142" rx="4" ry="2" transform="rotate(30 210 142)" />
+                </g>
+                <!-- Grillstreifen im Patty -->
+                <g stroke="rgb(255 210 154 / .45)" stroke-width="2" stroke-linecap="round">
+                  <path d="M92 200l10 12M120 200l10 12M148 200l10 12M176 200l10 12M204 200l10 12" />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <a href="#marquee" class="hero__scroll" aria-label="Weiter nach unten">
+          <span>Scrollen</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <!-- ── Laufband ── -->
+      <div class="marquee" id="marquee" aria-label="Unser Angebot: Burger, Currywurst, Pommes, Rindswurst, Schnitzel, Chicken Nuggets">
+        <div class="marquee__track" aria-hidden="true">
+          <span>Burger</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Currywurst</span><svg><use href="#i-flame" /></svg>
+          <span>Pommes</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Rindswurst</span><svg><use href="#i-flame" /></svg>
+          <span>Schnitzel</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Chicken Nuggets</span><svg><use href="#i-flame" /></svg>
+          <span>Burger</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Currywurst</span><svg><use href="#i-flame" /></svg>
+          <span>Pommes</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Rindswurst</span><svg><use href="#i-flame" /></svg>
+          <span>Schnitzel</span><svg><use href="#i-flame" /></svg>
+          <span class="serif">Chicken Nuggets</span><svg><use href="#i-flame" /></svg>
+        </div>
+      </div>
+
+      <!-- ── Was uns ausmacht ── -->
+      <section class="section" aria-labelledby="usp-title">
+        <div class="wrap">
+          <header class="head">
+            <p class="eyebrow reveal"><span class="eyebrow__line"></span>Was uns ausmacht</p>
+            <h2 class="h2 reveal" id="usp-title" style="--d: 0.08s">
+              Drei Dinge, <span class="serif">die man schmeckt.</span>
+            </h2>
+          </header>
+          <div class="usp">
+            <article class="card usp__card reveal" style="--d: 0s" data-spot>
+              <span class="usp__num">01</span>
+              <svg class="usp__icon" aria-hidden="true"><use href="#i-leaf" /></svg>
+              <h3>Frische Zutaten</h3>
+              <p>Alle Gerichte entstehen aus sorgfältig ausgewählten Zutaten. Qualität und Frische stehen bei uns an erster Stelle.</p>
+            </article>
+            <article class="card usp__card reveal" style="--d: 0.1s" data-spot>
+              <span class="usp__num">02</span>
+              <svg class="usp__icon" aria-hidden="true"><use href="#i-flame" /></svg>
+              <h3>Schnelle Zubereitung</h3>
+              <p>Heiß, frisch und schnell auf dem Teller – ohne bei Geschmack und Qualität Abstriche zu machen.</p>
+            </article>
+            <article class="card usp__card reveal" style="--d: 0.2s" data-spot>
+              <span class="usp__num">03</span>
+              <svg class="usp__icon" aria-hidden="true"><use href="#i-star" /></svg>
+              <h3>Echte Gastfreundschaft</h3>
+              <p>Ein herzlicher Empfang, eine freundliche Atmosphäre und aufmerksamer Service gehören bei uns einfach dazu.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <div class="heatline" aria-hidden="true"></div>
+
+      <!-- ── Speisekarte ── -->
+      <section class="section menu-sec" id="speisekarte" aria-labelledby="menu-title">
+        <div class="menu-sec__glow" aria-hidden="true"></div>
+        <div class="wrap">
+          <header class="head head--split">
+            <div>
+              <p class="eyebrow reveal"><span class="eyebrow__line"></span>Speisekarte</p>
+              <h2 class="h2 reveal" id="menu-title" style="--d: 0.08s">
+                Kurz, ehrlich, <span class="serif">richtig gut.</span>
+              </h2>
+            </div>
+            <p class="head__aside reveal" style="--d: 0.16s">
+              Jeder Burger auch als <strong>Menü</strong> – mit knusprig goldenen Pommes frites und einem erfrischenden Softdrink.
+            </p>
+          </header>
+
+          <div class="tabs reveal" role="tablist" aria-label="Kategorien der Speisekarte" data-tabs>
+            <button role="tab" id="tab-burger" aria-controls="p-burger" aria-selected="true" type="button">
+              <svg aria-hidden="true"><use href="#i-burger" /></svg>Burger
+            </button>
+            <button role="tab" id="tab-wurst" aria-controls="p-wurst" aria-selected="false" tabindex="-1" type="button">
+              <svg aria-hidden="true"><use href="#i-sausage" /></svg>Currywurst &amp; Wurst
+            </button>
+            <button role="tab" id="tab-snacks" aria-controls="p-snacks" aria-selected="false" tabindex="-1" type="button">
+              <svg aria-hidden="true"><use href="#i-fries" /></svg>Schnitzel &amp; Snacks
+            </button>
+            <button role="tab" id="tab-drinks" aria-controls="p-drinks" aria-selected="false" tabindex="-1" type="button">
+              <svg aria-hidden="true"><use href="#i-drink" /></svg>Getränke
+            </button>
+            <span class="tabs__ink" aria-hidden="true"></span>
+          </div>
+
+          <!-- Burger -->
+          <div class="panel" role="tabpanel" id="p-burger" aria-labelledby="tab-burger" data-panel>
+            <h3 class="panel__title">Burger</h3>
+            <div class="dishes">
+              <article class="card dish" data-spot>
+                <header class="dish__head">
+                  <h4>Klassischer Hamburger</h4>
+                </header>
+                <p>Fein gewürztes, saftiges Rindfleisch mit knackigem Salat, sonnengereiften Tomaten, roten Zwiebeln und hausgemachter Burgersauce.</p>
+                <dl class="dish__prices">
+                  <div><dt>Einzeln</dt><dd>9,00 €</dd></div>
+                  <div class="is-menu"><dt>Menü</dt><dd>14,50 €</dd></div>
+                </dl>
+              </article>
+              <article class="card dish" data-spot>
+                <header class="dish__head">
+                  <h4>Cheeseburger</h4>
+                </header>
+                <p>Saftiges Rindfleisch mit knackigem Salat, sonnengereiften Tomaten, roten Zwiebeln, hausgemachter Burgersauce und einer großzügigen Portion geschmolzenem Käse.</p>
+                <dl class="dish__prices">
+                  <div><dt>Einzeln</dt><dd>9,50 €</dd></div>
+                  <div class="is-menu"><dt>Menü</dt><dd>15,00 €</dd></div>
+                </dl>
+              </article>
+              <article class="card dish" data-spot>
+                <header class="dish__head">
+                  <h4>Chili Cheeseburger</h4>
+                  <span class="tag tag--fire"><svg aria-hidden="true"><use href="#i-flame" /></svg>Jalapeños</span>
+                </header>
+                <p>Saftiges Rindfleisch mit knackigem Salat, sonnengereiften Tomaten, roten Zwiebeln, hausgemachter Burgersauce, geschmolzenem Käse und aromatischen Jalapeños.</p>
+                <dl class="dish__prices">
+                  <div><dt>Einzeln</dt><dd>10,00 €</dd></div>
+                  <div class="is-menu"><dt>Menü</dt><dd>16,00 €</dd></div>
+                </dl>
+              </article>
+              <article class="card dish" data-spot>
+                <header class="dish__head">
+                  <h4>Chicken Burger</h4>
+                </header>
+                <p>Knusprig goldbraunes Hähnchenfilet mit frischem Salat, Tomaten und cremiger Mayonnaise.</p>
+                <dl class="dish__prices">
+                  <div><dt>Einzeln</dt><dd>10,00 €</dd></div>
+                  <div class="is-menu"><dt>Menü</dt><dd>16,00 €</dd></div>
+                </dl>
+              </article>
+              <article class="card dish" data-spot>
+                <header class="dish__head">
+                  <h4>Veggie Burger</h4>
+                  <span class="tag tag--veg"><svg aria-hidden="true"><use href="#i-leaf" /></svg>Vegetarisch</span>
+                </header>
+                <p>Pflanzliches Patty aus Roter Bete, Gemüse und Haferflocken.</p>
+                <dl class="dish__prices">
+                  <div><dt>Einzeln</dt><dd>9,50 €</dd></div>
+                  <div class="is-menu"><dt>Menü</dt><dd>15,00 €</dd></div>
+                </dl>
+              </article>
+              <aside class="card dish dish--note">
+                <svg class="dish__icon" aria-hidden="true"><use href="#i-fries" /></svg>
+                <h4>Als Menü</h4>
+                <p>Jeden Burger gibt es als Menü mit knusprig goldenen Pommes frites und einem erfrischenden Softdrink.</p>
+              </aside>
+            </div>
+          </div>
+
+          <!-- Currywurst & Wurst -->
+          <div class="panel" role="tabpanel" id="p-wurst" aria-labelledby="tab-wurst" data-panel>
+            <h3 class="panel__title">Currywurst &amp; Wurst</h3>
+            <div class="lists">
+              <div class="card list" data-spot>
+                <h4>Currywurst <span class="serif">nach eigenem Rezept</span></h4>
+                <ul>
+                  <li><span>Currywurst mit Wecken</span><i></i><b>7,00 €</b></li>
+                  <li><span>Currywurst mit Pommes</span><i></i><b>8,50 €</b></li>
+                  <li><span>Currywurst mit Pommes + Softdrink</span><i></i><b>10,50 €</b></li>
+                </ul>
+              </div>
+              <div class="card list" data-spot>
+                <h4>Rindswurst</h4>
+                <ul>
+                  <li><span>Rindswurst im Wecken</span><i></i><b>6,50 €</b></li>
+                  <li><span>Rindswurst mit Pommes</span><i></i><b>8,00 €</b></li>
+                  <li><span>Rindswurst mit Pommes + Softdrink</span><i></i><b>10,00 €</b></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schnitzel & Snacks -->
+          <div class="panel" role="tabpanel" id="p-snacks" aria-labelledby="tab-snacks" data-panel>
+            <h3 class="panel__title">Schnitzel &amp; Snacks</h3>
+            <div class="lists">
+              <div class="card list" data-spot>
+                <h4>Schnitzel</h4>
+                <ul>
+                  <li><span>Schnitzel mit Pommes</span><i></i><b>12,00 €</b></li>
+                  <li><span>Schnitzel mit Pommes + Softdrink</span><i></i><b>14,00 €</b></li>
+                </ul>
+              </div>
+              <div class="card list" data-spot>
+                <h4>Snacks</h4>
+                <ul>
+                  <li><span>Chicken Nuggets (8 Stück)</span><i></i><b>6,50 €</b></li>
+                  <li><span>Portion Pommes</span><i></i><b>4,00 €</b></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Getränke -->
+          <div class="panel" role="tabpanel" id="p-drinks" aria-labelledby="tab-drinks" data-panel>
+            <h3 class="panel__title">Getränke</h3>
+            <div class="lists">
+              <div class="card list" data-spot>
+                <h4>Softdrinks</h4>
+                <ul>
+                  <li><span>Cola</span><i></i><b>2,50 €</b></li>
+                  <li><span>Cola Zero</span><i></i><b>2,50 €</b></li>
+                  <li><span>Fanta</span><i></i><b>2,50 €</b></li>
+                  <li><span>Sprite</span><i></i><b>2,50 €</b></li>
+                  <li><span>Mezzo Mix</span><i></i><b>2,50 €</b></li>
+                </ul>
+              </div>
+              <div class="card list" data-spot>
+                <h4>Wasser</h4>
+                <ul>
+                  <li><span>Wasser</span><i></i><b>2,00 €</b></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <p class="menu-sec__note reveal">Alle Preise in Euro inkl. MwSt.</p>
+        </div>
+      </section>
+
+      <!-- ── Hausgemacht: Currywurst ── -->
+      <section class="section signature" id="hausgemacht" aria-labelledby="sig-title">
+        <div class="signature__fire" aria-hidden="true">
+          <i class="flame f1"></i><i class="flame f2"></i><i class="flame f3"></i><i class="flame f4"></i><i class="flame f5"></i>
+        </div>
+        <div class="wrap signature__grid">
+          <div class="signature__art reveal" aria-hidden="true" data-parallax="0.05">
+            <svg viewBox="0 0 400 320">
+              <g class="steam" fill="none" stroke="url(#g-gold)" stroke-width="2.2" stroke-linecap="round">
+                <path class="steam__p s1" d="M150 110c-9-11 9-18 0-31s7-18 0-29" />
+                <path class="steam__p s2" d="M200 100c-9-11 9-18 0-31s7-18 0-29" />
+                <path class="steam__p s3" d="M250 110c-9-11 9-18 0-31s7-18 0-29" />
+              </g>
+              <g fill="none" stroke="url(#g-fire)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Schale -->
+                <path d="M52 182h296l-26 76c-3 8-10 12-18 12H96c-8 0-15-4-18-12z" fill="rgb(255 138 61 / .06)" />
+                <path d="M44 182h312" />
+                <!-- Wurststücke -->
+                <g fill="rgb(255 90 31 / .12)">
+                  <g transform="rotate(-14 110 164)"><rect x="86" y="152" width="48" height="24" rx="12" /><ellipse cx="126" cy="164" rx="5" ry="9" /></g>
+                  <g transform="rotate(10 164 160)"><rect x="140" y="148" width="48" height="24" rx="12" /><ellipse cx="180" cy="160" rx="5" ry="9" /></g>
+                  <g transform="rotate(-10 218 162)"><rect x="194" y="150" width="48" height="24" rx="12" /><ellipse cx="234" cy="162" rx="5" ry="9" /></g>
+                  <g transform="rotate(12 272 166)"><rect x="248" y="154" width="48" height="24" rx="12" /><ellipse cx="288" cy="166" rx="5" ry="9" /></g>
+                </g>
+                <!-- Sauce -->
+                <path d="M82 150c14-10 26 8 40-2s26 8 40-2 26 8 40-2 26 8 40-2 26 8 40-2 18 6 26 0" />
+                <!-- Gabel -->
+                <path d="M312 70v68m-8-68v20c0 6 4 9 8 9s8-3 8-9V70" />
+              </g>
+              <!-- Currypulver -->
+              <g fill="#ffd29a">
+                <circle cx="104" cy="146" r="1.8" /><circle cx="122" cy="140" r="1.4" /><circle cx="160" cy="134" r="1.8" />
+                <circle cx="178" cy="138" r="1.3" /><circle cx="218" cy="138" r="1.6" /><circle cx="236" cy="134" r="1.4" />
+                <circle cx="276" cy="142" r="1.8" /><circle cx="292" cy="146" r="1.3" /><circle cx="196" cy="128" r="1.5" />
+              </g>
+            </svg>
+          </div>
+          <div class="signature__copy">
+            <p class="eyebrow reveal"><span class="eyebrow__line"></span>Hausgemacht</p>
+            <h2 class="h2 reveal" id="sig-title" style="--d: 0.08s">
+              Unsere Currywurst. <span class="serif">Nach eigenem Rezept.</span>
+            </h2>
+            <p class="lead reveal" style="--d: 0.16s">
+              Eine Spezialität des Hauses: mit sorgfältig abgestimmter, hausgemachter Currysauce und feinem Currypulver. Mit Wecken, mit Pommes oder als Menü mit Softdrink.
+            </p>
+            <div class="signature__price reveal" style="--d: 0.24s">
+              <span>ab</span>
+              <strong>7,00 €</strong>
+              <a class="link" href="#speisekarte" data-open-tab="tab-wurst">Zur Speisekarte <svg aria-hidden="true"><use href="#i-arrow" /></svg></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="heatline" aria-hidden="true"></div>
+
+      <!-- ── Über uns ── -->
+      <section class="section about" id="ueber-uns" aria-labelledby="about-title">
+        <div class="wrap about__grid">
+          <div class="about__copy">
+            <p class="eyebrow reveal"><span class="eyebrow__line"></span>Über uns</p>
+            <h2 class="h2 reveal" id="about-title" style="--d: 0.08s">
+              Mehr als <span class="serif">ein Imbiss.</span>
+            </h2>
+            <p class="lead reveal" style="--d: 0.16s">
+              Wir sind ein Team mit Leidenschaft für gutes Essen und herzlichen Service. Was uns auszeichnet, ist die Verbindung aus frischen Zutaten, schneller Zubereitung und echter Gastfreundschaft.
+            </p>
+            <p class="reveal" style="--d: 0.22s">
+              Unsere Burger stehen für Saftigkeit und frischen Geschmack, unsere Currywurst für ein eigenes Rezept – und bei uns erwartet Sie nicht nur gutes Essen, sondern auch ein herzlicher Empfang.
+            </p>
+            <p class="about__owner reveal" style="--d: 0.28s">
+              <span>Inhaber</span>
+              <strong>Emrah Akbulut</strong>
+            </p>
+          </div>
+
+          <div class="rating card reveal" style="--d: 0.12s" data-spot>
+            <div class="rating__ring" aria-hidden="true">
+              <svg viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="86" fill="none" stroke="rgb(255 236 220 / .08)" stroke-width="6" />
+                <circle class="rating__arc" cx="100" cy="100" r="86" fill="none" stroke="url(#g-fire)" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="98 100" transform="rotate(-90 100 100)" />
+              </svg>
+              <div class="rating__value"><strong>4,9</strong><span>von 5</span></div>
+            </div>
+            <div class="rating__body">
+              <span class="stars stars--lg" aria-hidden="true">
+                <svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg>
+              </span>
+              <p class="rating__count"><strong>78</strong> Google-Rezensionen</p>
+              <p class="rating__text">Gäste bewerten Beef Brothers bei Google mit 4,9 von 5 Sternen.</p>
+              <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Beef+Brothers+Bad+Saulgau+Martin-Staud-Stra%C3%9Fe+10" target="_blank" rel="noopener">
+                Rezensionen auf Google lesen
+                <svg aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <ul class="stats wrap" aria-label="Kennzahlen">
+          <li class="reveal"><strong>4,9<span>★</span></strong><span>Google-Bewertung</span></li>
+          <li class="reveal" style="--d: 0.08s"><strong>78</strong><span>Rezensionen</span></li>
+          <li class="reveal" style="--d: 0.16s"><strong>10–20<span>€</span></strong><span>pro Person</span></li>
+          <li class="reveal" style="--d: 0.24s"><strong>6<span>Tage</span></strong><span>pro Woche geöffnet</span></li>
+        </ul>
+      </section>
+
+      <!-- ── Besuch: Öffnungszeiten & Kontakt ── -->
+      <section class="section visit" id="besuch" aria-labelledby="visit-title">
+        <div class="wrap">
+          <header class="head">
+            <p class="eyebrow reveal"><span class="eyebrow__line"></span>Öffnungszeiten &amp; Anfahrt</p>
+            <h2 class="h2 reveal" id="visit-title" style="--d: 0.08s">
+              Besuchen Sie uns. <span class="serif">Wir freuen uns auf Sie.</span>
+            </h2>
+          </header>
+
+          <div class="visit__grid">
+            <div class="card hours reveal" data-spot>
+              <div class="hours__head">
+                <svg aria-hidden="true"><use href="#i-clock" /></svg>
+                <h3>Öffnungszeiten</h3>
+                <span class="status status--pill" data-open-status><span class="status__dot" aria-hidden="true"></span><span data-open-text>–</span></span>
+              </div>
+              <table class="hours__table">
+                <caption class="sr-only">Öffnungszeiten</caption>
+                <tbody>
+                  <tr data-day="1"><th scope="row">Montag</th><td>11:00 – 22:00</td></tr>
+                  <tr data-day="2"><th scope="row">Dienstag</th><td>11:00 – 22:00</td></tr>
+                  <tr data-day="3"><th scope="row">Mittwoch</th><td>11:00 – 22:00</td></tr>
+                  <tr data-day="4"><th scope="row">Donnerstag</th><td>11:00 – 22:00</td></tr>
+                  <tr data-day="5"><th scope="row">Freitag</th><td>11:00 – 22:00</td></tr>
+                  <tr data-day="6"><th scope="row">Samstag</th><td>14:00 – 22:00</td></tr>
+                  <tr data-day="0"><th scope="row">Sonntag</th><td>Geschlossen</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card contact reveal" style="--d: 0.08s" data-spot>
+              <div class="contact__row">
+                <svg aria-hidden="true"><use href="#i-pin" /></svg>
+                <div>
+                  <h3>Adresse</h3>
+                  <address>Martin-Staud-Straße 10<br />88348 Bad Saulgau</address>
+                </div>
+              </div>
+              <div class="contact__row">
+                <svg aria-hidden="true"><use href="#i-phone" /></svg>
+                <div>
+                  <h3>Telefon</h3>
+                  <a class="contact__phone" href="tel:+491757426645">0175 7426645</a>
+                </div>
+              </div>
+              <div class="contact__cta">
+                <a class="btn btn--fire btn--lg" href="tel:+491757426645">
+                  <svg aria-hidden="true"><use href="#i-phone" /></svg>
+                  Jetzt anrufen
+                </a>
+                <a class="btn btn--ghost btn--lg" href="https://www.google.com/maps/dir/?api=1&amp;destination=Martin-Staud-Stra%C3%9Fe+10%2C+88348+Bad+Saulgau" target="_blank" rel="noopener">
+                  <svg aria-hidden="true"><use href="#i-pin" /></svg>
+                  Route planen
+                </a>
+              </div>
+            </div>
+
+            <div class="card map reveal" style="--d: 0.16s" data-map>
+              <div class="map__placeholder">
+                <svg class="map__grid" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <g fill="none" stroke="rgb(255 236 220 / .07)" stroke-width="1">
+                    <path d="M0 60h400M0 140h400M0 220h400M70 0v300M190 0v300M310 0v300" />
+                  </g>
+                  <g fill="none" stroke="rgb(255 236 220 / .14)" stroke-width="6" stroke-linecap="round">
+                    <path d="M-10 190c80-10 120-60 210-60s140 40 210 30" />
+                    <path d="M150 -10c10 80 30 150 20 320" />
+                  </g>
+                </svg>
+                <div class="map__pin" aria-hidden="true"><svg><use href="#i-flame" /></svg></div>
+                <div class="map__text">
+                  <p>Karte von Google Maps laden?</p>
+                  <small>Dabei werden Daten an Google übertragen.</small>
+                  <button class="btn btn--ghost btn--sm" type="button" data-map-load>Karte anzeigen</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Abschluss-CTA ── -->
+      <section class="final" aria-labelledby="final-title">
+        <div class="final__fire" aria-hidden="true">
+          <i class="flame f1"></i><i class="flame f2"></i><i class="flame f3"></i><i class="flame f4"></i><i class="flame f5"></i>
+        </div>
+        <div class="wrap final__inner">
+          <h2 class="final__title reveal" id="final-title">Hunger? <span class="serif">Wir sind bereit.</span></h2>
+          <div class="final__cta reveal" style="--d: 0.1s">
+            <a class="btn btn--fire btn--lg" href="tel:+491757426645">
+              <svg aria-hidden="true"><use href="#i-phone" /></svg>
+              0175 7426645
+            </a>
+            <a class="btn btn--ghost btn--lg" href="#speisekarte">Speisekarte ansehen</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+      <div class="wrap footer__grid">
+        <div>
+          <a href="#start" class="brand brand--footer">
+            <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flame" /></svg>
+            <span class="brand__name">Beef Brothers</span>
+          </a>
+          <p class="footer__claim">Burger · Currywurst · Pommes<br />heiß, frisch und mit Liebe gemacht.</p>
+        </div>
+        <div>
+          <h3>Besuch</h3>
+          <p>Martin-Staud-Straße 10<br />88348 Bad Saulgau</p>
+          <p><a href="tel:+491757426645">0175 7426645</a></p>
+        </div>
+        <div>
+          <h3>Öffnungszeiten</h3>
+          <p>Mo–Fr 11:00–22:00<br />Sa 14:00–22:00<br />So geschlossen</p>
+        </div>
+        <div>
+          <h3>Navigation</h3>
+          <p>
+            <a href="#speisekarte">Speisekarte</a><br />
+            <a href="#hausgemacht">Hausgemacht</a><br />
+            <a href="#ueber-uns">Über uns</a><br />
+            <a href="#besuch">Anfahrt</a>
+          </p>
+        </div>
+      </div>
+      <div class="wrap footer__bottom">
+        <p>© <span data-year>2026</span> Beef Brothers Bad Saulgau · Inh. Emrah Akbulut</p>
+        <p>
+          <button type="button" class="link-btn" data-dialog-open="impressum">Impressum</button>
+          <button type="button" class="link-btn" data-dialog-open="datenschutz">Datenschutz</button>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Mobile Schnellaktionen -->
+    <nav class="dock" aria-label="Schnellaktionen">
+      <a href="tel:+491757426645" class="dock__btn dock__btn--fire"><svg aria-hidden="true"><use href="#i-phone" /></svg>Anrufen</a>
+      <a href="#speisekarte" class="dock__btn"><svg aria-hidden="true"><use href="#i-burger" /></svg>Speisekarte</a>
+      <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Martin-Staud-Stra%C3%9Fe+10%2C+88348+Bad+Saulgau" target="_blank" rel="noopener" class="dock__btn"><svg aria-hidden="true"><use href="#i-pin" /></svg>Route</a>
+    </nav>
+
+    <!-- Rechtliches -->
+    <dialog class="sheet" id="impressum" aria-labelledby="imp-title">
+      <form method="dialog"><button class="sheet__close" aria-label="Schließen">×</button></form>
+      <h2 id="imp-title">Impressum</h2>
+      <p><strong>Beef Brothers Bad Saulgau</strong><br />Inhaber: Emrah Akbulut (Einzelunternehmen)<br />Martin-Staud-Straße 10<br />88348 Bad Saulgau</p>
+      <p>Telefon: <a href="tel:+491757426645">0175 7426645</a></p>
+      <p class="sheet__todo">E-Mail-Adresse und ggf. USt-IdNr. vor Veröffentlichung ergänzen.</p>
+    </dialog>
+    <dialog class="sheet" id="datenschutz" aria-labelledby="ds-title">
+      <form method="dialog"><button class="sheet__close" aria-label="Schließen">×</button></form>
+      <h2 id="ds-title">Datenschutz</h2>
+      <p>Diese Website verwendet keine Cookies und kein Tracking. Schriften werden lokal ausgeliefert. Google Maps wird erst nach Ihrem Klick auf „Karte anzeigen“ geladen.</p>
+      <p class="sheet__todo">Vollständige Datenschutzerklärung (Verantwortlicher, Hosting, Rechte der Betroffenen) vor Veröffentlichung ergänzen.</p>
+    </dialog>
+
+    <script src="main.js" defer></script>
+  </body>
+</html>

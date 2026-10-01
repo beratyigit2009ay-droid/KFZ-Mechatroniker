@@ -81,20 +81,26 @@ for (const slug of slugs) {
   console.log(`✓ ${slug} (${((Date.now() - t0) / 1000).toFixed(1)} s)`);
 }
 
+// Restaurant-Entwürfe (reines HTML/CSS/JS aus restaurants/)
+if (!pick) {
+  execFileSync(process.execPath, [path.join(root, 'scripts/build-restaurants.mjs')], { cwd: root, stdio: 'inherit' });
+  meta.push({ slug: 'beef-brothers', title: 'Beef Brothers Bad Saulgau', accent: '#ff5a1f' });
+}
+
 await rm(path.join(root, '.ssr'), { recursive: true, force: true });
 await rm(path.join(root, '.standalone'), { recursive: true, force: true });
 
 // Übersichtsseiten
 const overview = (hrefFor) => `<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>Kfz-Websites · Übersicht</title>
+<meta name="robots" content="noindex"><title>Website-Entwürfe · Übersicht</title>
 <style>
 :root{color-scheme:dark}body{margin:0;background:#07080a;color:#f3f4f6;font:16px/1.5 system-ui,sans-serif}
 main{max-width:960px;margin:0 auto;padding:64px 20px}h1{font-size:clamp(28px,5vw,44px);letter-spacing:-.02em;margin:0 0 8px}
 p{color:#8b919b;margin:0 0 40px}ul{list-style:none;padding:0;display:grid;gap:12px}
 a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border:1px solid rgb(255 255 255/.1);border-radius:18px;color:inherit;text-decoration:none;background:#0e1014;transition:border-color .3s}
 a:hover{border-color:var(--c)}span{font-weight:600}small{color:#8b919b}i{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
-</style></head><body><main><h1>Kfz-Websites</h1><p>Konzeptentwürfe – eine Website pro Betrieb.</p><ul>
+</style></head><body><main><h1>Website-Entwürfe</h1><p>Konzeptentwürfe – eine Website pro Betrieb.</p><ul>
 ${meta
   .map((m) => `<li><a href="${hrefFor(m.slug)}" style="--c:${m.accent}"><i></i><span style="flex:1">${esc(m.title.split(' | ')[0])}</span><small>${esc(m.slug)}</small></a></li>`)
   .join('\n')}

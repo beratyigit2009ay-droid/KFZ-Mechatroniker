@@ -9,6 +9,8 @@ Eine Codebasis und je ein Profil pro Betrieb. Daraus entstehen vier eigenständi
 | Kfz-Werkstätte Karl Sauter, Inh. Markus Funk | `src/companies/sauter` | Rot |
 | Auto- und Fahrzeugtechnik Lothar Maurer | `src/companies/maurer` | Blau |
 
+Zusätzlich gibt es einen Restaurant-Entwurf: **Beef Brothers Bad Saulgau** (Burger & Currywurst) in [`restaurants/beef-brothers/`](restaurants/beef-brothers/README.md). Er besteht aus reinem HTML/CSS/JS mit Feuer-Emblem im Hero; die Einzeldatei liegt unter `standalone/beef-brothers.html`.
+
 Das Designkonzept steht in **[docs/KONZEPT.md](docs/KONZEPT.md)**, Bilder und Nano-Banana-Prompts in **[docs/BILDER.md](docs/BILDER.md)**.
 
 ## Sofort ansehen

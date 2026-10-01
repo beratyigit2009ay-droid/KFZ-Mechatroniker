@@ -12,6 +12,7 @@
     "dev:maurer": "vite --mode maurer",
     "build": "node scripts/build-all.mjs",
     "build:web": "node scripts/build-all.mjs --no-standalone",
+    "build:restaurants": "node scripts/build-restaurants.mjs",
     "preview": "vite preview --outDir dist",
     "typecheck": "tsc --noEmit",
     "renders": "node scripts/render-images.mjs",
