@@ -1,0 +1,298 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+/* ─────────────────────────────────────────────────────────────
+   Design-Tokens
+   Die Akzentfarbe kommt pro Betrieb aus der Konfiguration
+   (--accent / --accent-ink werden im <head> gesetzt).
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --font-display: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --color-ink: #07080a;
+  --color-ink-2: #0c0d10;
+  --color-ink-3: #121418;
+  --color-ink-4: #1a1d22;
+  --color-fg: #f3f4f6;
+  --color-fg-2: #c9cdd3;
+  --color-mute: #8b919b;
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-line-2: rgb(255 255 255 / 0.16);
+  --color-paper: #ebecee;
+  --color-paper-2: #dfe1e4;
+  --color-paper-ink: #0b0c0e;
+  --color-paper-mute: #5b616b;
+  --color-accent: var(--accent, #ff6a1a);
+  --color-accent-ink: var(--accent-ink, #0b0b0c);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --breakpoint-3xl: 1800px;
+
+  --animate-marquee: marquee var(--marquee-duration, 38s) linear infinite;
+  --animate-pulse-ring: pulse-ring 2.2s var(--ease-expo) infinite;
+  --animate-spin-slow: spin 60s linear infinite;
+  --animate-shimmer: shimmer 2.8s var(--ease-expo) infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-120%) skewX(-18deg);
+    }
+    60%,
+    100% {
+      transform: translateX(260%) skewX(-18deg);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --gutter: clamp(1.25rem, 4vw, 3.5rem);
+    --header-h: 76px;
+  }
+
+  html {
+    background: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+
+  /* Grid-Spalten dürfen nie breiter als der Bildschirm werden (min-width: auto sprengt sonst das Layout) */
+  .grid > * {
+    min-width: 0;
+  }
+
+  /* Lange deutsche Komposita („Fahrzeugreparaturen“) dürfen auf schmalen Screens umbrechen */
+  h1,
+  h2,
+  h3,
+  p,
+  li,
+  dd,
+  address {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  img {
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Komponenten-Klassen
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1480px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Headline-Schnitt: breitlaufende Archivo */
+  .font-wide {
+    font-family: var(--font-display);
+    font-stretch: 125%;
+  }
+  .font-semiwide {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+  }
+
+  .display-xl {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 750;
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    font-size: clamp(2.3rem, 9.4vw, 6.4rem);
+  }
+  @media (min-width: 640px) {
+    .display-xl {
+      font-stretch: 118%;
+      line-height: 0.94;
+      font-size: clamp(3.2rem, min(6.2vw, var(--hero-fit, 6.2vw)), 6.4rem);
+    }
+  }
+  .display-lg {
+    font-family: var(--font-display);
+    font-stretch: 115%;
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.1rem, 4.6vw, 4.6rem);
+  }
+  .display-md {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    font-size: clamp(1.6rem, 2.8vw, 2.75rem);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Glas-Oberfläche */
+  .glass {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.025));
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  /* Wie .glass, aber ohne Hintergrund-Unschärfe – für große Flächen ohne Inhalt dahinter */
+  .panel {
+    background-color: #131418;
+    border: 1px solid var(--color-line);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  }
+
+  /* Feine Kante mit Lichtverlauf */
+  .hairline {
+    position: relative;
+  }
+  .hairline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.04) 40%, rgb(255 255 255 / 0.02));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Cursor-Spotlight auf Karten (--mx/--my werden per JS gesetzt) */
+  .spotlight {
+    --mx: 50%;
+    --my: 50%;
+  }
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      420px circle at var(--mx) var(--my),
+      color-mix(in oklab, var(--color-accent) 16%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-expo);
+    pointer-events: none;
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Technisches Raster */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(255 255 255 / 0.1);
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Filmkorn über der gesamten Seite – sehr dezent */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
