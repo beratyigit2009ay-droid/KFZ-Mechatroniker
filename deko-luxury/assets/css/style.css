@@ -65,6 +65,10 @@
   --muted-light: #b8ae9f;
   --line: rgba(28, 26, 23, 0.14);
   --line-light: rgba(246, 241, 233, 0.16);
+  /* Blattgold: metallischer Verlauf für Akzente auf dunklem und hellem Grund */
+  --foil: linear-gradient(110deg, #8c6b39 0%, #b8955a 16%, #e7cf96 30%, #fff1cc 37%, #dcc083 45%, #a8834c 60%, #c9a865 76%, #f0dca7 86%, #9c7b45 100%);
+  --foil-deep: linear-gradient(110deg, #6c4f26 0%, #93713f 20%, #c09d62 34%, #e0c48a 40%, #b08d57 48%, #7a5c32 64%, #a2804a 80%, #c7a76c 88%, #6f5228 100%);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* Typografie */
   --serif: "Cormorant Garamond", "Cormorant Fallback", Garamond, "Hoefler Text", "Times New Roman", serif;
@@ -256,7 +260,7 @@ address { font-style: normal; }
 .brand { display: inline-flex; align-items: center; gap: 12px; margin-right: auto; }
 .brand__emblem { width: 46px; height: 46px; flex: none; color: var(--gold-soft); overflow: visible; transition: color 0.5s var(--ease), width 0.5s var(--ease), height 0.5s var(--ease); }
 .brand__ring {
-  fill: none; stroke: currentColor; stroke-width: 1.4;
+  fill: none; stroke: url(#foil); stroke-width: 1.5;
   stroke-dasharray: 1; stroke-dashoffset: 1;
   transform: rotate(-90deg); transform-box: fill-box; transform-origin: center;
   animation: draw 1.8s var(--ease-io) calc(var(--intro) + 0.15s) forwards;
@@ -351,7 +355,7 @@ address { font-style: normal; }
 }
 .curtain__ring, .curtain__letters { position: absolute; inset: 0; width: 100%; height: 100%; }
 .curtain__ring circle {
-  fill: none; stroke: var(--gold); stroke-width: 2.6;
+  fill: none; stroke: url(#foil-deep); stroke-width: 2.8;
   stroke-dasharray: 1; stroke-dashoffset: 1;
   transform: rotate(-90deg); transform-box: fill-box; transform-origin: center;
   animation: draw 1.05s var(--ease-io) 0s forwards;
@@ -557,7 +561,8 @@ address { font-style: normal; }
 
 /* ---------- Leistungen ---------- */
 .services { padding-top: 0; }
-.services .section-head { padding-top: var(--space-section); border-top: 1px solid var(--line); }
+.services > .wrap > .ornament { padding-top: calc(var(--space-section) * 0.55); }
+.services .section-head { padding-top: clamp(40px, 5vw, 72px); }
 .services__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -899,7 +904,8 @@ address { font-style: normal; }
 .action-bar.is-visible { transform: none; }
 .action-bar__main {
   flex: 1; display: flex; align-items: center; justify-content: center; min-height: 58px;
-  font-size: 0.74rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ivory);
+  font-size: 0.74rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink);
+  background: var(--foil); background-size: 220% 100%;
 }
 .action-bar__icon { display: grid; place-items: center; width: 64px; color: var(--gold-soft); border-left: 1px solid var(--line-light); }
 .action-bar__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.2; }
@@ -974,6 +980,109 @@ address { font-style: normal; }
 .notfound h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.6rem, 2rem + 3vw, 4.6rem); line-height: 1.05; }
 .notfound p { margin: 18px auto 36px; color: rgba(246, 241, 233, 0.75); max-width: 40ch; }
 
+/* ==========================================================================
+   Luxus-Schicht: Blattgold, Galerie in Schwarz, Passepartouts, Ornamente
+   ========================================================================== */
+
+/* Blattgold-Text mit langsamem Glanz */
+.foil, .foil-deep {
+  background: var(--foil); background-size: 240% 100%; background-position: 0% 50%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+/* Glanz läuft nur über die zwei großen Gold-Zeilen und nur zweimal, das schont schwächere Geräte */
+.hero__title .foil, .cta__title .foil { animation: foil-shine 9s ease-in-out calc(var(--intro) + 1.4s) 2; }
+.foil-deep { background-image: var(--foil-deep); }
+.foil .w > span, .foil-deep .w > span { -webkit-text-fill-color: transparent; }
+@keyframes foil-shine { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+/* Blattgold-Buttons mit Glanzlicht */
+.btn--foil {
+  --btn-fg: var(--ink); --btn-bd: transparent;
+  overflow: hidden; isolation: isolate;
+  background: var(--foil); background-size: 220% 100%; background-position: 10% 50%;
+  box-shadow: 0 10px 30px -14px rgba(168, 131, 76, 0.75), inset 0 0 0 1px rgba(255, 241, 204, 0.35);
+  transition: background-position 1.1s var(--ease), box-shadow 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.btn--foil::after {
+  content: ""; position: absolute; inset: -2px auto -2px -60%; width: 45%; z-index: -1;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  transform: skewX(-18deg); transition: left 1.1s var(--ease);
+}
+.btn--foil:hover { background-position: 90% 50%; box-shadow: 0 16px 40px -14px rgba(168, 131, 76, 0.9), inset 0 0 0 1px rgba(255, 241, 204, 0.5); transform: translateY(-1px); }
+.btn--foil:hover::after { left: 120%; }
+
+/* Filmkörnung auf dunklen Flächen */
+.grain { position: relative; isolation: isolate; }
+.grain::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--grain); background-size: 220px 220px; opacity: 0.07;
+}
+
+/* Ornament-Trenner */
+.ornament { display: flex; justify-content: center; color: var(--gold); }
+.ornament svg { width: min(240px, 60vw); height: auto; overflow: visible; }
+.ornament path, .ornament circle { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ornament .gem { fill: url(#foil); stroke: none; }
+.ornament--light { color: var(--gold-soft); }
+
+/* Passepartout: feiner Goldrahmen mit Abstand */
+.service__media, .style__media { outline: 1px solid rgba(168, 131, 76, 0.38); outline-offset: 9px; transition: outline-offset 0.8s var(--ease), outline-color 0.8s var(--ease); }
+.service:hover .service__media, .style__media:hover { outline-offset: 4px; outline-color: rgba(168, 131, 76, 0.85); }
+.intro__archbox .intro__emblem, .brand__emblem { overflow: visible; }
+
+/* Infostreifen in Schwarz und Gold */
+.trust { background: var(--ink); border-top: 1px solid rgba(205, 176, 122, 0.16); border-bottom: 1px solid rgba(205, 176, 122, 0.1); }
+.trust__list { color: var(--champagne); }
+.trust__list li + li::before { background: var(--foil); }
+
+/* Portfolio als schwarze Galerie, geht nahtlos in den Aufruf über */
+.portfolio { background: var(--ink); color: var(--ivory); padding-bottom: clamp(56px, 6vw, 96px); }
+.portfolio .eyebrow { color: var(--gold-soft); }
+.portfolio .section-head__text { color: var(--muted-light); }
+.portfolio .filter { color: var(--muted-light); }
+.portfolio .filter:hover { color: var(--ivory); }
+.portfolio .filter[aria-pressed="true"] { color: var(--ink); background: var(--foil); background-size: 220% 100%; border-color: transparent; }
+.portfolio .pf-card { color: var(--ivory); }
+.portfolio .pf-card__media { background: var(--char); outline: 1px solid rgba(205, 176, 122, 0); outline-offset: 0; transition: outline-offset 0.8s var(--ease), outline-color 0.8s var(--ease); }
+.portfolio .pf-card:hover .pf-card__media { outline-color: rgba(205, 176, 122, 0.7); outline-offset: 6px; }
+.portfolio .pf-card__cat { color: var(--gold-soft); }
+.portfolio .pf-card:hover .pf-card__title { color: var(--champagne); }
+.cta { padding-top: clamp(40px, 5vw, 72px); }
+.cta .ornament { margin-bottom: clamp(48px, 6vw, 88px); }
+.cta__title em { color: var(--gold-soft); }
+
+/* Ablauf-Ziffern in Blattgold; Körnung liegt hier über allem, damit die Ziffern-Maske unsichtbar bleibt */
+.step__num { color: var(--gold-soft); }
+.process.grain::after { z-index: 2; }
+
+/* Goldstaub im Hero */
+.hero__dust { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+
+/* Footer: großer Schriftzug als Abschluss */
+.footer__mark {
+  display: block; overflow: hidden;
+  margin-top: clamp(40px, 6vw, 80px); padding-inline: var(--gutter);
+  font-family: var(--caps); font-weight: 400; line-height: 0.9; text-align: center; white-space: nowrap;
+  font-size: clamp(2.6rem, 11.2vw, 11rem); letter-spacing: 0.04em;
+  opacity: 0.92;
+}
+.footer__mark span { -webkit-text-fill-color: rgba(205, 176, 122, 0.35); }
+
+/* „Ansehen“-Cursor über Galeriebildern (nur mit Maus) */
+.view-cursor {
+  position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none;
+  width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(21, 19, 17, 0.32); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border: 1px solid rgba(240, 220, 167, 0.75);
+  font-size: 0.62rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: #f6ecd2;
+  opacity: 0; transform: translate3d(-200px, -200px, 0); scale: 0.6;
+  transition: opacity 0.35s var(--ease), scale 0.45s var(--ease);
+}
+.view-cursor.is-on { opacity: 1; }
+.has-view-cursor .pf-card { cursor: none; }
+
 /* ---------- Animationen ---------- */
 @keyframes rise { from { opacity: 0; transform: translate3d(0, 26px, 0); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
@@ -996,6 +1105,7 @@ address { font-style: normal; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .curtain { display: none; }
   .hero__slide { transition: none; }
+  .hero__dust, .view-cursor { display: none; }
   .hero__scroll span::after { display: none; }
 }
 

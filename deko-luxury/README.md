@@ -94,6 +94,20 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
   Der Wechsel lässt sich über den Pause-Knopf anhalten und stoppt, wenn der Bereich nicht sichtbar ist.
 - Dauer der Eröffnung: `--intro` und die Zeiten im Abschnitt „Eröffnung“ in `style.css`.
 
+## Luxus-Details
+
+- **Blattgold:** Emblem, Logo, Vorhang-Logo, die kursiven Schlüsselwörter und die Ablauf-Ziffern
+  tragen einen metallischen Goldverlauf (`--foil` und SVG-Verlauf `#foil`). Über die großen Gold-Zeilen
+  läuft nach dem Laden zweimal ein langsamer Glanz.
+- **Gold-Buttons:** Die wichtigsten Aufrufe haben eine Blattgold-Fläche mit Glanzlicht beim Darüberfahren (`btn--foil`).
+- **Schwarze Galerie:** Portfolio und Abschluss-Aufruf bilden ein dunkles Kapitel. Die Fotos bekommen beim
+  Darüberfahren einen Goldrahmen. Mit Maus erscheint über den Bildern ein runder „Ansehen“-Cursor.
+- **Passepartouts:** Leistungs- und Stil-Fotos haben einen feinen Goldrahmen mit Abstand.
+- **Goldstaub:** Im Hero schweben feine Goldpartikel. Sie starten erst nach dem Laden und pausieren außerhalb des Bildschirms.
+- **Körnung & Ornamente:** Dunkle Flächen haben eine feine Filmkörnung, Abschnitte werden mit Gold-Ornamenten getrennt.
+  Der Footer endet mit einem großen Schriftzug „DEKO.LUXURY“.
+- Bei „Bewegung reduzieren“ entfallen Goldstaub, Cursor und Glanz-Animation.
+
 ## Kontaktformular
 
 - `anfrage.php` sendet jede Anfrage an **deko.luxury@gmx.de** (Einstellung oben in der Datei).
@@ -126,7 +140,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Technik & Qualität
 
-- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 90 Performance;
+- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 87 Performance;
   Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
   etwas Ladezeit.
 - Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.

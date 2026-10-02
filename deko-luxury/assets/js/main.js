@@ -631,6 +631,98 @@
     });
   }
 
+  /* ---------- Goldstaub im Hero ----------
+     Startet erst, wenn die Seite fertig geladen ist, zeichnet vorbereitete Lichtpunkte
+     (keine Verläufe pro Bild) und pausiert, sobald der Hero nicht sichtbar ist. */
+  var dust = $('[data-dust]');
+  if (dust && hero && dust.getContext && !reduceMotion.matches) {
+    var startDust = function () {
+      var dctx = dust.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var narrow = window.innerWidth < 700;
+      var DW = 0, DH = 0, motes = [], dustRaf = null, dustVisible = true, skip = false;
+      var sprite = doc.createElement('canvas');
+      var SP = 32;
+      sprite.width = sprite.height = SP * 2;
+      var sctx = sprite.getContext('2d');
+      var sg = sctx.createRadialGradient(SP, SP, 0, SP, SP, SP);
+      sg.addColorStop(0, 'rgba(255, 238, 196, 1)');
+      sg.addColorStop(0.35, 'rgba(214, 182, 112, 0.55)');
+      sg.addColorStop(1, 'rgba(205, 176, 122, 0)');
+      sctx.fillStyle = sg; sctx.fillRect(0, 0, SP * 2, SP * 2);
+      var sizeDust = function () {
+        var r = hero.getBoundingClientRect();
+        DW = r.width; DH = r.height;
+        dust.width = Math.round(DW * dpr); dust.height = Math.round(DH * dpr);
+        dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+      var mote = function (anywhere) {
+        return {
+          x: Math.random() * DW, y: anywhere ? Math.random() * DH : DH + 12,
+          r: 0.6 + Math.pow(Math.random(), 2.2) * 2.8,
+          vy: 0.06 + Math.random() * 0.22,
+          sway: Math.random() * 6.28, swaySpeed: 0.002 + Math.random() * 0.004,
+          a: 0.22 + Math.random() * 0.5, tw: Math.random() * 6.28
+        };
+      };
+      sizeDust();
+      for (var mi = 0; mi < (narrow ? 14 : 38); mi++) motes.push(mote(true));
+      var drawDust = function () {
+        dustRaf = window.requestAnimationFrame(drawDust);
+        if (narrow) { skip = !skip; if (skip) return; }
+        dctx.clearRect(0, 0, DW, DH);
+        for (var k = 0; k < motes.length; k++) {
+          var m = motes[k];
+          m.y -= narrow ? m.vy * 2 : m.vy; m.sway += m.swaySpeed; m.tw += 0.018;
+          if (m.y < -12) { motes[k] = mote(false); continue; }
+          var size = m.r * 6.4;
+          dctx.globalAlpha = m.a * (0.55 + 0.45 * Math.sin(m.tw));
+          dctx.drawImage(sprite, m.x + Math.sin(m.sway) * 16 - size / 2, m.y - size / 2, size, size);
+        }
+        dctx.globalAlpha = 1;
+      };
+      var runDust = function () {
+        var on = dustVisible && !doc.hidden;
+        if (on && !dustRaf) dustRaf = window.requestAnimationFrame(drawDust);
+        if (!on && dustRaf) { window.cancelAnimationFrame(dustRaf); dustRaf = null; }
+      };
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) { dustVisible = entries[0].isIntersecting; runDust(); }).observe(hero);
+      }
+      doc.addEventListener('visibilitychange', runDust);
+      var dustResize = null;
+      window.addEventListener('resize', function () { window.clearTimeout(dustResize); dustResize = window.setTimeout(sizeDust, 200); });
+      runDust();
+    };
+    var whenIdle = window.requestIdleCallback || function (fn) { return window.setTimeout(fn, 1); };
+    var queueDust = function () { window.setTimeout(function () { whenIdle(startDust); }, 2500); };
+    if (doc.readyState === 'complete') queueDust(); else window.addEventListener('load', queueDust);
+  }
+
+  /* ---------- „Ansehen“-Cursor über Galeriebildern ---------- */
+  var viewCursor = $('[data-view-cursor]');
+  if (viewCursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion.matches) {
+    root.classList.add('has-view-cursor');
+    var vx = -200, vy = -200, tx = -200, ty = -200, vRaf = null, onImage = false;
+    var moveCursor = function () {
+      vx += (tx - vx) * 0.22; vy += (ty - vy) * 0.22;
+      viewCursor.style.transform = 'translate3d(' + vx.toFixed(1) + 'px,' + vy.toFixed(1) + 'px,0)';
+      vRaf = (Math.abs(tx - vx) > 0.2 || Math.abs(ty - vy) > 0.2) ? window.requestAnimationFrame(moveCursor) : null;
+    };
+    doc.addEventListener('pointermove', function (e) {
+      tx = e.clientX; ty = e.clientY;
+      var over = !!(e.target.closest && e.target.closest('.pf-card'));
+      if (over !== onImage) {
+        onImage = over;
+        if (over) { vx = tx; vy = ty; }
+        viewCursor.classList.toggle('is-on', over);
+        viewCursor.style.scale = over ? '1' : '0.6';
+      }
+      if (!vRaf) vRaf = window.requestAnimationFrame(moveCursor);
+    }, { passive: true });
+    doc.documentElement.addEventListener('pointerleave', function () { onImage = false; viewCursor.classList.remove('is-on'); });
+  }
+
   /* ---------- Kleinigkeiten ---------- */
   $$('[data-year]').forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
 
