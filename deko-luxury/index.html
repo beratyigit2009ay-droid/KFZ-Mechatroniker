@@ -45,7 +45,7 @@
 
   <!-- Strukturierte Daten (Local SEO). Nur echte Angaben verwenden.
        PLATZHALTER ergänzen, sobald bekannt: "url", "image", "logo" (absolute URLs), "telephone",
-       "address.streetAddress", "openingHoursSpecification", "sameAs" (z. B. Instagram-Profil). -->
+       "address.streetAddress", "sameAs" (z. B. Instagram-Profil). Öffnungszeiten: 24/7. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,6 +61,14 @@
       "addressRegion": "Bayern",
       "addressCountry": "DE"
     },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    ],
     "areaServed": [
       { "@type": "City", "name": "Burgau" },
       { "@type": "City", "name": "Ulm" },
@@ -131,7 +139,7 @@
       </nav>
       <div class="menu__foot">
         <a class="btn btn--light" href="#kontakt" data-menu-link>Event anfragen</a>
-        <p class="status status--menu"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7 erreichbar</strong> · Anfragen rund um die Uhr</span></p>
+        <p class="status status--menu"><span class="status__dot" aria-hidden="true"></span><span><strong>Jetzt geöffnet</strong> · 24 Stunden, 7 Tage</span></p>
         <p class="menu__meta">
           <a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a><br>
           Showroom in Burgau
@@ -159,7 +167,7 @@
             <a class="btn btn--foil" href="#kontakt" data-cta>Event anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
             <a class="link link--light" href="#portfolio">Unsere Arbeiten entdecken</a>
           </div>
-          <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7 erreichbar</strong> · Anfragen rund um die Uhr</span></p>
+          <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>Jetzt geöffnet</strong> · 24 Stunden, 7 Tage die Woche</span></p>
         </div>
 
         <figure class="hero__arch" data-slides>
@@ -184,8 +192,7 @@
       <a class="hero__scroll" href="#einleitung" aria-label="Weiter nach unten scrollen"><span></span></a>
     </section>
 
-    <!-- Auf einen Blick. Erreichbarkeit: Die Online-Anfrage ist rund um die Uhr möglich.
-         Falls der Showroom feste Zeiten hat, diese im Abschnitt Showroom eintragen. -->
+    <!-- Auf einen Blick. Öffnungszeiten laut Inhaber: 24/7. -->
     <section class="infobar" aria-label="Auf einen Blick">
       <ul class="infobar__list wrap">
         <li class="infobar__item">
@@ -194,7 +201,7 @@
         </li>
         <li class="infobar__item infobar__item--live">
           <span class="infobar__icon infobar__icon--live"><span class="status__dot" aria-hidden="true"></span></span>
-          <span class="infobar__text"><strong>24/7 erreichbar</strong><small>Anfragen rund um die Uhr</small></span>
+          <span class="infobar__text"><strong>24/7 geöffnet</strong><small>jetzt geöffnet, rund um die Uhr</small></span>
         </li>
         <li class="infobar__item">
           <svg class="infobar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M8.5 21v-10a3.5 3.5 0 0 1 7 0v10"/><path d="M3 21h18"/></svg>
@@ -416,7 +423,7 @@
     </section>
 
     <!-- ============ SHOWROOM ============
-         PLATZHALTER: Adresse und Öffnungszeiten eintragen. -->
+         PLATZHALTER: Adresse eintragen. Öffnungszeiten: 24/7. -->
     <section class="showroom section" id="showroom" aria-labelledby="showroom-title">
       <div class="wrap">
         <div class="showroom__grid">
@@ -449,12 +456,11 @@
           <div class="visit__col">
             <h3 class="visit__title">Öffnungszeiten</h3>
             <dl class="hours">
-              <div class="hours__live"><dt>Online-Anfragen</dt><dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span>rund um die Uhr</span></dd></div>
-              <div><dt>Montag – Freitag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
-              <div><dt>Samstag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
-              <div><dt>Sonntag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
+              <div class="hours__live"><dt>Status</dt><dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span><strong>Jetzt geöffnet</strong></span></dd></div>
+              <div><dt>Montag – Sonntag</dt><dd>0 – 24 Uhr</dd></div>
+              <div><dt>Anfragen</dt><dd>jederzeit</dd></div>
             </dl>
-            <p class="visit__hint">Persönliche Beratungstermine vereinbaren Sie über das <a href="#kontakt" data-mode="showroom">Kontaktformular</a>.</p>
+            <p class="visit__hint">Für eine persönliche Beratung im Showroom vereinbaren Sie am besten vorab einen Termin über das <a href="#kontakt" data-mode="showroom">Kontaktformular</a>.</p>
           </div>
           <div class="visit__col visit__col--map">
             <h3 class="visit__title">Anfahrt</h3>
@@ -581,8 +587,8 @@
               </dd>
             </div>
             <div>
-              <dt>Erreichbar</dt>
-              <dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7</strong> · Anfragen rund um die Uhr</span></span></dd>
+              <dt>Geöffnet</dt>
+              <dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7</strong> · jetzt geöffnet</span></span></dd>
             </div>
             <div>
               <dt>Telefon</dt>

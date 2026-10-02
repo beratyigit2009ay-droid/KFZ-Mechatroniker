@@ -43,11 +43,11 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 | **Bilder** | Die Website zeigt nur noch echte Fotos und SVG-Linienzeichnungen, keine generierten Platzhalter mehr. Für „Hochzeiten“ und den Showroom stehen Zeichnungen, bis echte Fotos vorliegen. In `index.html` ist dafür jeweils eine `<img>`-Vorlage als Kommentar hinterlegt. |
 | **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
 | `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
-| `index.html` → Showroom | Straße & Hausnummer, Öffnungszeiten, Link „Route planen“ (Adresse in `query=` eintragen). |
+| `index.html` → Showroom | Straße & Hausnummer, Link „Route planen“ (Adresse in `query=` eintragen). Öffnungszeiten (24/7) sind eingetragen. |
 | `index.html` → Kontakt | Telefonnummer (Beispiel für Click-to-Call steht im Kommentar). |
 | `index.html` → Kundenstimmen | Abschnitt ist ausgeblendet (`hidden`). Nur echte, freigegebene Bewertungen einsetzen, dann `hidden` entfernen. Vorlage steht im Kommentar über dem Bereich. Ab zwei Stimmen erscheint automatisch eine Blätter-Navigation. Optional: Link zum Google-Profil, Eventlocations, Presse – ebenfalls als Kommentar vorbereitet. |
 | `index.html` → Footer | Instagram-Link nur einfügen, wenn das Profil existiert (auskommentierte Vorlage). |
-| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image` (absolute Adressen). Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `streetAddress`, Öffnungszeiten, `sameAs` (Instagram). |
+| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image` (absolute Adressen). Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `streetAddress`, `sameAs` (Instagram). |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg (aus den gewünschten Suchbegriffen abgeleitet). Bitte bestätigen oder anpassen. |
 | `index.html` → Formular | Budgetrahmen und Gästezahl-Stufen prüfen und bei Bedarf an die eigenen Pakete anpassen. |
 | `impressum.html` | Name, Rechtsform, Anschrift, Telefon, USt-IdNr., Verbraucherstreitbeilegung, Bildnachweise. |
@@ -96,10 +96,10 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Übersicht & Erreichbarkeit
 
-- **Grüner Live-Punkt „24/7 erreichbar – Anfragen rund um die Uhr“:** im Hero, in der Infoleiste, im Handy-Menü,
-  bei den Öffnungszeiten und in der Kontaktbox. Gemeint ist die Online-Anfrage, die jederzeit möglich ist.
-  Hat der Showroom selbst feste Zeiten, diese unter „Öffnungszeiten“ eintragen. Wäre er wirklich rund um die Uhr
-  geöffnet, kann der Text an diesen Stellen angepasst werden (Suche nach `24/7`).
+- **Grüner Live-Punkt „Jetzt geöffnet · 24/7“:** im Hero, in der Infoleiste, im Handy-Menü, bei den
+  Öffnungszeiten und in der Kontaktbox. Öffnungszeiten laut Inhaber: 24 Stunden, 7 Tage die Woche.
+  Sie stehen auch in den strukturierten Daten für Google. Ändern sich die Zeiten, die Stellen über die Suche
+  nach `24/7` bzw. `Jetzt geöffnet` anpassen.
 - **Infoleiste „Auf einen Blick“** direkt unter dem Hero: Showroom Burgau, 24/7 erreichbar, Individuelle Konzepte,
   Persönliche Beratung mit E-Mail.
 - **Leistungen** stehen in einem gleichmäßigen Raster mit gleich großen Bildern (4:3).
