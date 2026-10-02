@@ -126,7 +126,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Technik & Qualität
 
-- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 88 Performance;
+- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 90 Performance;
   Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
   etwas Ladezeit.
 - Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.
