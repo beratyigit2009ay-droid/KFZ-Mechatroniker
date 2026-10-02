@@ -40,8 +40,9 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 
 | Wo | Was fehlt |
 | --- | --- |
-| **Alle Bilder** | Die Bilder in `assets/img/` sind generierte Stimmungsbilder (Kerzenlicht, Seide, Blüten, Marmor). Sie sind Platzhalter und **müssen durch eigene Fotos ersetzt werden**, vor allem Portfolio und Showroom. Anleitung unten. |
-| `index.html` → Portfolio | Projektangaben je Bild über `data-title`, `data-eventtyp`, `data-location`, `data-konzept`, `data-beschreibung`. Leere Felder blendet die Galerie aus. |
+| **Restliche Platzhalter-Bilder** | Hero, Portfolio, Einleitung, „Unser Stil“ und vier Leistungen zeigen bereits eure Fotos. Noch generierte Stimmungsbilder sind: `leistung-hochzeiten`, `leistung-trauungen` und `showroom-1` bis `-3`. Bitte durch echte Hochzeits-, Trauungs- und Showroom-Fotos ersetzen (Anleitung unten). |
+| **Einverständnis** | Auf `portfolio-03` / `leistung-konzepte` ist der Vorname eines Kindes zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
+| `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
 | `index.html` → Showroom | Straße & Hausnummer, Öffnungszeiten, Link „Route planen“ (Adresse in `query=` eintragen). |
 | `index.html` → Kontakt | Telefonnummer (Beispiel für Click-to-Call steht im Kommentar). |
 | `index.html` → Kundenstimmen | Nur echte, freigegebene Bewertungen. Vorlage steht im Kommentar über dem Bereich. Ab zwei Stimmen erscheint automatisch eine Blätter-Navigation. Optional: Link zum Google-Profil, Eventlocations, Presse – ebenfalls als Kommentar vorbereitet. |
@@ -63,18 +64,33 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 4. In `index.html` die **Alt-Texte** an das neue Motiv anpassen. Gute Alt-Texte beschreiben
    das Bild und nennen den Anlass, z. B. „Hochzeitstafel mit weißen Rosen und Kerzenlicht in Burgau“.
 
-| Datei | Bereich | Format | Motiv-Idee |
+| Datei | Bereich | Aktuell | Hinweis |
 | --- | --- | --- | --- |
-| `hero` | Startbild | Quer, mind. 2400 px | Das stärkste Bild: dekorierte Tafel oder Location bei Abendlicht. Wichtiges Motiv rechts, links bleibt Platz für den Text. |
-| `intro` | Einleitung | Hoch 4:5 | Florales Detail |
-| `leistung-*` (6) | Leistungen | Hoch 4:5 | Je ein Bild pro Leistung |
-| `portfolio-01` … `-12` | Portfolio | Quer oder hoch | Eigene Projekte, je zwei pro Kategorie |
-| `stil` | Unser Stil | Hoch 4:5 | Atmosphäre, Licht, Materialien |
-| `showroom-1` … `-3` | Showroom | 1 quer, 2 hoch | Echte Aufnahmen des Showrooms |
+| `portfolio-01` … `-07` | Portfolio | Eure Fotos | 01, 02, 07 und 04 erscheinen zusätzlich im Bogenfenster oben auf der Startseite. Mindestens 1600 px breit ist ideal. |
+| `intro` | Einleitung | Euer Foto | Hochformat 4:5 |
+| `stil` | Unser Stil | Euer Foto | Hochformat 4:5, mind. 1400 px |
+| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-konzepte` | Leistungen | Eure Fotos | Hochformat 4:5 |
+| `leistung-hochzeiten`, `leistung-trauungen` | Leistungen | Platzhalter | Echte Hochzeits- bzw. Trauungsfotos einsetzen |
+| `showroom-1` … `-3` | Showroom | Platzhalter | Echte Aufnahmen des Showrooms (1 quer, 2 hoch) |
+
+Die gelieferten Fotos sind 600–1200 px breit. Das Skript weist darauf hin. Liegen die Originale
+in höherer Auflösung vor (z. B. direkt aus der Kamera oder vom Fotografen), einfach erneut
+durch `npm run bilder` schicken: Die Seite wird dann auf großen Bildschirmen schärfer.
 
 Die Bilder werden per CSS zugeschnitten. Andere Seitenverhältnisse funktionieren also auch.
-Steht beim Startbild das Motiv anders, in `style.css` bei `.hero__media img` den Wert
-`object-position` anpassen.
+Im Bogenfenster oben lässt sich der Bildausschnitt pro Foto über `style="object-position: …"`
+am jeweiligen `<img class="hero__slide">` in `index.html` anpassen.
+
+## Eröffnung & Animationen
+
+- **Eröffnung:** Beim ersten Besuch zeichnet sich das Logo als SVG, eine goldene Naht erscheint,
+  dann öffnet sich der Vorhang. Danach steigt die Überschrift Wort für Wort auf, darunter zeichnet
+  sich eine goldene Linie. Die Eröffnung läuft einmal pro Browser-Sitzung (rund 2,3 Sekunden),
+  ein Klick überspringt sie. Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat, sieht sie nicht.
+- **Header:** Auf allen Seiten steht das Logo-Emblem als SVG. Der Goldring zeichnet sich beim Laden.
+- **Bogenfenster:** Rechts im Hero wechseln vier Arbeiten im Bogen, der an eure Bogen-Rückwände angelehnt ist.
+  Der Wechsel lässt sich über den Pause-Knopf anhalten und stoppt, wenn der Bereich nicht sichtbar ist.
+- Dauer der Eröffnung: `--intro` und die Zeiten im Abschnitt „Eröffnung“ in `style.css`.
 
 ## Kontaktformular
 
@@ -99,6 +115,8 @@ Steht beim Startbild das Motiv anders, in `style.css` bei `.hero__media img` den
 
 - Title, Description, Open-Graph-Bild (`assets/brand/og-image.jpg`), saubere H1/H2-Struktur.
 - Strukturierte Daten (`LocalBusiness`) mit Ort Burgau und Leistungen.
+- Portfolio-Kategorien entsprechen den gezeigten Arbeiten (Birthdays, Baby Party, Table Styling,
+  Lounge & Details). Mit neuen Projekten (z. B. Hochzeiten) einfach eine Kategorie ergänzen.
 - Suchbegriffe wie Eventdekoration, Hochzeitsdekoration, Floristik, Burgau, Ulm und Augsburg
   stehen natürlich im Text, ohne Keyword-Stuffing.
 - Empfehlung: Google-Unternehmensprofil für den Showroom anlegen. Für Local SEO ist das der
@@ -106,9 +124,11 @@ Steht beim Startbild das Motiv anders, in `style.css` bei `.hero__media img` den
 
 ## Technik & Qualität
 
-- Lighthouse (lokal gemessen): Desktop 100 / 100 / 100 / 100,
-  Mobil 93 Performance · 100 Barrierefreiheit · 100 Best Practices · 100 SEO.
-- Alle Bilder zusammen ca. 0,8 MB (WebP, responsive Größen, Lazy Loading).
+- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 88 Performance;
+  Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
+  etwas Ladezeit.
+- Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.
+- Bilder als WebP in mehreren Größen mit Lazy Loading.
 - Animationen respektieren „Bewegung reduzieren“ des Betriebssystems.
   Inhalte sind auch ohne JavaScript vollständig sichtbar.
 - Schriften: Cormorant Garamond, Jost, Cinzel (SIL Open Font License, lokal eingebunden).

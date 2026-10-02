@@ -30,9 +30,17 @@
 
   <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="assets/img/hero-1600.webp" imagesrcset="assets/img/hero-960.webp 960w, assets/img/hero-1600.webp 1600w, assets/img/hero-2400.webp 2400w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/portfolio-02-800.webp" imagesrcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" imagesizes="(min-width: 900px) 40vw, 68vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    (function (d) {
+      d.classList.add('js');
+      // Eröffnungsanimation nur beim ersten Besuch pro Sitzung und nie bei „Bewegung reduzieren“
+      var seen = false;
+      try { seen = sessionStorage.getItem('dl-intro') === '1'; sessionStorage.setItem('dl-intro', '1'); } catch (e) { /* ohne Speicher: Animation zeigen */ }
+      if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-intro');
+    })(document.documentElement);
+  </script>
   <script src="assets/js/main.js" defer></script>
 
   <!-- Strukturierte Daten (Local SEO). Nur echte Angaben verwenden.
@@ -72,11 +80,22 @@
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
+  <!-- Eröffnung: Das Logo zeichnet sich, dann öffnet sich der Vorhang. Klick überspringt. -->
+  <div class="curtain" aria-hidden="true" data-intro>
+    <div class="curtain__panel curtain__panel--l"></div>
+    <div class="curtain__panel curtain__panel--r"></div>
+    <span class="curtain__seam"></span>
+    <div class="curtain__logo">
+      <svg class="curtain__ring" viewBox="238 -32 726 724"><circle cx="601" cy="330" r="358" pathLength="1"/></svg>
+      <img class="curtain__letters" src="assets/brand/logo-schrift.svg" width="726" height="724" alt="">
+    </div>
+  </div>
+
   <!-- ============ NAVIGATION ============ -->
   <header class="site-header" data-header>
     <div class="site-header__inner">
       <a class="brand" href="#top" aria-label="DEKO.LUXURY – zur Startseite">
-        <svg class="brand__mark" viewBox="0 0 136.62 141.12" aria-hidden="true"><use href="#monogram"/></svg>
+        <svg class="brand__emblem" viewBox="0 0 100 100" aria-hidden="true"><circle class="brand__ring" cx="50" cy="50" r="47" pathLength="1"/><use href="#monogram" x="28.5" y="27" width="43" height="44.4"/></svg>
         <span class="brand__name">DEKO<span class="brand__dot">.</span>LUXURY</span>
       </a>
       <nav class="nav" aria-label="Hauptnavigation">
@@ -124,25 +143,39 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero__media" data-parallax="0.18">
-        <img src="assets/img/hero-1600.webp"
-             srcset="assets/img/hero-960.webp 960w, assets/img/hero-1600.webp 1600w, assets/img/hero-2400.webp 2400w"
-             sizes="100vw" width="2400" height="1500" fetchpriority="high" decoding="async"
-             alt="Brennende Kerzen in warmem Licht – die Stimmung einer festlich dekorierten Abendveranstaltung">
-      </div>
-      <div class="hero__shade" aria-hidden="true"></div>
-      <div class="hero__content wrap">
-        <p class="hero__lockup">
-          <span class="hero__lockup-main">Luxury Events</span>
-          <span class="hero__lockup-rule" aria-hidden="true"></span>
-          <span class="hero__lockup-by">by DEKO.LUXURY</span>
-        </p>
-        <h1 class="hero__title" id="hero-title">Wir verwandeln besondere Momente in <em>unvergessliche Erlebnisse.</em></h1>
-        <p class="hero__lead">Exklusive Eventdekoration für Hochzeiten, private Feiern und besondere Veranstaltungen – individuell geplant und mit Liebe zum Detail umgesetzt.</p>
-        <div class="hero__actions">
-          <a class="btn btn--light" href="#kontakt" data-cta>Event anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
-          <a class="link link--light" href="#portfolio">Unsere Arbeiten entdecken</a>
+      <div class="wrap hero__inner">
+        <div class="hero__content">
+          <p class="hero__lockup">
+            <span class="hero__lockup-main">Luxury Events</span>
+            <span class="hero__lockup-rule" aria-hidden="true"></span>
+            <span class="hero__lockup-by">by DEKO.LUXURY</span>
+          </p>
+          <h1 class="hero__title" id="hero-title"><span class="w"><span style="--i:0">Wir</span></span> <span class="w"><span style="--i:1">verwandeln</span></span> <span class="w"><span style="--i:2">besondere</span></span> <span class="w"><span style="--i:3">Momente</span></span> <span class="w"><span style="--i:4">in</span></span> <em><span class="w"><span style="--i:5">unvergessliche</span></span> <span class="w"><span style="--i:6">Erlebnisse.</span></span></em></h1>
+          <svg class="hero__flourish" viewBox="0 0 420 28" aria-hidden="true"><path pathLength="1" d="M3 19 C 70 7, 150 4, 222 13 S 352 25, 417 8"/><path pathLength="1" d="M300 23 C 330 26, 365 23, 392 16"/></svg>
+          <p class="hero__lead">Exklusive Eventdekoration für Hochzeiten, private Feiern und besondere Veranstaltungen – individuell geplant und mit Liebe zum Detail umgesetzt.</p>
+          <div class="hero__actions">
+            <a class="btn btn--light" href="#kontakt" data-cta>Event anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
+            <a class="link link--light" href="#portfolio">Unsere Arbeiten entdecken</a>
+          </div>
         </div>
+
+        <figure class="hero__arch" data-slides>
+          <svg class="hero__lines" viewBox="0 0 540 645" aria-hidden="true">
+            <path pathLength="1" d="M10 645 V270 A260 260 0 0 1 530 270 V645"/>
+            <path pathLength="1" d="M0 645 V270 A270 270 0 0 1 540 270 V645"/>
+          </svg>
+          <div class="hero__window">
+            <img class="hero__slide is-active" src="assets/img/portfolio-02-800.webp" srcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 68vw" width="1191" height="1503" fetchpriority="high" decoding="async" style="object-position: 50% 40%" data-cat="Table Styling" data-title="Sommertafel im Garten" alt="Lange Gartentafel mit üppigen Blumen in Pink, Koralle und Gelb, Kerzen, Goldbesteck und Ballonbogen">
+            <img class="hero__slide" src="assets/img/portfolio-01-800.webp" srcset="assets/img/portfolio-01-600.webp 600w, assets/img/portfolio-01-800.webp 800w, assets/img/portfolio-01-1600.webp 1600w" sizes="(min-width: 900px) 60vw, 130vw" width="1184" height="666" loading="lazy" decoding="async" style="object-position: 50% 50%" data-cat="Baby Party" data-title="Oh Baby im Schnee" alt="Leuchtbuchstaben „OH BABY“ mit Ballonbogen in Blau, Rosé und Kupfer vor verschneiter Berglandschaft">
+            <img class="hero__slide" src="assets/img/portfolio-07-800.webp" srcset="assets/img/portfolio-07-600.webp 600w, assets/img/portfolio-07-800.webp 800w, assets/img/portfolio-07-1600.webp 1600w" sizes="(min-width: 900px) 46vw, 100vw" width="1199" height="888" loading="lazy" decoding="async" style="object-position: 62% 50%" data-cat="Birthdays" data-title="Schwarz &amp; Gold zum 30." alt="Geburtstagsdekoration in Schwarz und Gold mit runder Rückwand „Happy 30th Birthday“ und leuchtender 30">
+            <img class="hero__slide" src="assets/img/portfolio-04-800.webp" srcset="assets/img/portfolio-04-600.webp 600w, assets/img/portfolio-04-800.webp 800w, assets/img/portfolio-04-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 92vw" width="596" height="999" loading="lazy" decoding="async" style="object-position: 50% 60%" data-cat="Lounge &amp; Details" data-title="Lounge in Creme und Weiß" alt="Lounge mit weißen Bögen, Plüschsesseln, Blumen in Creme und Neonschrift">
+          </div>
+          <figcaption class="hero__cap">
+            <span class="hero__cap-text"><span class="hero__cap-cat" data-slide-cat>Table Styling</span><span class="hero__cap-title" data-slide-title>Sommertafel im Garten</span></span>
+            <span class="hero__cap-count" data-slide-count>01 / 04</span>
+            <button type="button" class="hero__pause" data-slide-pause aria-pressed="false" aria-label="Bildwechsel pausieren"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12"/><path class="i-play" d="M8 5.5v13l11-6.5z"/></svg></button>
+          </figcaption>
+        </figure>
       </div>
       <a class="hero__scroll" href="#einleitung" aria-label="Weiter nach unten scrollen"><span></span></a>
     </section>
@@ -164,10 +197,8 @@
         </div>
         <div class="intro__aside">
           <figure class="intro__media media" data-reveal-img>
-            <img src="assets/img/intro-600.webp"
-                 srcset="assets/img/intro-600.webp 600w, assets/img/intro-1200.webp 1200w"
-                 sizes="(min-width: 900px) 30vw, 80vw" width="1200" height="1500" loading="lazy" decoding="async"
-                 alt="Zarte Rosenblätter auf hellem Satin – florales Detail einer Hochzeitsdekoration">
+            <img src="assets/img/intro-600.webp" srcset="assets/img/intro-600.webp 600w, assets/img/intro-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 80vw" width="596" height="993" loading="lazy" decoding="async"
+                 alt="Detail einer Dekoration: cremefarbene Rosen, Glaswaren und silberne Akzente vor weißen Bögen">
           </figure>
           <p class="intro__text" data-reveal>Eine außergewöhnliche Veranstaltung beginnt mit einer Idee. Wir entwickeln daraus ein individuelles Dekorationskonzept, das Atmosphäre schafft, Emotionen weckt und Ihren besonderen Tag unverwechselbar macht.</p>
         </div>
@@ -204,7 +235,7 @@
           </li>
           <li class="service" data-reveal>
             <figure class="service__media media" data-reveal-img>
-              <img src="assets/img/leistung-eventdekoration-600.webp" srcset="assets/img/leistung-eventdekoration-600.webp 600w, assets/img/leistung-eventdekoration-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="1200" height="1500" loading="lazy" decoding="async" alt="Warme Lichterketten im Bokeh – Eventdekoration für einen festlichen Abend">
+              <img src="assets/img/leistung-eventdekoration-600.webp" srcset="assets/img/leistung-eventdekoration-600.webp 600w, assets/img/leistung-eventdekoration-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="710" height="888" loading="lazy" decoding="async" alt="Leuchtende 30 mit schwarzen und goldenen Ballons – Eventdekoration für einen Geburtstag">
             </figure>
             <p class="service__tag">Events</p>
             <h3 class="service__title">Eventdekoration</h3>
@@ -213,7 +244,7 @@
           </li>
           <li class="service" data-reveal>
             <figure class="service__media media" data-reveal-img>
-              <img src="assets/img/leistung-floristik-600.webp" srcset="assets/img/leistung-floristik-600.webp 600w, assets/img/leistung-floristik-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="1200" height="1500" loading="lazy" decoding="async" alt="Rosenblätter in Blush und Elfenbein – Floristik für Hochzeiten">
+              <img src="assets/img/leistung-floristik-600.webp" srcset="assets/img/leistung-floristik-600.webp 600w, assets/img/leistung-floristik-1200.webp 1200w" sizes="(min-width: 900px) 40vw, 92vw" width="640" height="800" loading="lazy" decoding="async" alt="Rosen, Dahlien und Nelken in Pink, Koralle und Gelb auf einer festlichen Gartentafel">
             </figure>
             <p class="service__tag">Florals</p>
             <h3 class="service__title">Floristik &amp; Blumen&shy;arrangements</h3>
@@ -222,7 +253,7 @@
           </li>
           <li class="service" data-reveal>
             <figure class="service__media media" data-reveal-img>
-              <img src="assets/img/leistung-tischdekoration-600.webp" srcset="assets/img/leistung-tischdekoration-600.webp 600w, assets/img/leistung-tischdekoration-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="1200" height="1500" loading="lazy" decoding="async" alt="Hohe Kerzen im warmen Licht – elegante Tischdekoration">
+              <img src="assets/img/leistung-tischdekoration-600.webp" srcset="assets/img/leistung-tischdekoration-600.webp 600w, assets/img/leistung-tischdekoration-1200.webp 1200w" sizes="(min-width: 900px) 40vw, 92vw" width="598" height="709" loading="lazy" decoding="async" alt="Gedeckte Tafel mit hohen Kerzen, Glasgeschirr und Blumen vor weißen Bögen">
             </figure>
             <p class="service__tag">Table Styling</p>
             <h3 class="service__title">Tischdekoration</h3>
@@ -240,7 +271,7 @@
           </li>
           <li class="service" data-reveal>
             <figure class="service__media media" data-reveal-img>
-              <img src="assets/img/leistung-konzepte-600.webp" srcset="assets/img/leistung-konzepte-600.webp 600w, assets/img/leistung-konzepte-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="1200" height="1500" loading="lazy" decoding="async" alt="Heller Marmor mit Goldadern – Materialien für ein individuelles Dekorationskonzept">
+              <img src="assets/img/leistung-konzepte-600.webp" srcset="assets/img/leistung-konzepte-600.webp 600w, assets/img/leistung-konzepte-1200.webp 1200w" sizes="(min-width: 960px) 30vw, (min-width: 600px) 45vw, 92vw" width="1200" height="1500" loading="lazy" decoding="async" alt="Erdbeer-Motto zum ersten Geburtstag: rosa Bogenwand, Ballongirlande und leuchtende 1">
             </figure>
             <p class="service__tag">Bespoke</p>
             <h3 class="service__title">Individuelle Konzepte</h3>
@@ -252,10 +283,10 @@
     </section>
 
     <!-- ============ PORTFOLIO ============
-         PLATZHALTER: Alle Portfolio-Bilder vor dem Livegang durch eigene Projektfotos ersetzen
-         (gleicher Dateiname, siehe README). Projektangaben über die data-Attribute pflegen:
+         Echte Arbeiten von DEKO.LUXURY. Projektangaben über die data-Attribute pflegen:
          data-title, data-category, data-eventtyp, data-location, data-konzept, data-beschreibung.
-         Leere Angaben werden in der Galerie automatisch ausgeblendet. -->
+         Leere Angaben blendet die Galerie automatisch aus. Neue Projekte: einen <li>-Block kopieren
+         und eine passende Größe wählen (pf-item--c7 / c5 / c4 / c6, eine Zeile ergibt zusammen 12). -->
     <section class="portfolio section" id="portfolio" aria-labelledby="portfolio-title">
       <div class="wrap">
         <header class="section-head">
@@ -268,85 +299,53 @@
 
         <div class="filters" role="group" aria-label="Portfolio filtern" data-reveal>
           <button type="button" class="filter" aria-pressed="true" data-filter="*">Alle</button>
-          <button type="button" class="filter" aria-pressed="false" data-filter="weddings">Weddings</button>
+          <button type="button" class="filter" aria-pressed="false" data-filter="birthday">Birthdays</button>
+          <button type="button" class="filter" aria-pressed="false" data-filter="baby">Baby Party</button>
           <button type="button" class="filter" aria-pressed="false" data-filter="table">Table Styling</button>
-          <button type="button" class="filter" aria-pressed="false" data-filter="florals">Florals</button>
-          <button type="button" class="filter" aria-pressed="false" data-filter="ceremony">Ceremony</button>
-          <button type="button" class="filter" aria-pressed="false" data-filter="private">Private Events</button>
-          <button type="button" class="filter" aria-pressed="false" data-filter="corporate">Corporate Events</button>
+          <button type="button" class="filter" aria-pressed="false" data-filter="lounge">Lounge &amp; Details</button>
         </div>
 
         <ul class="pf-grid" data-portfolio>
-          <li class="pf-item pf-item--c7" data-cat="weddings">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-01-1600.webp" data-category="Weddings" data-title="Zeremonie in Licht und Voile" data-eventtyp="Hochzeit" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-01-800.webp" srcset="assets/img/portfolio-01-800.webp 800w, assets/img/portfolio-01-1600.webp 1600w" sizes="(min-width: 900px) 56vw, 92vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Warm beleuchtete Voile-Vorhänge mit Blüten am Boden">
-              <span class="pf-card__cap"><span class="pf-card__cat">Weddings</span><span class="pf-card__title">Zeremonie in Licht und Voile</span></span>
+          <li class="pf-item pf-item--c7" data-cat="baby">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-01-1600.webp" data-category="Baby Party" data-title="Oh Baby im Schnee" data-eventtyp="Baby-Party" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-01-800.webp" srcset="assets/img/portfolio-01-600.webp 600w, assets/img/portfolio-01-800.webp 800w, assets/img/portfolio-01-1600.webp 1600w" sizes="(min-width: 900px) 56vw, 92vw" width="1184" height="666" loading="lazy" decoding="async" alt="Leuchtbuchstaben „OH BABY“ mit Ballonbogen in Blau, Rosé und Kupfer vor verschneiter Berglandschaft">
+              <span class="pf-card__cap"><span class="pf-card__cat">Baby Party</span><span class="pf-card__title">Oh Baby im Schnee</span></span>
             </button>
           </li>
           <li class="pf-item pf-item--c5" data-cat="table">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-02-1200.webp" data-category="Table Styling" data-title="Abendtafel im Kerzenschein" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-02-600.webp" srcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-1200.webp 1200w" sizes="(min-width: 900px) 40vw, 46vw" width="1200" height="1600" loading="lazy" decoding="async" alt="Goldenes Bokeh warmer Lichter am Abend">
-              <span class="pf-card__cap"><span class="pf-card__cat">Table Styling</span><span class="pf-card__title">Abendtafel im Kerzenschein</span></span>
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-02-1600.webp" data-category="Table Styling" data-title="Sommertafel im Garten" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-02-800.webp" srcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 46vw" width="1191" height="1503" loading="lazy" decoding="async" alt="Lange Gartentafel mit üppigen Blumen in Pink, Koralle und Gelb, Kerzen, Goldbesteck und Ballonbogen">
+              <span class="pf-card__cap"><span class="pf-card__cat">Table Styling</span><span class="pf-card__title">Sommertafel im Garten</span></span>
             </button>
           </li>
-          <li class="pf-item pf-item--c4" data-cat="florals">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-03-1400.webp" data-category="Florals" data-title="Florale Details in Elfenbein" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-03-700.webp" srcset="assets/img/portfolio-03-700.webp 700w, assets/img/portfolio-03-1400.webp 1400w" sizes="(min-width: 900px) 32vw, 46vw" width="1400" height="1400" loading="lazy" decoding="async" alt="Elfenbeinfarbene Blütenblätter auf hellem Satin">
-              <span class="pf-card__cap"><span class="pf-card__cat">Florals</span><span class="pf-card__title">Florale Details in Elfenbein</span></span>
+          <li class="pf-item pf-item--c4" data-cat="birthday">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-03-1600.webp" data-category="Birthdays" data-title="Erdbeeren zum ersten Geburtstag" data-eventtyp="Kindergeburtstag" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-03-800.webp" srcset="assets/img/portfolio-03-600.webp 600w, assets/img/portfolio-03-800.webp 800w, assets/img/portfolio-03-1600.webp 1600w" sizes="(min-width: 900px) 32vw, 46vw" width="1206" height="1603" loading="lazy" decoding="async" alt="Rosa Bogenwand mit Ballongirlande, Erdbeer-Folienballons und leuchtender 1 zum ersten Geburtstag">
+              <span class="pf-card__cap"><span class="pf-card__cat">Birthdays</span><span class="pf-card__title">Erdbeeren zum ersten Geburtstag</span></span>
             </button>
           </li>
-          <li class="pf-item pf-item--c4" data-cat="ceremony">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-04-1200.webp" data-category="Ceremony" data-title="Champagnerfarbene Stoffe" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-04-600.webp" srcset="assets/img/portfolio-04-600.webp 600w, assets/img/portfolio-04-1200.webp 1200w" sizes="(min-width: 900px) 32vw, 46vw" width="1200" height="1600" loading="lazy" decoding="async" alt="Champagnerfarbener Satin mit glänzenden Falten">
-              <span class="pf-card__cap"><span class="pf-card__cat">Ceremony</span><span class="pf-card__title">Champagnerfarbene Stoffe</span></span>
+          <li class="pf-item pf-item--c4" data-cat="lounge">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-04-1600.webp" data-category="Lounge &amp; Details" data-title="Lounge in Creme und Weiß" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-04-800.webp" srcset="assets/img/portfolio-04-600.webp 600w, assets/img/portfolio-04-800.webp 800w, assets/img/portfolio-04-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 92vw" width="596" height="999" loading="lazy" decoding="async" alt="Lounge mit weißen Bögen, Plüschsesseln, Blumen in Creme und Neonschrift">
+              <span class="pf-card__cap"><span class="pf-card__cat">Lounge &amp; Details</span><span class="pf-card__title">Lounge in Creme und Weiß</span></span>
             </button>
           </li>
-          <li class="pf-item pf-item--c4" data-cat="private">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-05-1200.webp" data-category="Private Events" data-title="Ein Abend bei Kerzenlicht" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-05-600.webp" srcset="assets/img/portfolio-05-600.webp 600w, assets/img/portfolio-05-1200.webp 1200w" sizes="(min-width: 900px) 32vw, 46vw" width="1200" height="1600" loading="lazy" decoding="async" alt="Einzelne Kerze vor warmem Lichterglanz">
-              <span class="pf-card__cap"><span class="pf-card__cat">Private Events</span><span class="pf-card__title">Ein Abend bei Kerzenlicht</span></span>
+          <li class="pf-item pf-item--c4" data-cat="lounge">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-05-1600.webp" data-category="Lounge &amp; Details" data-title="Bögen, Blüten und Licht" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-05-800.webp" srcset="assets/img/portfolio-05-600.webp 600w, assets/img/portfolio-05-800.webp 800w, assets/img/portfolio-05-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 92vw" width="598" height="634" loading="lazy" decoding="async" alt="Zwei cremefarbene Sessel vor weißen Bögen mit Blumenarrangements und Kerzen">
+              <span class="pf-card__cap"><span class="pf-card__cat">Lounge &amp; Details</span><span class="pf-card__title">Bögen, Blüten und Licht</span></span>
             </button>
           </li>
-          <li class="pf-item pf-item--c5" data-cat="corporate">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-06-1200.webp" data-category="Corporate Events" data-title="Schwarz und Gold" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-06-600.webp" srcset="assets/img/portfolio-06-600.webp 600w, assets/img/portfolio-06-1200.webp 1200w" sizes="(min-width: 900px) 40vw, 46vw" width="1200" height="1600" loading="lazy" decoding="async" alt="Schwarzer Marmor mit goldener Ader">
-              <span class="pf-card__cap"><span class="pf-card__cat">Corporate Events</span><span class="pf-card__title">Schwarz und Gold</span></span>
+          <li class="pf-item pf-item--c5" data-cat="table">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-06-1600.webp" data-category="Table Styling" data-title="Tafel bei Kerzenlicht" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-06-800.webp" srcset="assets/img/portfolio-06-600.webp 600w, assets/img/portfolio-06-800.webp 800w, assets/img/portfolio-06-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 92vw" width="598" height="709" loading="lazy" decoding="async" alt="Festlich gedeckte Tafel mit hohen Kerzen, Glasgeschirr und Blumen vor weißen Bögen">
+              <span class="pf-card__cap"><span class="pf-card__cat">Table Styling</span><span class="pf-card__title">Tafel bei Kerzenlicht</span></span>
             </button>
           </li>
-          <li class="pf-item pf-item--c7" data-cat="table">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-07-1600.webp" data-category="Table Styling" data-title="Kerzenreihe auf der Tafel" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-07-800.webp" srcset="assets/img/portfolio-07-800.webp 800w, assets/img/portfolio-07-1600.webp 1600w" sizes="(min-width: 900px) 56vw, 92vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Reihe hoher Kerzen in warmem Licht">
-              <span class="pf-card__cap"><span class="pf-card__cat">Table Styling</span><span class="pf-card__title">Kerzenreihe auf der Tafel</span></span>
-            </button>
-          </li>
-          <li class="pf-item pf-item--c4" data-cat="weddings">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-08-1200.webp" data-category="Weddings" data-title="Rosenblätter in Altrosa" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-08-600.webp" srcset="assets/img/portfolio-08-600.webp 600w, assets/img/portfolio-08-1200.webp 1200w" sizes="(min-width: 900px) 32vw, 46vw" width="1200" height="1600" loading="lazy" decoding="async" alt="Rosenblätter in Altrosa auf hellem Stoff">
-              <span class="pf-card__cap"><span class="pf-card__cat">Weddings</span><span class="pf-card__title">Rosenblätter in Altrosa</span></span>
-            </button>
-          </li>
-          <li class="pf-item pf-item--c4" data-cat="florals">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-09-1600.webp" data-category="Florals" data-title="Blush &amp; Ivory" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-09-800.webp" srcset="assets/img/portfolio-09-800.webp 800w, assets/img/portfolio-09-1600.webp 1600w" sizes="(min-width: 900px) 32vw, 46vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Verstreute Blütenblätter in Blush und Elfenbein">
-              <span class="pf-card__cap"><span class="pf-card__cat">Florals</span><span class="pf-card__title">Blush &amp; Ivory</span></span>
-            </button>
-          </li>
-          <li class="pf-item pf-item--c4" data-cat="private">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-10-1600.webp" data-category="Private Events" data-title="Champagner-Momente" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-10-800.webp" srcset="assets/img/portfolio-10-800.webp 800w, assets/img/portfolio-10-1600.webp 1600w" sizes="(min-width: 900px) 32vw, 46vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Aufsteigende Perlen in goldenem Champagner">
-              <span class="pf-card__cap"><span class="pf-card__cat">Private Events</span><span class="pf-card__title">Champagner-Momente</span></span>
-            </button>
-          </li>
-          <li class="pf-item pf-item--c6" data-cat="ceremony">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-11-1600.webp" data-category="Ceremony" data-title="Gegenlicht und Blüten" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-11-800.webp" srcset="assets/img/portfolio-11-800.webp 800w, assets/img/portfolio-11-1600.webp 1600w" sizes="(min-width: 900px) 48vw, 92vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Helle Voile-Bahnen im Gegenlicht mit Blüten">
-              <span class="pf-card__cap"><span class="pf-card__cat">Ceremony</span><span class="pf-card__title">Gegenlicht und Blüten</span></span>
-            </button>
-          </li>
-          <li class="pf-item pf-item--c6" data-cat="corporate">
-            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-12-1600.webp" data-category="Corporate Events" data-title="Gala im goldenen Licht" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <img src="assets/img/portfolio-12-800.webp" srcset="assets/img/portfolio-12-800.webp 800w, assets/img/portfolio-12-1600.webp 1600w" sizes="(min-width: 900px) 48vw, 92vw" width="1600" height="1067" loading="lazy" decoding="async" alt="Goldene Lichtpunkte vor dunklem Hintergrund">
-              <span class="pf-card__cap"><span class="pf-card__cat">Corporate Events</span><span class="pf-card__title">Gala im goldenen Licht</span></span>
+          <li class="pf-item pf-item--c7" data-cat="birthday">
+            <button type="button" class="pf-card" data-gallery="portfolio" data-full="assets/img/portfolio-07-1600.webp" data-category="Birthdays" data-title="Schwarz &amp; Gold zum 30." data-eventtyp="Geburtstag" data-location="" data-konzept="" data-beschreibung="">
+              <img src="assets/img/portfolio-07-800.webp" srcset="assets/img/portfolio-07-600.webp 600w, assets/img/portfolio-07-800.webp 800w, assets/img/portfolio-07-1600.webp 1600w" sizes="(min-width: 900px) 56vw, 92vw" width="1199" height="888" loading="lazy" decoding="async" alt="Geburtstagsdekoration in Schwarz und Gold mit runder Rückwand „Happy 30th Birthday“ und leuchtender 30">
+              <span class="pf-card__cap"><span class="pf-card__cat">Birthdays</span><span class="pf-card__title">Schwarz &amp; Gold zum 30.</span></span>
             </button>
           </li>
         </ul>
@@ -368,7 +367,7 @@
     <section class="style section" id="ueber-uns" aria-labelledby="style-title">
       <div class="wrap style__grid">
         <figure class="style__media media" data-reveal-img data-parallax-inner>
-          <img src="assets/img/stil-700.webp" srcset="assets/img/stil-700.webp 700w, assets/img/stil-1400.webp 1400w" sizes="(min-width: 900px) 48vw, 92vw" width="1400" height="1750" loading="lazy" decoding="async" alt="Schatten eines Zweigs auf hellem Leinen im warmen Licht">
+          <img src="assets/img/stil-700.webp" srcset="assets/img/stil-700.webp 700w, assets/img/stil-1400.webp 1400w" sizes="(min-width: 900px) 44vw, 92vw" width="598" height="642" loading="lazy" decoding="async" alt="Sesselecke mit weißen Bögen, Blumen in Creme und gedecktem Tisch im warmen Licht">
         </figure>
         <div class="style__body">
           <p class="eyebrow" data-reveal>Unser Stil</p>
