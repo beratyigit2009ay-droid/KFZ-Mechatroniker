@@ -83,16 +83,17 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Eröffnung & Animationen
 
-- **Eröffnung („Portal“):** Beim ersten Besuch entsteht das Original-Logo in Gold: Ein Lichtpunkt
-  zieht den Kreis, das „D“ wird scharf, „DEKO LUXURY“ schwebt Buchstabe für Buchstabe zusammen,
-  „LUXURY EVENT DECORATION“ öffnet sich von der Mitte, dann läuft ein Glanz über das ganze Logo.
-  Danach wird das Kreisinnere zum Fenster auf die Website, der Goldring wächst über den Bildschirm
-  und Goldfunken fliegen nach außen. Anschließend steigt die Überschrift Wort für Wort auf.
-  Die Eröffnung läuft einmal pro Browser-Sitzung (rund 3,7 Sekunden). Klick, Taste oder Scrollen
-  überspringen sie, die Seite startet dann sofort. Wer im Betriebssystem „Bewegung reduzieren“
-  eingestellt hat, sieht sie nicht.
-- Das Logo der Eröffnung ist aus dem Original-Logo nachgezeichnet (SVG, jeder Buchstabe einzeln),
-  die Schriftzeile liegt in `assets/brand/logo-zeile.svg`.
+- **Eröffnung („Tor“):** Beim Aufruf steht ein geschlossenes, zweiflügeliges Tor mit feiner Goldkassette.
+  Darauf entsteht das Original-Logo in Gold: Ein Lichtpunkt zieht den Kreis, das „D“ wird scharf,
+  „DEKO LUXURY“ schwebt Buchstabe für Buchstabe zusammen, „LUXURY EVENT DECORATION“ öffnet sich
+  von der Mitte, dann läuft ein Glanz über das Logo. Danach leuchtet in der Mitte ein Lichtspalt auf,
+  und beide Torflügel schwingen nach innen auf. Das Logo teilt sich dabei, Licht und Goldfunken strömen heraus,
+  und die Website erscheint, während die Überschrift Wort für Wort aufsteigt (rund 3,9 Sekunden).
+  Die Eröffnung läuft bei jedem Aufruf der Startseite, aber nicht beim Zurückkommen von einer Unterseite.
+  Klick, Taste oder Scrollen überspringen sie, die Seite startet dann sofort. Wer im Betriebssystem
+  „Bewegung reduzieren“ eingestellt hat, sieht sie nicht.
+- Das Logo der Eröffnung ist aus dem Original-Logo nachgezeichnet (SVG, jeder Buchstabe einzeln).
+  `assets/brand/logo-tor.svg` ist das komplette Logo auf den Torflügeln, `logo-zeile.svg` die Schriftzeile.
 - **Header:** Auf allen Seiten steht das Logo-Emblem als SVG. Der Goldring zeichnet sich beim Laden.
 - **Linienzeichnungen:** Einleitungs-Bogen, Hochzeits-Karte und Showroom-Szene sind SVG-Zeichnungen in Gold.
   Sie zeichnen sich, sobald sie ins Bild scrollen.
@@ -167,7 +168,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Technik & Qualität
 
-- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 99 Performance, Mobil 88 Performance;
+- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 99 Performance, Mobil 92 Performance;
   Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
   etwas Ladezeit.
 - Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.

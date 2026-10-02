@@ -187,14 +187,14 @@
   }, { passive: true });
   window.addEventListener('resize', setParallax);
 
-  /* ---------- Eröffnung (Portal) ---------- */
+  /* ---------- Eröffnung (Tor) ---------- */
   var intro = $('[data-intro]');
   var introMs = 0;
   if (intro) {
     if (root.classList.contains('no-intro')) {
       intro.parentNode.removeChild(intro);
     } else {
-      introMs = 2600;
+      introMs = 2900;
       var introOver = false;
       var skipEvents = ['keydown', 'wheel', 'scroll'];
       var endIntro = function () {
@@ -207,13 +207,13 @@
         introOver = true;
         // Hero-Animationen sofort starten statt auf das Ende der Eröffnung zu warten
         var now = doc.timeline && doc.timeline.currentTime ? doc.timeline.currentTime / 1000 : 0;
-        if (now < 2.6) root.style.setProperty('--intro', now.toFixed(2) + 's');
+        if (now < 2.9) root.style.setProperty('--intro', now.toFixed(2) + 's');
         intro.classList.add('is-skipped');
         window.setTimeout(endIntro, 480);
       };
       intro.addEventListener('click', skipIntro);
       skipEvents.forEach(function (type) { window.addEventListener(type, skipIntro, { passive: true }); });
-      window.setTimeout(endIntro, 4050);
+      window.setTimeout(endIntro, 4000);
     }
   }
 

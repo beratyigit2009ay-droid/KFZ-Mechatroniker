@@ -332,110 +332,139 @@ address { font-style: normal; }
 .menu__meta { color: var(--muted-light); font-size: var(--fs-small); line-height: 1.9; }
 .menu__meta a { color: var(--ivory); }
 
-/* ---------- Eröffnung: Logo entsteht in Gold, dann öffnet sich der Kreis wie ein Portal ---------- */
-:root { --intro: 2.6s; }
+/* ---------- Eröffnung: Logo entsteht in Gold auf einem geschlossenen Tor, dann schwingt das Tor auf ---------- */
+:root { --intro: 2.9s; }
 .no-intro { --intro: 0s; }
-@property --hole { syntax: "<length>"; inherits: true; initial-value: 0px; }
-@property --win { syntax: "<number>"; inherits: true; initial-value: 1; }
 
-.portal {
-  --size: min(82vmin, 600px);
+.gate {
+  --size: min(80vmin, 580px);
   --r0: calc(var(--size) * 0.4931);  /* Kreisradius: 358 von 726 Einheiten */
   position: fixed; inset: 0; z-index: 100; overflow: hidden; cursor: pointer;
-  animation: hide 0.01s linear 4s forwards;
+  perspective: 1700px; perspective-origin: 50% 50%;
+  animation: hide 0.01s linear 3.95s forwards;
 }
-.no-intro .portal { display: none; }
-.portal.is-skipped { opacity: 0; transition: opacity 0.45s var(--ease); pointer-events: none; }
+.no-intro .gate { display: none; }
+.gate.is-skipped { opacity: 0; transition: opacity 0.45s var(--ease); pointer-events: none; }
 
-/* Papierfläche mit Fenster: erst wird das Kreisinnere durchsichtig, dann wächst das Fenster über den Bildschirm */
-.portal__veil {
-  --hole: var(--r0);
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 75% at 50% 50%, #fdfaf4 0%, #f7f1e6 55%, #e9ddc7 100%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, var(--win)) calc(var(--hole) - 0.5px), #000 calc(var(--hole) + 0.5px));
-          mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, var(--win)) calc(var(--hole) - 0.5px), #000 calc(var(--hole) + 0.5px));
-  animation:
-    portal-win 0.5s var(--ease) 2.45s forwards,
-    portal-hole 0.95s cubic-bezier(0.7, 0, 0.2, 1) 2.8s forwards,
-    portal-out 0.3s linear 3.5s forwards;
+/* Warmes Licht hinter dem Tor, das beim Öffnen herausströmt */
+.gate__light {
+  position: absolute; inset: 0; opacity: 0;
+  background: radial-gradient(ellipse 42% 62% at 50% 50%, rgba(255, 247, 228, 0.96) 0%, rgba(240, 220, 167, 0.6) 34%, rgba(205, 176, 122, 0) 72%);
+  animation: gate-light 1.4s ease-out 2.55s;
 }
-/* Goldkante, die mit dem Fenster nach außen wandert */
-.portal__veil::after {
-  content: ""; position: absolute; inset: 0; opacity: 0;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(201, 168, 101, 0) calc(var(--hole) - 1px),
-    #b8955a calc(var(--hole) - 0.5px),
-    #f0dca7 calc(var(--hole) + 1px),
-    #a8834c calc(var(--hole) + 2.2px),
-    rgba(205, 176, 122, 0.34) calc(var(--hole) + 3px),
-    rgba(205, 176, 122, 0) calc(var(--hole) + 52px));
-  animation: fade 0.12s linear 2.8s forwards;
+
+/* Zwei Torflügel aus warmem Papier mit feiner Goldkassette */
+.gate__door {
+  position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden;
+  backface-visibility: hidden;
 }
-.portal__glow {
+.gate__door--l {
+  left: 0; transform-origin: 0 50%;
+  background: radial-gradient(ellipse 170% 80% at 100% 50%, #fdfaf4 0%, #f7f1e6 48%, #e8dcc5 100%);
+  animation: gate-l 1.2s cubic-bezier(0.62, 0, 0.3, 1) 2.62s forwards;
+}
+.gate__door--r {
+  right: 0; transform-origin: 100% 50%;
+  background: radial-gradient(ellipse 170% 80% at 0% 50%, #fdfaf4 0%, #f7f1e6 48%, #e8dcc5 100%);
+  animation: gate-r 1.2s cubic-bezier(0.62, 0, 0.3, 1) 2.62s forwards;
+}
+/* Schatten, je weiter sich der Flügel dreht */
+.gate__door::after { content: ""; position: absolute; inset: 0; background: #2a2116; opacity: 0; animation: gate-shade 1.2s cubic-bezier(0.62, 0, 0.3, 1) 2.62s forwards; }
+/* Kassette: läuft über beide Flügel, die Mitte bleibt frei für das Logo */
+.gate__frame {
+  --m: clamp(14px, 2.6vmin, 30px);
+  position: absolute; top: var(--m); bottom: var(--m);
+  border: 1px solid rgba(168, 131, 76, 0.42);
+  animation: fade 1.4s var(--ease) 0.1s both;
+}
+.gate__frame::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(168, 131, 76, 0.2); }
+.gate__door--l .gate__frame { left: var(--m); right: 0; border-right: 0; }
+.gate__door--l .gate__frame::before { right: 0; border-right: 0; }
+.gate__door--r .gate__frame { right: var(--m); left: 0; border-left: 0; }
+.gate__door--r .gate__frame::before { left: 0; border-left: 0; }
+.gate__img { position: absolute; top: 50%; width: var(--size); height: auto; max-width: none; transform: translate(-50%, -50%); opacity: 0; animation: gate-show 0.01s linear 2.58s forwards; }
+.gate__door--l .gate__img { left: 100%; }
+.gate__door--r .gate__img { left: 0; }
+
+.gate__glow {
   position: absolute; left: 50%; top: 50%; width: calc(var(--size) * 1.8); aspect-ratio: 1;
   margin: calc(var(--size) * -0.9) 0 0 calc(var(--size) * -0.9);
-  background: radial-gradient(circle, rgba(226, 200, 143, 0.46) 0%, rgba(226, 200, 143, 0.16) 36%, rgba(226, 200, 143, 0) 68%);
-  animation: portal-glow 2.4s var(--ease) both;
+  background: radial-gradient(circle, rgba(226, 200, 143, 0.44) 0%, rgba(226, 200, 143, 0.15) 36%, rgba(226, 200, 143, 0) 68%);
+  animation: gate-glow 2.6s var(--ease) both;
 }
 
-.portal__logo { position: absolute; left: 50%; top: 50%; width: var(--size); aspect-ratio: 726 / 724; transform: translate(-50%, -50%); animation: portal-push 2.45s cubic-bezier(0.2, 0.6, 0.3, 1) both; }
-.portal__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.portal__ring {
+/* Logo, das sich aufbaut (liegt bis zum Öffnen über dem Tor) */
+.gate__logo {
+  position: absolute; left: 50%; top: 50%; width: var(--size); aspect-ratio: 726 / 724;
+  transform: translate(-50%, -50%);
+  animation: gate-push 2.3s cubic-bezier(0.2, 0.6, 0.3, 1) both, hide 0.01s linear 2.6s forwards;
+}
+.gate__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.gate__ring {
   fill: none; stroke: url(#pg); stroke-width: 2.8;
   stroke-dasharray: 1; stroke-dashoffset: 1;
   transform: rotate(-90deg); transform-box: fill-box; transform-origin: center;
-  animation: draw 1.15s var(--ease-io) 0.15s forwards, portal-out 0.2s linear 2.86s forwards;
+  animation: draw 1.05s var(--ease-io) 0.1s forwards;
 }
 /* Lichtpunkt, der die Zeichnung des Kreises anführt */
-.portal__orbit { position: absolute; inset: 0; opacity: 0; animation: portal-orbit 1.15s var(--ease-io) 0.15s; }
-.portal__orbit i {
+.gate__orbit { position: absolute; inset: 0; opacity: 0; animation: gate-orbit 1.05s var(--ease-io) 0.1s; }
+.gate__orbit i {
   position: absolute; left: 50%; top: calc(50% - var(--r0)); width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
   background: radial-gradient(circle, #fffaf0 0%, rgba(240, 220, 167, 0.9) 20%, rgba(205, 176, 122, 0.32) 44%, rgba(205, 176, 122, 0) 70%);
 }
-
-.portal__art { position: absolute; inset: 0; animation: portal-art-out 0.55s cubic-bezier(0.5, 0, 0.75, 0) 2.45s forwards; }
-.portal__mono { transform-box: fill-box; transform-origin: 50% 60%; animation: portal-mono 1.05s var(--ease) 0.4s both; }
-.portal__word path {
+.gate__art { position: absolute; inset: 0; }
+.gate__mono { transform-box: fill-box; transform-origin: 50% 60%; animation: gate-mono 1s var(--ease) 0.3s both; }
+.gate__word path {
   transform-box: fill-box; transform-origin: 50% 100%;
-  animation: portal-letter 0.95s var(--ease) calc(0.72s + var(--k) * 0.07s) both;
+  animation: gate-letter 0.9s var(--ease) calc(0.55s + var(--k) * 0.07s) both;
 }
-.portal__tag {
+.gate__tag {
   position: absolute; height: auto;
   left: calc((var(--x) - 238) / 726 * 100%); top: calc((var(--y) + 32) / 724 * 100%); width: calc(var(--w) / 726 * 100%);
-  animation: portal-tag 1s var(--ease) 1.4s both;
+  animation: gate-tag 0.9s var(--ease) 1.1s both;
 }
 /* Glanz, der über Monogramm, Schrift und Kreis läuft */
-.portal__glint {
+.gate__glint {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(105deg, rgba(255, 249, 232, 0) 43%, rgba(255, 249, 232, 0.95) 50%, rgba(255, 249, 232, 0) 57%) 100% 0 / 300% 100% no-repeat;
-  -webkit-mask: url("../brand/logo-gold.svg") center / 100% 100% no-repeat;
-          mask: url("../brand/logo-gold.svg") center / 100% 100% no-repeat;
-  animation: portal-glint 0.95s cubic-bezier(0.45, 0, 0.3, 1) 1.95s both;
-}
-/* Goldfunken beim Öffnen */
-.portal__sparks { position: absolute; left: 50%; top: 50%; }
-.portal__sparks i {
-  position: absolute; left: -3px; top: -3px; width: 6px; height: 6px;
-  background: linear-gradient(135deg, #fff1cc, #c9a865);
-  opacity: 0;
-  animation: portal-spark 1.1s cubic-bezier(0.2, 0.7, 0.3, 1) calc(2.8s + var(--s) * 0.06s);
+  -webkit-mask: url("../brand/logo-tor.svg") center / 100% 100% no-repeat;
+          mask: url("../brand/logo-tor.svg") center / 100% 100% no-repeat;
+  animation: gate-glint 0.8s cubic-bezier(0.45, 0, 0.3, 1) 1.6s both;
 }
 
-@keyframes portal-push { from { transform: translate(-50%, -50%) scale(0.92); } to { transform: translate(-50%, -50%); } }
-@keyframes portal-glow { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: none; } }
-@keyframes portal-orbit { 0% { transform: rotate(0deg); opacity: 0; } 8%, 86% { opacity: 1; } 100% { transform: rotate(360deg); opacity: 0; } }
-@keyframes portal-mono { from { opacity: 0; transform: scale(1.3); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
-@keyframes portal-letter { from { opacity: 0; transform: translate(calc(var(--o) * 9px), 16px); filter: blur(5px); } to { opacity: 1; transform: none; filter: blur(0); } }
-@keyframes portal-tag { from { opacity: 0; clip-path: inset(0 50%); transform: scaleX(1.12); } to { opacity: 1; clip-path: inset(0 0); transform: none; } }
-@keyframes portal-glint { from { background-position: 100% 0; } to { background-position: 0% 0; } }
-@keyframes portal-art-out { to { opacity: 0; transform: scale(1.14); } }
-@keyframes portal-win { to { --win: 0; } }
-@keyframes portal-hole { from { --hole: var(--r0); } to { --hole: 150vmax; } }
-@keyframes portal-out { to { opacity: 0; } }
-@keyframes portal-spark {
-  0% { opacity: 0; transform: rotate(var(--a)) translateX(var(--r0)) rotate(45deg) scale(0.4); }
-  14% { opacity: 1; }
-  100% { opacity: 0; transform: rotate(var(--a)) translateX(calc(var(--r0) + var(--d) * 1.7px)) rotate(45deg) scale(1); }
+/* Lichtspalt in der Mitte, kurz bevor das Tor aufgeht */
+.gate__seam {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px;
+  background: linear-gradient(rgba(255, 246, 222, 0), #fff3d6 18%, #fffaf0 50%, #fff3d6 82%, rgba(255, 246, 222, 0));
+  box-shadow: 0 0 16px 4px rgba(240, 220, 167, 0.8), 0 0 60px 14px rgba(240, 220, 167, 0.35);
+  opacity: 0; transform: scaleY(0);
+  animation: gate-seam 0.95s var(--ease-io) 2.22s;
+}
+/* Goldfunken aus dem Spalt */
+.gate__sparks i {
+  position: absolute; left: 50%; top: var(--y); width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px;
+  background: linear-gradient(135deg, #fff1cc, #c9a865);
+  opacity: 0;
+  animation: gate-spark 1.25s cubic-bezier(0.15, 0.7, 0.3, 1) calc(2.66s + var(--s) * 0.05s);
+}
+
+@keyframes gate-push { from { transform: translate(-50%, -50%) scale(0.93); } to { transform: translate(-50%, -50%); } }
+@keyframes gate-glow { 0% { opacity: 0; transform: scale(0.7); } 45% { opacity: 1; transform: none; } 85% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gate-orbit { 0% { transform: rotate(0deg); opacity: 0; } 8%, 86% { opacity: 1; } 100% { transform: rotate(360deg); opacity: 0; } }
+@keyframes gate-mono { from { opacity: 0; transform: scale(1.3); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes gate-letter { from { opacity: 0; transform: translate(calc(var(--o) * 9px), 16px); filter: blur(5px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes gate-tag { from { opacity: 0; clip-path: inset(0 50%); transform: scaleX(1.12); } to { opacity: 1; clip-path: inset(0 0); transform: none; } }
+@keyframes gate-glint { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+@keyframes gate-show { to { opacity: 1; } }
+@keyframes gate-seam { 0% { opacity: 0; transform: scaleY(0); } 30% { opacity: 1; } 45% { transform: scaleY(1); } 70% { opacity: 1; } 100% { opacity: 0; transform: scaleY(1); } }
+@keyframes gate-l { 82% { opacity: 1; } to { transform: rotateY(90deg); opacity: 0; } }
+@keyframes gate-r { 82% { opacity: 1; } to { transform: rotateY(-90deg); opacity: 0; } }
+@keyframes gate-shade { to { opacity: 0.5; } }
+@keyframes gate-light { 0% { opacity: 0; } 22% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gate-spark {
+  0% { opacity: 0; transform: translate(0, 0) rotate(45deg) scale(0.4); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)) rotate(45deg) scale(1); }
 }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes hide { to { visibility: hidden; } }
@@ -1268,7 +1297,7 @@ html:not(.js) .fstep + .fstep { margin-top: 48px; padding-top: 40px; border-top:
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .portal { display: none; }
+  .gate { display: none; }
   .hero__slide { transition: none; }
   .hero__dust, .view-cursor { display: none; }
   .status__dot::after { animation: none; opacity: 0; }
