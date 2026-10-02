@@ -83,10 +83,16 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Eröffnung & Animationen
 
-- **Eröffnung:** Beim ersten Besuch zeichnet sich das Logo als SVG, eine goldene Naht erscheint,
-  dann öffnet sich der Vorhang. Danach steigt die Überschrift Wort für Wort auf, darunter zeichnet
-  sich eine goldene Linie. Die Eröffnung läuft einmal pro Browser-Sitzung (rund 2,3 Sekunden),
-  ein Klick überspringt sie. Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat, sieht sie nicht.
+- **Eröffnung („Portal“):** Beim ersten Besuch entsteht das Original-Logo in Gold: Ein Lichtpunkt
+  zieht den Kreis, das „D“ wird scharf, „DEKO LUXURY“ schwebt Buchstabe für Buchstabe zusammen,
+  „LUXURY EVENT DECORATION“ öffnet sich von der Mitte, dann läuft ein Glanz über das ganze Logo.
+  Danach wird das Kreisinnere zum Fenster auf die Website, der Goldring wächst über den Bildschirm
+  und Goldfunken fliegen nach außen. Anschließend steigt die Überschrift Wort für Wort auf.
+  Die Eröffnung läuft einmal pro Browser-Sitzung (rund 3,7 Sekunden). Klick, Taste oder Scrollen
+  überspringen sie, die Seite startet dann sofort. Wer im Betriebssystem „Bewegung reduzieren“
+  eingestellt hat, sieht sie nicht.
+- Das Logo der Eröffnung ist aus dem Original-Logo nachgezeichnet (SVG, jeder Buchstabe einzeln),
+  die Schriftzeile liegt in `assets/brand/logo-zeile.svg`.
 - **Header:** Auf allen Seiten steht das Logo-Emblem als SVG. Der Goldring zeichnet sich beim Laden.
 - **Linienzeichnungen:** Einleitungs-Bogen, Hochzeits-Karte und Showroom-Szene sind SVG-Zeichnungen in Gold.
   Sie zeichnen sich, sobald sie ins Bild scrollen.
@@ -108,7 +114,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Luxus-Details
 
-- **Blattgold:** Emblem, Logo, Vorhang-Logo, die kursiven Schlüsselwörter und die Ablauf-Ziffern
+- **Blattgold:** Emblem, Logo, Eröffnungs-Logo, die kursiven Schlüsselwörter und die Ablauf-Ziffern
   tragen einen metallischen Goldverlauf (`--foil` und SVG-Verlauf `#foil`). Über die großen Gold-Zeilen
   läuft nach dem Laden zweimal ein langsamer Glanz.
 - **Gold-Buttons:** Die wichtigsten Aufrufe haben eine Blattgold-Fläche mit Glanzlicht beim Darüberfahren (`btn--foil`).
@@ -161,7 +167,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Technik & Qualität
 
-- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 98 Performance, Mobil 87 Performance;
+- Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 99 Performance, Mobil 88 Performance;
   Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
   etwas Ladezeit.
 - Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.

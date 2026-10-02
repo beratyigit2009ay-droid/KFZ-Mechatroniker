@@ -187,20 +187,33 @@
   }, { passive: true });
   window.addEventListener('resize', setParallax);
 
-  /* ---------- Eröffnung (Vorhang) ---------- */
+  /* ---------- Eröffnung (Portal) ---------- */
   var intro = $('[data-intro]');
   var introMs = 0;
   if (intro) {
     if (root.classList.contains('no-intro')) {
       intro.parentNode.removeChild(intro);
     } else {
-      introMs = 1350;
-      var endIntro = function () { if (intro.parentNode) intro.parentNode.removeChild(intro); };
-      intro.addEventListener('click', function () {
+      introMs = 2600;
+      var introOver = false;
+      var skipEvents = ['keydown', 'wheel', 'scroll'];
+      var endIntro = function () {
+        introOver = true;
+        skipEvents.forEach(function (type) { window.removeEventListener(type, skipIntro); });
+        if (intro.parentNode) intro.parentNode.removeChild(intro);
+      };
+      var skipIntro = function () {
+        if (introOver) return;
+        introOver = true;
+        // Hero-Animationen sofort starten statt auf das Ende der Eröffnung zu warten
+        var now = doc.timeline && doc.timeline.currentTime ? doc.timeline.currentTime / 1000 : 0;
+        if (now < 2.6) root.style.setProperty('--intro', now.toFixed(2) + 's');
         intro.classList.add('is-skipped');
-        window.setTimeout(endIntro, 500);
-      });
-      window.setTimeout(endIntro, 2500);
+        window.setTimeout(endIntro, 480);
+      };
+      intro.addEventListener('click', skipIntro);
+      skipEvents.forEach(function (type) { window.addEventListener(type, skipIntro, { passive: true }); });
+      window.setTimeout(endIntro, 4050);
     }
   }
 
