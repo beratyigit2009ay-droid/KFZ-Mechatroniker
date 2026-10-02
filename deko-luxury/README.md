@@ -45,7 +45,7 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 | `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
 | `index.html` → Showroom | Straße & Hausnummer, Öffnungszeiten, Link „Route planen“ (Adresse in `query=` eintragen). |
 | `index.html` → Kontakt | Telefonnummer (Beispiel für Click-to-Call steht im Kommentar). |
-| `index.html` → Kundenstimmen | Nur echte, freigegebene Bewertungen. Vorlage steht im Kommentar über dem Bereich. Ab zwei Stimmen erscheint automatisch eine Blätter-Navigation. Optional: Link zum Google-Profil, Eventlocations, Presse – ebenfalls als Kommentar vorbereitet. |
+| `index.html` → Kundenstimmen | Abschnitt ist ausgeblendet (`hidden`). Nur echte, freigegebene Bewertungen einsetzen, dann `hidden` entfernen. Vorlage steht im Kommentar über dem Bereich. Ab zwei Stimmen erscheint automatisch eine Blätter-Navigation. Optional: Link zum Google-Profil, Eventlocations, Presse – ebenfalls als Kommentar vorbereitet. |
 | `index.html` → Footer | Instagram-Link nur einfügen, wenn das Profil existiert (auskommentierte Vorlage). |
 | `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image` (absolute Adressen). Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `streetAddress`, Öffnungszeiten, `sameAs` (Instagram). |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg (aus den gewünschten Suchbegriffen abgeleitet). Bitte bestätigen oder anpassen. |
@@ -68,7 +68,7 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 | --- | --- | --- | --- |
 | `portfolio-01` … `-08` | Portfolio | Eure Fotos | Jedes Bild erscheint vollständig in seinem eigenen Format. 02, 08 und 03 laufen zusätzlich im Bogenfenster oben, dafür eignen sich Hochformat-Fotos (etwa 4:5). Mindestens 1600 px breit ist ideal. |
 | `stil` | Unser Stil | Detail der Gartentafel | Hochformat, mind. 1400 px |
-| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-trauungen`, `-konzepte` | Leistungen | Eure Fotos | Jedes Format möglich, wird vollständig gezeigt |
+| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-trauungen`, `-konzepte` | Leistungen | Eure Fotos | Werden einheitlich im Format 4:3 gezeigt, Querformat passt am besten |
 | `leistung-hochzeiten` | Leistungen | SVG-Zeichnung | Mit echtem Hochzeitsfoto: Datei erzeugen und die `<img>`-Vorlage im Kommentar einsetzen |
 | `showroom-1` … `-3` | Showroom | SVG-Zeichnung | Mit echten Showroom-Fotos: Dateien erzeugen und im Abschnitt Showroom einbauen |
 
@@ -94,6 +94,18 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
   Der Wechsel lässt sich über den Pause-Knopf anhalten und stoppt, wenn der Bereich nicht sichtbar ist.
 - Dauer der Eröffnung: `--intro` und die Zeiten im Abschnitt „Eröffnung“ in `style.css`.
 
+## Übersicht & Erreichbarkeit
+
+- **Grüner Live-Punkt „24/7 erreichbar – Anfragen rund um die Uhr“:** im Hero, in der Infoleiste, im Handy-Menü,
+  bei den Öffnungszeiten und in der Kontaktbox. Gemeint ist die Online-Anfrage, die jederzeit möglich ist.
+  Hat der Showroom selbst feste Zeiten, diese unter „Öffnungszeiten“ eintragen. Wäre er wirklich rund um die Uhr
+  geöffnet, kann der Text an diesen Stellen angepasst werden (Suche nach `24/7`).
+- **Infoleiste „Auf einen Blick“** direkt unter dem Hero: Showroom Burgau, 24/7 erreichbar, Individuelle Konzepte,
+  Persönliche Beratung mit E-Mail.
+- **Leistungen** stehen in einem gleichmäßigen Raster mit gleich großen Bildern (4:3).
+- **Kundenstimmen** sind vorbereitet, aber ausgeblendet, bis echte Bewertungen vorliegen
+  (im Abschnitt `id="stimmen"` das Attribut `hidden` entfernen).
+
 ## Luxus-Details
 
 - **Blattgold:** Emblem, Logo, Vorhang-Logo, die kursiven Schlüsselwörter und die Ablauf-Ziffern
@@ -103,7 +115,7 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 - **Schwarze Galerie:** Portfolio und Abschluss-Aufruf bilden ein dunkles Kapitel. Die Fotos bekommen beim
   Darüberfahren einen Goldrahmen. Mit Maus erscheint über den Bildern ein runder „Ansehen“-Cursor.
 - **Passepartouts:** Leistungs- und Stil-Fotos haben einen feinen Goldrahmen mit Abstand.
-- **Goldstaub:** Im Hero schweben feine Goldpartikel. Sie starten erst nach dem Laden und pausieren außerhalb des Bildschirms.
+- **Goldstaub:** Im Hero schweben feine Goldpartikel (ab Tablet-Breite). Sie starten erst nach dem Laden und pausieren außerhalb des Bildschirms. Auf Handys entfällt der Effekt zugunsten schneller Ladezeiten.
 - **Körnung & Ornamente:** Dunkle Flächen haben eine feine Filmkörnung, Abschnitte werden mit Gold-Ornamenten getrennt.
   Der Footer endet mit einem großen Schriftzug „DEKO.LUXURY“.
 - Bei „Bewegung reduzieren“ entfallen Goldstaub, Cursor und Glanz-Animation.

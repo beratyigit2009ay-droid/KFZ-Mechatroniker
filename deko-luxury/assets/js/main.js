@@ -635,7 +635,8 @@
      Startet erst, wenn die Seite fertig geladen ist, zeichnet vorbereitete Lichtpunkte
      (keine Verläufe pro Bild) und pausiert, sobald der Hero nicht sichtbar ist. */
   var dust = $('[data-dust]');
-  if (dust && hero && dust.getContext && !reduceMotion.matches) {
+  // Nur auf größeren Bildschirmen: auf Handys hat schnelles Laden Vorrang
+  if (dust && hero && dust.getContext && !reduceMotion.matches && window.matchMedia('(min-width: 900px)').matches) {
     var startDust = function () {
       var dctx = dust.getContext('2d');
       var dpr = Math.min(window.devicePixelRatio || 1, 2);

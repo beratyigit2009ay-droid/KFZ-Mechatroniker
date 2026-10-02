@@ -131,6 +131,7 @@
       </nav>
       <div class="menu__foot">
         <a class="btn btn--light" href="#kontakt" data-menu-link>Event anfragen</a>
+        <p class="status status--menu"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7 erreichbar</strong> · Anfragen rund um die Uhr</span></p>
         <p class="menu__meta">
           <a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a><br>
           Showroom in Burgau
@@ -158,6 +159,7 @@
             <a class="btn btn--foil" href="#kontakt" data-cta>Event anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
             <a class="link link--light" href="#portfolio">Unsere Arbeiten entdecken</a>
           </div>
+          <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7 erreichbar</strong> · Anfragen rund um die Uhr</span></p>
         </div>
 
         <figure class="hero__arch" data-slides>
@@ -182,13 +184,28 @@
       <a class="hero__scroll" href="#einleitung" aria-label="Weiter nach unten scrollen"><span></span></a>
     </section>
 
-    <div class="trust" role="note" aria-label="Auf einen Blick">
-      <ul class="trust__list wrap">
-        <li>Showroom in Burgau</li>
-        <li>Individuelle Konzepte</li>
-        <li>Dekoration mit Liebe zum Detail</li>
+    <!-- Auf einen Blick. Erreichbarkeit: Die Online-Anfrage ist rund um die Uhr möglich.
+         Falls der Showroom feste Zeiten hat, diese im Abschnitt Showroom eintragen. -->
+    <section class="infobar" aria-label="Auf einen Blick">
+      <ul class="infobar__list wrap">
+        <li class="infobar__item">
+          <svg class="infobar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11.2A6.5 6.5 0 0 1 18.5 9.8C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/></svg>
+          <span class="infobar__text"><strong>Showroom in Burgau</strong><small>zwischen Ulm und Augsburg</small></span>
+        </li>
+        <li class="infobar__item infobar__item--live">
+          <span class="infobar__icon infobar__icon--live"><span class="status__dot" aria-hidden="true"></span></span>
+          <span class="infobar__text"><strong>24/7 erreichbar</strong><small>Anfragen rund um die Uhr</small></span>
+        </li>
+        <li class="infobar__item">
+          <svg class="infobar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M8.5 21v-10a3.5 3.5 0 0 1 7 0v10"/><path d="M3 21h18"/></svg>
+          <span class="infobar__text"><strong>Individuelle Konzepte</strong><small>für jeden Anlass</small></span>
+        </li>
+        <li class="infobar__item">
+          <svg class="infobar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>
+          <span class="infobar__text"><strong>Persönliche Beratung</strong><small><a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a></small></span>
+        </li>
       </ul>
-    </div>
+    </section>
 
     <!-- ============ INTRO ============ -->
     <section class="intro section" id="einleitung" aria-labelledby="intro-title">
@@ -432,6 +449,7 @@
           <div class="visit__col">
             <h3 class="visit__title">Öffnungszeiten</h3>
             <dl class="hours">
+              <div class="hours__live"><dt>Online-Anfragen</dt><dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span>rund um die Uhr</span></dd></div>
               <div><dt>Montag – Freitag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
               <div><dt>Samstag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
               <div><dt>Sonntag</dt><dd><span class="ph" title="Platzhalter">Uhrzeit</span></dd></div>
@@ -508,7 +526,8 @@
            <figcaption class="voice__meta"><span class="voice__name">Vorname N.</span><span class="voice__event">Hochzeit · Monat Jahr</span></figcaption>
          </figure>
     -->
-    <section class="voices section" id="stimmen" aria-labelledby="voices-title">
+    <!-- Ausgeblendet, bis echte Kundenstimmen vorliegen: dann das Attribut "hidden" entfernen. -->
+    <section class="voices section" id="stimmen" aria-labelledby="voices-title" hidden>
       <div class="wrap voices__grid">
         <div class="voices__head">
           <p class="eyebrow" data-reveal>Kundenstimmen</p>
@@ -560,6 +579,10 @@
                 <a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a>
                 <button type="button" class="copy-btn" data-copy="deko.luxury@gmx.de" aria-label="E-Mail-Adresse kopieren">Kopieren</button>
               </dd>
+            </div>
+            <div>
+              <dt>Erreichbar</dt>
+              <dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7</strong> · Anfragen rund um die Uhr</span></span></dd>
             </div>
             <div>
               <dt>Telefon</dt>
