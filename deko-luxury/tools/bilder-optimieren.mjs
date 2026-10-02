@@ -26,7 +26,8 @@ const SLOTS = {
   'leistung-tischdekoration': [600, 1200],
   'leistung-trauungen': [600, 1200],
   'leistung-konzepte': [600, 1200],
-  // Portfolio; 01, 02, 07 und 04 erscheinen zusätzlich im Bogenfenster oben auf der Startseite
+  // Portfolio; 02, 08, 03 und 06 erscheinen zusätzlich im Bogenfenster oben auf der Startseite
+  // (dort am besten Hochformat-Fotos im Verhältnis 4:5, damit nichts abgeschnitten wird)
   'portfolio-01': [600, 800, 1600],
   'portfolio-02': [600, 800, 1600],
   'portfolio-03': [600, 800, 1600],
@@ -34,6 +35,7 @@ const SLOTS = {
   'portfolio-05': [600, 800, 1600],
   'portfolio-06': [600, 800, 1600],
   'portfolio-07': [600, 800, 1600],
+  'portfolio-08': [600, 800, 1600],
   'showroom-1': [800, 1600],
   'showroom-2': [600, 1200],
   'showroom-3': [800, 1600],
@@ -65,7 +67,8 @@ for (const file of files) {
     const target = path.join(OUT, `${name}-${w}.webp`);
     await input.clone()
       .resize({ width: Math.min(w, meta.width || w), withoutEnlargement: true })
-      .webp({ quality: 80, effort: 6 })
+      .sharpen({ sigma: 0.5, m1: 0.6, m2: 1.4 })
+      .webp({ quality: 86, effort: 6, smartSubsample: true })
       .toFile(target);
   }
   if ((meta.width || 0) < widths[widths.length - 1]) {

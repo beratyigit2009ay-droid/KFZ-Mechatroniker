@@ -41,7 +41,7 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 | Wo | Was fehlt |
 | --- | --- |
 | **Restliche Platzhalter-Bilder** | Hero, Portfolio, Einleitung, „Unser Stil“ und vier Leistungen zeigen bereits eure Fotos. Noch generierte Stimmungsbilder sind: `leistung-hochzeiten`, `leistung-trauungen` und `showroom-1` bis `-3`. Bitte durch echte Hochzeits-, Trauungs- und Showroom-Fotos ersetzen (Anleitung unten). |
-| **Einverständnis** | Auf `portfolio-03` / `leistung-konzepte` ist der Vorname eines Kindes zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
+| **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
 | `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
 | `index.html` → Showroom | Straße & Hausnummer, Öffnungszeiten, Link „Route planen“ (Adresse in `query=` eintragen). |
 | `index.html` → Kontakt | Telefonnummer (Beispiel für Click-to-Call steht im Kommentar). |
@@ -66,20 +66,21 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 
 | Datei | Bereich | Aktuell | Hinweis |
 | --- | --- | --- | --- |
-| `portfolio-01` … `-07` | Portfolio | Eure Fotos | 01, 02, 07 und 04 erscheinen zusätzlich im Bogenfenster oben auf der Startseite. Mindestens 1600 px breit ist ideal. |
+| `portfolio-01` … `-08` | Portfolio | Eure Fotos | Jedes Bild erscheint vollständig in seinem eigenen Format. 02, 08, 03 und 06 laufen zusätzlich im Bogenfenster oben, dafür eignen sich Hochformat-Fotos (etwa 4:5). Mindestens 1600 px breit ist ideal. |
 | `intro` | Einleitung | Euer Foto | Hochformat 4:5 |
 | `stil` | Unser Stil | Euer Foto | Hochformat 4:5, mind. 1400 px |
 | `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-konzepte` | Leistungen | Eure Fotos | Hochformat 4:5 |
 | `leistung-hochzeiten`, `leistung-trauungen` | Leistungen | Platzhalter | Echte Hochzeits- bzw. Trauungsfotos einsetzen |
 | `showroom-1` … `-3` | Showroom | Platzhalter | Echte Aufnahmen des Showrooms (1 quer, 2 hoch) |
 
-Die gelieferten Fotos sind 600–1200 px breit. Das Skript weist darauf hin. Liegen die Originale
-in höherer Auflösung vor (z. B. direkt aus der Kamera oder vom Fotografen), einfach erneut
-durch `npm run bilder` schicken: Die Seite wird dann auf großen Bildschirmen schärfer.
+Die gelieferten Fotos waren nur 600–1200 px breit. Sie wurden mit einem KI-Upscaler (ESRGAN)
+auf die doppelte Auflösung hochgerechnet und dezent nachgeschärft. Das wirkt sauberer, ersetzt
+aber keine echten Details. Am besten werden die Bilder mit den Originaldateien aus der Kamera
+oder vom Fotografen. Diese einfach durch `npm run bilder` schicken.
 
-Die Bilder werden per CSS zugeschnitten. Andere Seitenverhältnisse funktionieren also auch.
-Im Bogenfenster oben lässt sich der Bildausschnitt pro Foto über `style="object-position: …"`
-am jeweiligen `<img class="hero__slide">` in `index.html` anpassen.
+Portfolio, Leistungen, Einleitung und „Unser Stil“ zeigen jedes Foto vollständig in seinem eigenen
+Format. Nur das Bogenfenster oben hat eine feste Form. Dort lässt sich der Ausschnitt pro Foto über
+`style="object-position: …"` am jeweiligen `<img class="hero__slide">` in `index.html` anpassen.
 
 ## Eröffnung & Animationen
 
