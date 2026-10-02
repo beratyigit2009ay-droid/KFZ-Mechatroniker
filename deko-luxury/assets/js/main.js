@@ -435,10 +435,8 @@
     if (ts) ts.value = String(Date.now());
 
     var dateInput = $('#f-datum', form);
-    if (dateInput) {
-      var d = new Date();
-      dateInput.min = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    }
+    var today = (function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); })(new Date());
+    if (dateInput) dateInput.min = today;
 
     var setMode = function (mode) {
       var input = $('#anliegen-' + mode, form);
@@ -448,22 +446,30 @@
       submitLabel.textContent = showroom ? 'Termin anfragen' : 'Anfrage senden';
     };
     $$('[data-mode-input]', form).forEach(function (r) {
-      r.addEventListener('change', function () { setMode(r.value === 'Showroom-Termin' ? 'showroom' : 'event'); });
+      r.addEventListener('change', function () {
+        var showroom = r.value === 'Showroom-Termin';
+        setMode(showroom ? 'showroom' : 'event');
+        // Das Feld für den Wunschtermin steht in Schritt 1
+        if (showroom && current !== 1) showStep(1, false);
+      });
     });
     $$('[data-mode="showroom"]').forEach(function (a) {
-      a.addEventListener('click', function () { setMode('showroom'); });
+      a.addEventListener('click', function () { setMode('showroom'); showStep(1, false); });
     });
     $$('[data-service]').forEach(function (a) {
       a.addEventListener('click', function () {
         setMode('event');
         var val = a.getAttribute('data-service');
         $$('input[name="leistungen[]"]', form).forEach(function (cb) { if (cb.value === val) cb.checked = true; });
+        if (val === 'Hochzeiten') $('#e-1', form).checked = true;
+        showStep(1, false);
       });
     });
 
     var rules = {
-      name: { el: $('#f-name', form), test: function (v) { return v.trim().length > 1; } },
-      email: { el: $('#f-email', form), test: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); } }
+      datum: { step: 1, el: dateInput, test: function (v) { return !v || v >= today; } },
+      name: { step: 3, el: $('#f-name', form), test: function (v) { return v.trim().length > 1; } },
+      email: { step: 3, el: $('#f-email', form), test: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); } }
     };
     var setError = function (key, bad) {
       var r = rules[key];
@@ -482,6 +488,117 @@
         if (rules[key].el.closest('.field').classList.contains('has-error') && rules[key].test(rules[key].el.value)) setError(key, false);
       });
     });
+
+    /* Geführte Anfrage in drei Schritten */
+    var steps = $$('.fstep', form);
+    var stepBtns = $$('.form__step', form);
+    var stepBar = $('[data-step-bar]', form);
+    var stepLive = $('[data-step-live]', form);
+    var summaryBox = $('[data-summary]', form);
+    var summaryList = $('[data-summary-list]', form);
+    var STEP_NAMES = ['Anlass', 'Wünsche', 'Kontakt'];
+    var current = 1;
+
+    var validateStep = function (n) {
+      var firstBad = null;
+      Object.keys(rules).forEach(function (key) {
+        var r = rules[key];
+        if (r.step !== n || !r.el) return;
+        var bad = !r.test(r.el.value);
+        setError(key, bad);
+        if (bad && !firstBad) firstBad = r.el;
+      });
+      return firstBad;
+    };
+
+    var fmtDate = function (v) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+      return m ? m[3] + '.' + m[2] + '.' + m[1] : '';
+    };
+    var renderSummary = function () {
+      var fd = new FormData(form);
+      var val = function (k) { return String(fd.get(k) || '').trim(); };
+      var showroom = val('anliegen') === 'Showroom-Termin';
+      var msg = val('nachricht');
+      if (msg.length > 90) msg = msg.slice(0, 88).trim() + ' …';
+      var rows = [
+        { step: 1, label: 'Anlass', parts: [val('eventart'), fmtDate(val('datum')), val('gaeste'), val('location'), showroom && val('wunschtermin') ? 'Showroom: ' + val('wunschtermin') : ''] },
+        { step: 2, label: 'Wünsche', parts: [fd.getAll('leistungen[]').join(', '), val('budget') ? 'Budget ' + val('budget') : '', msg ? '„' + msg + '“' : ''] }
+      ];
+      summaryList.textContent = '';
+      rows.forEach(function (row) {
+        var wrap = doc.createElement('div');
+        wrap.className = 'summary__row';
+        var dt = doc.createElement('dt');
+        dt.textContent = row.label;
+        var dd = doc.createElement('dd');
+        var text = row.parts.filter(Boolean).join(' · ');
+        dd.textContent = text || 'Noch offen – gern im Gespräch';
+        if (!text) dd.className = 'is-empty';
+        var act = doc.createElement('dd');
+        act.className = 'summary__act';
+        var btn = doc.createElement('button');
+        btn.type = 'button';
+        btn.className = 'summary__edit';
+        btn.setAttribute('data-goto', String(row.step));
+        btn.setAttribute('aria-label', row.label + ' ändern');
+        btn.textContent = 'Ändern';
+        act.appendChild(btn);
+        wrap.appendChild(dt);
+        wrap.appendChild(dd);
+        wrap.appendChild(act);
+        summaryList.appendChild(wrap);
+      });
+      summaryBox.hidden = false;
+    };
+
+    var scrollToForm = function () {
+      var top = form.getBoundingClientRect().top;
+      var headerH = header ? header.offsetHeight : 0;
+      if (top < headerH || top > window.innerHeight * 0.5) {
+        window.scrollTo({ top: top + window.scrollY - headerH - 16, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      }
+    };
+
+    var showStep = function (n, focus) {
+      current = n;
+      steps.forEach(function (fs) { fs.classList.toggle('is-current', Number(fs.getAttribute('data-step')) === n); });
+      stepBtns.forEach(function (btn) {
+        var i = Number(btn.getAttribute('data-goto'));
+        if (i === n) btn.setAttribute('aria-current', 'step'); else btn.removeAttribute('aria-current');
+        btn.classList.toggle('is-done', i < n);
+      });
+      if (stepBar) stepBar.style.setProperty('--progress', String(n / steps.length));
+      if (n === steps.length) renderSummary();
+      if (focus === false) return;
+      if (stepLive) stepLive.textContent = 'Schritt ' + n + ' von ' + steps.length + ': ' + STEP_NAMES[n - 1];
+      $('.fstep__title', steps[n - 1]).focus({ preventScroll: true });
+      scrollToForm();
+    };
+
+    var goTo = function (n) {
+      n = Math.max(1, Math.min(steps.length, n));
+      // Vorwärts nur, wenn die übersprungenen Schritte gültig sind
+      for (var s = current; s < n; s++) {
+        var bad = validateStep(s);
+        if (bad) {
+          if (s !== current) showStep(s, false);
+          bad.focus();
+          return;
+        }
+      }
+      showStep(n);
+    };
+
+    form.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-goto], [data-step-next], [data-step-back]');
+      if (!t || !form.contains(t)) return;
+      if (t.hasAttribute('data-goto')) goTo(Number(t.getAttribute('data-goto')));
+      else if (t.hasAttribute('data-step-next')) goTo(current + 1);
+      else goTo(current - 1);
+    });
+    // Datumsfehler verschwindet, sobald ein gültiges Datum gewählt ist
+    if (dateInput) dateInput.addEventListener('change', function () { if (rules.datum.test(dateInput.value)) setError('datum', false); });
 
     var summary = function () {
       var fd = new FormData(form);
@@ -532,14 +649,17 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      // Enter in Schritt 1 oder 2 führt zum nächsten Schritt statt abzusenden
+      if (current < steps.length) { goTo(current + 1); return; }
       statusEl.textContent = '';
-      var firstBad = null;
-      Object.keys(rules).forEach(function (key) {
-        var bad = !rules[key].test(rules[key].el.value);
-        setError(key, bad);
-        if (bad && !firstBad) firstBad = rules[key].el;
-      });
-      if (firstBad) { firstBad.focus(); return; }
+      for (var s = 1; s <= steps.length; s++) {
+        var firstBad = validateStep(s);
+        if (firstBad) {
+          if (s !== current) showStep(s, false);
+          firstBad.focus();
+          return;
+        }
+      }
 
       var name = rules.name.el.value;
       if (form.getAttribute('data-demo') === 'true') {
@@ -569,7 +689,8 @@
       if (ts) ts.value = String(Date.now());
       done.hidden = true;
       form.hidden = false;
-      $('#f-name', form).focus();
+      summaryBox.hidden = true;
+      showStep(1);
     });
   }
 

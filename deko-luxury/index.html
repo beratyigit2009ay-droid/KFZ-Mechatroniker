@@ -600,89 +600,84 @@
 
         <div class="contact__form-wrap" data-reveal>
           <form class="form" action="anfrage.php" method="post" novalidate data-form>
-            <fieldset class="form__mode">
-              <legend class="sr-only">Ihr Anliegen</legend>
-              <label class="mode"><input type="radio" name="anliegen" id="anliegen-event" value="Event-Anfrage" checked data-mode-input><span>Event anfragen</span></label>
-              <label class="mode"><input type="radio" name="anliegen" id="anliegen-showroom" value="Showroom-Termin" data-mode-input><span>Showroom-Termin</span></label>
+            <div class="form__head">
+              <div class="form__intro">
+                <h3 class="form__title">Ihre Anfrage</h3>
+                <p class="form__sub">Drei kurze Schritte · unverbindlich</p>
+              </div>
+              <fieldset class="form__mode">
+                <legend class="sr-only">Ihr Anliegen</legend>
+                <label class="mode"><input type="radio" name="anliegen" id="anliegen-event" value="Event-Anfrage" checked data-mode-input><span>Event anfragen</span></label>
+                <label class="mode"><input type="radio" name="anliegen" id="anliegen-showroom" value="Showroom-Termin" data-mode-input><span>Showroom-Termin</span></label>
+              </fieldset>
+            </div>
+
+            <ol class="form__steps" aria-label="Fortschritt" data-step-nav>
+              <li><button type="button" class="form__step" data-goto="1" aria-current="step"><span class="form__step-num">1</span><span class="form__step-label">Anlass</span></button></li>
+              <li><button type="button" class="form__step" data-goto="2"><span class="form__step-num">2</span><span class="form__step-label">Wünsche</span></button></li>
+              <li><button type="button" class="form__step" data-goto="3"><span class="form__step-num">3</span><span class="form__step-label">Kontakt</span></button></li>
+            </ol>
+            <div class="form__bar" aria-hidden="true"><span data-step-bar></span></div>
+            <p class="sr-only" aria-live="polite" data-step-live></p>
+
+            <!-- Schritt 1: Anlass -->
+            <fieldset class="fstep is-current" data-step="1">
+              <legend class="fstep__title" tabindex="-1">Was feiern Sie?</legend>
+              <p class="fstep__hint">Wählen Sie den Anlass. Alle Angaben lassen sich später noch ändern.</p>
+              <div class="tiles" data-tiles>
+                <label class="tile"><input type="radio" name="eventart" id="e-1" value="Hochzeit"><span>Hochzeit</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-2" value="Verlobung"><span>Verlobung</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-3" value="Geburtstag"><span>Geburtstag</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-4" value="Taufe"><span>Taufe</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-5" value="Baby-Party"><span>Baby-Party</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-6" value="Firmenveranstaltung"><span>Firmen&shy;veranstaltung</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-7" value="Gala-Abend"><span>Gala-Abend</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-8" value="Jubiläum"><span>Jubiläum</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-9" value="Private Feier"><span>Private Feier</span></label>
+                <label class="tile"><input type="radio" name="eventart" id="e-10" value="Anderer Anlass"><span>Anderer Anlass</span></label>
+              </div>
+              <div class="form__grid">
+                <div class="field">
+                  <label for="f-datum">Datum</label>
+                  <input id="f-datum" name="datum" type="date">
+                  <p class="field__error" id="f-datum-error" hidden>Bitte ein Datum ab heute wählen.</p>
+                </div>
+                <div class="field">
+                  <label for="f-gaeste">Gäste</label>
+                  <div class="select">
+                    <select id="f-gaeste" name="gaeste">
+                      <option value="">Bitte wählen</option>
+                      <option>bis 30 Gäste</option>
+                      <option>30 – 60 Gäste</option>
+                      <option>60 – 100 Gäste</option>
+                      <option>100 – 150 Gäste</option>
+                      <option>150 – 250 Gäste</option>
+                      <option>mehr als 250 Gäste</option>
+                      <option>noch offen</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field field--full">
+                  <label for="f-location">Location</label>
+                  <input id="f-location" name="location" type="text" placeholder="Name oder Ort der Location">
+                </div>
+                <div class="field field--full" data-showroom-field hidden>
+                  <label for="f-termin">Wunschtermin im Showroom</label>
+                  <input id="f-termin" name="wunschtermin" type="text" placeholder="z. B. Samstag, 14. November, nachmittags">
+                </div>
+              </div>
+              <div class="fstep__nav">
+                <button type="button" class="btn btn--dark" data-step-next>Weiter <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></button>
+              </div>
             </fieldset>
 
-            <div class="form__grid">
-              <div class="field">
-                <label for="f-name">Name <span aria-hidden="true">*</span></label>
-                <input id="f-name" name="name" type="text" autocomplete="name" required>
-                <p class="field__error" id="f-name-error" hidden>Bitte geben Sie Ihren Namen an.</p>
-              </div>
-              <div class="field">
-                <label for="f-email">E-Mail <span aria-hidden="true">*</span></label>
-                <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
-                <p class="field__error" id="f-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse an.</p>
-              </div>
-              <div class="field">
-                <label for="f-telefon">Telefonnummer</label>
-                <input id="f-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel">
-              </div>
-              <div class="field">
-                <label for="f-eventart">Eventart</label>
-                <div class="select">
-                  <select id="f-eventart" name="eventart">
-                    <option value="">Bitte wählen</option>
-                    <option>Hochzeit</option>
-                    <option>Verlobung</option>
-                    <option>Geburtstag</option>
-                    <option>Taufe</option>
-                    <option>Baby-Party</option>
-                    <option>Firmenveranstaltung</option>
-                    <option>Gala-Abend</option>
-                    <option>Jubiläum</option>
-                    <option>Private Feier</option>
-                    <option>Anderer Anlass</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label for="f-datum">Veranstaltungsdatum</label>
-                <input id="f-datum" name="datum" type="date">
-              </div>
-              <div class="field">
-                <label for="f-location">Location</label>
-                <input id="f-location" name="location" type="text" placeholder="Name oder Ort der Location">
-              </div>
-              <div class="field">
-                <label for="f-gaeste">Gästeanzahl</label>
-                <div class="select">
-                  <select id="f-gaeste" name="gaeste">
-                    <option value="">Bitte wählen</option>
-                    <option>bis 30 Gäste</option>
-                    <option>30 – 60 Gäste</option>
-                    <option>60 – 100 Gäste</option>
-                    <option>100 – 150 Gäste</option>
-                    <option>150 – 250 Gäste</option>
-                    <option>mehr als 250 Gäste</option>
-                    <option>noch offen</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label for="f-budget">Budgetrahmen <span class="field__opt">optional</span></label>
-                <div class="select">
-                  <select id="f-budget" name="budget">
-                    <option value="">Keine Angabe</option>
-                    <option>bis 1.000 €</option>
-                    <option>1.000 – 2.500 €</option>
-                    <option>2.500 – 5.000 €</option>
-                    <option>5.000 – 10.000 €</option>
-                    <option>mehr als 10.000 €</option>
-                    <option>noch offen</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field field--full" data-showroom-field hidden>
-                <label for="f-termin">Wunschtermin im Showroom</label>
-                <input id="f-termin" name="wunschtermin" type="text" placeholder="z. B. Samstag, 14. November, nachmittags">
-              </div>
-              <fieldset class="field field--full chips">
-                <legend>Gewünschte Leistungen</legend>
-                <div class="chips__list">
+            <!-- Schritt 2: Wünsche -->
+            <fieldset class="fstep" data-step="2">
+              <legend class="fstep__title" tabindex="-1">Was dürfen wir gestalten?</legend>
+              <p class="fstep__hint">Mehrfachauswahl möglich. Alles ist optional.</p>
+              <div class="field field--full chips">
+                <p class="field__label" id="lbl-leistungen">Leistungen</p>
+                <div class="chips__list" role="group" aria-labelledby="lbl-leistungen">
                   <label class="chip"><input type="checkbox" name="leistungen[]" id="l-hochzeiten" value="Hochzeiten"><span>Hochzeiten</span></label>
                   <label class="chip"><input type="checkbox" name="leistungen[]" id="l-event" value="Eventdekoration"><span>Eventdekoration</span></label>
                   <label class="chip"><input type="checkbox" name="leistungen[]" id="l-floristik" value="Floristik &amp; Blumenarrangements"><span>Floristik &amp; Blumen</span></label>
@@ -690,10 +685,51 @@
                   <label class="chip"><input type="checkbox" name="leistungen[]" id="l-trauung" value="Trauungen &amp; Zeremonien"><span>Trauungen &amp; Zeremonien</span></label>
                   <label class="chip"><input type="checkbox" name="leistungen[]" id="l-konzept" value="Individuelles Konzept"><span>Individuelles Konzept</span></label>
                 </div>
-              </fieldset>
+              </div>
+              <div class="field field--full chips">
+                <p class="field__label" id="lbl-budget">Budgetrahmen <span class="field__opt">optional</span></p>
+                <div class="chips__list" role="radiogroup" aria-labelledby="lbl-budget">
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-1" value="bis 1.000 €"><span>bis 1.000 €</span></label>
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-2" value="1.000 – 2.500 €"><span>1.000 – 2.500 €</span></label>
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-3" value="2.500 – 5.000 €"><span>2.500 – 5.000 €</span></label>
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-4" value="5.000 – 10.000 €"><span>5.000 – 10.000 €</span></label>
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-5" value="mehr als 10.000 €"><span>mehr als 10.000 €</span></label>
+                  <label class="chip chip--radio"><input type="radio" name="budget" id="b-6" value="noch offen"><span>noch offen</span></label>
+                </div>
+              </div>
               <div class="field field--full">
-                <label for="f-nachricht">Nachricht</label>
-                <textarea id="f-nachricht" name="nachricht" rows="5" placeholder="Was planen Sie? Farben, Stimmung, Ideen – alles ist willkommen."></textarea>
+                <label for="f-nachricht">Ihre Nachricht</label>
+                <textarea id="f-nachricht" name="nachricht" rows="4" placeholder="Was planen Sie? Farben, Stimmung, Ideen – alles ist willkommen."></textarea>
+              </div>
+              <div class="fstep__nav">
+                <button type="button" class="link fstep__back" data-step-back>Zurück</button>
+                <button type="button" class="btn btn--dark" data-step-next>Weiter <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></button>
+              </div>
+            </fieldset>
+
+            <!-- Schritt 3: Kontakt -->
+            <fieldset class="fstep" data-step="3">
+              <legend class="fstep__title" tabindex="-1">Wie erreichen wir Sie?</legend>
+              <p class="fstep__hint">Pflichtfelder sind mit * markiert.</p>
+              <div class="form__grid">
+                <div class="field field--full">
+                  <label for="f-name">Name <span aria-hidden="true">*</span></label>
+                  <input id="f-name" name="name" type="text" autocomplete="name" required>
+                  <p class="field__error" id="f-name-error" hidden>Bitte geben Sie Ihren Namen an.</p>
+                </div>
+                <div class="field">
+                  <label for="f-email">E-Mail <span aria-hidden="true">*</span></label>
+                  <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+                  <p class="field__error" id="f-email-error" hidden>Bitte E-Mail-Adresse prüfen.</p>
+                </div>
+                <div class="field">
+                  <label for="f-telefon">Telefon <span class="field__opt">optional</span></label>
+                  <input id="f-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel">
+                </div>
+              </div>
+              <div class="summary" data-summary hidden>
+                <p class="summary__title">Ihre Angaben</p>
+                <dl class="summary__list" data-summary-list></dl>
               </div>
               <!-- Spamschutz: Feld bleibt für Menschen unsichtbar -->
               <div class="hp" aria-hidden="true">
@@ -701,15 +737,15 @@
                 <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
               </div>
               <input type="hidden" name="ts" value="" data-ts>
-            </div>
-
-            <div class="form__foot">
-              <button class="btn btn--foil form__submit" type="submit" data-submit>
-                <span data-submit-label>Anfrage senden</span>
-                <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg>
-              </button>
+              <div class="form__foot">
+                <button type="button" class="link fstep__back" data-step-back>Zurück</button>
+                <button class="btn btn--foil form__submit" type="submit" data-submit>
+                  <span data-submit-label>Anfrage senden</span>
+                  <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg>
+                </button>
+              </div>
               <p class="form__legal">Mit dem Absenden werden Ihre Angaben zur Bearbeitung Ihrer Anfrage verwendet. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
-            </div>
+            </fieldset>
             <p class="form__status" role="status" aria-live="polite" data-form-status></p>
           </form>
 

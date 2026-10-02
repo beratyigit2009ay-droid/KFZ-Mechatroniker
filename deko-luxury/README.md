@@ -122,6 +122,15 @@ Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten
 
 ## Kontaktformular
 
+- Die Anfrage läuft in drei kurzen Schritten mit Fortschrittsanzeige:
+  **1. Anlass** (Kacheln für die Eventart, Datum, Gäste, Location),
+  **2. Wünsche** (Leistungen, Budgetrahmen, Nachricht),
+  **3. Kontakt** (Name, E-Mail, Telefon) mit einer Zusammenfassung aller Angaben vor dem Absenden.
+  Über „Ändern“ springt man direkt zurück in den jeweiligen Schritt; nichts geht verloren.
+- Pflicht sind nur Name und E-Mail. Ein Datum in der Vergangenheit wird freundlich abgefangen.
+- Die Links „… anfragen“ bei den Leistungen wählen die passende Leistung schon vor,
+  „Termin vereinbaren“ schaltet auf Showroom-Termin um.
+- Ohne JavaScript erscheinen alle drei Schritte untereinander und das Formular funktioniert normal.
 - `anfrage.php` sendet jede Anfrage an **deko.luxury@gmx.de** (Einstellung oben in der Datei).
   Antworten gehen per „Antworten“ direkt an die anfragende Person.
 - Für gute Zustellbarkeit in `ABSENDER` eine Adresse der eigenen Domain eintragen
