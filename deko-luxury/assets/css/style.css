@@ -511,7 +511,39 @@ address { font-style: normal; }
 }
 .intro__title em { color: var(--gold-deep); }
 .intro__aside { grid-column: 9 / span 4; display: grid; gap: clamp(28px, 3vw, 44px); }
-.intro__media { align-self: start; }
+.intro__archbox { position: relative; width: 100%; max-width: 420px; aspect-ratio: 400 / 560; margin-inline: auto; }
+.intro__lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.intro__lines .d { stroke: var(--gold); }
+.intro__archbox-inner {
+  position: absolute; left: 14%; right: 14%; top: 16%; bottom: 7%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(16px, 2vw, 26px); text-align: center;
+}
+.intro__emblem { width: 54px; height: 54px; color: var(--gold); }
+.intro__archbox .intro__text { font-size: clamp(1rem, 0.94rem + 0.28vw, 1.14rem); line-height: 1.75; max-width: none; }
+.intro__sign { font-family: var(--caps); font-size: 0.76rem; letter-spacing: 0.3em; color: var(--gold-deep); }
+.intro__sign span { color: var(--gold); }
+
+/* Linienzeichnungen (SVG), zeichnen sich beim Hineinscrollen */
+.illu { display: block; width: 100%; height: auto; overflow: visible; }
+.illu__bg { fill: var(--sand); }
+.illu .d, .intro__lines .d {
+  fill: none; stroke: var(--gold-deep); stroke-width: 1.15;
+  stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 0;
+  transition: stroke-dashoffset 2.4s var(--ease-io) var(--dd, 0s);
+}
+.illu .f { fill: var(--sand); }
+.illu .faint, .intro__lines .faint { opacity: 0.45; }
+.intro__lines .mid { opacity: 0.7; }
+.illu .neon { stroke: var(--gold); stroke-width: 1.8; }
+.illu .flame { fill: #ebcf95; stroke: var(--gold); }
+.illu .gem, .intro__lines .gem { fill: var(--gold); stroke: var(--gold); }
+.illu .flame, .illu .gem, .intro__lines .gem { transition: stroke-dashoffset 2.4s var(--ease-io) var(--dd, 0s), fill-opacity 1s var(--ease) calc(var(--dd, 0s) + 1.2s); }
+.js [data-draw]:not(.is-drawn) .d { stroke-dashoffset: 1; }
+.js [data-draw]:not(.is-drawn) .flame, .js [data-draw]:not(.is-drawn) .gem { fill-opacity: 0; }
+.service__media .illu { aspect-ratio: 4 / 5; }
+.showroom__illu { grid-column: 7 / span 6; align-self: end; }
 .intro__text { font-size: var(--fs-lead); font-weight: 300; line-height: 1.7; color: var(--text); max-width: 34ch; }
 .occasions { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 24px; padding-top: 32px; border-top: 1px solid var(--line); }
 .occasions__label { font-size: var(--fs-label); font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; color: var(--muted); padding-top: 10px; }
@@ -975,14 +1007,14 @@ address { font-style: normal; }
 @media (max-width: 1080px) {
   .section-head { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 20px; }
   .intro__statement { grid-column: 1 / -1; padding-top: 0; }
-  .intro__aside { grid-column: 4 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .intro__aside { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); justify-items: center; }
   .services__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .service:nth-child(3n + 2), .service:nth-child(3n + 3) { margin-top: 0; }
   .service:nth-child(even) { margin-top: clamp(0px, 10vw, 110px); }
   .style__media { grid-column: 1 / span 6; }
   .style__body { grid-column: 7 / -1; }
   .showroom__body { grid-column: 1 / -1; }
-  .showroom__media { grid-column: 1 / -1; }
+  .showroom__illu { grid-column: 1 / -1; width: min(100%, 640px); justify-self: center; }
   .visit { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .visit__col--map { grid-column: 1 / -1; }
   .voices__head, .voices__stage { grid-column: 1 / -1; }
@@ -1036,7 +1068,6 @@ address { font-style: normal; }
   .trust__list { flex-direction: column; gap: 8px; padding-block: 22px; }
   .trust__list li + li::before { display: none; }
   .intro__aside { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); }
-  .intro__media { width: 78%; justify-self: end; }
   .occasions { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .services__grid { grid-template-columns: minmax(0, 1fr); }
   .service:nth-child(even) { margin-top: 0; }

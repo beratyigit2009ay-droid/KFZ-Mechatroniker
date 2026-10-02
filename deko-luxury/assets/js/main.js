@@ -119,6 +119,23 @@
     });
   }
 
+  /* ---------- Linienzeichnungen zeichnen sich beim Hineinscrollen ---------- */
+  var drawings = $$('[data-draw]');
+  if (drawings.length) {
+    if (!('IntersectionObserver' in window) || reduceMotion.matches) {
+      drawings.forEach(function (el) { el.classList.add('is-drawn'); });
+    } else {
+      var drawIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-drawn');
+          drawIO.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+      drawings.forEach(function (el) { drawIO.observe(el); });
+    }
+  }
+
   /* ---------- Parallax (dezent, nur Desktop) ---------- */
   var parallaxOn = false;
   var innerParallax = $$('[data-parallax-inner]');

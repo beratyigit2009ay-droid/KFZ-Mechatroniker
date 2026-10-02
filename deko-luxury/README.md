@@ -40,7 +40,7 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 
 | Wo | Was fehlt |
 | --- | --- |
-| **Restliche Platzhalter-Bilder** | Hero, Portfolio, Einleitung, „Unser Stil“ und vier Leistungen zeigen bereits eure Fotos. Noch generierte Stimmungsbilder sind: `leistung-hochzeiten`, `leistung-trauungen` und `showroom-1` bis `-3`. Bitte durch echte Hochzeits-, Trauungs- und Showroom-Fotos ersetzen (Anleitung unten). |
+| **Bilder** | Die Website zeigt nur noch echte Fotos und SVG-Linienzeichnungen, keine generierten Platzhalter mehr. Für „Hochzeiten“ und den Showroom stehen Zeichnungen, bis echte Fotos vorliegen. In `index.html` ist dafür jeweils eine `<img>`-Vorlage als Kommentar hinterlegt. |
 | **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
 | `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
 | `index.html` → Showroom | Straße & Hausnummer, Öffnungszeiten, Link „Route planen“ (Adresse in `query=` eintragen). |
@@ -66,20 +66,19 @@ Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
 
 | Datei | Bereich | Aktuell | Hinweis |
 | --- | --- | --- | --- |
-| `portfolio-01` … `-08` | Portfolio | Eure Fotos | Jedes Bild erscheint vollständig in seinem eigenen Format. 02, 08, 03 und 06 laufen zusätzlich im Bogenfenster oben, dafür eignen sich Hochformat-Fotos (etwa 4:5). Mindestens 1600 px breit ist ideal. |
-| `intro` | Einleitung | Euer Foto | Hochformat 4:5 |
-| `stil` | Unser Stil | Euer Foto | Hochformat 4:5, mind. 1400 px |
-| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-konzepte` | Leistungen | Eure Fotos | Hochformat 4:5 |
-| `leistung-hochzeiten`, `leistung-trauungen` | Leistungen | Platzhalter | Echte Hochzeits- bzw. Trauungsfotos einsetzen |
-| `showroom-1` … `-3` | Showroom | Platzhalter | Echte Aufnahmen des Showrooms (1 quer, 2 hoch) |
+| `portfolio-01` … `-08` | Portfolio | Eure Fotos | Jedes Bild erscheint vollständig in seinem eigenen Format. 02, 08 und 03 laufen zusätzlich im Bogenfenster oben, dafür eignen sich Hochformat-Fotos (etwa 4:5). Mindestens 1600 px breit ist ideal. |
+| `stil` | Unser Stil | Detail der Gartentafel | Hochformat, mind. 1400 px |
+| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-trauungen`, `-konzepte` | Leistungen | Eure Fotos | Jedes Format möglich, wird vollständig gezeigt |
+| `leistung-hochzeiten` | Leistungen | SVG-Zeichnung | Mit echtem Hochzeitsfoto: Datei erzeugen und die `<img>`-Vorlage im Kommentar einsetzen |
+| `showroom-1` … `-3` | Showroom | SVG-Zeichnung | Mit echten Showroom-Fotos: Dateien erzeugen und im Abschnitt Showroom einbauen |
 
 Die gelieferten Fotos waren nur 600–1200 px breit. Sie wurden mit einem KI-Upscaler (ESRGAN)
 auf die doppelte Auflösung hochgerechnet und dezent nachgeschärft. Das wirkt sauberer, ersetzt
 aber keine echten Details. Am besten werden die Bilder mit den Originaldateien aus der Kamera
 oder vom Fotografen. Diese einfach durch `npm run bilder` schicken.
 
-Portfolio, Leistungen, Einleitung und „Unser Stil“ zeigen jedes Foto vollständig in seinem eigenen
-Format. Nur das Bogenfenster oben hat eine feste Form. Dort lässt sich der Ausschnitt pro Foto über
+Portfolio, Leistungen und „Unser Stil“ zeigen jedes Foto vollständig in seinem eigenen
+Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten Bogen. Nur das Bogenfenster oben hat eine feste Form. Dort lässt sich der Ausschnitt pro Foto über
 `style="object-position: …"` am jeweiligen `<img class="hero__slide">` in `index.html` anpassen.
 
 ## Eröffnung & Animationen
@@ -89,6 +88,8 @@ Format. Nur das Bogenfenster oben hat eine feste Form. Dort lässt sich der Auss
   sich eine goldene Linie. Die Eröffnung läuft einmal pro Browser-Sitzung (rund 2,3 Sekunden),
   ein Klick überspringt sie. Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat, sieht sie nicht.
 - **Header:** Auf allen Seiten steht das Logo-Emblem als SVG. Der Goldring zeichnet sich beim Laden.
+- **Linienzeichnungen:** Einleitungs-Bogen, Hochzeits-Karte und Showroom-Szene sind SVG-Zeichnungen in Gold.
+  Sie zeichnen sich, sobald sie ins Bild scrollen.
 - **Bogenfenster:** Rechts im Hero wechseln vier Arbeiten im Bogen, der an eure Bogen-Rückwände angelehnt ist.
   Der Wechsel lässt sich über den Pause-Knopf anhalten und stoppt, wenn der Bereich nicht sichtbar ist.
 - Dauer der Eröffnung: `--intro` und die Zeiten im Abschnitt „Eröffnung“ in `style.css`.
