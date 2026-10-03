@@ -1,0 +1,78 @@
+{#- FOUNDATION-CORE · Schlankes, eigenständiges Layout für Fehlerseiten (unabhängig vom App-Layout,
+    damit Fehlerseiten auch dann funktionieren, wenn das App-Layout selbst fehlerhaft ist).
+    Erscheinungsbild je Plattform: Corporate (Smaragd/Perle, Cormorant + Jost) · Shop (Creme/Schokolade, Fraunces + DM Sans). -#}
+{%- set m = meta or {} -%}
+{%- set isShop = (site and site.app == 'shop') -%}
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ m.title or 'Hasret Nuts' }}</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="{{ '#F3EBDD' if isShop else '#0E4B3B' }}">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/fonts.css?v={{ assetV }}">
+<style nonce="{{ nonce }}">
+  :root{
+    --bg:#FFFFFF; --bg-2:#F6F4EF; --ink:#1B2A25; --muted:#3D4844; --accent:#0E4B3B; --accent-deep:#0A3A2D;
+    --gold:#C9A96E; --gold-text:#8A6A32; --on-accent:#FFFFFF;
+    --f-display:'Cormorant Garamond',Garamond,'Times New Roman',Georgia,serif;
+    --f-text:'Jost','Century Gothic','Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  .err--shop{
+    --bg:#FBF7F0; --bg-2:#F3EBDD; --ink:#3B2418; --muted:#6B4A38; --accent:#3B2418; --accent-deep:#2A190F;
+    --gold:#C8A15A; --gold-text:#6B4A38; --on-accent:#FBF7F0;
+    --f-display:'Fraunces',Georgia,'Times New Roman',serif;
+    --f-text:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{margin:0;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(120% 90% at 50% 0%,var(--bg) 0%,var(--bg-2) 100%);color:var(--ink);
+    font-family:var(--f-text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;padding:48px 16px}
+  .err__main{width:100%;max-width:640px;text-align:center}
+  .err__brand{display:inline-flex;align-items:center;justify-content:center;width:96px;height:96px;margin:0 auto 32px;border-radius:50%;
+    background:var(--bg);box-shadow:0 1px 0 var(--gold),0 18px 40px rgba(27,42,37,.10)}
+  .err__brand img{width:72px;height:72px;object-fit:contain}
+  .err__eyebrow{display:flex;align-items:center;justify-content:center;gap:16px;margin:0 0 20px;font-size:12px;font-weight:500;
+    letter-spacing:.32em;text-transform:uppercase;color:var(--gold-text)}
+  .err__eyebrow::before,.err__eyebrow::after{content:"";width:40px;height:1px;background:var(--gold)}
+  h1{margin:0 0 20px;font-family:var(--f-display);font-weight:500;font-size:clamp(36px,6vw,56px);line-height:1.05;color:var(--accent);overflow-wrap:break-word}
+  .err--shop h1{font-weight:600}
+  .err__text{margin:0 auto 36px;max-width:52ch;color:var(--muted)}
+  .err__actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .err__btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 28px;border:1px solid var(--accent);
+    background:var(--accent);color:var(--on-accent);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+    transition:background-color .3s ease,border-color .3s ease,color .3s ease}
+  .err__btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+  .err__btn--ghost{background:transparent;color:var(--accent)}
+  .err__btn--ghost:hover{background:var(--accent);color:var(--on-accent)}
+  .err--shop .err__btn{border-radius:999px;letter-spacing:.06em}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .err__ref{margin:32px 0 0;font-size:13px;color:var(--muted)}
+  .err__stack{margin:32px 0 0;padding:16px;max-height:40vh;overflow:auto;text-align:left;font-size:12px;line-height:1.5;background:#1B2A25;color:#F6F4EF;white-space:pre-wrap;word-break:break-word}
+  @media (prefers-reduced-motion:no-preference){
+    .err__main{animation:err-in .8s ease-out both}
+    @keyframes err-in{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body class="err err--{{ 'shop' if isShop else 'corporate' }}">
+  <main class="err__main" id="inhalt">
+    <a class="err__brand" href="/" aria-label="Hasret Nuts – zur Startseite"><img src="/assets/logo/hasret-logo.svg" alt="" width="72" height="72"></a>
+    {% block content %}
+    <p class="err__eyebrow">{% block eyebrow %}Fehler {{ status }}{% endblock %}</p>
+    <h1>{{ title }}</h1>
+    <p class="err__text">{{ message }}</p>
+    <div class="err__actions">
+      {% block actions %}
+      <a class="err__btn" href="/">Zur Startseite</a>
+      {% endblock %}
+    </div>
+    {% if errorRef %}<p class="err__ref">Fehlerkennung: {{ errorRef }} – bitte geben Sie diese bei Rückfragen an.</p>{% endif %}
+    {% if stack %}<pre class="err__stack">{{ stack }}</pre>{% endif %}
+    {% endblock %}
+  </main>
+</body>
+</html>

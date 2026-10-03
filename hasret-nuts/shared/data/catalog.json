@@ -1,0 +1,1398 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated": "2026-10-03",
+    "status": "Entwurf – Preise, Gewichte/Füllmengen, Zutaten, Allergene und Nährwerte sind vom Inhaber anhand der Etiketten zu bestätigen.",
+    "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen. Alle Preise in Cent (priceCents), inkl. MwSt. Zentrale Stelle für Preisänderungen ist diese Datei; der Server übernimmt niemals Preise vom Client.",
+    "allergenNote": "Allergene je Variante: contains = enthält, mayContain = kann Spuren enthalten. IDs siehe allergens.json (14 Hauptallergene nach LMIV Anhang II). allergensConfirmed bleibt false, bis der Inhaber jede Angabe mit dem Etikett abgeglichen hat.",
+    "basePriceNote": "Grundpreis (PAngV) = priceCents / weightG * 1000 bzw. / volumeMl * 1000. Wird nur angezeigt, wenn weightG/volumeMl (Turşu: drainedWeightG = Abtropfgewicht) bestätigt eingetragen ist.",
+    "photoNote": "Alle Bilder sind Platzhalter; Fotos liefert der Inhaber. Dateiname = Foto-ID (z. B. S-P01-A_premium-sarma-lokum.avif). Vollständige Liste: docs/FOTO-SHOTLISTE.md."
+  },
+  "currency": "EUR",
+  "filters": [
+    {
+      "key": "allergene",
+      "label": "Ohne Allergen",
+      "type": "allergens"
+    },
+    {
+      "key": "kategorie",
+      "label": "Kategorie",
+      "type": "category"
+    },
+    {
+      "key": "preis",
+      "label": "Preis",
+      "type": "price",
+      "options": [
+        {
+          "label": "bis 5 €",
+          "minCents": 0,
+          "maxCents": 499
+        },
+        {
+          "label": "5 – 10 €",
+          "minCents": 500,
+          "maxCents": 1000
+        },
+        {
+          "label": "über 10 €",
+          "minCents": 1001,
+          "maxCents": null
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "slug": "traditionelle-suesswaren",
+      "sort": 1,
+      "name": "Traditionelle Süßwaren",
+      "lead": "Süße Momente mit Geschichte.",
+      "text": "Sarma Lokum ist mehr als eine Süßigkeit: Es ist das Stück Heimat, das bei jedem Besuch auf dem Teller liegt. Unsere gerollten Fruchtgelee-Spezialitäten gibt es in vier Sorten – und im Messe-Bundle stellen Sie sich Ihr Trio ganz nach Geschmack zusammen.",
+      "seoTitle": "Sarma Lokum & türkische Süßwaren · Hasret Nuts Shop",
+      "seoDescription": "Traditionelle türkische Süßwaren online kaufen: Premium Sarma Lokum in Pistazie, Haselnuss, Rose und Kokos – einzeln oder im Messe-Bundle mit drei Packungen.",
+      "seoText": "Lokum, international als „Turkish Delight“ bekannt, gehört zu den traditionsreichsten Süßigkeiten der türkischen Küche und wird klassisch zum Tee oder Mokka gereicht. Bei Sarma Lokum wird das zarte Gelee gerollt – daher der Name, denn „sarma“ bedeutet „gewickelt“. Bei Hasret Nuts erhalten Sie Premium Sarma Lokum in den Sorten Pistazie, Haselnuss, Rose und Kokos. Wer sich nicht entscheiden möchte, kombiniert im Messe-Bundle drei Packungen frei nach Geschmack.",
+      "keywords": [
+        "Sarma Lokum kaufen",
+        "Lokum online bestellen",
+        "türkische Süßigkeiten",
+        "Pistazien-Lokum",
+        "Rosen-Lokum"
+      ],
+      "tile": {
+        "claim": "Sarma Lokum in vier Sorten.",
+        "photo": {
+          "id": "S-T01",
+          "label": "Foto S-T01 · Kachel Startseite · 4:5 · min. 1600 × 2000 px",
+          "ratio": "4:5",
+          "minSize": "1600 × 2000 px",
+          "alt": "Sarma-Lokum-Scheiben, gestapelt",
+          "text": "[FOTO-PLATZHALTER: Gestapelte Sarma-Lokum-Scheiben in mehreren Sorten, eine angeschnittene Rolle im Vordergrund zeigt ihre Schnittfläche. Perspektive: 30° seitlich, Makro, warmes Gegenlicht, Creme-Hintergrund.]"
+        }
+      },
+      "banner": {
+        "id": "S-K01",
+        "label": "Foto S-K01 · Kategorie-Banner · 16:9 · min. 2560 × 1440 px",
+        "ratio": "16:9",
+        "minSize": "2560 × 1440 px",
+        "alt": "Sarma Lokum auf einem Silbertablett mit Teeglas",
+        "text": "[FOTO-PLATZHALTER: Sarma-Lokum-Scheiben aller vier Sorten auf einem Silbertablett, ein Tulpenglas Tee daneben, feiner Glanz auf dem Gelee; links viel ruhige Creme-Fläche für die Überschrift. Perspektive: 45° schräg, warmes Licht (ca. 4800 K) von hinten, Creme-Leinen als Untergrund.]"
+      }
+    },
+    {
+      "slug": "feinkost",
+      "sort": 2,
+      "name": "Feinkost",
+      "lead": "Schätze aus der Speisekammer.",
+      "text": "Hausgemachtes Turşu im 1-kg-Glas und Karadut Özü aus schwarzen Maulbeeren: Unsere Feinkost bringt kräftige, ursprüngliche Aromen auf Ihren Tisch – als Beilage zu Gegrilltem, auf der Meze-Platte oder als fruchtiger Akzent in Getränken und Desserts.",
+      "seoTitle": "Turşu & Karadut Özü online kaufen · Hasret Nuts Shop",
+      "seoDescription": "Türkische Feinkost online kaufen: hausgemachtes Turşu im 1-kg-Glas mit Lila Gemüse oder Wildgurken und Karadut Özü, das Konzentrat aus schwarzen Maulbeeren.",
+      "seoText": "Turşu – in Lake eingelegtes Gemüse – gehört in der türkischen Küche fest auf den Tisch: als Beilage zu Gegrilltem und Köfte, zu weißen Bohnen und Pilav oder auf der Meze-Platte. Unser „Hasret Ev Yapımı Turşu“ ist hausgemacht und kommt im großzügigen 1-kg-Glas, wahlweise als Lila Gemüse oder Wildgurken. Karadut Özü ist ein Konzentrat aus schwarzen Maulbeeren („karadut“) – in Wasser verrührt, über Joghurt geträufelt oder in Desserts und Dressings verwendet.",
+      "keywords": [
+        "Turşu kaufen",
+        "Turşu 1 kg Glas",
+        "eingelegtes Gemüse türkisch",
+        "Karadut Özü kaufen",
+        "Maulbeer-Extrakt"
+      ],
+      "tile": {
+        "claim": "Turşu & Karadut Özü.",
+        "photo": {
+          "id": "S-T02",
+          "label": "Foto S-T02 · Kachel Startseite · 4:5 · min. 1600 × 2000 px",
+          "ratio": "4:5",
+          "minSize": "1600 × 2000 px",
+          "alt": "Turşu-Glas und Flasche Karadut Özü im Gegenlicht",
+          "text": "[FOTO-PLATZHALTER: Glas Turşu „Lila Gemüse“ neben der Flasche Karadut Özü, das Gegenlicht lässt Lake und Konzentrat leuchten. Perspektive: Augenhöhe 0°, warmes Gegenlicht von hinten links, Aufheller vorn, Creme-Hintergrund.]"
+        }
+      },
+      "banner": {
+        "id": "S-K02",
+        "label": "Foto S-K02 · Kategorie-Banner · 16:9 · min. 2560 × 1440 px",
+        "ratio": "16:9",
+        "minSize": "2560 × 1440 px",
+        "alt": "Feinkost-Tafel mit Turşu, Wildgurken und Karadut Özü",
+        "text": "[FOTO-PLATZHALTER: Feinkost-Tafel – geöffnetes Turşu-Glas mit Lila Gemüse, Schälchen mit Wildgurken, die Flasche Karadut Özü, ein Löffel zieht einen dunklen Fruchtfaden, angerissenes Fladenbrot. Perspektive: Flatlay exakt 90° von oben, helles Holz, Morgenlicht von links, f/8.]"
+      }
+    },
+    {
+      "slug": "nuesse-knabberzeug",
+      "sort": 3,
+      "name": "Nüsse & Knabberzeug",
+      "lead": "Knackig, aromatisch, unwiderstehlich.",
+      "text": "Ob zum Tee, zum Fußballabend oder für den kleinen Hunger zwischendurch: Geröstete Pistazien, Erdnüsse, klassische Leblebi und knusprige Chips-Kichererbsen sind die Begleiter für jeden geselligen Moment – pur, gemischt oder als Topping.",
+      "seoTitle": "Pistazien, Leblebi & Nüsse kaufen · Hasret Nuts Shop",
+      "seoDescription": "Nüsse & Knabberzeug online kaufen: geröstete Pistazien, Erdnüsse, Leblebi und Chips-Kichererbsen in 200-g-Packungen – der Klassiker zum Tee und für Snackabende.",
+      "seoText": "Geröstete Kichererbsen, auf Türkisch Leblebi, sind ein knuspriger Klassiker der türkischen Snackkultur und werden gern zum Tee gereicht. Pistazien und Erdnüsse gehören in der türkischen Gastfreundschaft in die Nussschale, die Gästen angeboten wird. Bei Hasret Nuts finden Sie geröstete und gesalzene Pistazien, geröstete Erdnüsse, Leblebi und Chips-Kichererbsen in praktischen 200-g-Packungen – ideal für die eigene Knabbermischung.",
+      "keywords": [
+        "Leblebi online bestellen",
+        "Pistazien geröstet gesalzen kaufen",
+        "geröstete Kichererbsen",
+        "Erdnüsse geröstet",
+        "türkisches Knabberzeug"
+      ],
+      "tile": {
+        "claim": "Knackig, aromatisch, geröstet.",
+        "photo": {
+          "id": "S-T03",
+          "label": "Foto S-T03 · Kachel Startseite · 4:5 · min. 1600 × 2000 px",
+          "ratio": "4:5",
+          "minSize": "1600 × 2000 px",
+          "alt": "Schale mit Pistazien, Erdnüssen und Leblebi",
+          "text": "[FOTO-PLATZHALTER: Große Schale mit Pistazien, Erdnüssen und Leblebi, eine Hand greift hinein. Perspektive: 60° von oben, warmes Licht (ca. 4800 K), Creme-Hintergrund.]"
+        }
+      },
+      "banner": {
+        "id": "S-K03",
+        "label": "Foto S-K03 · Kategorie-Banner · 16:9 · min. 2560 × 1440 px",
+        "ratio": "16:9",
+        "minSize": "2560 × 1440 px",
+        "alt": "Schalenreihe mit Pistazien, Erdnüssen, Leblebi und Chips-Kichererbsen",
+        "text": "[FOTO-PLATZHALTER: Lange Reihe kleiner Schalen mit Pistazien, Erdnüssen, Leblebi und Chips-Kichererbsen auf Creme-Leinen, eine Schale leicht umgekippt, Kerne rollen heraus. Perspektive: Flatlay exakt 90° von oben, Licht von links, f/8.]"
+      }
+    },
+    {
+      "slug": "trend-suesswaren",
+      "sort": 4,
+      "name": "Trend-Süßwaren",
+      "lead": "Bunt, verspielt, gerade angesagt.",
+      "text": "Manche Süßigkeiten schmecken nach Tradition, andere nach Gegenwart: In unseren Trend-Süßwaren finden Sie, was gerade viele begeistert – aktuell die bunte Labubu-Schokolade, ein fröhlicher Hingucker für Kinder, Sammler und alle, die gern überraschen.",
+      "seoTitle": "Trend-Süßwaren & Labubu-Schokolade · Hasret Nuts Shop",
+      "seoDescription": "Trend-Süßwaren online kaufen: die bunte Labubu-Schokolade als fröhliches Mitbringsel für Kindergeburtstag, Schultüte und Sammlerfreunde – bei Hasret Nuts.",
+      "seoText": "Neben traditionellen Spezialitäten führt Hasret Nuts ausgewählte Trend-Süßwaren für alle, die gern mit etwas Besonderem überraschen. Aktuell im Sortiment: die bunte Labubu-Schokolade – ein farbenfrohes Mitbringsel für Kindergeburtstag, Schultüte oder Sammlerfreunde. Hinweis: Genannte Marken gehören ihren jeweiligen Inhabern; Hasret Nuts ist kein offizieller Partner der Markeninhaber.",
+      "keywords": [
+        "Labubu-Schokolade kaufen",
+        "Trend-Süßigkeiten",
+        "bunte Schokolade",
+        "Mitbringsel Kindergeburtstag"
+      ],
+      "tile": {
+        "claim": "Bunte Labubu-Schokolade.",
+        "photo": {
+          "id": "S-T04",
+          "label": "Foto S-T04 · Kachel Startseite · 4:5 · min. 1600 × 2000 px",
+          "ratio": "4:5",
+          "minSize": "1600 × 2000 px",
+          "alt": "Bunte Labubu-Schokolade",
+          "text": "[FOTO-PLATZHALTER: Eine ausgepackte bunte Labubu-Schokolade, die Verpackung angelehnt daneben, ein paar farbige Akzente im Bild. Perspektive: 30° seitlich, Makro, weiches gleichmäßiges Licht, Creme-Hintergrund.]"
+        }
+      },
+      "banner": {
+        "id": "S-K04",
+        "label": "Foto S-K04 · Kategorie-Banner · 16:9 · min. 2560 × 1440 px",
+        "ratio": "16:9",
+        "minSize": "2560 × 1440 px",
+        "alt": "Bunte Labubu-Schokoladen auf Creme-Papier",
+        "text": "[FOTO-PLATZHALTER: Mehrere bunte Labubu-Schokoladen fröhlich, aber ruhig arrangiert auf Creme-Papier; rechts viel freie Fläche für die Überschrift. Perspektive: Flatlay exakt 90° von oben, weiches gleichmäßiges Licht, keine harten Schatten.]"
+      }
+    }
+  ],
+  "products": [
+    {
+      "slug": "premium-sarma-lokum",
+      "sort": 1,
+      "category": "traditionelle-suesswaren",
+      "type": "single",
+      "name": "Premium Sarma Lokum",
+      "nameTr": "Sarma Lokum",
+      "subtitle": "Gerollte Fruchtgelee-Variationen · 4 Sorten",
+      "short": "Zartes, gerolltes Fruchtgelee in vier Sorten – Pistazie, Haselnuss, Rose und Kokos.",
+      "description": [
+        "„Sarma“ bedeutet „gewickelt“ – und genau das macht diese Spezialität aus: Zartes Fruchtgelee wird zu einer feinen Rolle geformt, ein Klassiker der türkischen Süßwarentradition, der nach Teestunde und Familienbesuch schmeckt. Pistazie und Haselnuss bringen nussigen Biss, Rose den blumigen Duft des klassischen Lokum und Kokos eine helle, milde Note.",
+        "Am schönsten genießen Sie Sarma Lokum in feine Scheiben geschnitten zum türkischen Tee oder Mokka, als süßen Abschluss eines Essens oder hübsch angerichtet als Mitbringsel für Gastgeber. Unser Tipp: Im Messe-Bundle stellen Sie drei Packungen Ihrer Lieblingssorten frei zusammen."
+      ],
+      "highlights": [
+        "Vier Sorten: Pistazie, Haselnuss, Rose, Kokos",
+        "Gerollt – „Sarma“ heißt „gewickelt“",
+        "Ideal zum Tee und als Mitbringsel"
+      ],
+      "badges": [
+        "4 Sorten"
+      ],
+      "tags": [
+        "Lokum",
+        "Pistazie",
+        "Haselnuss",
+        "Rose",
+        "Kokos",
+        "Geschenkidee"
+      ],
+      "featured": true,
+      "variants": [
+        {
+          "sku": "sarma-lokum-pistazie",
+          "label": "Pistazie",
+          "priceCents": 800,
+          "size": "[GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [
+              "schalenfruechte"
+            ],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Enthält Pistazien (Schalenfrüchte). Spurenhinweise laut Etikett ergänzen."
+          },
+          "photo": {
+            "id": "S-P01-V1",
+            "label": "Foto S-P01-V1 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Premium Sarma Lokum Pistazie, Packung",
+            "text": "[FOTO-PLATZHALTER: Packung Sarma Lokum „Pistazie“ frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        },
+        {
+          "sku": "sarma-lokum-haselnuss",
+          "label": "Haselnuss",
+          "priceCents": 750,
+          "size": "[GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [
+              "schalenfruechte"
+            ],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Enthält Haselnüsse (Schalenfrüchte). Spurenhinweise laut Etikett ergänzen."
+          },
+          "photo": {
+            "id": "S-P01-V2",
+            "label": "Foto S-P01-V2 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Premium Sarma Lokum Haselnuss, Packung",
+            "text": "[FOTO-PLATZHALTER: Packung Sarma Lokum „Haselnuss“ frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        },
+        {
+          "sku": "sarma-lokum-rose",
+          "label": "Rose",
+          "priceCents": 700,
+          "size": "[GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen]"
+          },
+          "photo": {
+            "id": "S-P01-V3",
+            "label": "Foto S-P01-V3 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Premium Sarma Lokum Rose, Packung",
+            "text": "[FOTO-PLATZHALTER: Packung Sarma Lokum „Rose“ frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        },
+        {
+          "sku": "sarma-lokum-kokos",
+          "label": "Kokos",
+          "priceCents": 700,
+          "size": "[GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Hinweis: Kokos gehört nicht zu den 14 Hauptallergenen nach LMIV Anhang II (keine Schalenfrucht im Sinne der Verordnung). [laut Rezeptur/Etikett zu bestätigen]"
+          },
+          "photo": {
+            "id": "S-P01-V4",
+            "label": "Foto S-P01-V4 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Premium Sarma Lokum Kokos, Packung",
+            "text": "[FOTO-PLATZHALTER: Packung Sarma Lokum „Kokos“ frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett]",
+      "ingredients": "[ZUTATEN – laut Etikett] (je nach Sorte u. a. Pistazien, Haselnüsse oder Kokos)",
+      "nutrition": null,
+      "storage": "Trocken und vor Wärme geschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "sarma-lokum-messe-bundle",
+        "pistazien",
+        "karadut-ozu",
+        "leblebi"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P01-A",
+          "label": "Foto S-P01-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Premium Sarma Lokum – alle vier Sorten",
+          "text": "[FOTO-PLATZHALTER: Alle vier Sarma-Lokum-Packungen (Pistazie, Haselnuss, Rose, Kokos) leicht gestaffelt nebeneinander, freigestellt auf Creme #F3EBDD, Etiketten perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P01-B",
+          "label": "Foto S-P01-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – angeschnittene Sarma-Lokum-Rollen in allen vier Sorten, Schnittflächen bildfüllend, feine Glanzlichter auf dem Gelee. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, durchgehend scharf.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P01-G1",
+            "label": "Foto S-P01-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Geöffnete Packung Sarma Lokum mit aufgefächerten Scheiben",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung Sarma Lokum Pistazie, einige Scheiben liegen aufgefächert auf Creme-Leinen. Perspektive: 30° seitlich, warmes Licht (ca. 4800 K) von links hinten.]"
+          },
+          {
+            "id": "S-P01-G2",
+            "label": "Foto S-P01-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Sarma Lokum",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält eine Packung Sarma Lokum – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund, weiches Frontlicht.]"
+          },
+          {
+            "id": "S-P01-G3",
+            "label": "Foto S-P01-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Sarma Lokum mit Tee",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Sarma-Lokum-Scheiben auf einem kleinen Messingteller neben einem Tulpenglas Tee, eine Hand greift zu. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Premium Sarma Lokum kaufen – 4 Sorten · Hasret Nuts Shop",
+        "description": "Premium Sarma Lokum online kaufen: gerolltes Fruchtgelee in Pistazie, Haselnuss, Rose und Kokos. Ideal zum Tee – oder drei Sorten im Messe-Bundle kombinieren.",
+        "keywords": [
+          "Sarma Lokum kaufen",
+          "Pistazien-Lokum",
+          "Rosen-Lokum",
+          "Lokum Haselnuss",
+          "türkische Süßigkeiten online"
+        ]
+      }
+    },
+    {
+      "slug": "sarma-lokum-messe-bundle",
+      "sort": 2,
+      "category": "traditionelle-suesswaren",
+      "type": "bundle",
+      "name": "Sarma Lokum Messe-Bundle",
+      "nameTr": "Sarma Lokum",
+      "subtitle": "3 Packungen frei kombinierbar",
+      "short": "Drei Packungen Premium Sarma Lokum nach Wahl – frei kombinierbar zum festen Bundle-Preis.",
+      "description": [
+        "Unser Messe-Bundle bringt den Lieblingsmoment vom Messestand zu Ihnen nach Hause: Wählen Sie drei Packungen Premium Sarma Lokum und kombinieren Sie die Sorten ganz nach Geschmack – dreimal Pistazie, je eine Packung Rose, Kokos und Haselnuss oder Ihre ganz eigene Mischung.",
+        "Ideal zum Teilen, zum Probieren aller Sorten oder als kleines Geschenkset für Gastgeber, Familie und Kollegen. Der Bundle-Preis gilt für jede Kombination; wie viel Sie gegenüber dem Einzelkauf sparen, sehen Sie direkt bei Ihrer Auswahl."
+      ],
+      "highlights": [
+        "3 Packungen nach Wahl",
+        "Pistazie, Haselnuss, Rose und Kokos frei kombinierbar",
+        "Fester Bundle-Preis für jede Kombination"
+      ],
+      "badges": [
+        "Messe-Angebot"
+      ],
+      "tags": [
+        "Lokum",
+        "Pistazie",
+        "Haselnuss",
+        "Rose",
+        "Kokos",
+        "Geschenkidee",
+        "Angebot"
+      ],
+      "featured": false,
+      "variants": [
+        {
+          "sku": "sarma-lokum-messe-bundle",
+          "label": "3 Packungen nach Wahl",
+          "priceCents": 2000,
+          "size": "3 × [GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "Abhängig von den gewählten Sorten – die Angaben je Sorte finden Sie bei „Premium Sarma Lokum“ (vorläufig – vom Inhaber anhand der Etiketten zu bestätigen)."
+          }
+        }
+      ],
+      "bundle": {
+        "productSlug": "premium-sarma-lokum",
+        "count": 3,
+        "priceCents": 2000,
+        "selectLabel": "Sorte für Packung {n}",
+        "hint": "Wählen Sie für jede der drei Packungen eine Sorte – auch mehrfach dieselbe."
+      },
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett der gewählten Sorten]",
+      "ingredients": "Je nach gewählter Sorte – siehe „Premium Sarma Lokum“. [ZUTATEN – laut Etikett]",
+      "nutrition": null,
+      "storage": "Trocken und vor Wärme geschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "premium-sarma-lokum",
+        "pistazien",
+        "karadut-ozu",
+        "labubu-schokolade"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P02-A",
+          "label": "Foto S-P02-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Sarma Lokum Messe-Bundle – drei Packungen in verschiedenen Sorten",
+          "text": "[FOTO-PLATZHALTER: Drei Sarma-Lokum-Packungen in unterschiedlichen Sorten, leicht gefächert aufgestellt, freigestellt auf Creme #F3EBDD, Etiketten lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P02-B",
+          "label": "Foto S-P02-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – je eine angeschnittene Rolle von drei Sorten nebeneinander auf Creme-Leinen, Schnittflächen bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P02-G1",
+            "label": "Foto S-P02-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Alle vier Sarma-Lokum-Sorten zur Auswahl ausgelegt",
+            "text": "[FOTO-PLATZHALTER: Alle vier Sorten als Auswahl ausgelegt, daneben ein schlichtes Geschenkband als Hinweis aufs Verschenken. Perspektive: Flatlay 90°, Creme-Leinen, Licht von links.]"
+          },
+          {
+            "id": "S-P02-G2",
+            "label": "Foto S-P02-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Zwei Hände halten drei Packungen Sarma Lokum",
+            "text": "[FOTO-PLATZHALTER: Zwei Hände halten die drei Packungen gestapelt – zeigt die echte Größe des Bundles. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P02-G3",
+            "label": "Foto S-P02-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: gemischte Sarma-Lokum-Scheiben für Gäste",
+            "text": "[FOTO-PLATZHALTER: Gastgeber-Szene – Teller mit gemischten Sarma-Lokum-Scheiben aus drei Sorten, Teegläser, Hände greifen zu. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Sarma Lokum Messe-Bundle – 3 Packungen · Hasret Nuts Shop",
+        "description": "Sarma Lokum im Messe-Bundle: drei Packungen Pistazie, Haselnuss, Rose oder Kokos frei kombinieren – zum festen Bundle-Preis. Ideal zum Teilen und Verschenken.",
+        "keywords": [
+          "Sarma Lokum Set",
+          "Lokum Geschenkset",
+          "Sarma Lokum kaufen",
+          "Messe-Angebot Lokum"
+        ]
+      }
+    },
+    {
+      "slug": "hausgemachte-tursu",
+      "sort": 1,
+      "category": "feinkost",
+      "type": "single",
+      "name": "Hasret Ev Yapımı Turşu",
+      "nameTr": "Ev Yapımı Turşu",
+      "subtitle": "Hausgemachte Feinkost-Gemüsekonserve · 1-kg-Glas",
+      "short": "Hausgemacht eingelegtes Gemüse im 1-kg-Glas – als Lila Gemüse oder Wildgurken.",
+      "description": [
+        "„Ev yapımı“ heißt „hausgemacht“ – und genau so schmeckt unser Turşu: kräftig, würzig-säuerlich und mit dem Charakter, den man aus der Speisekammer der Familie kennt. Zur Wahl stehen das farbintensive Lila Gemüse und aromatische Wildgurken, jeweils im großzügigen 1-kg-Glas.",
+        "Turşu gehört in der türkischen Küche auf den Tisch: als Beilage zu Gegrilltem, Köfte und Döner, zu weißen Bohnen und Pilav oder auf einer bunten Meze-Platte. Nach dem Öffnen gekühlt aufbewahren und das Gemüse stets mit Lake bedeckt halten."
+      ],
+      "highlights": [
+        "Hausgemacht – „Ev Yapımı“",
+        "Zwei Sorten: Lila Gemüse und Wildgurken",
+        "Großzügiges 1-kg-Glas"
+      ],
+      "badges": [
+        "Hausgemacht",
+        "1-kg-Glas"
+      ],
+      "tags": [
+        "Turşu",
+        "Eingelegtes Gemüse",
+        "Lila Gemüse",
+        "Wildgurken",
+        "Meze"
+      ],
+      "featured": true,
+      "variants": [
+        {
+          "sku": "tursu-lila-gemuese",
+          "label": "Lila Gemüse",
+          "priceCents": 890,
+          "size": "1-kg-Glas",
+          "note": "Abtropfgewicht [X] g",
+          "weightG": null,
+          "drainedWeightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen – z. B. Senf, Sellerie oder Sulfite je nach Rezeptur]"
+          },
+          "photo": {
+            "id": "S-P03-V1",
+            "label": "Foto S-P03-V1 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Turşu Lila Gemüse im 1-kg-Glas",
+            "text": "[FOTO-PLATZHALTER: 1-kg-Glas Turşu „Lila Gemüse“ frontal auf Creme #F3EBDD, Etikett lesbar, dezentes Gegenlicht lässt die Lake leuchten, keine Reflexe auf dem Glas. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        },
+        {
+          "sku": "tursu-wildgurken",
+          "label": "Wildgurken",
+          "priceCents": 790,
+          "size": "1-kg-Glas",
+          "note": "Abtropfgewicht [X] g",
+          "weightG": null,
+          "drainedWeightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen – z. B. Senf, Sellerie oder Sulfite je nach Rezeptur]"
+          },
+          "photo": {
+            "id": "S-P03-V2",
+            "label": "Foto S-P03-V2 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Turşu Wildgurken im 1-kg-Glas",
+            "text": "[FOTO-PLATZHALTER: 1-kg-Glas Turşu „Wildgurken“ frontal auf Creme #F3EBDD, Etikett lesbar, dezentes Gegenlicht lässt die Lake leuchten, keine Reflexe auf dem Glas. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Gemüse, eingelegt“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Wildgurken bzw. [GEMÜSESORTEN „Lila Gemüse“], Lake)",
+      "nutrition": null,
+      "storage": "Ungeöffnet kühl und dunkel lagern. Nach dem Öffnen gekühlt aufbewahren und das Gemüse mit Lake bedeckt halten. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "Hausgemacht · [HERSTELLUNGSORT – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "basePriceBasis": "Abtropfgewicht",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "leblebi",
+        "karadut-ozu",
+        "chips-kichererbsen",
+        "pistazien"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P03-A",
+          "label": "Foto S-P03-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Hasret Ev Yapımı Turşu – Lila Gemüse und Wildgurken im 1-kg-Glas",
+          "text": "[FOTO-PLATZHALTER: Beide 1-kg-Gläser (Lila Gemüse und Wildgurken) nebeneinander, frontal auf Creme #F3EBDD, Etiketten lesbar, Gegenlicht lässt die Lake leuchten, keine Spiegelungen. Perspektive: 0° Augenhöhe, 85–100 mm, Softbox von hinten oben plus Aufheller vorn, Polfilter gegen Reflexe, Stativ.]"
+        },
+        "detail": {
+          "id": "S-P03-B",
+          "label": "Foto S-P03-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – eingelegtes Gemüse in Lake, leuchtendes Lila und tiefes Grün bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht in das geöffnete Glas, f/8, kein Blitz.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P03-G1",
+            "label": "Foto S-P03-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Geöffnetes Turşu-Glas, eine Gabel hebt eine Wildgurke heraus",
+            "text": "[FOTO-PLATZHALTER: Geöffnetes Glas, eine Gabel hebt eine Wildgurke heraus, ein Tropfen Lake fällt zurück. Perspektive: 30° seitlich, 1/250 s, Creme-Leinen, warmes Licht von links hinten.]"
+          },
+          {
+            "id": "S-P03-G2",
+            "label": "Foto S-P03-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält das 1-kg-Glas Turşu",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält das 1-kg-Glas – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P03-G3",
+            "label": "Foto S-P03-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Turşu zu Köfte, Fladenbrot und Pilav",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Schälchen mit Turşu neben gegrillten Köfte, Fladenbrot und Pilav. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Turşu 1 kg Glas kaufen – hausgemacht · Hasret Nuts Shop",
+        "description": "Hausgemachtes Turşu im 1-kg-Glas online bestellen: Lila Gemüse oder Wildgurken, würzig-säuerlich eingelegt – die klassische Beilage zu Gegrilltem und Meze.",
+        "keywords": [
+          "Turşu 1 kg Glas",
+          "Turşu kaufen",
+          "hausgemachtes Turşu",
+          "eingelegte Wildgurken",
+          "türkisches eingelegtes Gemüse"
+        ]
+      }
+    },
+    {
+      "slug": "karadut-ozu",
+      "sort": 2,
+      "category": "feinkost",
+      "type": "single",
+      "name": "Karadut Özü",
+      "nameTr": "Karadut Özü",
+      "subtitle": "Natürlicher Maulbeer-Extrakt · 100 % Fruchtkonzentrat",
+      "short": "Konzentrat aus schwarzen Maulbeeren – tiefdunkel, intensiv fruchtig und vielseitig in Glas und Küche.",
+      "description": [
+        "„Karadut“ heißt „schwarze Maulbeere“: Karadut Özü ist ein Konzentrat aus dieser tiefdunklen Frucht – laut Etikett 100 % Fruchtkonzentrat [bitte bestätigen]. Es ist intensiv fruchtig, angenehm dicht und bringt eine feine Säure mit, die Getränke und Desserts lebendig macht.",
+        "Schon wenig genügt: In kaltes Wasser oder Mineralwasser gerührt entsteht eine fruchtige Erfrischung, über Joghurt, Grießpudding oder Vanilleeis ein dunkler Fruchtspiegel – und in Dressings oder Marinaden ein überraschender Akzent. Nach dem Öffnen gekühlt aufbewahren."
+      ],
+      "highlights": [
+        "Aus schwarzen Maulbeeren – „Karadut“",
+        "100 % Fruchtkonzentrat [bitte bestätigen]",
+        "Für Getränke, Desserts und Dressings"
+      ],
+      "badges": [
+        "2 Größen"
+      ],
+      "tags": [
+        "Maulbeere",
+        "Fruchtkonzentrat",
+        "Sirup",
+        "Frühstück"
+      ],
+      "featured": true,
+      "variants": [
+        {
+          "sku": "karadut-ozu-klein",
+          "label": "Flasche klein · [X] ml",
+          "priceCents": 800,
+          "size": "[X] ml",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen]"
+          },
+          "photo": {
+            "id": "S-P04-V1",
+            "label": "Foto S-P04-V1 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Karadut Özü, kleine Flasche",
+            "text": "[FOTO-PLATZHALTER: Kleine Flasche Karadut Özü frontal auf Creme #F3EBDD, Etikett lesbar, Streiflicht von hinten zeigt die tiefviolette Farbe am Flaschenhals. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        },
+        {
+          "sku": "karadut-ozu-gross",
+          "label": "Flasche groß · [X] ml",
+          "priceCents": 1200,
+          "size": "[X] ml",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen]"
+          },
+          "photo": {
+            "id": "S-P04-V2",
+            "label": "Foto S-P04-V2 · Packshot Sorte/Größe · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Karadut Özü, große Flasche",
+            "text": "[FOTO-PLATZHALTER: Große Flasche Karadut Özü frontal auf Creme #F3EBDD, Etikett lesbar, Streiflicht von hinten zeigt die tiefviolette Farbe am Flaschenhals. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Maulbeer-Fruchtkonzentrat“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. schwarze Maulbeeren)",
+      "nutrition": null,
+      "storage": "Ungeöffnet kühl und dunkel lagern, nach dem Öffnen im Kühlschrank aufbewahren. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "l",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "premium-sarma-lokum",
+        "hausgemachte-tursu",
+        "pistazien",
+        "leblebi"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P04-A",
+          "label": "Foto S-P04-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Karadut Özü – kleine und große Flasche",
+          "text": "[FOTO-PLATZHALTER: Beide Flaschen (klein und groß) nebeneinander, frontal auf Creme #F3EBDD, Etiketten lesbar, Gegenlicht zeigt die tiefviolette Farbe am Flaschenhals, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen plus Streiflicht von hinten, Polfilter gegen Reflexe, Stativ.]"
+        },
+        "detail": {
+          "id": "S-P04-B",
+          "label": "Foto S-P04-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – ein Löffel lässt den dunklen Maulbeer-Extrakt in einem glänzenden Faden in ein Schälchen laufen. Gleiche Bildmitte wie der Packshot. Perspektive: 45° seitlich, 1/500 s, dunkler Hintergrund für maximalen Glanz.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P04-G1",
+            "label": "Foto S-P04-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Karadut Özü läuft in ein Glas Wasser und bildet violette Schlieren",
+            "text": "[FOTO-PLATZHALTER: Ein Glas Wasser, in das der Extrakt einläuft und violette Schlieren bildet; die geöffnete Flasche daneben. Perspektive: Augenhöhe, Gegenlicht, 1/250 s, heller Hintergrund.]"
+          },
+          {
+            "id": "S-P04-G2",
+            "label": "Foto S-P04-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält die große Flasche Karadut Özü, daneben die kleine",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die große Flasche, die kleine steht daneben – zeigt beide Größen im Vergleich. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P04-G3",
+            "label": "Foto S-P04-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Joghurt mit Karadut Özü",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Schale Joghurt mit dunklem Maulbeer-Spiegel, ein Löffel daneben. Perspektive: 45° Tischperspektive, Morgenlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Karadut Özü – Maulbeer-Extrakt kaufen · Hasret Nuts Shop",
+        "description": "Karadut Özü online kaufen: Konzentrat aus schwarzen Maulbeeren in zwei Flaschengrößen – für fruchtige Getränke, über Joghurt, in Desserts und in Dressings.",
+        "keywords": [
+          "Karadut Özü kaufen",
+          "Maulbeer-Extrakt",
+          "Maulbeer-Konzentrat",
+          "schwarze Maulbeere",
+          "Dut Özü"
+        ]
+      }
+    },
+    {
+      "slug": "leblebi",
+      "sort": 1,
+      "category": "nuesse-knabberzeug",
+      "type": "single",
+      "name": "Leblebi",
+      "nameTr": "Leblebi",
+      "subtitle": "Geröstete Kichererbsen · 200 g",
+      "short": "Der knusprige Klassiker der türkischen Snackkultur – geröstete Kichererbsen zum Tee.",
+      "description": [
+        "Leblebi sind geröstete Kichererbsen – ein Klassiker, der in der Türkei gern zum Tee und zu guten Gesprächen gereicht wird. Knusprig im Biss, mild und angenehm nussig im Geschmack und herrlich unkompliziert: Packung öffnen und genießen.",
+        "Probieren Sie Leblebi pur, gemischt mit Rosinen – eine beliebte Kombination für unterwegs –, über Salate gestreut oder als knuspriges Topping für Suppen. Zusammen mit Pistazien und Erdnüssen wird daraus Ihre eigene Knabbermischung."
+      ],
+      "highlights": [
+        "Geröstete Kichererbsen",
+        "Knuspriger Klassiker zum Tee",
+        "Praktische 200-g-Packung"
+      ],
+      "badges": [
+        "Klassiker"
+      ],
+      "tags": [
+        "Kichererbsen",
+        "Geröstet",
+        "Snack"
+      ],
+      "featured": false,
+      "variants": [
+        {
+          "sku": "leblebi-200g",
+          "label": "200 g",
+          "priceCents": 250,
+          "size": "200 g",
+          "weightG": 200,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen]"
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Kichererbsen, geröstet“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Kichererbsen)",
+      "nutrition": null,
+      "storage": "Kühl, trocken und lichtgeschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "pistazien",
+        "erdnuesse",
+        "chips-kichererbsen",
+        "premium-sarma-lokum"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P05-A",
+          "label": "Foto S-P05-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Leblebi – geröstete Kichererbsen, 200-g-Packung",
+          "text": "[FOTO-PLATZHALTER: Packung Leblebi 200 g frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P05-B",
+          "label": "Foto S-P05-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – goldgelbe geröstete Kichererbsen, einige aufgebrochen, bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, durchgehend scharf.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P05-G1",
+            "label": "Foto S-P05-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Leblebi rieseln aus der geöffneten Packung in eine Messingschale",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung, Leblebi rieseln in eine kleine Messingschale. Perspektive: 30° seitlich, Creme-Leinen, warmes Licht von links hinten.]"
+          },
+          {
+            "id": "S-P05-G2",
+            "label": "Foto S-P05-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Leblebi",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die 200-g-Packung – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P05-G3",
+            "label": "Foto S-P05-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Leblebi mit Rosinen zum Tee",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Leblebi mit Rosinen gemischt in einer Schale neben einem Tulpenglas Tee. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Leblebi online bestellen – 200 g · Hasret Nuts Shop",
+        "description": "Leblebi online bestellen: geröstete Kichererbsen in der 200-g-Packung – der knusprige Klassiker zum Tee, pur, mit Rosinen gemischt oder als Topping für Salate.",
+        "keywords": [
+          "Leblebi online bestellen",
+          "Leblebi kaufen",
+          "geröstete Kichererbsen",
+          "türkischer Snack"
+        ]
+      }
+    },
+    {
+      "slug": "chips-kichererbsen",
+      "sort": 2,
+      "category": "nuesse-knabberzeug",
+      "type": "single",
+      "name": "Chips-Kichererbsen",
+      "nameTr": null,
+      "subtitle": "Knusprig geröstet · 200 g",
+      "short": "Knusprig geröstete Kichererbsen im Chips-Stil – der herzhafte Snack für gesellige Abende.",
+      "description": [
+        "Wenn Leblebi auf Chips trifft: Unsere Chips-Kichererbsen sind knusprig geröstet, herzhaft im Geschmack und genau richtig für alle, die beim Knabbern gern etwas mehr Biss haben. [WÜRZUNG / GESCHMACKSRICHTUNG – laut Etikett]",
+        "Perfekt für den Fußballabend, den Filmabend oder als knuspriges Extra auf der Snackplatte – und eine spannende Abwechslung zu klassischen Kartoffelchips. Gut verschlossen bleiben sie bis zur nächsten Runde schön knusprig."
+      ],
+      "highlights": [
+        "Knusprige Kichererbsen im Chips-Stil",
+        "Herzhafter Snack für gesellige Abende",
+        "200-g-Packung zum Teilen"
+      ],
+      "badges": [],
+      "tags": [
+        "Kichererbsen",
+        "Geröstet",
+        "Snack",
+        "Herzhaft"
+      ],
+      "featured": false,
+      "variants": [
+        {
+          "sku": "chips-kichererbsen-200g",
+          "label": "200 g",
+          "priceCents": 290,
+          "size": "200 g",
+          "weightG": 200,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. [laut Rezeptur/Etikett zu bestätigen – Würzmischungen können z. B. Milch, Gluten, Sellerie oder Senf enthalten]"
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Kichererbsen, [WÜRZUNG])",
+      "nutrition": null,
+      "storage": "Kühl, trocken und lichtgeschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "leblebi",
+        "erdnuesse",
+        "pistazien",
+        "hausgemachte-tursu"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P06-A",
+          "label": "Foto S-P06-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Chips-Kichererbsen, 200-g-Packung",
+          "text": "[FOTO-PLATZHALTER: Packung Chips-Kichererbsen 200 g frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P06-B",
+          "label": "Foto S-P06-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – knusprige Kichererbsen mit sichtbarer Würzung, bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, durchgehend scharf.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P06-G1",
+            "label": "Foto S-P06-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Geöffnete Packung Chips-Kichererbsen",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung, einige Chips-Kichererbsen liegen davor auf Creme-Leinen. Perspektive: 30° seitlich, warmes Licht von links hinten.]"
+          },
+          {
+            "id": "S-P06-G2",
+            "label": "Foto S-P06-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Chips-Kichererbsen",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die 200-g-Packung – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P06-G3",
+            "label": "Foto S-P06-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Chips-Kichererbsen auf der Snackplatte",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Schale Chips-Kichererbsen auf einer Snackplatte für den Filmabend, Hände greifen zu. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Chips-Kichererbsen kaufen – 200 g · Hasret Nuts Shop",
+        "description": "Chips-Kichererbsen online kaufen: knusprig geröstete Kichererbsen im Chips-Stil in der 200-g-Packung – der herzhafte Snack für Fußball-, Film- und Spieleabende.",
+        "keywords": [
+          "Chips-Kichererbsen",
+          "Kichererbsen-Snack",
+          "knusprige Kichererbsen",
+          "Kichererbsen-Chips"
+        ]
+      }
+    },
+    {
+      "slug": "pistazien",
+      "sort": 3,
+      "category": "nuesse-knabberzeug",
+      "type": "single",
+      "name": "Pistazien",
+      "nameTr": "Fıstık",
+      "subtitle": "Geröstet & gesalzen · 200 g",
+      "short": "Geröstet und gesalzen – der Klassiker für die Nussschale, zum Tee und für gesellige Abende.",
+      "description": [
+        "Pistazien sind die Königinnen der Nussschale: Geröstet und gesalzen entfalten sie ihr volles, leicht süßliches Aroma, das wunderbar mit der feinen Salznote harmoniert. In der türkischen Gastfreundschaft gehören sie in die Schale, die Gästen zur Begrüßung angeboten wird.",
+        "Genießen Sie sie pur zum Tee, als Begleiter zu einem Glas Ayran oder gehackt über Joghurt, Salaten und Desserts. Nach dem Öffnen gut verschlossen, kühl und trocken aufbewahren."
+      ],
+      "highlights": [
+        "Geröstet & gesalzen",
+        "Klassiker für Gäste und Teestunde",
+        "Praktische 200-g-Packung"
+      ],
+      "badges": [],
+      "tags": [
+        "Pistazie",
+        "Geröstet",
+        "Gesalzen",
+        "Snack"
+      ],
+      "featured": true,
+      "variants": [
+        {
+          "sku": "pistazien-200g",
+          "label": "200 g",
+          "priceCents": 390,
+          "size": "200 g",
+          "weightG": 200,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [
+              "schalenfruechte"
+            ],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Enthält Pistazien (Schalenfrüchte). Spurenhinweise laut Etikett ergänzen."
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Pistazien, geröstet und gesalzen“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Pistazien, Speisesalz)",
+      "nutrition": null,
+      "storage": "Kühl, trocken und lichtgeschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "premium-sarma-lokum",
+        "leblebi",
+        "erdnuesse",
+        "karadut-ozu"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P07-A",
+          "label": "Foto S-P07-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Pistazien geröstet und gesalzen, 200-g-Packung",
+          "text": "[FOTO-PLATZHALTER: Packung Pistazien 200 g frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P07-B",
+          "label": "Foto S-P07-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – geröstete Pistazien mit grünen Kernen, Salzkristalle glitzern im Licht, bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, durchgehend scharf.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P07-G1",
+            "label": "Foto S-P07-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Pistazien rieseln aus der geöffneten Packung",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung, Pistazien rieseln auf Creme-Leinen. Perspektive: 30° seitlich, warmes Licht (ca. 4800 K) von links hinten.]"
+          },
+          {
+            "id": "S-P07-G2",
+            "label": "Foto S-P07-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Pistazien",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die 200-g-Packung – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P07-G3",
+            "label": "Foto S-P07-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Pistazien mit Tee und Joghurt",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Schale Pistazien neben einem Tulpenglas Tee, gehackte Pistazien über Joghurt. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Pistazien geröstet & gesalzen, 200 g · Hasret Nuts Shop",
+        "description": "Pistazien geröstet und gesalzen online kaufen: die 200-g-Packung für Teestunde, Gäste und Snackplatte – pur genießen oder gehackt über Joghurt und Desserts.",
+        "keywords": [
+          "Pistazien geröstet gesalzen kaufen",
+          "Pistazien 200 g",
+          "Pistazien online bestellen",
+          "Knabber-Pistazien"
+        ]
+      }
+    },
+    {
+      "slug": "erdnuesse",
+      "sort": 4,
+      "category": "nuesse-knabberzeug",
+      "type": "single",
+      "name": "Erdnüsse",
+      "nameTr": "Yer Fıstığı",
+      "subtitle": "Geröstet · 200 g",
+      "short": "Goldbraun geröstete Erdnüsse – unkompliziert, aromatisch und immer einen Griff wert.",
+      "description": [
+        "Manchmal ist der einfachste Snack der beste: Unsere Erdnüsse sind goldbraun geröstet und bringen ihr typisches, warmes Röstaroma mit – genau richtig für die Schale auf dem Wohnzimmertisch.",
+        "Pur zum Fernsehabend, gemischt mit Leblebi und Pistazien zur eigenen Knabbermischung oder grob gehackt über Nudelgerichte und Salate: Erdnüsse sind die vielseitigen Allrounder unter den Snacks."
+      ],
+      "highlights": [
+        "Geröstet",
+        "Für die eigene Knabbermischung",
+        "Praktische 200-g-Packung"
+      ],
+      "badges": [],
+      "tags": [
+        "Erdnuss",
+        "Geröstet",
+        "Snack"
+      ],
+      "featured": false,
+      "variants": [
+        {
+          "sku": "erdnuesse-200g",
+          "label": "200 g",
+          "priceCents": 220,
+          "size": "200 g",
+          "weightG": 200,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [
+              "erdnuesse"
+            ],
+            "mayContain": [],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Enthält Erdnüsse. Spurenhinweise (z. B. Schalenfrüchte) laut Etikett ergänzen."
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Erdnüsse, geröstet“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Erdnüsse)",
+      "nutrition": null,
+      "storage": "Kühl, trocken und lichtgeschützt lagern, nach dem Öffnen gut verschließen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "pistazien",
+        "leblebi",
+        "chips-kichererbsen",
+        "labubu-schokolade"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P08-A",
+          "label": "Foto S-P08-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Erdnüsse geröstet, 200-g-Packung",
+          "text": "[FOTO-PLATZHALTER: Packung Erdnüsse 200 g frontal, freigestellt auf Creme #F3EBDD, Etikett perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P08-B",
+          "label": "Foto S-P08-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – goldbraun geröstete Erdnüsse, einige halbiert, bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, durchgehend scharf.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P08-G1",
+            "label": "Foto S-P08-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Erdnüsse aus der geöffneten Packung in einer Holzschale",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung, Erdnüsse rieseln in eine kleine Holzschale. Perspektive: 30° seitlich, Creme-Leinen, warmes Licht von links hinten.]"
+          },
+          {
+            "id": "S-P08-G2",
+            "label": "Foto S-P08-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Erdnüsse",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die 200-g-Packung – zeigt die echte Größe. Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P08-G3",
+            "label": "Foto S-P08-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Serviervorschlag: Knabbermischung aus Erdnüssen, Leblebi und Pistazien",
+            "text": "[FOTO-PLATZHALTER: Serviervorschlag – Knabbermischung aus Erdnüssen, Leblebi und Pistazien in einer Schale auf dem Wohnzimmertisch. Perspektive: 45° Tischperspektive, warmes Abendlicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Erdnüsse geröstet kaufen – 200 g · Hasret Nuts Shop",
+        "description": "Geröstete Erdnüsse online kaufen: die 200-g-Packung mit warmem Röstaroma – pur zum Fernsehabend oder für Ihre eigene Knabbermischung mit Leblebi und Pistazien.",
+        "keywords": [
+          "Erdnüsse geröstet kaufen",
+          "Erdnüsse 200 g",
+          "Knabbermischung",
+          "geröstete Erdnüsse online"
+        ]
+      }
+    },
+    {
+      "slug": "labubu-schokolade",
+      "sort": 1,
+      "category": "trend-suesswaren",
+      "type": "single",
+      "name": "Bunte Labubu-Schokolade",
+      "nameTr": null,
+      "subtitle": "Trend-Süßware · [GEWICHT] g",
+      "short": "Farbenfrohe Schokolade für Fans der Trendfigur – ein süßer Hingucker zum Verschenken.",
+      "description": [
+        "Bunt, verspielt und ein echter Hingucker: Unsere Labubu-Schokolade ist die süße Antwort auf einen großen Trend – ideal als kleine Überraschung für Kinder, für Sammlerinnen und Sammler oder für alle, die gern gute Laune verschenken.",
+        "Als Mitbringsel zum Kindergeburtstag, als Überraschung in der Schultüte oder einfach zum Selbstgenießen. Bitte kühl und trocken lagern, damit Farben und Form schön erhalten bleiben."
+      ],
+      "highlights": [
+        "Bunt und verspielt gestaltet",
+        "Ideal zum Verschenken",
+        "Für Fans der Trendfigur"
+      ],
+      "badges": [
+        "Trend"
+      ],
+      "tags": [
+        "Schokolade",
+        "Trend",
+        "Geschenkidee",
+        "Kinder"
+      ],
+      "featured": false,
+      "trademarkNote": "Labubu ist eine Marke ihres jeweiligen Inhabers. Hasret Nuts ist weder offizieller Partner noch Lizenznehmer des Markeninhabers und vertreibt dieses Produkt als Händler. [LIZENZ-/HERKUNFTSNACHWEIS VOM INHABER ZU PRÜFEN]",
+      "variants": [
+        {
+          "sku": "labubu-schokolade",
+          "label": "Packung · [GEWICHT] g",
+          "priceCents": 650,
+          "size": "[GEWICHT] g",
+          "weightG": null,
+          "volumeMl": null,
+          "available": true,
+          "allergens": {
+            "contains": [
+              "milch",
+              "soja"
+            ],
+            "mayContain": [
+              "schalenfruechte"
+            ],
+            "note": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen. Typische Angaben für Schokolade (Milch, Soja) – vom Inhaber anhand des Etiketts zu bestätigen. Kann Spuren von Schalenfrüchten enthalten."
+          }
+        }
+      ],
+      "bundle": null,
+      "legalName": "[BEZEICHNUNG DES LEBENSMITTELS – laut Etikett, z. B. „Milchschokolade“]",
+      "ingredients": "[ZUTATEN – laut Etikett] (u. a. Schokolade)",
+      "nutrition": null,
+      "storage": "Kühl und trocken lagern, vor Wärme und direkter Sonne schützen. [AUFBEWAHRUNG – laut Etikett bestätigen]",
+      "origin": "[HERKUNFTSLAND – laut Etikett]",
+      "producer": "[HERSTELLER / INVERKEHRBRINGER mit Anschrift – laut Etikett]",
+      "basePriceUnit": "kg",
+      "allergensConfirmed": false,
+      "allergenStatus": "vorläufig – vom Inhaber anhand der Etiketten zu bestätigen",
+      "priceNote": "Preis aus Ihrer Spanne gewählt – bitte bestätigen",
+      "pairsWith": [
+        "premium-sarma-lokum",
+        "sarma-lokum-messe-bundle",
+        "pistazien",
+        "erdnuesse"
+      ],
+      "photos": {
+        "packshot": {
+          "id": "S-P09-A",
+          "label": "Foto S-P09-A · Packshot · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "Bunte Labubu-Schokolade, Packung",
+          "text": "[FOTO-PLATZHALTER: Packung Bunte Labubu-Schokolade frontal, freigestellt auf Creme #F3EBDD, Verpackung perfekt lesbar, weicher Bodenschatten. Perspektive: 0° Augenhöhe, 85–100 mm, zwei Softboxen links und rechts, Stativ – Position wie bei allen Packshots markiert.]"
+        },
+        "detail": {
+          "id": "S-P09-B",
+          "label": "Foto S-P09-B · Hover-Detailbild · 4:5 · min. 2000 × 2500 px",
+          "ratio": "4:5",
+          "minSize": "2000 × 2500 px",
+          "alt": "",
+          "text": "[FOTO-PLATZHALTER: Makro – die ausgepackte Schokolade mit ihren Farben und Details bildfüllend. Gleiche Bildmitte wie der Packshot. Perspektive: 90° Draufsicht, f/8, weiches gleichmäßiges Licht.]"
+        },
+        "gallery": [
+          {
+            "id": "S-P09-G1",
+            "label": "Foto S-P09-G1 · Galerie · geöffnet · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Geöffnete Packung Labubu-Schokolade",
+            "text": "[FOTO-PLATZHALTER: Geöffnete Packung, die Schokolade liegt halb herausgezogen davor. Perspektive: 30° seitlich, Creme-Papier, weiches Licht von links.]"
+          },
+          {
+            "id": "S-P09-G2",
+            "label": "Foto S-P09-G2 · Galerie · Größenreferenz · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Hand hält eine Packung Labubu-Schokolade",
+            "text": "[FOTO-PLATZHALTER: Eine Hand hält die Packung – zeigt die echte Größe (ohne erkennbare Gesichter von Kindern). Perspektive: Augenhöhe, neutraler Creme-Hintergrund.]"
+          },
+          {
+            "id": "S-P09-G3",
+            "label": "Foto S-P09-G3 · Galerie · Serviervorschlag · 4:5 · min. 2000 × 2500 px",
+            "ratio": "4:5",
+            "minSize": "2000 × 2500 px",
+            "alt": "Labubu-Schokolade als Geschenk auf einem Geburtstagstisch",
+            "text": "[FOTO-PLATZHALTER: Geschenkidee – die Schokolade mit Schleife auf einem Geburtstagstisch, Konfetti dezent im Hintergrund. Perspektive: 45° Tischperspektive, helles Tageslicht.]"
+          }
+        ]
+      },
+      "seo": {
+        "title": "Bunte Labubu-Schokolade kaufen · Hasret Nuts Shop",
+        "description": "Bunte Labubu-Schokolade online kaufen: die farbenfrohe Trend-Süßigkeit als Mitbringsel für Kindergeburtstag, Schultüte und Sammlerfreunde – bei Hasret Nuts.",
+        "keywords": [
+          "Labubu-Schokolade",
+          "Labubu Schokolade kaufen",
+          "Trend-Süßigkeiten",
+          "bunte Schokolade Geschenk"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated": "2026-10-03",
+    "note": "Rabattcodes werden per \"npm run seed\" in die Tabelle discount_codes übernommen (nur wenn der Code noch nicht existiert). value: bei type \"percent\" ganze Prozent, bei type \"fixed\" Cent. Danach pflegt der Inhaber die Codes unter /admin/rabattcodes. Bundle-Preise stehen ausschließlich in catalog.json. Codes mit public:false werden nirgends im Shop angezeigt.",
+    "terms": "Ein Rabattcode pro Bestellung, nicht mit anderen Codes kombinierbar. Der Mindestbestellwert bezieht sich auf den Warenwert vor Abzug des Rabatts und ohne Versandkosten. Keine Barauszahlung. Rabattcodes gelten auch für das Messe-Bundle."
+  },
+  "codes": [
+    {
+      "code": "WILLKOMMEN10",
+      "type": "percent",
+      "value": 10,
+      "minSubtotalCents": 2000,
+      "startsAt": null,
+      "endsAt": null,
+      "maxUses": null,
+      "oncePerEmail": true,
+      "public": true,
+      "description": "Für Ihre erste Bestellung",
+      "label": "10 % Willkommensrabatt",
+      "headline": "Willkommen bei Hasret.",
+      "text": "10 % auf Ihre erste Bestellung – ab 20,00 € Warenwert.",
+      "conditions": "Ab 20,00 € Warenwert. Einmal pro E-Mail-Adresse einlösbar. Nicht mit anderen Codes kombinierbar."
+    },
+    {
+      "code": "MESSE2026",
+      "type": "fixed",
+      "value": 500,
+      "minSubtotalCents": 3000,
+      "startsAt": null,
+      "endsAt": null,
+      "maxUses": null,
+      "oncePerEmail": false,
+      "public": true,
+      "description": "Messe-Gutschein: 5 € Nachlass ab 30 € Warenwert – für alle, die uns auf der Messe besucht haben. Gültig bis [DATUM].",
+      "label": "5 € Messe-Gutschein",
+      "headline": "Von der Messe zu Ihnen nach Hause.",
+      "text": "5,00 € Nachlass ab 30,00 € Warenwert – unser Dankeschön für Ihren Besuch am Messestand.",
+      "conditions": "Ab 30,00 € Warenwert. Gültig bis [DATUM]. Nicht mit anderen Codes kombinierbar.",
+      "ownerTodo": "Enddatum festlegen und endsAt (ISO-Datum, z. B. 2026-12-31T22:59:59.000Z) eintragen – bis dahin ist der Code unbefristet gültig."
+    },
+    {
+      "code": "SEHNSUCHT15",
+      "type": "percent",
+      "value": 15,
+      "minSubtotalCents": 4500,
+      "startsAt": null,
+      "endsAt": null,
+      "maxUses": 200,
+      "oncePerEmail": true,
+      "public": false,
+      "description": "Exklusiv für Newsletter-Abonnentinnen und -Abonnenten: 15 % ab 45 € Warenwert, limitiert auf 200 Einlösungen.",
+      "label": "15 % Newsletter-Vorteil",
+      "headline": "Nur für Sie: 15 % Sehnsucht.",
+      "text": "15 % auf Ihre Bestellung ab 45,00 € Warenwert – exklusiv für unsere Newsletter-Leserinnen und -Leser.",
+      "conditions": "Ab 45,00 € Warenwert. Einmal pro E-Mail-Adresse, limitiert auf 200 Einlösungen. Nicht mit anderen Codes kombinierbar."
+    }
+  ],
+  "bundles": [
+    {
+      "id": "messe-bundle",
+      "productSlug": "sarma-lokum-messe-bundle",
+      "sku": "sarma-lokum-messe-bundle",
+      "refProductSlug": "premium-sarma-lokum",
+      "count": 3,
+      "label": "Messe-Bundle",
+      "headline": "Drei Sorten. Ein Preis.",
+      "text": "Stellen Sie sich Ihr Sarma-Lokum-Trio aus Pistazie, Haselnuss, Rose und Kokos frei zusammen – drei Packungen zum festen Bundle-Preis.",
+      "savingsText": "Sie sparen {savings} gegenüber dem Einzelkauf.",
+      "cta": { "label": "Trio zusammenstellen", "href": "/produkt/sarma-lokum-messe-bundle" },
+      "priceSource": "catalog.json → Produkt sarma-lokum-messe-bundle (priceCents)"
+    }
+  ],
+  "banners": [
+    {
+      "id": "banner-messe-bundle",
+      "placement": ["home", "angebote"],
+      "sort": 1,
+      "theme": "chocolate",
+      "eyebrow": "Messe-Bundle",
+      "headline": "Drei Sorten. Ein Preis.",
+      "text": "Pistazie, Haselnuss, Rose oder Kokos: Kombinieren Sie drei Packungen Premium Sarma Lokum ganz nach Ihrem Geschmack – zum festen Bundle-Preis.",
+      "priceSku": "sarma-lokum-messe-bundle",
+      "cta": { "label": "Trio zusammenstellen", "href": "/produkt/sarma-lokum-messe-bundle" },
+      "photo": {
+        "id": "S-A01",
+        "label": "Foto S-A01 · Angebots-Banner Messe-Bundle · 21:9 · min. 3200 × 1370 px",
+        "ratio": "21:9",
+        "minSize": "3200 × 1370 px",
+        "alt": "Drei Packungen Sarma Lokum mit angeschnittenen Rollen",
+        "text": "[FOTO-PLATZHALTER: Drei Sarma-Lokum-Packungen in verschiedenen Sorten rechts im Bild, davor angeschnittene Rollen auf einem Messingtablett; links ruhige, dunkle Fläche (Schokoladenbraun oder dunkles Holz) für Überschrift und Preis. Perspektive: 30° seitlich, warmes Lichtbündel von links, Hintergrund weich abfallend.]"
+      }
+    },
+    {
+      "id": "banner-willkommen",
+      "placement": ["home", "angebote"],
+      "sort": 2,
+      "theme": "cream",
+      "eyebrow": "Willkommensgeschenk",
+      "headline": "Willkommen bei Hasret.",
+      "text": "Für Ihre erste Bestellung schenken wir Ihnen 10 % – ab 20,00 € Warenwert, einfach den Code im Warenkorb eingeben.",
+      "code": "WILLKOMMEN10",
+      "cta": { "label": "Spezialitäten entdecken", "href": "/kategorie/traditionelle-suesswaren" },
+      "photo": {
+        "id": "S-A02",
+        "label": "Foto S-A02 · Angebots-Banner Willkommen · 4:3 · min. 2400 × 1800 px",
+        "ratio": "4:3",
+        "minSize": "2400 × 1800 px",
+        "alt": "Gedeckter Teetisch mit Sarma Lokum, Pistazien und Leblebi",
+        "text": "[FOTO-PLATZHALTER: Einladend gedeckter Teetisch – zwei Tulpengläser Tee, ein Teller Sarma Lokum, Schälchen mit Pistazien und Leblebi, eine Hand stellt ein Glas ab. Perspektive: 45° Tischperspektive, warmes Nachmittagslicht von links, Creme-Leinen.]"
+      }
+    },
+    {
+      "id": "banner-messe-gutschein",
+      "placement": ["angebote"],
+      "sort": 3,
+      "theme": "cream",
+      "eyebrow": "Messe-Gutschein",
+      "headline": "Von der Messe zu Ihnen nach Hause.",
+      "text": "Sie haben uns auf der Festiculture besucht? Mit dem Code MESSE2026 erhalten Sie 5,00 € Nachlass ab 30,00 € Warenwert – gültig bis [DATUM].",
+      "code": "MESSE2026",
+      "cta": { "label": "Zum Sortiment", "href": "/" },
+      "photo": {
+        "id": "S-A03",
+        "label": "Foto S-A03 · Angebots-Banner Messe-Gutschein · 4:3 · min. 2400 × 1800 px",
+        "ratio": "4:3",
+        "minSize": "2400 × 1800 px",
+        "alt": "Auslage des Hasret-Messestands mit Kostproben",
+        "text": "[FOTO-PLATZHALTER: Auslage am Hasret-Messestand in der Nahaufnahme – Kostproben Sarma Lokum und Pistazien auf Tabletts, das Markenschild unscharf im Hintergrund, eine Hand reicht eine Kostprobe. Perspektive: Augenhöhe, 50 mm, f/2.8, ohne Blitz.]"
+      }
+    }
+  ]
+}

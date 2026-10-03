@@ -1,0 +1,8 @@
+{#- FOUNDATION-CORE · Vorläufige Startseite – wird nur angezeigt, solange keine Route "/" existiert
+    (Fallback in corporate/app.js bzw. shop/app.js). -#}
+{% extends "errors/base.njk" %}
+{% block content %}
+<p class="err__eyebrow">{{ 'Online-Shop' if site.app == 'shop' else 'Corporate Hub' }}</p>
+<h1>Sehnsucht, die man schmecken kann.</h1>
+<p class="err__text">Hier entsteht {{ 'der Online-Shop' if site.app == 'shop' else 'die Website' }} von Hasret Nuts – Hasret Kuruyemiş, Inhaber Eyyüp Koca, Memmingen. Bitte schauen Sie bald wieder vorbei.</p>
+{% endblock %}

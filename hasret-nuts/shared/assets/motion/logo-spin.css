@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Hasret Nuts – rotierendes Kopfzeilen-Logo („Münz-Drehung“)
+   Markup: shared/views/partials/logo.njk
+     .hn-logo            Bühne (Perspektive 800px, Größe über --hn-logo-h)
+       .hn-logo__spin    automatische Drehung (0,9 s nach dem Laden, dann alle 12 s)
+         .hn-logo__coin  Hover-/Fokus-Drehung (unabhängig, addiert sich sauber)
+           svg.hn-logo__face           Vorderseite
+           svg.hn-logo__face--back     Rückseite (<use> der Vorderseite, 180° gedreht)
+   Die Rückseite ist dieselbe Grafik, um 180° vorgedreht: Von hinten betrachtet
+   liest sie sich richtig herum – es erscheint nie gespiegelte Schrift.
+   Doku: docs/LOGO-UND-INTRO.md
+   ========================================================================== */
+
+.hn-logo {
+  --hn-logo-h: 52px;
+  --hn-logo-ease: cubic-bezier(.16, 1, .3, 1);
+  display: inline-block;
+  flex: none;
+  position: relative;
+  height: var(--hn-logo-h);
+  width: calc(var(--hn-logo-h) * 10 / 7); /* viewBox 600 × 420 */
+  line-height: 0;
+  vertical-align: middle;
+  perspective: 800px;
+  transition: height .4s var(--hn-logo-ease), width .4s var(--hn-logo-ease);
+}
+
+.hn-logo__spin,
+.hn-logo__coin {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.hn-logo__face {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.hn-logo__face--back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+/* Einfarbig: folgt der Textfarbe des Elternelements (z. B. Footer auf Smaragd) */
+.hn-logo--mono { color: inherit; }
+
+/* Größen-Helfer (optional) */
+.hn-logo--sm { --hn-logo-h: 44px; }
+.hn-logo--lg { --hn-logo-h: 64px; }
+
+/* --------------------------------------------------------------------------
+   Bewegung – nur wenn der Nutzer keine reduzierte Bewegung wünscht
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hn-logo__spin {
+    /* 1) einmalige Drehung nach dem Laden (läuft die Eröffnungsanimation,
+          setzt intro.css --hn-logo-delay auf die Zeit nach dem Intro)
+       2) danach alle 12 s: 0–88 % Ruhe, 88–100 % Drehung (≈ 1,44 s) */
+    animation:
+      hn-logo-turn 1.2s var(--hn-logo-ease) var(--hn-logo-delay, .9s) both,
+      hn-logo-cycle 12s linear calc(var(--hn-logo-delay, .9s) + 1.2s) infinite;
+    will-change: transform;
+  }
+
+  /* Sofortige Drehung bei Hover/Fokus des umgebenden Links.
+     Ohne JavaScript per :hover / :focus-visible; mit JavaScript setzt
+     intro.js die Klasse .is-turning, damit die Drehung immer vollständig
+     zu Ende läuft (kein Zurückspringen beim schnellen Verlassen). */
+  html:not(.hn-motion-js) :is(a, button):is(:hover, :focus-visible) .hn-logo__coin,
+  .hn-logo.is-turning .hn-logo__coin {
+    animation: hn-logo-turn 1.2s var(--hn-logo-ease) both;
+  }
+}
+
+@keyframes hn-logo-turn {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+@keyframes hn-logo-cycle {
+  0%, 88% { transform: rotateY(0deg); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+  100%    { transform: rotateY(360deg); }
+}
+
+/* Ohne Drehung: reduzierte Bewegung oder bewusst statisch (Footer: logoStatic = true) */
+.hn-logo--static .hn-logo__spin,
+.hn-logo--static .hn-logo__coin { animation: none !important; will-change: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hn-logo__spin,
+  .hn-logo__coin { animation: none !important; transform: none !important; }
+}
+
+@media print {
+  .hn-logo__spin,
+  .hn-logo__coin { animation: none !important; }
+}

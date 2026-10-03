@@ -1,0 +1,138 @@
+{#- FOUNDATION-CORE · Formular-Makros (barrierefrei: Labels, aria-invalid, aria-describedby).
+
+    Import MIT Kontext (damit csrf() das Token findet):
+      {% import "macros/forms.njk" as forms with context %}
+
+    {{ forms.csrf() }}                      verstecktes _csrf-Feld (oder forms.csrf(csrfToken))
+    {{ forms.honeypot() }}                  verstecktes Spam-Feld "website" (muss leer bleiben)
+    {{ forms.errorSummary(errors) }}        Fehlerübersicht oben im Formular (verlinkt auf Felder)
+    {{ forms.field('email', 'E-Mail-Adresse', 'email', values.email, errors.email, { required: true, autocomplete: 'email' }) }}
+    {{ forms.textarea('message', 'Ihre Nachricht', values.message, errors.message, { rows: 6, maxlength: 2000 }) }}
+    {{ forms.select('kind', 'Art', [{ value: 'bug', label: 'Fehler' }], values.kind, errors.kind, { placeholder: 'Bitte wählen' }) }}
+    {{ forms.checkbox('consent', 'Ich habe die <a href="/datenschutz">Datenschutzhinweise</a> gelesen.' | safe, values.consent, errors.consent, { required: true }) }}
+
+    attrs (alle optional): id, required, autocomplete, placeholder, maxlength, minlength, pattern,
+      inputmode, min, max, step, rows, readonly, disabled, autofocus, spellcheck, autocapitalize,
+      hint (Hilfetext unter dem Label), class (zusätzliche Klasse am Eingabeelement),
+      wrapperClass (zusätzliche Klasse am Feld-Container), value (Checkbox-Wert, Standard "on").
+    Feld-IDs: "f-<name>" (Fehlerübersicht verlinkt darauf). Passwortfelder werden nie vorbefüllt.
+    Labels sind escaped; vertrauenswürdiges HTML (eigene Texte, keine Nutzereingaben) mit "| safe" übergeben. -#}
+
+{% macro _common(attrs) -%}
+{% if attrs.required %} required aria-required="true"{% endif %}
+{%- if attrs.autocomplete %} autocomplete="{{ attrs.autocomplete }}"{% endif %}
+{%- if attrs.placeholder %} placeholder="{{ attrs.placeholder }}"{% endif %}
+{%- if attrs.maxlength %} maxlength="{{ attrs.maxlength }}"{% endif %}
+{%- if attrs.minlength %} minlength="{{ attrs.minlength }}"{% endif %}
+{%- if attrs.pattern %} pattern="{{ attrs.pattern }}"{% endif %}
+{%- if attrs.inputmode %} inputmode="{{ attrs.inputmode }}"{% endif %}
+{%- if attrs.min is defined %} min="{{ attrs.min }}"{% endif %}
+{%- if attrs.max is defined %} max="{{ attrs.max }}"{% endif %}
+{%- if attrs.step is defined %} step="{{ attrs.step }}"{% endif %}
+{%- if attrs.readonly %} readonly{% endif %}
+{%- if attrs.disabled %} disabled{% endif %}
+{%- if attrs.autofocus %} autofocus{% endif %}
+{%- if attrs.spellcheck is defined %} spellcheck="{{ attrs.spellcheck }}"{% endif %}
+{%- if attrs.autocapitalize %} autocapitalize="{{ attrs.autocapitalize }}"{% endif %}
+{%- endmacro %}
+
+{% macro _describedby(id, attrs, error) -%}
+{%- set d = '' -%}
+{%- if attrs.hint %}{% set d = id ~ '-hint' %}{% endif -%}
+{%- if error %}{% set d = ((d ~ ' ') if d else '') ~ id ~ '-error' %}{% endif -%}
+{%- if d %} aria-describedby="{{ d }}"{% endif -%}
+{%- endmacro %}
+
+{% macro _label(id, label, attrs) -%}
+<label class="field__label" for="{{ id }}">{{ label }}{% if attrs.required %}<span class="field__req" aria-hidden="true"> *</span>{% endif %}</label>
+{%- if attrs.hint %}
+<p class="field__hint" id="{{ id }}-hint">{{ attrs.hint }}</p>
+{%- endif %}
+{%- endmacro %}
+
+{% macro _error(id, error) -%}
+{%- if error %}
+<p class="field__error" id="{{ id }}-error">{{ error }}</p>
+{%- endif %}
+{%- endmacro %}
+
+{% macro field(name, label, type='text', value='', error=null, attrs={}) -%}
+{%- set id = attrs.id or ('f-' ~ name) -%}
+<div class="field field--{{ type }}{% if error %} field--error{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  {{ _label(id, label, attrs) }}
+  <input class="field__input{% if attrs.class %} {{ attrs.class }}{% endif %}" id="{{ id }}" name="{{ name }}" type="{{ type }}"
+    {%- if type != 'password' and value is defined and value !== null %} value="{{ value }}"{% endif %}
+    {{- _common(attrs) }}{% if error %} aria-invalid="true"{% endif %}{{ _describedby(id, attrs, error) }}>
+  {{ _error(id, error) }}
+</div>
+{%- endmacro %}
+
+{% macro textarea(name, label, value='', error=null, attrs={}) -%}
+{%- set id = attrs.id or ('f-' ~ name) -%}
+<div class="field field--textarea{% if error %} field--error{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  {{ _label(id, label, attrs) }}
+  <textarea class="field__input field__textarea{% if attrs.class %} {{ attrs.class }}{% endif %}" id="{{ id }}" name="{{ name }}" rows="{{ attrs.rows or 5 }}"
+    {{- _common(attrs) }}{% if error %} aria-invalid="true"{% endif %}{{ _describedby(id, attrs, error) }}>{{ value if (value is defined and value !== null) else '' }}</textarea>
+  {{ _error(id, error) }}
+</div>
+{%- endmacro %}
+
+{% macro select(name, label, options=[], selected='', error=null, attrs={}) -%}
+{%- set id = attrs.id or ('f-' ~ name) -%}
+<div class="field field--select{% if error %} field--error{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  {{ _label(id, label, attrs) }}
+  <select class="field__input field__select{% if attrs.class %} {{ attrs.class }}{% endif %}" id="{{ id }}" name="{{ name }}"
+    {%- if attrs.required %} required aria-required="true"{% endif %}
+    {%- if attrs.autocomplete %} autocomplete="{{ attrs.autocomplete }}"{% endif %}
+    {%- if attrs.disabled %} disabled{% endif %}
+    {%- if error %} aria-invalid="true"{% endif %}{{ _describedby(id, attrs, error) }}>
+    {% if attrs.placeholder %}<option value=""{% if not selected %} selected{% endif %} disabled>{{ attrs.placeholder }}</option>{% endif %}
+    {% for opt in options %}
+    {%- set ov = opt.value if (opt.value is defined) else opt -%}
+    {%- set ol = opt.label if (opt.label is defined) else opt -%}
+    <option value="{{ ov }}"{% if (ov | string) == (selected | string) and selected !== '' and selected is defined and selected !== null %} selected{% endif %}>{{ ol }}</option>
+    {% endfor %}
+  </select>
+  {{ _error(id, error) }}
+</div>
+{%- endmacro %}
+
+{% macro checkbox(name, label, checked=false, error=null, attrs={}) -%}
+{%- set id = attrs.id or ('f-' ~ name) -%}
+<div class="field field--checkbox{% if error %} field--error{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  <input class="field__checkbox{% if attrs.class %} {{ attrs.class }}{% endif %}" type="checkbox" id="{{ id }}" name="{{ name }}" value="{{ attrs.value or 'on' }}"
+    {%- if checked and checked !== 'false' %} checked{% endif %}
+    {%- if attrs.required %} required aria-required="true"{% endif %}
+    {%- if attrs.disabled %} disabled{% endif %}
+    {%- if error %} aria-invalid="true"{% endif %}{{ _describedby(id, attrs, error) }}>
+  <label class="field__label field__label--checkbox" for="{{ id }}">{{ label }}{% if attrs.required %}<span class="field__req" aria-hidden="true"> *</span>{% endif %}</label>
+  {%- if attrs.hint %}
+  <p class="field__hint" id="{{ id }}-hint">{{ attrs.hint }}</p>
+  {%- endif %}
+  {{ _error(id, error) }}
+</div>
+{%- endmacro %}
+
+{% macro csrf(token) -%}
+<input type="hidden" name="_csrf" value="{{ token if token else csrfToken }}">
+{%- endmacro %}
+
+{% macro honeypot(name='website') -%}
+<div class="hp-field" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+  <label for="hp-{{ name }}">Dieses Feld bitte leer lassen</label>
+  <input type="text" id="hp-{{ name }}" name="{{ name }}" value="" tabindex="-1" autocomplete="off">
+</div>
+{%- endmacro %}
+
+{% macro errorSummary(errors, title='Bitte prüfen Sie Ihre Angaben') -%}
+{%- if errors and (errors | length) -%}
+<div class="error-summary" role="alert" tabindex="-1" aria-labelledby="error-summary-title">
+  <h2 class="error-summary__title" id="error-summary-title">{{ title }}</h2>
+  <ul class="error-summary__list">
+    {% for key, msg in errors %}
+    <li>{% if key != '_form' %}<a href="#f-{{ key }}">{{ msg }}</a>{% else %}{{ msg }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</div>
+{%- endif -%}
+{%- endmacro %}

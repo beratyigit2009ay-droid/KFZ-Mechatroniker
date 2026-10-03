@@ -1,0 +1,6 @@
+{% extends "errors/base.njk" %}
+{% block eyebrow %}Zugriff verweigert · 403{% endblock %}
+{% block actions %}
+<a class="err__btn" href="{{ backUrl or '/' }}">Zurück zur vorherigen Seite</a>
+<a class="err__btn err__btn--ghost" href="/">Zur Startseite</a>
+{% endblock %}

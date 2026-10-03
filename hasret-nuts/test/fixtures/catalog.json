@@ -1,0 +1,33 @@
+{
+  "currency": "EUR",
+  "categories": [
+    { "slug": "traditionelle-suesswaren", "name": "Traditionelle Süßwaren", "lead": "Testkategorie", "text": "", "seoTitle": "", "seoDescription": "", "banner": null },
+    { "slug": "nuesse-knabberzeug", "name": "Nüsse & Knabberzeug", "lead": "Testkategorie", "text": "", "seoTitle": "", "seoDescription": "", "banner": null }
+  ],
+  "products": [
+    {
+      "slug": "test-lokum", "category": "traditionelle-suesswaren", "type": "single", "name": "Test Lokum", "subtitle": "", "short": "", "description": [], "highlights": [], "badges": [], "featured": true,
+      "variants": [
+        { "sku": "test-lokum-pistazie", "label": "Pistazie", "priceCents": 800, "size": "[GEWICHT]", "weightG": null, "volumeMl": null, "allergens": { "contains": ["schalenfruechte"], "mayContain": ["erdnuesse"], "note": "vorläufig" } },
+        { "sku": "test-lokum-kokos", "label": "Kokos", "priceCents": 700, "size": "[GEWICHT]", "weightG": null, "volumeMl": null, "allergens": { "contains": [], "mayContain": ["schalenfruechte", "milch"], "note": "vorläufig" } }
+      ],
+      "bundle": null, "ingredients": "[ZUTATEN]", "nutrition": null, "storage": "", "origin": "", "allergensConfirmed": false, "priceNote": "bitte bestätigen",
+      "photos": { "packshot": { "id": "T-01", "label": "", "text": "" }, "detail": { "id": "T-02", "label": "", "text": "" }, "gallery": [] },
+      "seo": { "title": "", "description": "" }
+    },
+    {
+      "slug": "test-bundle", "category": "traditionelle-suesswaren", "type": "bundle", "name": "Test Bundle", "subtitle": "", "short": "", "description": [], "highlights": [], "badges": [], "featured": false,
+      "variants": [ { "sku": "test-bundle-3er", "label": "3 Packungen", "priceCents": 2000, "size": "3 × [GEWICHT]", "weightG": null, "volumeMl": null, "allergens": { "contains": [], "mayContain": [], "note": "" } } ],
+      "bundle": { "productSlug": "test-lokum", "count": 3, "priceCents": 2000 }, "ingredients": "", "nutrition": null, "storage": "", "origin": "", "allergensConfirmed": false, "priceNote": "",
+      "photos": { "packshot": { "id": "T-03", "label": "", "text": "" }, "detail": { "id": "T-04", "label": "", "text": "" }, "gallery": [] },
+      "seo": { "title": "", "description": "" }
+    },
+    {
+      "slug": "test-leblebi", "category": "nuesse-knabberzeug", "type": "single", "name": "Test Leblebi", "subtitle": "", "short": "", "description": [], "highlights": [], "badges": [], "featured": false,
+      "variants": [ { "sku": "test-leblebi-200", "label": "200 g", "priceCents": 250, "size": "200 g", "weightG": 200, "volumeMl": null, "allergens": { "contains": [], "mayContain": [], "note": "" } } ],
+      "bundle": null, "ingredients": "[ZUTATEN]", "nutrition": null, "storage": "", "origin": "", "allergensConfirmed": false, "priceNote": "",
+      "photos": { "packshot": { "id": "T-05", "label": "", "text": "" }, "detail": { "id": "T-06", "label": "", "text": "" }, "gallery": [] },
+      "seo": { "title": "", "description": "" }
+    }
+  ]
+}

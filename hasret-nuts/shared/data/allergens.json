@@ -1,0 +1,129 @@
+[
+  {
+    "id": "gluten",
+    "number": 1,
+    "name": "Glutenhaltiges Getreide",
+    "short": "Gluten",
+    "icon": "allergen-gluten",
+    "official": "Glutenhaltiges Getreide, namentlich Weizen (wie Dinkel und Khorasan-Weizen), Roggen, Gerste, Hafer oder Hybridstämme davon, sowie daraus hergestellte Erzeugnisse (mit den in Anhang II LMIV genannten Ausnahmen)",
+    "examples": "Weizen, Dinkel, Roggen, Gerste, Hafer – z. B. in Mehl, Paniermehl oder Gewürzmischungen"
+  },
+  {
+    "id": "krebstiere",
+    "number": 2,
+    "name": "Krebstiere",
+    "short": "Krebstiere",
+    "icon": "allergen-krebstiere",
+    "official": "Krebstiere und daraus gewonnene Erzeugnisse",
+    "examples": "Garnelen, Krabben, Hummer, Langusten"
+  },
+  {
+    "id": "eier",
+    "number": 3,
+    "name": "Eier",
+    "short": "Ei",
+    "icon": "allergen-eier",
+    "official": "Eier und daraus gewonnene Erzeugnisse",
+    "examples": "Hühnerei und Eiprodukte, z. B. in Gebäck oder Schaumzucker"
+  },
+  {
+    "id": "fisch",
+    "number": 4,
+    "name": "Fische",
+    "short": "Fisch",
+    "icon": "allergen-fisch",
+    "official": "Fische und daraus gewonnene Erzeugnisse (mit den in Anhang II LMIV genannten Ausnahmen)",
+    "examples": "alle Fischarten und Fischerzeugnisse"
+  },
+  {
+    "id": "erdnuesse",
+    "number": 5,
+    "name": "Erdnüsse",
+    "short": "Erdnüsse",
+    "icon": "allergen-erdnuesse",
+    "official": "Erdnüsse und daraus gewonnene Erzeugnisse",
+    "examples": "Erdnüsse, Erdnussmus, Erdnussöl"
+  },
+  {
+    "id": "soja",
+    "number": 6,
+    "name": "Sojabohnen",
+    "short": "Soja",
+    "icon": "allergen-soja",
+    "official": "Sojabohnen und daraus gewonnene Erzeugnisse (mit den in Anhang II LMIV genannten Ausnahmen)",
+    "examples": "Sojabohnen, Sojalecithin (z. B. in Schokolade), Sojasoße"
+  },
+  {
+    "id": "milch",
+    "number": 7,
+    "name": "Milch (einschließlich Laktose)",
+    "short": "Milch",
+    "icon": "allergen-milch",
+    "official": "Milch und daraus gewonnene Erzeugnisse (einschließlich Laktose) (mit den in Anhang II LMIV genannten Ausnahmen)",
+    "examples": "Milch, Milchpulver, Butter, Sahne – z. B. in Milchschokolade"
+  },
+  {
+    "id": "schalenfruechte",
+    "number": 8,
+    "name": "Schalenfrüchte",
+    "short": "Schalenfrüchte",
+    "icon": "allergen-schalenfruechte",
+    "official": "Schalenfrüchte, namentlich Mandeln, Haselnüsse, Walnüsse, Kaschunüsse, Pecannüsse, Paranüsse, Pistazien, Macadamia- oder Queenslandnüsse sowie daraus gewonnene Erzeugnisse (mit den in Anhang II LMIV genannten Ausnahmen)",
+    "examples": "Mandeln, Haselnüsse, Walnüsse, Cashewkerne, Pecannüsse, Paranüsse, Pistazien, Macadamianüsse",
+    "hint": "Kokosnuss und Erdnuss zählen nicht zu den Schalenfrüchten im Sinne der LMIV. Erdnüsse sind ein eigenes Hauptallergen."
+  },
+  {
+    "id": "sellerie",
+    "number": 9,
+    "name": "Sellerie",
+    "short": "Sellerie",
+    "icon": "allergen-sellerie",
+    "official": "Sellerie und daraus gewonnene Erzeugnisse",
+    "examples": "Knollen- und Staudensellerie, Selleriesaat – z. B. in Gewürzmischungen oder eingelegtem Gemüse"
+  },
+  {
+    "id": "senf",
+    "number": 10,
+    "name": "Senf",
+    "short": "Senf",
+    "icon": "allergen-senf",
+    "official": "Senf und daraus gewonnene Erzeugnisse",
+    "examples": "Senfkörner, Senfsaat, Senf – z. B. in Würzlaken oder Gewürzmischungen"
+  },
+  {
+    "id": "sesam",
+    "number": 11,
+    "name": "Sesamsamen",
+    "short": "Sesam",
+    "icon": "allergen-sesam",
+    "official": "Sesamsamen und daraus gewonnene Erzeugnisse",
+    "examples": "Sesam, Tahin (Sesammus), Sesamöl"
+  },
+  {
+    "id": "sulfite",
+    "number": 12,
+    "name": "Schwefeldioxid und Sulphite",
+    "short": "Sulfite",
+    "icon": "allergen-sulfite",
+    "official": "Schwefeldioxid und Sulphite in Konzentrationen von mehr als 10 mg/kg oder 10 mg/l als insgesamt vorhandenes SO2",
+    "examples": "Konservierungsstoffe E 220–E 228, z. B. in Trockenfrüchten, Essig oder eingelegtem Gemüse"
+  },
+  {
+    "id": "lupinen",
+    "number": 13,
+    "name": "Lupinen",
+    "short": "Lupinen",
+    "icon": "allergen-lupinen",
+    "official": "Lupinen und daraus gewonnene Erzeugnisse",
+    "examples": "Lupinenmehl, Lupineneiweiß"
+  },
+  {
+    "id": "weichtiere",
+    "number": 14,
+    "name": "Weichtiere",
+    "short": "Weichtiere",
+    "icon": "allergen-weichtiere",
+    "official": "Weichtiere und daraus gewonnene Erzeugnisse",
+    "examples": "Muscheln, Schnecken, Tintenfisch"
+  }
+]

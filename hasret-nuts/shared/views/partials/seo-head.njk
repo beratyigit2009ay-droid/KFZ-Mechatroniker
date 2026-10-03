@@ -1,0 +1,33 @@
+{#- FOUNDATION-CORE · SEO-Kopf. Erwartet "meta" aus seo.buildMeta() (Standard: res.locals.meta).
+    Einbinden im <head> des Layouts:  {% include "partials/seo-head.njk" %}
+    (charset/viewport setzt das Layout selbst.) -#}
+{%- set m = meta or {} -%}
+<title>{{ m.title or site.name }}</title>
+<meta name="description" content="{{ m.description }}">
+<meta name="robots" content="{{ m.robots or 'index, follow' }}">
+{% if m.canonical and not m.noindex %}
+<link rel="canonical" href="{{ m.canonical }}">
+{% endif %}
+<meta property="og:type" content="{{ m.type or 'website' }}">
+<meta property="og:site_name" content="{{ m.siteName or site.name }}">
+<meta property="og:locale" content="{{ m.locale or 'de_DE' }}">
+<meta property="og:title" content="{{ m.title or site.name }}">
+<meta property="og:description" content="{{ m.description }}">
+{% if m.url %}
+<meta property="og:url" content="{{ m.url }}">
+{% endif %}
+{% if m.image %}
+<meta property="og:image" content="{{ m.image }}">
+<meta property="og:image:alt" content="{{ m.imageAlt }}">
+{% endif %}
+<meta name="twitter:card" content="{{ m.twitterCard or 'summary_large_image' }}">
+<meta name="twitter:title" content="{{ m.title or site.name }}">
+<meta name="twitter:description" content="{{ m.description }}">
+{% if m.image %}
+<meta name="twitter:image" content="{{ m.image }}">
+{% endif %}
+{% if m.googleVerification %}
+<meta name="google-site-verification" content="{{ m.googleVerification }}">
+{% endif %}
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">

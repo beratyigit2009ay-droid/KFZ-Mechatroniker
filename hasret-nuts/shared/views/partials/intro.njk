@@ -1,0 +1,38 @@
+{#-
+  Hasret Nuts – Eröffnungsanimation („öffnet sich mit dem Logo“)
+
+  Zwei Teile, beide über dieses Partial:
+
+  1) Im <head> (so früh wie möglich, vor anderen Stylesheets ist ideal):
+       {% set introPart = 'head' %}{% include "partials/intro.njk" %}
+     → Stylesheet intro.css + winziges Inline-Skript (mit CSP-Nonce), das noch vor
+       dem ersten Rendern entscheidet, ob das Intro gezeigt wird. Es setzt auf <html>
+       entweder .hn-intro-skip (schon gesehen / interne Navigation / reduzierte
+       Bewegung) oder .hn-intro-on.
+
+  2) Direkt nach <body> (vor dem Skip-Link):
+       {% set introPart = 'body' %}{% set introVariant = 'corporate' %}{% include "partials/intro.njk" %}
+     introVariant: 'corporate' (Smaragd + Champagner-Haarlinie, Standard) | 'shop' (Creme + Schokolade)
+
+  Sicherheitsnetze: Das Overlay ist aria-hidden, enthält nichts Fokussierbares und
+  trägt inline display:none – sichtbar wird es nur durch intro.css. Es endet nach
+  1,9 s per CSS von selbst (auch ohne JavaScript). intro.js ergänzt Überspringen
+  per Klick/Taste und „einmal pro Sitzung“.
+  Doku: docs/LOGO-UND-INTRO.md
+-#}
+{%- set _iv = 'shop' if introVariant == 'shop' else 'corporate' -%}
+{%- set _guard -%}
+(function(r){if(/(^|\s)hn-intro-(skip|on)(\s|$)/.test(r.className))return;var s=0;try{s=window.sessionStorage.getItem('hn_intro_seen');if(!s)window.sessionStorage.setItem('hn_intro_seen','1')}catch(e){}try{if(!s&&document.referrer&&new URL(document.referrer).origin===location.origin)s=1}catch(e){}try{if(!s&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)s=1}catch(e){}r.className+=s?' hn-intro-skip':' hn-intro-on'})(document.documentElement);
+{%- endset -%}
+{%- if introPart == 'head' -%}
+<link rel="stylesheet" href="/assets/motion/intro.css?v={{ assetV or '1' }}">
+<script nonce="{{ nonce }}">{{ _guard | safe }}</script>
+{%- else -%}
+<script nonce="{{ nonce }}">{{ _guard | safe }}</script>
+<div class="hn-intro hn-intro--{{ _iv }}" data-hn-intro aria-hidden="true" style="display:none">
+  <span class="hn-intro__door hn-intro__door--l"></span>
+  <span class="hn-intro__door hn-intro__door--r"></span>
+  <span class="hn-intro__logo"><span class="hn-intro__mark"><img src="/assets/logo/hasret-logo.svg?v={{ assetV or '1' }}" alt="" width="600" height="420" decoding="async" fetchpriority="high"><span class="hn-intro__shine"></span></span></span>
+</div>
+<script src="/assets/motion/intro.js?v={{ assetV or '1' }}" defer></script>
+{%- endif %}

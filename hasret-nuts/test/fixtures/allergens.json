@@ -1,0 +1,16 @@
+[
+  { "id": "gluten", "name": "Glutenhaltiges Getreide", "short": "Gluten" },
+  { "id": "krebstiere", "name": "Krebstiere", "short": "Krebstiere" },
+  { "id": "eier", "name": "Eier", "short": "Eier" },
+  { "id": "fisch", "name": "Fisch", "short": "Fisch" },
+  { "id": "erdnuesse", "name": "Erdnüsse", "short": "Erdnüsse" },
+  { "id": "soja", "name": "Soja", "short": "Soja" },
+  { "id": "milch", "name": "Milch (einschließlich Laktose)", "short": "Milch" },
+  { "id": "schalenfruechte", "name": "Schalenfrüchte", "short": "Schalenfrüchte" },
+  { "id": "sellerie", "name": "Sellerie", "short": "Sellerie" },
+  { "id": "senf", "name": "Senf", "short": "Senf" },
+  { "id": "sesam", "name": "Sesamsamen", "short": "Sesam" },
+  { "id": "sulfite", "name": "Schwefeldioxid und Sulfite", "short": "Sulfite" },
+  { "id": "lupinen", "name": "Lupinen", "short": "Lupinen" },
+  { "id": "weichtiere", "name": "Weichtiere", "short": "Weichtiere" }
+]

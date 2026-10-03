@@ -1,0 +1,8 @@
+{
+  "codes": [
+    { "code": "TEST10", "type": "percent", "value": 10, "minSubtotalCents": 1000, "startsAt": null, "endsAt": null, "maxUses": null, "oncePerEmail": true, "description": "Testcode 10 %", "public": true },
+    { "code": "FIX5", "type": "fixed", "value": 500, "minSubtotalCents": 2500, "startsAt": "2026-01-01T00:00:00.000Z", "endsAt": "2026-12-31T23:59:59.000Z", "maxUses": 100, "oncePerEmail": false, "description": "Testcode 5 €", "public": false }
+  ],
+  "bundles": [],
+  "banners": []
+}
