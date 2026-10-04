@@ -1,0 +1,48 @@
+{#- Owner: BUILD-CORPORATE · Kleine UI-Bausteine des Corporate Hub.
+    Import:  {% import "macros/ui.njk" as ui %}
+    Icons sind dekorativ (aria-hidden, focusable=false). -#}
+
+{% macro arrow(size=16) -%}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+{%- endmacro %}
+
+{% macro arrowThin(size=18) -%}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+{%- endmacro %}
+
+{% macro camera(cls='photo__icon', size=22, stroke='1.4') -%}
+<svg class="{{ cls }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ stroke }}" aria-hidden="true" focusable="false"><path d="M4 8.5h3.2l1.6-2.5h6.4l1.6 2.5H20V19H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>
+{%- endmacro %}
+
+{% macro chevron() -%}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+{%- endmacro %}
+
+{% macro errIcon() -%}
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.2v.3"/></svg>
+{%- endmacro %}
+
+{% macro check(size=44) -%}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>
+{%- endmacro %}
+
+{% macro faqIcon() -%}
+<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M4 12h16"/><path class="v" d="M12 4v16"/></svg>
+{%- endmacro %}
+
+{#- Foto-Platzhalter. p = Eintrag aus PHOTOS (routes/content.js), cls = Positionsklassen.
+    Foto tauschen: das komplette <figure> durch
+      <img class="photo-img ar-4x5 …" src="/static/fotos/C-01.avif" alt="…" width="2000" height="2500" loading="lazy">
+    ersetzen (Seitenverhältnis- und Positionsklassen beibehalten; Hero-Bild mit fetchpriority="high"). -#}
+{% macro photo(p, cls='') -%}
+{%- if p -%}
+<figure class="photo{% if p.small %} photo--sm{% endif %} ar-{{ p.ratio }}{% if cls %} {{ cls }}{% endif %}" data-photo="{{ p.id }}">
+  {%- if p.small %}
+  <figcaption class="photo__cap"><span class="photo__label">{{ camera('photo__icon photo__icon--inline', 14, '1.6') }}{{ p.label }}</span><span class="photo__text">{{ p.text }}</span></figcaption>
+  {%- else %}
+  {{ camera() }}
+  <figcaption class="photo__cap"><span class="photo__label">{{ p.label }}</span><span class="photo__text">{{ p.text }}</span></figcaption>
+  {%- endif %}
+</figure>
+{%- endif -%}
+{%- endmacro %}

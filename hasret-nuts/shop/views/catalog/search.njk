@@ -1,0 +1,56 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-search{% endblock %}
+{% macro hl(parts) %}{% for part in parts %}{% if part.hit %}<mark>{{ part.text }}</mark>{% else %}{{ part.text }}{% endif %}{% endfor %}{% endmacro %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+<section class="wrap search-page" aria-labelledby="h-search">
+  <h1 id="h-search" class="page-title">Suche</h1>
+  <form class="search__form search__form--page" role="search" action="/suche" method="get">
+    {{ shop.icon('search', 20, 1.6) }}
+    <label for="q-page" class="sr-only">Produkte durchsuchen</label>
+    <input id="q-page" name="q" type="search" value="{{ q }}" placeholder="z. B. Lokum, Pistazien, Turşu" maxlength="100" autocomplete="off">
+    <button type="submit" class="btn btn-dark search__submit">Suchen</button>
+  </form>
+
+  {% if not q %}
+  <p class="search-page__status">Bitte geben Sie einen Suchbegriff ein.</p>
+  {% elif results.length %}
+  <p class="search-page__status" role="status">{{ results.length }} {{ 'Ergebnis' if results.length == 1 else 'Ergebnisse' }} für „{{ q }}“</p>
+  <ul class="results-list">
+    {% for r in results %}
+    <li class="result">
+      <a class="result__link" href="{{ r.card.href }}">
+        <span class="result__thumb" aria-hidden="true">{{ r.card.photoA.id }}</span>
+        <span class="result__txt">
+          <span class="result__name">{{ hl(r.nameParts) }}</span>
+          <span class="result__sub">{{ hl(r.subParts) }}</span>
+          <span class="result__short">{{ hl(r.shortParts) }}</span>
+        </span>
+        <span class="result__meta"><span class="result__cat">{{ r.card.categoryName }}</span><strong class="result__price">{{ r.card.priceLabel }}</strong></span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty empty--left">
+    <h2>Zu „{{ q }}“ haben wir leider nichts gefunden.</h2>
+    <p class="muted">Versuchen Sie es mit einem anderen Begriff – zum Beispiel „Lokum“, „Pistazien“ oder „Turşu“.</p>
+  </div>
+  {% endif %}
+</section>
+
+{% if not results.length %}
+<section class="wrap cats-sec" aria-labelledby="h-cats">
+  <div class="sec-head"><h2 class="h2" id="h-cats">Stöbern Sie in unseren Kategorien</h2></div>
+  <div class="tiles">
+    {% for t in tiles %}
+    <a href="{{ t.href }}" class="tile">
+      <span class="tile__media">{{ shop.photo(t.photo, '', { decorative: true }) }}</span>
+      <span class="tile__text"><span class="tile__name">{{ t.name }}</span><span class="tile__desc">{{ t.claim }}</span><span class="tile__more">Entdecken →</span></span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

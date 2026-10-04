@@ -1,0 +1,147 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{#- C1 · Startseite – Texte laut KONZEPT.md 4.1 (Sortimentswelten an das tatsächliche Sortiment angepasst). -#}
+
+{% block content %}
+<section aria-labelledby="start-title">
+
+  <div class="wrap hero">
+    <div class="hero__text">
+      <p class="eyebrow eyebrow--line reveal">Hasret Kuruyemiş · Memmingen</p>
+      <h1 id="start-title" class="display-1 reveal">Sehnsucht, die man <em>schmecken</em> kann.</h1>
+      <p class="lead reveal">Hasret bedeutet Sehnsucht – nach dem Duft frisch gerösteter Nüsse, nach Basaren, nach Gastfreundschaft. Wir bringen diesen Geschmack in die Regale Süddeutschlands und auf die großen Kulturbühnen Europas.</p>
+      <div class="btn-row reveal">
+        <a class="btn btn--primary" href="/haendler">Händler werden {{ ui.arrow() }}</a>
+        <a class="btn btn--outline" href="/messe-chronik">Messe-Termine</a>
+      </div>
+      <ul class="hero__facts reveal">
+        <li><span class="gold-dot" aria-hidden="true"></span>Handverlesen</li>
+        <li><span class="gold-dot" aria-hidden="true"></span>Traditionell geröstet</li>
+        <li><span class="gold-dot" aria-hidden="true"></span>Aus Memmingen für Europa</li>
+      </ul>
+    </div>
+    <div class="hero__media reveal">
+      {{ ui.photo(photos['C-01'], 'hero__main') }}
+      {{ ui.photo(photos['C-02'], 'hero__inset') }}
+    </div>
+  </div>
+
+  <section class="band--emerald on-dark" aria-labelledby="versprechen-title">
+    <div class="wrap promise-band__inner">
+      <div class="promise reveal">
+        <h2 id="versprechen-title" class="eyebrow">Unser Versprechen</h2>
+        <p class="promise__quote">Gute Nüsse sind keine Nebensache. Sie sind Erinnerung, Gastfreundschaft und ein Stück Heimat – <em>in jeder Schale.</em></p>
+      </div>
+      <div class="pillars">
+        <article class="pillar reveal">
+          <span class="pillar__num" aria-hidden="true">01</span>
+          <h3 class="pillar__title">Handverlesen</h3>
+          <p>Jede Charge wird von Hand geprüft, bevor sie unser Haus verlässt. Was nicht perfekt ist, kommt nicht in die Packung.</p>
+        </article>
+        <article class="pillar reveal">
+          <span class="pillar__num" aria-hidden="true">02</span>
+          <h3 class="pillar__title">Traditionell geröstet</h3>
+          <p>Wir rösten nach überlieferten Rezepturen: langsam, schonend und mit dem Gespür für den Moment, in dem das Aroma voll erwacht.</p>
+        </article>
+        <article class="pillar reveal">
+          <span class="pillar__num" aria-hidden="true">03</span>
+          <h3 class="pillar__title">Verlässlich für Partner</h3>
+          <p>Feste Ansprechpartner, planbare Lieferungen und Sortimente, die genau zu Ihrer Kundschaft passen.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section sortiment" aria-labelledby="sortiment-title">
+    <div class="sec-head-row reveal">
+      <div class="sec-head">
+        <p class="eyebrow">Sortimentswelten</p>
+        <h2 id="sortiment-title" class="display-2">Drei Welten. Ein <em>Anspruch</em>.</h2>
+      </div>
+      <p class="body-m sec-head-row__aside">Vom knackigen Snack bis zur feinen Spezialität: Unser Sortiment vereint, was in jeder Speisekammer der Heimat zu finden ist.</p>
+    </div>
+    <div class="grid-3">
+      <article class="sort-card reveal">
+        <div class="zoom">{{ ui.photo(photos['C-03']) }}</div>
+        <h3 class="card-title">Nüsse &amp; Knabberzeug</h3>
+        <p class="card-text">Geröstet, gesalzen oder knusprig im Chips-Stil – von Pistazien und Erdnüssen bis zu klassischen Leblebi.</p>
+      </article>
+      <article class="sort-card reveal">
+        <div class="zoom">{{ ui.photo(photos['C-04']) }}</div>
+        <h3 class="card-title">Traditionelle Süßwaren</h3>
+        <p class="card-text">Premium Sarma Lokum in Pistazie, Haselnuss, Rose und Kokos – Süßes, das nach Festtagen und Familienbesuch schmeckt. Dazu bunte Trend-Süßwaren.</p>
+      </article>
+      <article class="sort-card reveal">
+        <div class="zoom">{{ ui.photo(photos['C-05']) }}</div>
+        <h3 class="card-title">Feinkost</h3>
+        <p class="card-text">Hausgemachtes Turşu im 1-kg-Glas und Karadut Özü aus schwarzen Maulbeeren – ursprüngliche Aromen für Tisch und Küche.</p>
+      </article>
+    </div>
+    <div class="assort-strip reveal">
+      <div class="assort-strip__head">
+        <h3 class="assort-strip__label">Sortiment für den Handel</h3>
+        <a class="link-lux" href="/haendler#sortiment">Alle Produktgruppen {{ ui.arrow() }}</a>
+      </div>
+      <ol class="assort-strip__list">
+        {% for g in assortment %}<li><span class="assort-strip__num" aria-hidden="true">{{ g.num }}</span><span class="assort-strip__name">{{ g.name }}</span></li>{% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band--pearl" aria-labelledby="about-title">
+    <div class="wrap section split">
+      <div class="split__media reveal">
+        {{ ui.photo(photos['C-06']) }}
+      </div>
+      <div class="split__text reveal">
+        <p class="eyebrow">Über uns</p>
+        <h2 id="about-title" class="display-2">Aus Memmingen. Mit Herz für <em>Herkunft</em>.</h2>
+        <p class="body-l">Hinter Hasret Kuruyemiş steht Eyyüp Koca – und die Überzeugung, dass man Qualität schmeckt. Wir wählen jede Sorte nach Geschmack, Frische und Herkunft aus, rösten mit Geduld und verpacken mit Sorgfalt. So entsteht ein Sortiment, das Tradition ehrt und höchsten Ansprüchen genügt.</p>
+        <figure class="quote">
+          <blockquote><p>„Für mich ist jede Schale Nüsse ein Stück Heimat. Diese Sehnsucht – Hasret – möchte ich mit jedem teilen, der bei uns probiert.“</p></blockquote>
+          <figcaption>Eyyüp Koca · Inhaber</figcaption>
+        </figure>
+        <a class="link-lux" href="/philosophie">Unsere Philosophie entdecken {{ ui.arrow() }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section messe-teaser" aria-labelledby="messe-teaser-title">
+    <div class="messe-teaser__text reveal">
+      <p class="eyebrow">Messe-Chronik</p>
+      <h2 id="messe-teaser-title" class="display-2">Auf den Kulturbühnen Europas <em>zu Hause</em>.</h2>
+      <p class="body-l">Von Paris bis Lyon: Auf großen Kulturmessen wie der Festiculture zeigen wir, wie viel Geschichte in einer Handvoll Nüsse steckt. Besuchen Sie uns – und probieren Sie selbst.</p>
+      <div class="station-card">
+        <span class="station-card__label">Nächste Station</span>
+        <span class="station-card__title">{{ nextFair.title }}</span>
+        <span class="station-card__meta">{{ nextFair.teaserMeta }}</span>
+        <a class="link-lux" href="/messe-chronik">Zur Messe-Chronik {{ ui.arrow() }}</a>
+      </div>
+    </div>
+    <div class="messe-teaser__media reveal">
+      {{ ui.photo(photos['C-07']) }}
+      <ol class="mini-tl" aria-label="Stationen">
+        <li><span class="mini-tl__dot" aria-hidden="true"></span><strong>Paris</strong><span class="mini-tl__meta">Festiculture · [JAHR]</span></li>
+        <li><span class="mini-tl__dot" aria-hidden="true"></span><strong>Lyon</strong><span class="mini-tl__meta">Festiculture · [JAHR]</span></li>
+        <li><span class="mini-tl__dot" aria-hidden="true"></span><strong>[Nächste Messe]</strong><span class="mini-tl__meta">[DATUM]</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band--emerald on-dark" aria-labelledby="trade-title">
+    <div class="wrap trade">
+      <div class="trade__text reveal">
+        <p class="eyebrow">Für Händler</p>
+        <h2 id="trade-title" class="trade__title">Hasret Nuts in Ihrem <em>Regal</em>.</h2>
+        <p class="body-l">Wir beliefern internationale Supermärkte, Feinkostgeschäfte und den Großhandel im süddeutschen Raum. Lassen Sie uns gemeinsam ein Sortiment zusammenstellen, das Ihre Kundschaft begeistert.</p>
+        <a class="btn btn--gold" href="/haendler#anfrage">Händleranfrage stellen {{ ui.arrow() }}</a>
+      </div>
+      <dl class="facts-list reveal">
+        <div><dt>Liefergebiet</dt><dd>Bayern &amp; Baden-Württemberg</dd></div>
+        <div><dt>Sortiment</dt><dd>[ANZAHL] Artikel in drei Welten</dd></div>
+        <div><dt>Betreuung</dt><dd>Persönlich aus Memmingen</dd></div>
+      </dl>
+    </div>
+  </section>
+</section>
+{% endblock %}

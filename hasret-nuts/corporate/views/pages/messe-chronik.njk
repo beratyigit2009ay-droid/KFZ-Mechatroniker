@@ -1,0 +1,71 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{#- C3 · Messe-Chronik – Zeitleiste mit goldenem Lichtpunkt (folgt dem Scrollen) und 3D-Scale-In
+    der Messefotos (public/js/site.js · initTimeline). Stationen: routes/content.js → TIMELINE. -#}
+
+{% block content %}
+<section aria-labelledby="messe-title">
+
+  <div class="wrap page-intro">
+    <div class="page-intro__main">
+      <p class="eyebrow eyebrow--line reveal">Messe-Chronik</p>
+      <h1 id="messe-title" class="display-1 display-1--m reveal">Von Memmingen auf die <em>Bühnen Europas.</em></h1>
+    </div>
+    <div class="page-intro__aside reveal">
+      <p>Kulturmessen sind für uns mehr als Ausstellungsflächen. Sie sind Orte der Begegnung – zwischen Kulturen, zwischen Generationen, zwischen Händlern und Genießern. Hier sehen Sie, wo wir waren und wo Sie uns als Nächstes treffen.</p>
+    </div>
+  </div>
+
+  <section class="wrap" aria-labelledby="next-title">
+    <div class="next-card on-dark reveal">
+      <div class="next-card__info">
+        <span class="badge">Demnächst</span>
+        <h2 id="next-title" class="next-card__title">{{ nextFair.title }}</h2>
+        <span class="next-card__meta">{{ nextFair.dates }} · {{ nextFair.place }}</span>
+      </div>
+      <div class="next-card__actions">
+        <a class="btn btn--gold" href="/haendler#anfrage">Termin am Stand vereinbaren</a>
+        <button class="btn btn--ghost js-only" type="button" data-kalender aria-expanded="false" aria-controls="kalender-hinweis">Zum Kalender hinzufügen</button>
+      </div>
+      <p class="next-card__note" id="kalender-hinweis" data-kalender-note>{{ nextFair.calendarNote }}</p>
+    </div>
+  </section>
+
+  <section class="wrap timeline-sec" aria-labelledby="zeitleiste-title">
+    <h2 id="zeitleiste-title" class="sr-only">Zeitleiste unserer Messestationen</h2>
+    <div class="timeline" id="hn-timeline">
+      <span class="timeline__line" aria-hidden="true"></span>
+      <span class="timeline__fill" aria-hidden="true"></span>
+      <span class="timeline__dot" aria-hidden="true"></span>
+      <ol class="timeline__list">
+        {% for e in timeline %}
+        <li class="timeline__item{% if loop.index0 is odd %} timeline__item--rev{% endif %}{% if e.next %} timeline__item--next{% endif %}">
+          <span class="timeline__node" aria-hidden="true"></span>
+          <div class="timeline__text reveal">
+            {% if e.next %}<span class="badge">Demnächst</span>{% endif %}
+            <span class="timeline__meta">{{ e.meta }}</span>
+            <h3 class="timeline__title">{{ e.title }}</h3>
+            <p>{{ e.text }}</p>
+            {% if e.next %}<a class="btn btn--primary" href="/haendler#anfrage">Persönlichen Termin anfragen {{ ui.arrow() }}</a>{% endif %}
+          </div>
+          <div class="timeline__media">
+            {{ ui.photo(photos[e.photo], 'timeline__photo') }}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band--pearl" aria-labelledby="presse-title">
+    <div class="wrap press">
+      <div class="press__text reveal">
+        <p class="eyebrow">Presse &amp; Veranstalter</p>
+        <h2 id="presse-title" class="display-2">Sie planen eine <em>Kulturmesse</em>?</h2>
+        <p class="body-l">Wir bereichern Ihre Veranstaltung mit einem Stand voller Duft, Geschichte und Gastfreundschaft. Für Presseanfragen stellen wir Bildmaterial und Informationen gerne zur Verfügung.</p>
+      </div>
+      <div class="press__cta reveal"><a class="btn btn--primary" href="/haendler#anfrage">Kontakt aufnehmen</a></div>
+    </div>
+  </section>
+</section>
+{% endblock %}

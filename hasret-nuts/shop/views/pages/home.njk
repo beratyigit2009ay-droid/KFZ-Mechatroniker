@@ -1,0 +1,120 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-home{% endblock %}
+{% block content %}
+<section class="wrap hero" aria-labelledby="h-start">
+  <div class="hero__text">
+    <p class="eyebrow">Hasret Nuts · <span class="nowrap">Spezialitäten-Shop</span></p>
+    <h1 class="hero__title" id="h-start">Spezialitäten, die nach <em>Heimat</em> schmecken.</h1>
+    <p class="hero__lead">Premium Sarma Lokum in vier Sorten, hausgemachtes Turşu im 1-kg-Glas, Karadut Özü aus schwarzen Maulbeeren und knusprige Klassiker zum Tee – persönlich ausgewählt von Eyyüp Koca in Memmingen.</p>
+    <div class="hero__cta">
+      <a href="/kategorie/traditionelle-suesswaren" class="btn btn--lg buy">Jetzt entdecken {{ shop.icon('arrow', 18, 1.8) }}</a>
+      <a href="/angebote" class="btn btn--lg btn-o">Zu den Angeboten</a>
+    </div>
+  </div>
+  <div class="hero__media">
+    {{ shop.photo({ id: 'S-01', label: 'Foto S-01 · Startseite Hero · 5:4 · min. 2500 × 2000 px', ar: '5/4', alt: 'Sarma Lokum, geröstete Pistazien, Turşu und Maulbeer-Schorle auf Creme-Leinen', text: '[FOTO-PLATZHALTER: Appetitliche Fülle – Sarma-Lokum-Scheiben auf kleinem Messingteller, Holzschale mit gerösteten Pistazien, ein Schälchen Turşu „Lila Gemüse“ und ein Glas Maulbeer-Schorle (Karadut Özü) auf Creme-Leinen, einige Pistazien „zufällig“ verstreut. Perspektive: 45° schräg von oben, warmes Licht (ca. 4800 K) von links hinten, glänzende Texturen.]' }, 'hero__photo hero__photo--wide') }}
+    {{ shop.photo({ id: 'S-01-M', label: 'Foto S-01-M · Hero Smartphone · 4:5 · min. 1600 × 2000 px', ar: '4/5', alt: 'Sarma Lokum, geröstete Pistazien, Turşu und Maulbeer-Schorle auf Creme-Leinen', text: '[FOTO-PLATZHALTER: Dasselbe Motiv wie S-01 als Hochformat – Hauptmotiv in der unteren Bildhälfte, oben liegt die Überschrift. Perspektive: 45° schräg von oben, warmes Licht (ca. 4800 K) von links hinten.]' }, 'hero__photo hero__photo--tall') }}
+  </div>
+</section>
+
+{# ---------------- Angebots-Leiste (offers.json: Messe-Bundle + öffentliche Codes) ---------------- #}
+<section class="offer-strip on-dark" aria-label="Aktuelle Angebote">
+  <div class="wrap offer-strip__inner">
+    {% if bundle %}
+    <a class="offer-chip" href="{{ bundle.href }}">
+      <span class="offer-chip__icon">{{ shop.icon('gift', 22, 1.5) }}</span>
+      <span class="offer-chip__text"><strong>Messe-Bundle</strong><span>{{ bundle.count }} Packungen Sarma Lokum · {{ bundle.price }}</span></span>
+      <span class="offer-chip__go" aria-hidden="true">{{ shop.icon('arrow', 18, 1.6) }}</span>
+    </a>
+    {% endif %}
+    {% for c in codes %}
+    <a class="offer-chip" href="/angebote#code-{{ c.code | lower }}">
+      <span class="offer-chip__icon">{{ shop.icon('tag', 22, 1.5) }}</span>
+      <span class="offer-chip__text"><strong>{{ c.label }}</strong><span>Code <span class="offer-chip__code">{{ c.code }}</span>{% if c.minLabel %} · {{ c.minLabel }}{% endif %}</span></span>
+      <span class="offer-chip__go" aria-hidden="true">{{ shop.icon('arrow', 18, 1.6) }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{# ---------------- Kategorien ---------------- #}
+<section class="wrap cats-sec" aria-labelledby="h-cats">
+  <div class="sec-head reveal">
+    <h2 class="h2" id="h-cats">Wonach ist Ihnen heute?</h2>
+    <a href="/suche" class="link-u">Alle Produkte durchsuchen</a>
+  </div>
+  <div class="tiles reveal">
+    {% for t in tiles %}
+    <a href="{{ t.href }}" class="tile">
+      <span class="tile__media">{{ shop.photo(t.photo, '', { decorative: true }) }}</span>
+      <span class="tile__text"><span class="tile__name">{{ t.name }}</span><span class="tile__desc">{{ t.claim }}</span><span class="tile__more">Entdecken →</span></span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{# ---------------- Unsere Lieblinge ---------------- #}
+<section class="band-foam" id="lieblinge" aria-labelledby="h-fav">
+  <div class="wrap section">
+    <div class="sec-head reveal">
+      <div class="stack"><p class="eyebrow">Aus unserem Sortiment</p><h2 class="h2" id="h-fav">Unsere Lieblinge</h2></div>
+      <span class="muted hint"><span class="hint--hover">Tipp: Fahren Sie mit der Maus über ein Produkt.</span><span class="hint--touch">Tipp: Wischen Sie über ein Produktbild.</span></span>
+    </div>
+    <div class="grid grid--4 reveal">
+      {% for c in featured %}{{ shop.card(c, 'h3') }}{% endfor %}
+    </div>
+    <p class="legal-line">Alle Preise inkl. MwSt., zzgl. Versandkosten. Grundpreise je kg bzw. l.</p>
+  </div>
+</section>
+
+{# ---------------- Warum Hasret? ---------------- #}
+<section class="wrap story" aria-labelledby="h-story">
+  {{ shop.photo({ id: 'S-02', label: 'Foto S-02 · „Warum Hasret?“ · 1:1 · min. 2000 × 2000 px', ar: '1/1', alt: 'Eyyüp Koca richtet Sarma Lokum und Pistazien auf einem Messingtablett an', text: '[FOTO-PLATZHALTER: Eyyüp Kocas Hände richten Sarma-Lokum-Scheiben und Pistazien auf einem Messingtablett an. Perspektive: 30° seitlich, dunkler Hintergrund, warmes Seitenlicht, 1/250 s.]' }, 'story__media reveal') }}
+  <div class="story__text reveal">
+    <p class="eyebrow">Warum Hasret?</p>
+    <h2 id="h-story">Mit <em>Sehnsucht</em> ausgewählt.</h2>
+    <p>Hasret heißt Sehnsucht – nach dem Geschmack von Zuhause, nach dem Teeglas am Nachmittag, nach der Schale Nüsse für die Gäste. Genau diese Momente möchten wir zu Ihnen bringen: mit Spezialitäten, die Eyyüp Koca persönlich auswählt, und mit einem Service, der so herzlich ist wie ein Besuch bei Freunden.</p>
+    <ul class="checks">
+      <li><span class="checks__ic">{{ shop.icon('check', 18, 1.8) }}</span>Persönlich ausgewählt von Inhaber Eyyüp Koca</li>
+      <li><span class="checks__ic">{{ shop.icon('check', 18, 1.8) }}</span>Ehrliche Angaben – <a href="/allergene">Allergene auf einen Blick</a></li>
+      <li><span class="checks__ic">{{ shop.icon('check', 18, 1.8) }}</span>Jede Bestellung wird persönlich per E-Mail bestätigt</li>
+    </ul>
+    <a class="btn btn-o story__cta" href="{{ corporatePhilosophie }}">Unsere Geschichte {{ shop.icon('arrow', 18, 1.6) }}</a>
+  </div>
+</section>
+
+{# ---------------- Angebots-Banner (offers.json, Platzierung home) ---------------- #}
+{% if banners.length %}
+<section class="wrap promo-sec" aria-label="Angebote">
+  {% for b in banners %}
+  {% if b.theme == 'chocolate' %}
+  <article class="promo promo--dark on-dark reveal">
+    {{ shop.photo(b.photo, 'photo--dark promo__media', { decorative: true }) }}
+    <div class="promo__text">
+      <p class="eyebrow">{{ b.eyebrow }}</p>
+      <h2>{{ b.headline }}</h2>
+      <p>{{ b.text }}</p>
+      {% if b.price %}<p class="promo__price"><span>{{ bundle.count if bundle else 3 }} Packungen nach Wahl</span><strong>{{ b.price }}</strong></p>{% endif %}
+      {% if bundle and bundle.savingsText %}<p class="promo__save">{{ bundle.savingsText }}</p>{% endif %}
+      {% if b.cta %}<a href="{{ b.cta.href }}" class="btn buy">{{ b.cta.label }} {{ shop.icon('arrow', 18, 1.8) }}</a>{% endif %}
+    </div>
+  </article>
+  {% else %}
+  <article class="promo promo--light reveal">
+    <div class="promo__text">
+      <p class="eyebrow">{{ b.eyebrow }}</p>
+      <h2>{{ b.headline }}</h2>
+      <p>{{ b.text }}</p>
+      {% if b.code %}<p class="promo__code"><span>Ihr Code</span><strong>{{ b.code }}</strong></p>{% endif %}
+      {% if b.cta %}<a href="{{ b.cta.href }}" class="btn btn-dark">{{ b.cta.label }}</a>{% endif %}
+    </div>
+    {{ shop.photo(b.photo, 'promo__media', { decorative: true }) }}
+  </article>
+  {% endif %}
+  {% endfor %}
+</section>
+{% endif %}
+
+{{ shop.newsletter('newsletter') }}
+{% endblock %}

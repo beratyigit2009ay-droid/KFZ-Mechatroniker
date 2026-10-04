@@ -1,0 +1,49 @@
+{#- Owner: BUILD-SHOP · Vorteils-Bar + Kopfzeile (rotierendes Logo, Kategorien, Suche, Konto, Warenkorb). -#}
+{% import "macros/shop.njk" as shop with context %}
+<div class="perks on-dark">
+  <ul class="perks__list wrap" aria-label="Ihre Vorteile" data-perks>
+    <li class="perk is-active">{{ shop.icon('bolt', 18, 1.6) }}<span><strong>Blitzversand</strong> · Versand innerhalb von [24 h]</span></li>
+    <li class="perk">{{ shop.icon('hand', 18, 1.6) }}<span><strong>Handverlesen</strong> · persönlich ausgewählt</span></li>
+    <li class="perk">{{ shop.icon('mail', 18, 1.6) }}<span><strong>Bestellung auf Anfrage</strong> · Bestätigung per E-Mail</span></li>
+    <li class="perk">{{ shop.icon('pin', 18, 1.6) }}<span><strong>Abholung in Memmingen</strong> möglich</span></li>
+  </ul>
+</div>
+
+<header class="site-header" data-header>
+  <div class="header__inner">
+    <a href="#menu-drawer" class="ico menu-btn" data-menu-toggle aria-label="Menü öffnen" aria-controls="menu-drawer" aria-expanded="false">{{ shop.icon('menu', 24, 1.6) }}</a>
+    <a href="/" class="brand" aria-label="Hasret Nuts Shop – zur Startseite"{% if currentPath == '/' %} aria-current="page"{% endif %}>
+      {% set logoVariant = 'color' %}{% set logoId = 'hnl' %}{% set logoDecorative = true %}{% set logoStatic = false %}{% set logoLabel = 'Hasret Nuts' %}
+      {% include "partials/logo.njk" %}
+      <span class="brand__word" aria-hidden="true"><span class="brand__mark">HASRET</span><span class="brand__sub">NUTS · SHOP</span></span>
+    </a>
+    <nav class="nav" aria-label="Kategorien">
+      {% for c in navCategories %}
+      {% set href = '/kategorie/' ~ c.slug %}
+      <a href="{{ href }}"{% if currentPath == href %} aria-current="page"{% endif %}>{{ c.name }}</a>
+      {% endfor %}
+      <a href="/angebote" class="nav__offers"{% if currentPath == '/angebote' %} aria-current="page"{% endif %}>Angebote</a>
+    </nav>
+    <div class="actions">
+      <a href="/suche" class="ico" data-search-toggle aria-label="Suche öffnen" aria-controls="search-panel" aria-expanded="false">{{ shop.icon('search', 22, 1.6) }}</a>
+      <span class="account-slot">{% include "partials/account-link.njk" ignore missing %}</span>
+      <a href="/warenkorb" class="ico cart-btn" data-cart-icon aria-label="Warenkorb, {{ cartCount or 0 }} Artikel"{% if currentPath == '/warenkorb' %} aria-current="page"{% endif %}>
+        {{ shop.icon('bag', 23, 1.6) }}
+        <span class="cart-badge" data-cart-badge{% if not cartCount %} hidden{% endif %}>{{ (cartCount if cartCount <= 99 else '99+') if cartCount else 0 }}</span>
+      </a>
+    </div>
+  </div>
+  <div class="search" id="search-panel" data-search>
+    <div class="search__inner">
+      <form class="search__form" role="search" action="/suche" method="get" data-search-form>
+        {{ shop.icon('search', 20, 1.6) }}
+        <label for="search-input" class="sr-only">Produkte durchsuchen</label>
+        <input id="search-input" name="q" type="search" placeholder="Wonach suchen Sie? z. B. Lokum, Pistazien, Turşu" autocomplete="off" maxlength="100" value="{{ searchQuery }}" data-search-input>
+        <button type="submit" class="btn btn-dark search__submit">Suchen</button>
+        <button type="button" class="ico" data-search-close aria-label="Suche schließen">{{ shop.icon('close', 20, 1.6) }}</button>
+      </form>
+      <p class="search__status" data-search-status aria-live="polite"></p>
+      <ul class="search__results" data-search-results></ul>
+    </div>
+  </div>
+</header>

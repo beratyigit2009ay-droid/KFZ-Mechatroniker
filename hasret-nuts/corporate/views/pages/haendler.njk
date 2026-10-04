@@ -1,0 +1,196 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{% import "macros/fields.njk" as f %}
+{% import "macros/forms.njk" as forms with context %}
+{#- C4 · Für Händler – Texte laut KONZEPT.md 4.4. Sortiment für den Handel: fünf Produktgruppen,
+    bewusst OHNE Preise. Formular: POST /haendler/anfrage (routes/forms.js). -#}
+
+{% block content %}
+<section aria-labelledby="haendler-title">
+
+  <div class="wrap page-intro">
+    <div class="page-intro__main">
+      <p class="eyebrow eyebrow--line reveal">Für Händler &amp; Einkäufer</p>
+      <h1 id="haendler-title" class="display-1 display-1--m reveal">Hasret Nuts in <em>Ihrem Sortiment.</em></h1>
+    </div>
+    <div class="page-intro__aside reveal">
+      <p>Sie führen einen internationalen Supermarkt, ein Feinkostgeschäft oder einen Großhandel im süddeutschen Raum? Dann sollten wir uns kennenlernen. Wir liefern Spezialitäten, die Ihre Kundschaft kennt, sucht und immer wieder kauft.</p>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn--primary" href="#anfrage">Jetzt Anfrage stellen</a>
+        <span class="phone-line">Oder anrufen: {{ contact.phone }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap wrap--wide reveal">
+    {{ ui.photo(photos['C-20']) }}
+  </div>
+
+  <section class="wrap section benefits-sec" aria-labelledby="vorteile-title">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ihre Vorteile</p>
+      <h2 id="vorteile-title" class="display-2">Partnerschaft, die sich im <em>Regal</em> zeigt.</h2>
+    </div>
+    <div class="benefits">
+      <div class="benefit reveal">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" focusable="false"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <h3>Sortiment mit Nachfrage</h3>
+        <p>Von Sarma Lokum über hausgemachtes Turşu bis zu Pistazien und Leblebi: Produkte, die Ihre Kundschaft kennt und gezielt sucht.</p>
+      </div>
+      <div class="benefit reveal">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" focusable="false"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+        <h3>Kurze Wege aus Memmingen</h3>
+        <p>Lieferung im gesamten süddeutschen Raum – planbar, zuverlässig und ohne lange Transportwege.</p>
+      </div>
+      <div class="benefit reveal">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M4 15h16M9 4v16"/></svg>
+        <h3>Regalfertige Präsentation</h3>
+        <p>Hochwertige Verpackungen mit klarem Markenauftritt. Display-Lösungen für Ihren Verkaufsraum auf Anfrage.</p>
+      </div>
+      <div class="benefit reveal">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg>
+        <h3>Persönliche Betreuung</h3>
+        <p>Ein fester Ansprechpartner, der Ihr Geschäft und Ihre Kundschaft kennt – kein Callcenter, kein Ticketsystem.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sortiment" class="band--pearl" aria-labelledby="sortiment-title">
+    <div class="wrap section trade-range">
+      <div class="sec-head-row reveal">
+        <div class="sec-head">
+          <p class="eyebrow">Sortiment für den Handel</p>
+          <h2 id="sortiment-title" class="display-2">Fünf Produktgruppen. <em>Eine Handschrift.</em></h2>
+        </div>
+        <p class="body-m sec-head-row__aside">Vom Teetisch-Klassiker bis zum Trendartikel: Diese Spezialitäten stellen wir für Ihren Markt zusammen – in den Sorten und Gebinden, die zu Ihrer Kundschaft passen.</p>
+      </div>
+      <ol class="range">
+        {% for g in assortment %}
+        <li class="range__item reveal">
+          <span class="range__num" aria-hidden="true">{{ g.num }}</span>
+          <div class="range__head">
+            <span class="range__kicker">{{ g.kicker }}</span>
+            <h3 class="range__name">{{ g.name }}</h3>
+            {% if g.nameTr and g.nameTr != g.name %}<span class="range__tr"{% if g.key != 'trend-suesswaren' and g.key != 'karadut-ozu' %} lang="tr"{% endif %}>{{ g.nameTr }}</span>{% endif %}
+          </div>
+          <div class="range__body">
+            <p>{{ g.text }}</p>
+            <ul class="range__formats" aria-label="Sorten und Gebinde">
+              {% for fmt in g.formats %}<li>{{ fmt }}</li>{% endfor %}
+            </ul>
+            {% if g.note %}<p class="range__note">{{ g.note }}</p>{% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+      <div class="range-foot reveal">
+        <p><strong>Konditionen für den Handel</strong> nennen wir Ihnen persönlich – abgestimmt auf Ihren Standort und Ihre Mengen. Produktdatenblätter mit Zutaten, Allergenen und Nährwerten laut Etikett erhalten Sie auf Anfrage.</p>
+        <a class="link-lux" href="#anfrage">Sortiment anfragen {{ ui.arrow() }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band--emerald on-dark" aria-labelledby="schritte-title">
+    <div class="wrap steps-band__inner">
+      <div class="sec-head reveal">
+        <p class="eyebrow">So einfach geht's</p>
+        <h2 id="schritte-title" class="display-2">In vier Schritten ins <em>Regal</em>.</h2>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step__num" aria-hidden="true">01</span>
+          <h3>Anfrage senden</h3>
+          <p>Füllen Sie das Formular aus. Wir melden uns innerhalb von {{ contact.replyTime }} persönlich bei Ihnen.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num" aria-hidden="true">02</span>
+          <h3>Kennenlernen &amp; Verkosten</h3>
+          <p>Ein Gespräch bei Ihnen vor Ort, in Memmingen oder auf einer Messe – auf Wunsch mit Probierset.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num" aria-hidden="true">03</span>
+          <h3>Sortiment &amp; Konditionen</h3>
+          <p>Gemeinsam stellen wir ein Sortiment zusammen, das zu Ihrem Standort passt, und vereinbaren faire Konditionen.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num" aria-hidden="true">04</span>
+          <h3>Erste Lieferung</h3>
+          <p>Pünktlich und regalfertig. Danach betreut Sie Ihr fester Ansprechpartner.</p>
+        </li>
+      </ol>
+      <div class="steps-meta reveal">
+        <span><strong>Liefergebiet</strong>Bayern · Baden-Württemberg · [weitere Regionen auf Anfrage]</span>
+        <span><strong>Sortiment</strong>Nüsse &amp; Knabberzeug · Traditionelle Süßwaren · Trend-Süßwaren · Feinkost</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="anfrage" class="wrap inquiry" aria-labelledby="anfrage-title">
+    <div class="inquiry__head reveal">
+      <p class="eyebrow">Händleranfrage</p>
+      <h2 id="anfrage-title" class="display-2" tabindex="-1">Lassen Sie uns <em>sprechen</em>.</h2>
+      <p class="body-l">Erzählen Sie uns kurz von Ihrem Geschäft. Wir melden uns persönlich – mit Vorschlägen, die zu Ihrem Standort passen.</p>
+    </div>
+
+    <aside class="inquiry__aside reveal" aria-label="Ihr Ansprechpartner">
+      {{ ui.photo(photos['C-21']) }}
+      <address class="contact-lines">
+        <strong>{{ contact.owner }} · Inhaber</strong>
+        <span>{{ contact.phone }}</span>
+        <span>{{ contact.email }}</span>
+        <span class="muted">{{ contact.street }} · {{ contact.zipCity }}</span>
+      </address>
+    </aside>
+
+    <div class="form-card{% if not hasErrors and not success %} reveal{% endif %}" id="anfrage-formular">
+      {% if success %}
+      <div class="success" role="status" data-focus-on-load>
+        {{ ui.check() }}
+        <h3 id="danke" tabindex="-1">Vielen Dank für Ihre Anfrage.</h3>
+        <p>{{ contact.owner }} meldet sich innerhalb von {{ contact.replyTime }} persönlich bei Ihnen. Bis dahin: Schauen Sie gern in unsere <a class="text-link" href="/messe-chronik">Messe-Chronik</a> – vielleicht sehen wir uns schon vorher.</p>
+        <a class="btn btn--primary" href="/haendler#anfrage">Neue Anfrage</a>
+      </div>
+      {% else %}
+      <form class="form" id="anfrage-form" method="post" action="/haendler/anfrage#fehler" novalidate aria-labelledby="anfrage-title" data-validate>
+        {{ forms.csrf() }}
+        {{ forms.honeypot() }}
+        {% if hasErrors %}<div class="error-anchor" id="fehler" tabindex="-1">{{ forms.errorSummary(errors, 'Bitte prüfen Sie die markierten Felder.') }}</div>{% endif %}
+        <div class="form__row">
+          {{ f.input('firma', 'Firmenname', 'text', values.firma, errors.firma, { required: true, autocomplete: 'organization', placeholder: 'z. B. Supermarkt Anadolu GmbH', maxlength: 150, msgMissing: 'Bitte geben Sie den Namen Ihres Unternehmens ein.' }) }}
+          {{ f.input('name', 'Ansprechpartner', 'text', values.name, errors.name, { required: true, autocomplete: 'name', placeholder: 'Vor- und Nachname', maxlength: 100, msgMissing: 'Bitte nennen Sie uns Ihren Ansprechpartner.' }) }}
+        </div>
+        <div class="form__row">
+          {{ f.input('email', 'E-Mail', 'email', values.email, errors.email, { required: true, autocomplete: 'email', inputmode: 'email', maxlength: 254, spellcheck: 'false', msgMissing: 'Bitte geben Sie Ihre E-Mail-Adresse ein.', msgInvalid: 'Bitte prüfen Sie die E-Mail-Adresse – zum Beispiel name@firma.de.' }) }}
+          {{ f.input('telefon', 'Telefon', 'tel', values.telefon, errors.telefon, { autocomplete: 'tel', inputmode: 'tel', placeholder: 'Für einen schnellen Rückruf', maxlength: 30 }) }}
+        </div>
+        <div class="form__row">
+          {{ f.input('ort', 'PLZ & Ort', 'text', values.ort, errors.ort, { required: true, autocomplete: 'off', placeholder: 'z. B. 87700 Memmingen', maxlength: 120, msgMissing: 'Bitte geben Sie Postleitzahl und Ort an.' }) }}
+          {{ f.select('typ', 'Art des Geschäfts', businessTypes, values.typ, errors.typ, { required: true, msgMissing: 'Bitte wählen Sie die Art Ihres Geschäfts aus.' }) }}
+        </div>
+        {{ f.checkGroup('sortiment', 'Interessante Sortimente', assortmentOptions, values.sortiment, errors.sortiment) }}
+        {{ f.textarea('nachricht', 'Ihre Nachricht', values.nachricht, errors.nachricht, { rows: 5, maxlength: 2000, placeholder: 'Zum Beispiel: Standort, Größe der Verkaufsfläche, gewünschte Mengen oder Fragen zur Zusammenarbeit.' }) }}
+        {{ f.consent('datenschutz', 'Ich habe die <a class="text-link" href="/datenschutz#haendleranfrage">Datenschutzerklärung</a> gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden.<span aria-hidden="true"> *</span>' | safe, values.datenschutz, errors.datenschutz, { required: true, msgMissing: 'Bitte bestätigen Sie die Datenschutzhinweise, damit wir Ihre Anfrage bearbeiten können.' }) }}
+        <div class="form__foot">
+          <span class="form__req">* Pflichtfelder</span>
+          <button class="btn btn--primary" type="submit" data-busy-label="Wird gesendet …">Anfrage senden {{ ui.arrow() }}</button>
+        </div>
+      </form>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="band--pearl" aria-labelledby="faq-title">
+    <div class="wrap wrap--narrow faq">
+      <h2 id="faq-title" class="faq__title reveal">Häufige Fragen von Händlern</h2>
+      <div class="faq__list reveal">
+        {% for item in faq %}
+        <details class="faq__item">
+          <summary class="faq__q">{{ item.q }}{{ ui.faqIcon() }}</summary>
+          <p class="faq__a">{{ item.a }}</p>
+        </details>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</section>
+{% endblock %}

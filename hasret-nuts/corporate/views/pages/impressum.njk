@@ -1,0 +1,41 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{#- Impressum (KONZEPT.md 6.2) – Struktur mit Platzhaltern, vor Veröffentlichung rechtlich prüfen lassen. -#}
+
+{% block content %}
+<div class="wrap legal">
+  <div class="legal__head">
+    <p class="eyebrow eyebrow--line reveal">Rechtliches</p>
+    <h1 class="display-1 display-1--m reveal">Impressum</h1>
+    <p class="lead reveal">Angaben gemäß § 5 DDG</p>
+  </div>
+  <div class="legal__body">
+    <p class="legal__note reveal"><strong>Platzhalter</strong> – die endgültige Fassung wird vor Veröffentlichung rechtlich geprüft. Angaben in eckigen Klammern werden ergänzt.</p>
+    <section class="legal__block reveal" aria-labelledby="imp-anbieter">
+      <h2 id="imp-anbieter">Anbieter</h2>
+      <address><p>{{ contact.company }}<br>Inhaber: {{ contact.owner }}<br>[RECHTSFORM, z. B. Einzelunternehmen]<br>{{ contact.street }}<br>{{ contact.zipCity }}<br>Deutschland</p></address>
+    </section>
+    <section class="legal__block reveal" id="kontaktangaben" aria-labelledby="imp-kontakt">
+      <h2 id="imp-kontakt">Kontakt</h2>
+      <p>Telefon: {{ contact.phone }}<br>E-Mail: {{ contact.email }}</p>
+    </section>
+    <section class="legal__block reveal" aria-labelledby="imp-ust">
+      <h2 id="imp-ust">Umsatzsteuer-ID</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br>[USt-IdNr.] (falls vorhanden)</p>
+    </section>
+    <section class="legal__block reveal" aria-labelledby="imp-register">
+      <h2 id="imp-register">Handelsregister</h2>
+      <p>[REGISTERGERICHT, REGISTERNUMMER] (nur falls eingetragen)</p>
+    </section>
+    <section class="legal__block reveal" aria-labelledby="imp-verantwortlich">
+      <h2 id="imp-verantwortlich">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+      <p>[NAME, ANSCHRIFT]</p>
+    </section>
+    <section class="legal__block reveal" aria-labelledby="imp-bild">
+      <h2 id="imp-bild">Bildnachweis</h2>
+      <p>Alle Fotografien: Hasret Nuts. Logo: {{ contact.company }}.</p>
+    </section>
+    <a class="link-lux reveal" href="/">Zur Startseite {{ ui.arrow() }}</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-newsletter{% endblock %}
+{% block content %}
+<section class="wrap wrap--narrow status-page" aria-labelledby="h-nl">
+  {% if state == 'confirm' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('mail', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Newsletter-Anmeldung bestätigen</h1>
+  <p class="page-intro">Bitte bestätigen Sie mit einem Klick, dass Sie unseren Newsletter erhalten möchten.</p>
+  <form method="post" action="/newsletter/bestaetigen">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="token" value="{{ token }}">
+    <button type="submit" class="btn btn--lg btn-dark">Anmeldung bestätigen</button>
+  </form>
+  {% elif state == 'done' %}
+  <span class="status-page__icon status-page__icon--ok" aria-hidden="true">{{ shop.icon('check', 30, 2) }}</span>
+  <h1 id="h-nl" class="page-title">Vielen Dank – Ihre Anmeldung ist bestätigt.</h1>
+  <p class="page-intro">Willkommen im Kreis der Genießerinnen und Genießer. Die nächste Post von uns kommt bestimmt.</p>
+  <a class="btn btn--lg buy" href="/">Spezialitäten entdecken {{ shop.icon('arrow', 18, 1.8) }}</a>
+  {% elif state == 'unsubscribe' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('mail', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Newsletter abmelden</h1>
+  <p class="page-intro">Geben Sie die E-Mail-Adresse ein, mit der Sie unseren Newsletter erhalten. Sie können sich außerdem jederzeit über den Link in jeder Newsletter-E-Mail abmelden.</p>
+  <form class="unsub" method="post" action="/newsletter/abmelden" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <div class="field{% if error %} field--error{% endif %}">
+      <label class="field__label" for="f-email">E-Mail-Adresse</label>
+      <input class="field__input" id="f-email" name="email" type="email" autocomplete="email" maxlength="254" required{% if error %} aria-invalid="true" aria-describedby="f-email-error"{% endif %}>
+      {% if error %}<p class="field__error" id="f-email-error">{{ error }}</p>{% endif %}
+    </div>
+    <button type="submit" class="btn btn-dark">Abmelden</button>
+  </form>
+  {% elif state == 'unsubscribed' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('check', 30, 2) }}</span>
+  <h1 id="h-nl" class="page-title">Sie wurden abgemeldet.</h1>
+  <p class="page-intro">Sie erhalten keine Newsletter mehr von uns. Schade – Sie sind jederzeit wieder willkommen.</p>
+  <a class="btn btn-o" href="/">Zur Startseite</a>
+  {% else %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('info', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Dieser Bestätigungslink ist nicht mehr gültig.</h1>
+  <p class="page-intro">Er ist abgelaufen oder wurde bereits verwendet. Melden Sie sich einfach erneut an.</p>
+  <a class="btn btn-dark" href="/#newsletter">Erneut anmelden</a>
+  {% endif %}
+</section>
+{% endblock %}

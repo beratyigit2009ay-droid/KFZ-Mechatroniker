@@ -1,0 +1,65 @@
+{#- Owner: BUILD-SHOP · Footer, mobiles Menü (Drawer, ohne JavaScript per :target) und Overlay. -#}
+{% import "macros/shop.njk" as shop with context %}
+<footer class="site-footer on-dark" id="site-footer">
+  <div class="wrap footer__top">
+    <div class="footer__brand">
+      <a href="/" class="footer__logo" aria-label="Hasret Nuts Shop – zur Startseite">
+        {% set logoVariant = 'mono' %}{% set logoId = 'hnl-f' %}{% set logoDecorative = true %}{% set logoStatic = true %}
+        {% include "partials/logo.njk" %}
+        <span class="brand__mark">HASRET</span>
+      </a>
+      <p>Sarma Lokum, Feinkost, Nüsse und Knabberzeug – persönlich ausgewählt in Memmingen.</p>
+      <a class="footer__trade" href="{{ site.corporateUrl }}/haendler">Für Händler →</a>
+    </div>
+    <nav class="footer__col" aria-label="Shop">
+      <span class="footer__h">Shop</span>
+      {% for c in navCategories %}<a href="/kategorie/{{ c.slug }}">{{ c.name }}</a>{% endfor %}
+      <a href="/angebote">Angebote</a>
+      <a href="/allergene">Allergene</a>
+    </nav>
+    <nav class="footer__col" aria-label="Service">
+      <span class="footer__h">Service</span>
+      <a href="/versand-zahlung">Versand &amp; Zahlung</a>
+      <a href="/widerruf">Widerruf</a>
+      <a href="/feedback">Feedback &amp; Fehler melden</a>
+      <a href="/impressum#kontakt">Kontakt</a>
+    </nav>
+    <nav class="footer__col" aria-label="Konto und Rechtliches">
+      <span class="footer__h">Konto</span>
+      {% if user %}<a href="/konto">Mein Konto</a>{% else %}<a href="/konto/anmelden">Anmelden</a><a href="/konto/registrieren">Konto anlegen</a>{% endif %}
+      <span class="footer__h footer__h--gap">Rechtliches</span>
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
+      <a href="/agb">AGB</a>
+      <a href="/cookies">Cookie-Hinweise</a>
+    </nav>
+  </div>
+  <div class="wrap footer__bottom">
+    <span>© {{ currentYear }} Hasret Kuruyemiş · Inhaber Eyyüp Koca · Memmingen</span>
+    <span>Alle Preise inkl. MwSt., zzgl. Versandkosten · Alle Fotografien: Hasret Nuts</span>
+  </div>
+</footer>
+
+<div class="menu" id="menu-drawer" aria-label="Menü" data-menu>
+  <div class="menu__head">
+    <span class="brand__mark">HASRET</span>
+    <a href="#" class="ico" data-menu-close aria-label="Menü schließen">{{ shop.icon('close', 22, 1.6) }}</a>
+  </div>
+  <nav class="menu__nav" aria-label="Hauptmenü">
+    <a href="/"{% if currentPath == '/' %} aria-current="page"{% endif %}>Startseite</a>
+    {% for c in navCategories %}<a href="/kategorie/{{ c.slug }}"{% if currentPath == '/kategorie/' ~ c.slug %} aria-current="page"{% endif %}>{{ c.name }}</a>{% endfor %}
+    <a href="/angebote"{% if currentPath == '/angebote' %} aria-current="page"{% endif %}>Angebote</a>
+    <a href="/allergene"{% if currentPath == '/allergene' %} aria-current="page"{% endif %}>Allergene</a>
+  </nav>
+  <nav class="menu__sub" aria-label="Service und Rechtliches">
+    {% if user %}<a href="/konto">Mein Konto</a>{% else %}<a href="/konto/anmelden">Anmelden</a>{% endif %}
+    <a href="/warenkorb">Warenkorb</a>
+    <a href="/versand-zahlung">Versand &amp; Zahlung</a>
+    <a href="/feedback">Feedback &amp; Fehler melden</a>
+    <a href="/impressum">Impressum</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/agb">AGB</a>
+    <a href="{{ site.corporateUrl }}/haendler">Für Händler →</a>
+  </nav>
+</div>
+<div class="scrim" data-scrim></div>

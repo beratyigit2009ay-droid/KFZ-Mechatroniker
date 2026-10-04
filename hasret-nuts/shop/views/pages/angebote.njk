@@ -1,0 +1,97 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-offers{% endblock %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+
+<section class="wrap offers-hero" aria-labelledby="h-offers">
+  <p class="eyebrow">Angebote &amp; Vorteile</p>
+  <h1 id="h-offers" class="offers-hero__title">Feine Spezialitäten, <em>feine</em> Vorteile.</h1>
+  <p class="offers-hero__lead">Hier finden Sie unsere aktuellen Aktionen – vom Messe-Bundle bis zum Willkommensrabatt. Rabattcodes geben Sie einfach im Warenkorb ein; der Nachlass erscheint sofort in Ihrer Bestellanfrage.</p>
+</section>
+
+{# ---------------- Messe-Bundle ---------------- #}
+{% if bundle %}
+{% set b1 = bundleBanner %}
+<section class="wrap promo-sec" aria-labelledby="h-bundle">
+  <article class="promo promo--dark promo--hero on-dark">
+    {% if b1 %}{{ shop.photo(b1.photo, 'photo--dark promo__media', { decorative: true }) }}{% endif %}
+    <div class="promo__text">
+      <p class="eyebrow">Messe-Bundle</p>
+      <h2 id="h-bundle">{{ bundle.headline }}</h2>
+      <p>{{ (b1.text if b1 else bundle.text) }}</p>
+      <ul class="flavours" aria-label="Wählbare Sorten">{% for f in bundle.flavours %}<li>{{ f }}</li>{% endfor %}</ul>
+      <p class="promo__price"><span>{{ bundle.count }} Packungen nach Wahl</span><strong>{{ bundle.price }}</strong></p>
+      {% if bundle.savingsText %}<p class="promo__save">{{ bundle.savingsText }}</p>{% endif %}
+      <a href="{{ bundle.cta.href }}" class="btn buy">{{ bundle.cta.label }} {{ shop.icon('arrow', 18, 1.8) }}</a>
+    </div>
+  </article>
+</section>
+{% endif %}
+
+{# ---------------- Rabattcodes ---------------- #}
+<section class="wrap coupons-sec" aria-labelledby="h-codes">
+  <div class="sec-head">
+    <div class="stack"><p class="eyebrow">Rabattcodes</p><h2 class="h2" id="h-codes">Ihr Vorteil – einfach im Warenkorb einlösen.</h2></div>
+  </div>
+  {% if codes.length %}
+  <div class="coupons">
+    {% for c in codes %}
+    <div id="code-{{ c.code | lower }}" class="coupon-wrap reveal">{{ shop.coupon(c) }}</div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">Derzeit sind keine öffentlichen Rabattcodes aktiv. Abonnieren Sie unseren Newsletter, um keine Aktion zu verpassen.</p>
+  {% endif %}
+</section>
+
+{# ---------------- So lösen Sie Ihren Code ein ---------------- #}
+<section class="band-foam" aria-labelledby="h-howto">
+  <div class="wrap section howto">
+    <h2 class="h2" id="h-howto">So lösen Sie Ihren Code ein</h2>
+    <ol class="howto__steps">
+      <li><span class="howto__n">1</span><strong>Produkte wählen</strong><p>Legen Sie Ihre Lieblinge in den Warenkorb.</p></li>
+      <li><span class="howto__n">2</span><strong>Code eingeben</strong><p>Im Warenkorb unter „Rabattcode“ den Code eingeben und „Einlösen“ wählen.</p></li>
+      <li><span class="howto__n">3</span><strong>Vorteil sichern</strong><p>Der Nachlass wird sofort berechnet und in Ihrer Bestellanfrage ausgewiesen.</p></li>
+    </ol>
+    <div class="fineprint">
+      <h3>Bedingungen</h3>
+      <p>{{ terms }} Codes, die einmal pro E-Mail-Adresse gelten, werden beim Absenden der Bestellanfrage geprüft.</p>
+    </div>
+  </div>
+</section>
+
+{# ---------------- Weitere Banner (z. B. Messe-Gutschein) ---------------- #}
+{% set others = otherBanners %}
+{% if others.length %}
+<section class="wrap promo-sec promo-sec--duo" aria-label="Weitere Angebote">
+  {% for b in others %}
+  <article class="promo promo--light promo--stack reveal">
+    {{ shop.photo(b.photo, 'promo__media', { decorative: true }) }}
+    <div class="promo__text">
+      <p class="eyebrow">{{ b.eyebrow }}</p>
+      <h2>{{ b.headline }}</h2>
+      <p>{{ b.text }}</p>
+      {% if b.code %}<p class="promo__code"><span>Ihr Code</span><strong>{{ b.code }}</strong></p>{% endif %}
+      {% if b.cta %}<a href="{{ b.cta.href }}" class="btn btn-dark">{{ b.cta.label }}</a>{% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{# ---------------- Newsletter-Teaser ---------------- #}
+<section class="wrap nl-teaser" aria-labelledby="h-nlt">
+  <div class="nl-teaser__box on-dark">
+    <span class="nl-teaser__icon" aria-hidden="true">{{ shop.icon('mail', 28, 1.4) }}</span>
+    <div>
+      <p class="eyebrow">Exklusiv für Abonnentinnen und Abonnenten</p>
+      <h2 id="h-nlt">Vorteile, die es nur per Post gibt.</h2>
+      <p>Gelegentlich verschicken wir Rabattcodes, die Sie nirgendwo sonst finden – zusammen mit neuen Sorten und den nächsten Messe-Terminen. Melden Sie sich unten an; Sie erhalten zuerst eine E-Mail zur Bestätigung.</p>
+    </div>
+    <a class="btn btn-o btn-o--light" href="#newsletter">Zum Newsletter</a>
+  </div>
+</section>
+
+{{ shop.newsletter('newsletter') }}
+{% endblock %}

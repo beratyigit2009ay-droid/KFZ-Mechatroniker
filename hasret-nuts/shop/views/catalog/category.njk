@@ -1,0 +1,131 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-category{% endblock %}
+{% block head %}
+<script type="application/ld+json" nonce="{{ nonce }}">{{ breadcrumbLd | jsonld }}</script>
+<script type="application/ld+json" nonce="{{ nonce }}">{{ collectionLd | jsonld }}</script>
+{% endblock %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+
+<section class="wrap cat-hero" aria-labelledby="h-cat">
+  <div class="cat-hero__text">
+    <h1 id="h-cat">{{ category.name }}</h1>
+    <p class="lead-it">{{ category.lead }}</p>
+    <p class="cat-hero__copy">{{ category.text }}</p>
+  </div>
+  {{ shop.photo(banner, 'cat-hero__media') }}
+</section>
+
+<div class="wrap">
+  <nav class="cat-tabs" aria-label="Kategorie wählen">
+    {% for c in categories %}
+    <a class="tab" href="/kategorie/{{ c.slug }}"{% if c.slug == category.slug %} aria-current="page"{% endif %}>{{ c.name }}</a>
+    {% endfor %}
+    <a class="tab tab--quiet" href="/angebote">Angebote</a>
+  </nav>
+</div>
+
+<div class="wrap shop-layout">
+  <form class="filters" id="filters" method="get" action="{{ basePath }}" aria-label="Filter" data-filters data-filter-form>
+    <span class="filters__grab" aria-hidden="true"></span>
+    <div class="filters__head">
+      <h2 class="filters__title">Filter</h2>
+      <div class="filters__head-actions">
+        <a class="link-btn" href="{{ model.resetUrl }}" data-filter-reset>Zurücksetzen</a>
+        <button type="button" class="ico filters__close" data-filter-close aria-label="Filter schließen">{{ shop.icon('close', 22, 1.6) }}</button>
+      </div>
+    </div>
+    <div class="filters__body">
+      {% call shop.acc('f-allergene', 'Allergene ausschließen', true) %}
+      <fieldset class="opts">
+        <legend class="sr-only">Produkte ohne folgende Allergene anzeigen</legend>
+        {% for o in model.allergenOptions %}
+        <label class="opt{% if o.disabled %} is-off{% endif %}" for="f-ohne-{{ o.value }}" title="{{ o.title }}">
+          <input type="checkbox" id="f-ohne-{{ o.value }}" name="ohne" value="{{ o.value }}"{% if o.checked %} checked{% endif %}{% if o.disabled %} disabled{% endif %}>
+          <span>{{ o.label }}</span><span class="opt__n" data-opt-count="ohne:{{ o.value }}" aria-hidden="true">({{ o.count }})</span>
+        </label>
+        {% endfor %}
+        <label class="opt opt--extra" for="f-spuren">
+          <input type="checkbox" id="f-spuren" name="spuren" value="1"{% if model.filters.spuren %} checked{% endif %}>
+          <span>Auch Produkte mit Spurenhinweis ausblenden</span>
+        </label>
+        <p class="opts__note">Angaben vorläufig – maßgeblich ist das Etikett. Weitere der 14 Hauptallergene sind derzeit für kein Produkt angegeben. <a href="/allergene">Zur Allergen-Übersicht →</a></p>
+      </fieldset>
+      {% endcall %}
+
+      {% if model.priceOptions.length %}
+      {% call shop.acc('f-preis', 'Preis', true) %}
+      <fieldset class="opts">
+        <legend class="sr-only">Preisbereich</legend>
+        {% for o in model.priceOptions %}
+        <label class="opt{% if o.disabled %} is-off{% endif %}" for="f-preis-{{ o.value }}">
+          <input type="checkbox" id="f-preis-{{ o.value }}" name="preis" value="{{ o.value }}"{% if o.checked %} checked{% endif %}{% if o.disabled %} disabled{% endif %}>
+          <span>{{ o.label }}</span><span class="opt__n" data-opt-count="preis:{{ o.value }}" aria-hidden="true">({{ o.count }})</span>
+        </label>
+        {% endfor %}
+      </fieldset>
+      {% endcall %}
+      {% endif %}
+
+      {% if model.productOptions.length %}
+      {% call shop.acc('f-produkt', 'Sorte / Produkt', false) %}
+      <fieldset class="opts">
+        <legend class="sr-only">Produkt</legend>
+        {% for o in model.productOptions %}
+        <label class="opt" for="f-produkt-{{ o.value }}">
+          <input type="checkbox" id="f-produkt-{{ o.value }}" name="produkt" value="{{ o.value }}"{% if o.checked %} checked{% endif %}>
+          <span>{{ o.label }}</span><span class="opt__n" data-opt-count="produkt:{{ o.value }}" aria-hidden="true">({{ o.count }})</span>
+        </label>
+        {% endfor %}
+      </fieldset>
+      {% endcall %}
+      {% endif %}
+      <div class="filters__submit"><button type="submit" class="btn btn-dark btn--block">Filter anwenden</button></div>
+    </div>
+    <div class="filters__foot"><button type="button" class="btn btn--block btn-dark" data-filter-apply>{{ model.count }} {{ 'Produkt' if model.count == 1 else 'Produkte' }} anzeigen</button></div>
+  </form>
+
+  <div class="results" data-results aria-busy="false">
+    <div class="toolbar">
+      <button type="button" class="btn btn-o filter-btn" data-filter-open aria-controls="filters" aria-expanded="false">{{ shop.icon('filter', 18, 1.6) }}Filter<span class="filter-btn__n" data-filter-badge{% if not model.activeCount %} hidden{% endif %}>{{ model.activeCount }}</span></button>
+      <p class="toolbar__count" data-count role="status">{{ model.count }} {{ 'Produkt' if model.count == 1 else 'Produkte' }}</p>
+      <span class="sort">
+        <label for="sortierung">Sortieren nach</label>
+        <select id="sortierung" name="sortierung" form="filters" data-sort>
+          {% for s in model.sorts %}<option value="{{ s.key }}"{% if s.key == model.filters.sortierung %} selected{% endif %}>{{ s.label }}</option>{% endfor %}
+        </select>
+        <button type="submit" form="filters" class="btn btn-o sort__go">OK</button>
+      </span>
+    </div>
+    {% if model.chips.length %}
+    <ul class="chips" aria-label="Aktive Filter" data-chips>
+      {% for ch in model.chips %}<li><a class="chip" href="{{ ch.href }}">{{ ch.label }} <span class="sr-only">– Filter entfernen</span>{{ shop.icon('close', 14, 2) }}</a></li>{% endfor %}
+      <li><a class="chip chip--reset" href="{{ model.resetUrl }}">Alle zurücksetzen</a></li>
+    </ul>
+    {% endif %}
+    {% if model.count %}
+    <div class="grid grid--cat" data-grid>
+      {% for c in model.cards %}{{ shop.card(c, 'h2') }}{% endfor %}
+    </div>
+    {% else %}
+    <div class="empty" data-empty>
+      <h2>Keine Produkte passen zu Ihrer Auswahl.</h2>
+      <p class="muted">Entfernen Sie einen Filter oder schauen Sie in eine andere Kategorie.</p>
+      <a class="btn btn-o" href="{{ model.resetUrl }}">Filter zurücksetzen</a>
+    </div>
+    {% endif %}
+    <p class="legal-line">Alle Preise inkl. MwSt., zzgl. Versandkosten. Grundpreise je kg bzw. l.</p>
+  </div>
+</div>
+
+{% if category.seoText %}
+<section class="band-foam" aria-labelledby="h-seo">
+  <div class="wrap wrap--narrow seo reveal">
+    <h2 id="h-seo">{{ category.name }} bei Hasret Nuts</h2>
+    <p>{{ category.seoText }}</p>
+  </div>
+</section>
+{% endif %}
+{{ shop.newsletter('newsletter') }}
+{% endblock %}

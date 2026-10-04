@@ -1,0 +1,171 @@
+{#- Owner: BUILD-SHOP · Bausteine des Online-Shops.
+    Import MIT Kontext (csrfToken, currentPath):  {% import "macros/shop.njk" as shop with context %}
+      shop.icon(name, size, strokeWidth, cls)        Strich-Icon (Inline-SVG, aria-hidden)
+      shop.photo(ph, cls, opts)                      Fotoplatzhalter mit Foto-ID, Seitenverhältnis, Mindestgröße, Motiv
+      shop.card(c, h)                                Produktkarte (Bild A/B-Hover, Preis, In den Warenkorb)
+      shop.crumbs(items)                             Brotkrumen
+      {% call shop.acc(id, title, open, kind, h) %}…{% endcall %}   Akkordeon (Slide-Down)
+      shop.newsletter(id)                            Newsletter-Band (Double-Opt-in)
+      shop.coupon(c)                                 Coupon-Karte mit „Code kopieren“
+-#}
+
+{% macro icon(name, size=20, sw=1.6, cls='') -%}
+<svg{% if cls %} class="{{ cls }}"{% endif %} width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ sw }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+{%- if name == 'bag' -%}<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>
+{%- elif name == 'check' -%}<path d="M5 12.5l4.5 4.5L19 7.5"/>
+{%- elif name == 'cam' -%}<path d="M4 8.5h3.2l1.6-2.5h6.4l1.6 2.5H20V19H4z"/><circle cx="12" cy="13.2" r="3.4"/>
+{%- elif name == 'chev' -%}<path d="M6 9l6 6 6-6"/>
+{%- elif name == 'plus' -%}<path d="M12 5v14M5 12h14"/>
+{%- elif name == 'minus' -%}<path d="M5 12h14"/>
+{%- elif name == 'close' -%}<path d="M6 6l12 12M18 6L6 18"/>
+{%- elif name == 'trash' -%}<path d="M4.5 7h15"/><path d="M9.5 7V4.8h5V7"/><path d="M6.5 7l1 13h9l1-13"/>
+{%- elif name == 'filter' -%}<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>
+{%- elif name == 'search' -%}<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>
+{%- elif name == 'user' -%}<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20c1.3-3.8 4.2-5.6 7.5-5.6s6.2 1.8 7.5 5.6"/>
+{%- elif name == 'menu' -%}<path d="M4 7h16M4 12h16M4 17h16"/>
+{%- elif name == 'bolt' -%}<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>
+{%- elif name == 'hand' -%}<path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 10V4.5a1.5 1.5 0 0 1 3 0V11"/><path d="M14 10.5V6a1.5 1.5 0 0 1 3 0v7c0 4-2.5 7-6 7s-5.5-2-7-5l-1-2a1.5 1.5 0 0 1 2.6-1.5L8 13"/>
+{%- elif name == 'mail' -%}<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7.5l8 6 8-6"/>
+{%- elif name == 'pin' -%}<path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>
+{%- elif name == 'arrow' -%}<path d="M5 12h14M13 6l6 6-6 6"/>
+{%- elif name == 'back' -%}<path d="M19 12H5M11 6l-6 6 6 6"/>
+{%- elif name == 'copy' -%}<rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6A1.5 1.5 0 0 0 14 4.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/>
+{%- elif name == 'info' -%}<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>
+{%- elif name == 'tag' -%}<path d="M3.5 12.2V4.5h7.7l9.3 9.3-7.7 7.7z"/><circle cx="8" cy="9" r="1.4"/>
+{%- elif name == 'truck' -%}<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>
+{%- elif name == 'shield' -%}<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>
+{%- elif name == 'leaf' -%}<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/>
+{%- elif name == 'gift' -%}<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11"/><path d="M12 9c-2-4-6-4-6-1.5S9.5 9 12 9zm0 0c2-4 6-4 6-1.5S14.5 9 12 9z"/>
+{%- elif name == 'external' -%}<path d="M14 5h5v5M19 5l-8 8"/><path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/>
+{%- elif name == 'warn' -%}<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.5h.01"/>
+{%- elif name == 'contains' -%}<circle cx="12" cy="12" r="8" fill="currentColor" stroke="none"/><path d="M8.2 12.3l2.6 2.6 5-5.2" stroke="#FBF7F0" stroke-width="2"/>
+{%- elif name == 'trace' -%}<circle cx="12" cy="12" r="7.2" stroke-dasharray="2.6 2.4"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>
+{%- elif name == 'spark' -%}<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>
+{%- elif name == 'chat' -%}<path d="M5 5h14v10H9l-4 4z"/>
+{%- elif name == 'bug' -%}<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M12 8V5M9.5 5.5l-1.5-2M14.5 5.5l1.5-2M4 13h3M17 13h3M4.5 18l2.7-1.5M19.5 18l-2.7-1.5"/>
+{%- elif name == 'idea' -%}<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9V16h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3z"/>
+{%- endif -%}
+</svg>
+{%- endmacro %}
+
+{% macro photo(ph, cls='', opts={}) -%}
+<figure class="photo{% if cls %} {{ cls }}{% endif %}" data-photo="{{ ph.id }}" style="--ar:{{ ph.ar }}"{% if opts.decorative or not ph.alt %} aria-hidden="true"{% else %} role="img" aria-label="{{ ph.alt }}"{% endif %}{% if opts.attrs %} {{ opts.attrs | safe }}{% endif %}>
+  {{ icon('cam', 22, 1.4, 'photo__icon') }}
+  <figcaption><span class="photo__label">{{ ph.label }}</span><span class="photo__text">{{ ph.text }}</span></figcaption>
+</figure>
+{%- endmacro %}
+
+{% macro buyInner(label='In den Warenkorb') -%}
+{{ icon('bag', 18, 1.8, 'i-bag') }}{{ icon('check', 18, 2, 'i-check') }}<span class="buy__label">{{ label }}</span>
+{%- endmacro %}
+
+{% macro card(c, h='h3', opts={}) -%}
+<article class="card" data-slug="{{ c.slug }}">
+  <div class="card__media">
+    <a class="m" href="{{ c.href }}" tabindex="-1" aria-hidden="true">
+      {{ photo(c.photoA, 'ia', { decorative: true }) }}
+      {{ photo(c.photoB, 'ib photo--b', { decorative: true }) }}
+      {% if c.badge %}<span class="badge">{{ c.badge }}</span>{% endif %}
+    </a>
+    <div class="card__dots" role="group" aria-label="Bilder: {{ c.name }}">
+      <button type="button" class="dot" data-dot="a" aria-pressed="true" aria-label="Packshot zeigen"></button>
+      <button type="button" class="dot" data-dot="b" aria-pressed="false" aria-label="Detailbild zeigen"></button>
+    </div>
+  </div>
+  <div class="card__body">
+    <{{ h }} class="card__name"><a href="{{ c.href }}">{{ c.name }}</a></{{ h }}>
+    <span class="card__sub">{{ c.subtitle }}</span>
+    <div class="price"><strong>{{ c.priceLabel }}</strong><span>{{ c.basePriceLabel }}</span></div>
+  </div>
+  {% if not c.available %}
+  <p class="card__na">Derzeit nicht verfügbar</p>
+  {% elif c.directSku %}
+  <form class="card__form" method="post" action="/warenkorb/hinzufuegen" data-add-form>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="sku" value="{{ c.directSku }}">
+    <input type="hidden" name="qty" value="1">
+    <input type="hidden" name="next" value="{{ currentPath }}">
+    <input type="hidden" name="back" value="{{ currentPath }}">
+    <button type="submit" class="btn buy card__buy" aria-label="{{ c.name }} in den Warenkorb legen">{{ buyInner() }}</button>
+  </form>
+  {% elif c.isBundle %}
+  <a class="btn btn-o card__buy" href="{{ c.href }}" aria-label="{{ c.name }}: Trio zusammenstellen">Trio zusammenstellen</a>
+  {% else %}
+  <a class="btn btn-o card__buy" href="{{ c.href }}" aria-label="{{ c.name }}: {{ c.chooseLabel }}">{{ c.chooseLabel }} {{ icon('arrow', 16, 1.8) }}</a>
+  {% endif %}
+</article>
+{%- endmacro %}
+
+{% macro crumbs(items) -%}
+<nav class="crumbs" aria-label="Brotkrumen">
+  <ol>
+  {% for it in items %}
+    {% if loop.last %}<li><span aria-current="page">{{ it.name }}</span></li>
+    {% else %}<li><a href="{{ it.href }}">{{ it.name }}</a><span class="crumbs__sep" aria-hidden="true">/</span></li>{% endif %}
+  {% endfor %}
+  </ol>
+</nav>
+{%- endmacro %}
+
+{% macro acc(id, title, open=false, kind='filter', h='') -%}
+<div class="acc{% if kind == 'pdp' %} acc--pdp acc--plus{% endif %}{% if open %} is-open{% endif %}" data-acc>
+  {% if h %}<{{ h }} class="acc__h">{% endif %}<button type="button" class="acc__head" id="{{ id }}-h" aria-expanded="{{ 'true' if open else 'false' }}" aria-controls="{{ id }}"><span class="acc__title">{{ title }}</span>{{ icon('plus' if kind == 'pdp' else 'chev', 20 if kind == 'pdp' else 18, 1.8, 'acc__icon') }}</button>{% if h %}</{{ h }}>{% endif %}
+  <div class="acc__panel" id="{{ id }}" role="region" aria-labelledby="{{ id }}-h"><div class="acc__inner">{{ caller() }}</div></div>
+</div>
+{%- endmacro %}
+
+{% macro newsletter(id='newsletter') -%}
+<section class="band-foam nl-band" id="{{ id }}" aria-labelledby="{{ id }}-h">
+  <div class="nl reveal">
+    <p class="eyebrow">Newsletter</p>
+    <h2 id="{{ id }}-h">Neue Sorten, Messe-Termine und exklusive Vorteile.</h2>
+    <p>Einmal anmelden, nichts verpassen: Wir schreiben Ihnen, wenn es neue Spezialitäten gibt, wann Sie uns auf der nächsten Messe treffen – und gelegentlich mit Rabattcodes, die es nur für Abonnentinnen und Abonnenten gibt.</p>
+    <form class="nl__form" method="post" action="/newsletter" data-nl-form novalidate>
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <div class="hp-field" aria-hidden="true"><label for="{{ id }}-hp">Dieses Feld bitte leer lassen</label><input type="text" id="{{ id }}-hp" name="website" value="" tabindex="-1" autocomplete="off"></div>
+      <label for="{{ id }}-mail" class="sr-only">E-Mail-Adresse</label>
+      <input id="{{ id }}-mail" class="nl__input" type="email" name="email" placeholder="Ihre E-Mail-Adresse" autocomplete="email" required maxlength="254" aria-describedby="{{ id }}-msg {{ id }}-legal">
+      <button type="submit" class="btn btn--lg btn-dark">Anmelden</button>
+    </form>
+    <p class="nl__msg" id="{{ id }}-msg" data-nl-msg role="status" tabindex="-1"></p>
+    <small id="{{ id }}-legal">Mit Ihrer Anmeldung willigen Sie ein, dass wir Ihnen gelegentlich E-Mails zu neuen Sorten, Messe-Terminen und Angeboten senden. Sie erhalten zuerst eine E-Mail zur Bestätigung (Double-Opt-in). Abmeldung jederzeit über den Link in jeder E-Mail oder unter <a href="/newsletter/abmelden">Newsletter abmelden</a>. Details in unserer <a href="/datenschutz#newsletter">Datenschutzerklärung</a>.</small>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro coupon(c, headingLevel='h3') -%}
+<article class="coupon" data-coupon>
+  <div class="coupon__value">
+    <span class="coupon__amount">{{ c.value }}</span>
+    <span class="coupon__kind">{{ 'Rabatt' if c.type == 'percent' else 'Nachlass' }}</span>
+  </div>
+  <div class="coupon__body">
+    <p class="eyebrow">{{ c.label }}</p>
+    <{{ headingLevel }} class="coupon__title">{{ c.headline }}</{{ headingLevel }}>
+    <p class="coupon__text">{{ c.text }}</p>
+    <div class="coupon__code">
+      <span class="sr-only">Rabattcode:</span>
+      <input class="coupon__input" type="text" value="{{ c.code }}" readonly aria-label="Rabattcode {{ c.code }}" data-copy-source spellcheck="false">
+      <button type="button" class="btn btn-o coupon__copy" data-copy hidden>{{ icon('copy', 18, 1.6) }}<span data-copy-label>Code kopieren</span></button>
+    </div>
+    <ul class="coupon__conditions">
+      {% for cond in c.conditions %}<li>{{ cond }}</li>{% endfor %}
+    </ul>
+  </div>
+</article>
+{%- endmacro %}
+
+{% macro steps(current) -%}
+<ol class="steps" aria-label="Fortschritt der Bestellanfrage">
+  <li class="steps__item{% if current == 1 %} is-current{% elif current > 1 %} is-done{% endif %}"{% if current == 1 %} aria-current="step"{% endif %}><span class="steps__n">1</span><span>Warenkorb</span></li>
+  <li class="steps__item{% if current == 2 %} is-current{% elif current > 2 %} is-done{% endif %}"{% if current == 2 %} aria-current="step"{% endif %}><span class="steps__n">2</span><span>Ihre Angaben</span></li>
+  <li class="steps__item{% if current == 3 %} is-current{% endif %}"{% if current == 3 %} aria-current="step"{% endif %}><span class="steps__n">3</span><span>Anfrage gesendet</span></li>
+</ol>
+{%- endmacro %}
+
+{% macro legalNote() -%}
+<div class="note note--legal" role="note">
+  {{ icon('info', 20, 1.6) }}
+  <p><strong>Platzhalter – rechtlich prüfen lassen.</strong> Die endgültige Fassung wird vor der Veröffentlichung von einer Rechtsanwältin bzw. einem Rechtsanwalt erstellt oder geprüft. Angaben in eckigen Klammern werden ergänzt.</p>
+</div>
+{%- endmacro %}

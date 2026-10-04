@@ -1,0 +1,44 @@
+{#- Owner: BUILD-SHOP · Grundlayout des Online-Shops.
+    Blöcke: title (im SEO-Kopf), meta, head, content, scripts, bodyClass.
+    Variablen: meta, user, csrfToken, flash, nonce, currentPath, site (+ cartCount, navCategories aus routes/pages.js). -#}
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script nonce="{{ nonce }}">document.documentElement.className=document.documentElement.className.replace(/(^|\s)no-js(\s|$)/,'$1js$2');</script>
+{% set introPart = 'head' %}{% include "partials/intro.njk" %}
+{#- Optionaler Block "title": überschreibt nur den Seitentitel, alle übrigen SEO-Daten bleiben aus "meta". -#}
+{% if false %}{% block title %}{% endblock %}{% endif %}
+{% set _pageTitle %}{% block title %}{% endblock %}{% endset %}
+{% set _pageTitle = _pageTitle | trim %}
+{% if _pageTitle %}
+{% set _m = meta or {} %}
+{% set meta = { title: (_pageTitle if (site.name in _pageTitle) else (_pageTitle ~ ' · ' ~ site.name)), description: _m.description, canonical: _m.canonical, url: _m.url, robots: _m.robots, noindex: _m.noindex, type: _m.type, image: _m.image, imageAlt: _m.imageAlt, siteName: _m.siteName, locale: _m.locale, twitterCard: _m.twitterCard, googleVerification: _m.googleVerification, app: _m.app } %}
+{% endif %}
+{% block meta %}{% include "partials/seo-head.njk" %}{% endblock %}
+<meta name="theme-color" content="#F3EBDD">
+<meta name="format-detection" content="telephone=no">
+<meta name="csrf-token" content="{{ csrfToken }}">
+<link rel="preload" href="/assets/fonts/fraunces/fraunces-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/dm-sans/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ asset('/assets/css/fonts.css') }}">
+<link rel="stylesheet" href="{{ asset('/assets/motion/logo-spin.css') }}">
+<link rel="stylesheet" href="{{ asset('/static/css/shop.css') }}">
+{% if storeJsonLd %}<script type="application/ld+json" nonce="{{ nonce }}">{{ storeJsonLd | jsonld }}</script>{% endif %}
+{% block head %}{% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+{% set introPart = 'body' %}{% set introVariant = 'shop' %}{% include "partials/intro.njk" %}
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+{% include "partials/header.njk" %}
+<main id="inhalt" tabindex="-1">
+  {% if flash and flash.length %}<div class="wrap flash-wrap">{% include "partials/flash.njk" %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+{% include "partials/footer.njk" %}
+<div class="sr-only" aria-live="polite" aria-atomic="true" id="live-region" data-live></div>
+<script src="{{ asset('/static/js/shop.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

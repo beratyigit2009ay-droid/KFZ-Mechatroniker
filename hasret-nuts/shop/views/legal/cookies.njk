@@ -1,0 +1,49 @@
+{% extends "legal/_base.njk" %}
+{% block legalLead %}<p class="legal__lead">Stand: [DATUM]</p>{% endblock %}
+{% block legalBody %}
+<div class="note note--process">
+  <p><strong>Kurz gesagt:</strong> Wir verwenden keine Tracking-, Analyse- oder Werbe-Cookies und binden keine Dienste von Drittanbietern ein, die Cookies setzen. Wir speichern nur, was technisch unbedingt notwendig ist, damit unser Shop funktioniert – etwa Ihren Warenkorb, Ihre Anmeldung und den Schutz unserer Formulare. Deshalb sehen Sie bei uns kein Cookie-Banner.</p>
+</div>
+
+<h2>Was wir auf Ihrem Gerät speichern</h2>
+<div class="table-wrap" role="region" aria-labelledby="cookie-caption" tabindex="0">
+  <table class="data-table">
+    <caption id="cookie-caption">Technisch notwendige Speicherung im Hasret Nuts Shop</caption>
+    <thead><tr><th scope="col">Name</th><th scope="col">Art</th><th scope="col">Zweck</th><th scope="col">Speicherdauer</th></tr></thead>
+    <tbody>
+      <tr>
+        <th scope="row"><code>{{ sessionCookie }}</code></th>
+        <td>Cookie, nur für diese Shop-Domain, verschlüsselt übertragen (HttpOnly, Secure, SameSite=Lax)</td>
+        <td>Sitzungskennung: hält Ihren Warenkorb, einen eingelösten Rabattcode und – falls Sie sich anmelden – Ihre Anmeldung fest. Außerdem schützt sie unsere Formulare vor gefälschten Anfragen (CSRF-Schutz). Das Cookie enthält nur eine zufällige Zeichenfolge, keine persönlichen Angaben.</td>
+        <td>Bis zu {{ sessionDays }} Tage nach Ihrem letzten Besuch; bei der Abmeldung wird die Sitzung sofort beendet.</td>
+      </tr>
+      <tr>
+        <th scope="row"><code>hn_intro_seen</code></th>
+        <td>Eintrag im Sitzungsspeicher Ihres Browsers (sessionStorage) – kein Cookie, wird nicht an uns übertragen</td>
+        <td>Merkt sich, dass die Eröffnungsanimation bereits gezeigt wurde, damit sie nicht bei jedem Seitenwechsel erneut abläuft.</td>
+        <td>Bis Sie den Browser-Tab schließen.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Warum wir keine Einwilligung benötigen</h2>
+<p>Nach § 25 Abs. 1 des Telekommunikation-Digitale-Dienste-Datenschutz-Gesetzes (TDDDG) dürfen Informationen grundsätzlich nur mit Ihrer Einwilligung auf Ihrem Endgerät gespeichert oder dort ausgelesen werden. Eine Ausnahme gilt nach <strong>§ 25 Abs. 2 Nr. 2 TDDDG</strong>, wenn die Speicherung unbedingt erforderlich ist, damit wir einen von Ihnen ausdrücklich gewünschten digitalen Dienst bereitstellen können. Das trifft auf die oben genannten Einträge zu. Die damit verbundene Verarbeitung stützen wir auf Art. 6 Abs. 1 lit. b DSGVO (Bereitstellung des Shops, Bearbeitung Ihrer Anfrage) und Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren Betrieb).</p>
+
+<h2>Was wir nicht verwenden</h2>
+<ul>
+  <li>keine Analyse- oder Statistik-Tools (z. B. Google Analytics)</li>
+  <li>keine Werbe-, Social-Media- oder Tracking-Pixel</li>
+  <li>keine extern geladenen Schriften – alle Schriften liegen auf unserem eigenen Server</li>
+  <li>keine eingebetteten Karten, Videos oder sonstigen Inhalte von Drittanbietern</li>
+</ul>
+
+<h2>Cookies löschen oder blockieren</h2>
+<p>Sie können Cookies jederzeit in den Einstellungen Ihres Browsers löschen oder blockieren. Bitte beachten Sie: Ohne das Sitzungs-Cookie funktionieren Warenkorb, Anmeldung und Formulare nicht.</p>
+
+<h2>Änderungen</h2>
+<p>Sollten wir künftig Dienste einsetzen, die eine Einwilligung erfordern, fragen wir Sie vorher ausdrücklich und passen diese Seite an.</p>
+
+<h2>Fragen?</h2>
+<p>Schreiben Sie uns an [E-MAIL]. Weitere Informationen finden Sie in unserer <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+{% endblock %}

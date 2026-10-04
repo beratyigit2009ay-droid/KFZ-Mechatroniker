@@ -1,0 +1,52 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-thanks{% endblock %}
+{% block content %}
+<section class="wrap thanks" aria-labelledby="h-thanks">
+  {{ shop.steps(3) }}
+  <div class="thanks__grid">
+    <div class="thanks__main">
+      <p class="thanks__badge">{{ shop.icon('check', 22, 2) }}<span>Anfrage eingegangen</span></p>
+      <h1 id="h-thanks" class="page-title">Vielen Dank für Ihre Bestellanfrage!</h1>
+      <p class="thanks__lead">Ihre Anfrage <strong class="thanks__id">{{ order.public_id }}</strong> ist bei uns eingegangen. Eine Eingangsbestätigung haben wir an <strong>{{ order.email }}</strong> gesendet.</p>
+
+      <h2 class="thanks__h">So geht es weiter</h2>
+      <ol class="next-steps">
+        <li><span class="next-steps__n">1</span><div><strong>Eingangsbestätigung</strong><p>Sie erhalten in wenigen Minuten eine E-Mail mit allen Details Ihrer Anfrage.</p></div></li>
+        <li><span class="next-steps__n">2</span><div><strong>Persönliche Prüfung</strong><p>Eyyüp Koca prüft Verfügbarkeit und Versandkosten.</p></div></li>
+        <li><span class="next-steps__n">3</span><div><strong>Bestätigung per E-Mail</strong><p>In der Regel innerhalb von [1–2 Werktagen], mit Gesamtbetrag und Zahlungsinformationen. Erst damit wird Ihre Bestellung verbindlich.</p></div></li>
+        <li><span class="next-steps__n">4</span><div><strong>{{ 'Abholung' if order.delivery == 'abholung' else 'Versand' }}</strong><p>{{ 'Zum vereinbarten Abholtermin in Memmingen.' if order.delivery == 'abholung' else 'Nach Zahlungseingang verschicken wir Ihre Spezialitäten sorgfältig verpackt.' }}</p></div></li>
+      </ol>
+      <p class="note">{{ shop.icon('info', 18, 1.6) }}<span>Keine E-Mail erhalten? Bitte schauen Sie in Ihren Spam-Ordner oder schreiben Sie uns an [E-MAIL] – mit Ihrer Anfragenummer {{ order.public_id }}.</span></p>
+      {% if not user %}
+      <p class="thanks__tip">Tipp: Mit einem Kundenkonto behalten Sie Ihre Anfragen jederzeit im Blick. <a href="/konto/registrieren">Konto anlegen</a></p>
+      {% endif %}
+      <a class="btn btn--lg buy" href="/">Weiter einkaufen {{ shop.icon('arrow', 18, 1.8) }}</a>
+    </div>
+
+    <aside class="summary" aria-labelledby="h-sum">
+      <h2 id="h-sum" class="summary__h">Ihre Anfrage {{ order.public_id }}</h2>
+      <ul class="mini-lines">
+        {% for it in items %}
+        <li class="mini-line">
+          <span class="mini-line__qty">{{ it.qty }} ×</span>
+          <span class="mini-line__name">{{ it.name }}{% if it.variant %}<small>{{ it.variant }}</small>{% endif %}</span>
+          <span class="mini-line__price">{{ it.line_total_cents | euro }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <dl class="totals">
+        <div class="totals__row"><dt>Zwischensumme</dt><dd>{{ order.subtotal_cents | euro }}</dd></div>
+        {% if order.discount_cents > 0 %}<div class="totals__row totals__row--discount"><dt>Rabatt ({{ order.discount_code }})</dt><dd>{{ (0 - order.discount_cents) | euro }}</dd></div>{% endif %}
+        <div class="totals__row"><dt>Versand</dt><dd class="muted">{{ 'Abholung – kostenlos' if order.delivery == 'abholung' else 'wird bestätigt' }}</dd></div>
+        <div class="totals__row totals__row--total"><dt>Summe (vorläufig)</dt><dd>{{ order.total_cents | euro }}</dd></div>
+      </dl>
+      <dl class="order-facts">
+        <div><dt>Lieferung</dt><dd>{{ 'Abholung in Memmingen' if order.delivery == 'abholung' else 'Versand an ' ~ order.street ~ ', ' ~ order.zip ~ ' ' ~ order.city }}</dd></div>
+        {% if order.payment_pref %}<div><dt>Zahlungswunsch</dt><dd>{{ order.payment_pref }}</dd></div>{% endif %}
+      </dl>
+      {{ shop.photo({ id: 'S-03', label: 'Foto S-03 · Danke-Seite · 4:3 · min. 2400 × 1800 px', ar: '4/3', alt: '', text: '[FOTO-PLATZHALTER: Liebevoll gepacktes Paket – geöffneter Versandkarton mit Seidenpapier, darin Sarma Lokum, Pistazien und ein sicher gepolstertes Turşu-Glas. Perspektive: 45° von oben, helles Holz, Tageslicht.]' }, 'thanks__photo', { decorative: true }) }}
+    </aside>
+  </div>
+</section>
+{% endblock %}

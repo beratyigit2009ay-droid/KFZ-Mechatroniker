@@ -1,0 +1,44 @@
+{% extends "legal/_base.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block legalLead %}<p class="legal__lead">Bei Hasret Nuts bestellen Sie ganz entspannt: Sie senden uns eine unverbindliche Bestellanfrage, wir bestätigen persönlich – und erst dann wird bezahlt.</p>{% endblock %}
+{% block legalBody %}
+<h2>So funktioniert Ihre Bestellung</h2>
+<ol class="next-steps next-steps--compact">
+  <li><span class="next-steps__n">1</span><div><strong>Produkte in den Warenkorb legen</strong></div></li>
+  <li><span class="next-steps__n">2</span><div><strong>Bestellanfrage senden</strong><p>Unverbindlich – mit Versand oder Abholung in Memmingen.</p></div></li>
+  <li><span class="next-steps__n">3</span><div><strong>Persönliche Bestätigung per E-Mail</strong><p>Mit Gesamtbetrag inklusive Versandkosten, in der Regel innerhalb von [1–2 Werktagen].</p></div></li>
+  <li><span class="next-steps__n">4</span><div><strong>Bezahlen und Versand bzw. Abholung</strong></div></li>
+</ol>
+
+<h2>Versand</h2>
+<ul>
+  <li>Liefergebiet: [Deutschland (Österreich auf Anfrage)]</li>
+  <li>Versandkosten: [X,XX] € [ggf. versandkostenfrei ab XX €]</li>
+  <li>Versanddienstleister: [ANBIETER]</li>
+  <li>Lieferzeit: [X–Y Werktage] nach Zahlungseingang – Blitzversand: Versand innerhalb von [24 h] nach Zahlungseingang</li>
+  <li>Gläser werden bruchsicher verpackt.</li>
+</ul>
+
+<h2>Abholung in Memmingen</h2>
+<p>Kostenlos nach Terminabsprache · [ABHOLADRESSE] · [ZEITEN]</p>
+
+<h2>Zahlung</h2>
+<ul>
+  <li>Überweisung (Vorkasse): Die Bankverbindung steht in Ihrer Bestätigungs-E-Mail.</li>
+  <li>PayPal: [bitte bestätigen]</li>
+  <li>Barzahlung bei Abholung</li>
+</ul>
+<p>Sie zahlen erst, nachdem wir Ihre Bestellung bestätigt haben. Eine Online-Zahlung im Shop gibt es derzeit nicht.</p>
+
+<h2>Rabattcodes</h2>
+<p>Rabattcodes lösen Sie im Warenkorb ein; die Bedingungen finden Sie auf der Seite <a href="/angebote">Angebote</a>.</p>
+
+<h2 id="faq">Häufige Fragen</h2>
+<div class="faq">
+  {% call shop.acc('vz-1', 'Ist meine Bestellanfrage verbindlich?', true, 'pdp', 'h3') %}<div class="acc__body"><p>Nein. Verbindlich wird Ihre Bestellung erst mit unserer Bestätigung per E-Mail.</p></div>{% endcall %}
+  {% call shop.acc('vz-2', 'Wann bezahle ich?', false, 'pdp', 'h3') %}<div class="acc__body"><p>Erst nachdem wir Ihre Bestellung bestätigt haben.</p></div>{% endcall %}
+  {% call shop.acc('vz-3', 'Kann ich meine Anfrage noch ändern?', false, 'pdp', 'h3') %}<div class="acc__body"><p>Ja. Antworten Sie einfach auf die Eingangsbestätigung oder schreiben Sie uns an [E-MAIL].</p></div>{% endcall %}
+  {% call shop.acc('vz-4', 'Wie lange sind die Produkte haltbar?', false, 'pdp', 'h3') %}<div class="acc__body"><p>Das Mindesthaltbarkeitsdatum steht auf jeder Packung. [HINWEIS ZUR MINDEST-RESTLAUFZEIT BEI VERSAND]</p></div>{% endcall %}
+</div>
+{{ shop.photo({ id: 'S-03', label: 'Foto S-03 · Versand & Zahlung · 4:3 · min. 2400 × 1800 px', ar: '4/3', alt: 'Liebevoll gepacktes Paket mit Sarma Lokum, Pistazien und einem gepolsterten Turşu-Glas', text: '[FOTO-PLATZHALTER: Liebevoll gepacktes Paket – geöffneter Versandkarton mit Seidenpapier, darin Sarma Lokum, Pistazien und ein sicher gepolstertes Turşu-Glas. Perspektive: 45° von oben, helles Holz, Tageslicht.]' }, 'legal__photo') }}
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% set p = m.product %}
+{% set sel = m.selected %}
+{% block bodyClass %}page-product{% endblock %}
+{% block head %}
+<script type="application/ld+json" nonce="{{ nonce }}">{{ productLd | jsonld }}</script>
+<script type="application/ld+json" nonce="{{ nonce }}">{{ breadcrumbLd | jsonld }}</script>
+{% endblock %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+
+<div class="wrap pdp" data-pdp="{{ p.slug }}">
+  {# ---------------- Galerie ---------------- #}
+  <div class="gallery" data-gallery>
+    <div class="gallery__main">
+      {% for g in m.gallery %}
+      {{ shop.photo(g, 'gallery__img' ~ (' is-active' if loop.first else '') ~ (' photo--b' if g.key == 'B' else ''), { attrs: 'data-slide="' ~ g.key ~ '"' }) }}
+      {% endfor %}
+      {% for g in m.variantPhotos %}
+      {{ shop.photo(g, 'gallery__img', { attrs: 'data-slide="' ~ g.key ~ '"' }) }}
+      {% endfor %}
+    </div>
+    <div class="thumbs" role="group" aria-label="Produktbilder">
+      {% for g in m.gallery %}
+      <button type="button" class="thumb{% if g.key == 'B' %} thumb--b{% endif %}" data-thumb="{{ g.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}" aria-label="Bild zeigen: {{ g.short }}"><span>{{ g.id }}</span><small>{{ g.short }}</small></button>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ---------------- Kaufbereich ---------------- #}
+  <div class="pdp__buy">
+    {% if p.badges and p.badges.length %}<ul class="pdp__badges" aria-label="Merkmale">{% for b in p.badges %}<li class="pdp__badge">{{ b }}</li>{% endfor %}</ul>{% endif %}
+    <div class="pdp__title">
+      <h1 id="p-title">{{ p.name }}</h1>
+      {% if p.subtitle %}<p class="pdp__subtitle">{{ p.subtitle }}</p>{% endif %}
+    </div>
+    <p class="pdp__lead">{{ p.short }}</p>
+
+    <div class="pdp__price">
+      <div class="price price--lg"><strong data-price>{{ sel.price if sel else m.card.priceLabel }}</strong><span>Grundpreis: <span data-base-price>{{ sel.basePrice if sel else m.card.basePriceLabel }}</span></span></div>
+      <span class="pdp__tax">inkl. MwSt., zzgl. <a href="/versand-zahlung">Versandkosten</a></span>
+      {% if draftMode and p.priceNote %}<span class="draft-note" title="Hinweis nur außerhalb der Produktion sichtbar">{{ shop.icon('info', 14, 1.8) }} Entwurf: {{ p.priceNote }}</span>{% endif %}
+    </div>
+
+    <form class="pdp__form" id="add-form" method="post" action="/warenkorb/hinzufuegen" novalidate data-add-form data-product-name="{{ p.name }}">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <input type="hidden" name="next" value="/warenkorb">
+      <input type="hidden" name="back" value="/produkt/{{ p.slug }}">
+
+      {% if m.bundle %}
+      {# ---------- Messe-Bundle-Konfigurator ---------- #}
+      <input type="hidden" name="sku" value="{{ sel.sku }}">
+      <fieldset class="bundle" data-bundle data-bundle-price="{{ m.bundle.priceCents }}">
+        <legend class="bundle__title">Stellen Sie Ihr Trio zusammen</legend>
+        <p class="bundle__hint" id="bundle-hint">{{ m.bundle.hint }}</p>
+        <div class="bundle__slots">
+          {% for s in m.bundle.slots %}
+          <div class="field field--select bundle__slot">
+            <label class="field__label" for="bundle-{{ s.index }}"><span class="bundle__n" aria-hidden="true">{{ s.index }}</span>{{ s.label }}</label>
+            <select class="field__input field__select" id="bundle-{{ s.index }}" name="bundle" required aria-describedby="bundle-hint" data-bundle-select>
+              <option value="" selected>Bitte wählen</option>
+              {% for f in m.bundle.flavours %}<option value="{{ f.sku }}" data-price="{{ f.priceCents }}">{{ f.label }} (einzeln {{ f.price }})</option>{% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+        </div>
+        <p class="bundle__summary" data-bundle-summary aria-live="polite">Bundle-Preis {{ sel.price }}{% if m.bundle.saveMax > 0 %} – je nach Auswahl sparen Sie {{ m.bundle.saveMin | euro }} bis {{ m.bundle.saveMax | euro }} gegenüber dem Einzelkauf.{% endif %}</p>
+        <p class="form-error" data-form-error role="alert" hidden></p>
+      </fieldset>
+      {% elif m.hasChoice %}
+      {# ---------- Sorten-/Größenwahl (Radio-Pills mit Live-Preis) ---------- #}
+      <fieldset class="pdp__sizes">
+        <legend class="pdp__label">{{ m.choiceLabel }}: <span data-choice-label>{{ sel.label if sel else '' }}</span></legend>
+        <div class="pills">
+          {% for v in m.variants %}
+          <input class="pill__input" type="radio" name="sku" id="v-{{ v.sku }}" value="{{ v.sku }}"{% if sel and v.sku == sel.sku %} checked{% endif %}{% if not v.available %} disabled{% endif %}
+            data-variant data-price="{{ v.price }}" data-base="{{ v.basePrice }}" data-label="{{ v.label }}" data-photo="{{ v.photoKey }}"
+            data-contains="{{ v.allergens.containsLabels | join(', ') }}" data-traces="{{ v.allergens.mayContainLabels | join(', ') }}">
+          <label class="pill" for="v-{{ v.sku }}"><span class="pill__name">{{ v.label }}</span><span class="pill__price">{{ v.price }}{% if not v.available %} · nicht verfügbar{% endif %}</span></label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% else %}
+      <input type="hidden" name="sku" value="{{ sel.sku if sel else '' }}">
+      {% if sel and sel.size %}<p class="pdp__size">Packung: <strong>{{ sel.size }}</strong></p>{% endif %}
+      {% endif %}
+
+      <div class="pdp__actions">
+        <div class="stepper" data-stepper>
+          <button type="button" class="step" data-step="-1" aria-label="Menge verringern">{{ shop.icon('minus', 18, 1.8) }}</button>
+          <label for="qty" class="sr-only">Menge</label>
+          <input class="stepper__val" id="qty" name="qty" type="number" inputmode="numeric" min="1" max="99" step="1" value="1" data-qty>
+          <button type="button" class="step" data-step="1" aria-label="Menge erhöhen">{{ shop.icon('plus', 18, 1.8) }}</button>
+        </div>
+        <button type="submit" class="btn buy pdp__add" data-main-buy{% if not m.available %} disabled{% endif %}>{{ shop.buyInner('In den Warenkorb') }}</button>
+      </div>
+      {% if not m.bundle %}<p class="form-error" data-form-error role="alert" hidden></p>{% endif %}
+    </form>
+
+    {% if m.available %}
+    <p class="stock"><span class="stock__dot" aria-hidden="true"></span><span><strong>Verfügbar</strong> – Ihre Bestellung bestätigen wir persönlich per E-Mail.</span></p>
+    {% else %}
+    <p class="stock stock--na"><span><strong>Derzeit nicht verfügbar</strong></span></p>
+    {% endif %}
+
+    {% if p.highlights and p.highlights.length %}
+    <ul class="trust" aria-label="Das Besondere">
+      {% for h in p.highlights %}<li>{{ shop.icon('check', 18, 1.6) }}{{ h }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {# ---------------- Allergen-Box ---------------- #}
+    {% set A = m.allergen %}
+    <section class="allergen-box" aria-labelledby="allergen-h" data-allergen-box>
+      <h2 class="allergen-box__h" id="allergen-h">{{ shop.icon('leaf', 20, 1.6) }} Allergene</h2>
+      {% if A.isBundle %}
+      <p class="allergen-box__lead">Abhängig von den gewählten Sorten:</p>
+      {% endif %}
+      {% if A.uniform and A.rows.length %}
+      {% set r = A.rows[0] %}
+      <p><span class="allergen-box__k">Enthält:</span> {% if r.containsLabels.length %}<strong>{{ r.containsLabels | join(', ') }}</strong>{% elif A.confirmed %}keines der 14 Hauptallergene{% else %}noch keine Angaben [laut Etikett zu bestätigen]{% endif %}</p>
+      <p><span class="allergen-box__k">Kann Spuren enthalten von:</span> {% if r.mayContainLabels.length %}{{ r.mayContainLabels | join(', ') }}{% else %}[laut Etikett zu ergänzen]{% endif %}</p>
+      {% if r.extra %}<p class="allergen-box__extra">{{ r.extra }}</p>{% endif %}
+      {% else %}
+      <ul class="allergen-box__list">
+        {% for r in A.rows %}
+        <li data-allergen-row="{{ r.sku }}"><span class="allergen-box__variant">{{ r.label }}:</span>
+          Enthält {% if r.containsLabels.length %}<strong>{{ r.containsLabels | join(', ') }}</strong>{% elif A.confirmed %}keines der 14 Hauptallergene{% else %}– noch keine Angaben{% endif %}{% if r.mayContainLabels.length %} · kann Spuren enthalten von {{ r.mayContainLabels | join(', ') }}{% endif %}.
+          {% if r.extra %}<span class="allergen-box__extra">{{ r.extra }}</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% if not A.confirmed %}
+      <p class="allergen-box__status" role="note">{{ shop.icon('warn', 16, 1.8) }} Angaben {{ A.status }}. Maßgeblich sind die Angaben auf dem Etikett.</p>
+      {% endif %}
+      <a class="link-u allergen-box__more" href="/allergene">Alle Allergene im Überblick →</a>
+    </section>
+
+    {# ---------------- Akkordeons ---------------- #}
+    <div class="accs">
+      {% call shop.acc('acc-beschreibung', 'Beschreibung', true, 'pdp', 'h2') %}
+      <div class="acc__body">{% for para in m.descriptionParas %}<p>{{ para }}</p>{% endfor %}</div>
+      {% endcall %}
+
+      {% call shop.acc('acc-zutaten', 'Zutaten & Allergene', false, 'pdp', 'h2') %}
+      <div class="acc__body">
+        {% if not A.confirmed %}<p class="tag-draft">Angaben vorläufig</p>{% endif %}
+        <p><strong>Bezeichnung des Lebensmittels:</strong> {{ p.legalName or '[BEZEICHNUNG – laut Etikett]' }}</p>
+        <p><strong>Zutaten:</strong> {{ p.ingredients or '[ZUTATEN – laut Etikett]' }}</p>
+        <p><strong>Enthält:</strong> {% if A.unionContainsLabels.length %}{% for l in A.unionContainsLabels %}<strong>{{ l }}</strong>{% if not loop.last %}, {% endif %}{% endfor %}{% if A.rows.length > 1 %} (je nach Sorte){% endif %}{% else %}[laut Etikett zu bestätigen]{% endif %}</p>
+        <p><strong>Kann Spuren enthalten von:</strong> {% if A.unionTraceLabels.length %}{{ A.unionTraceLabels | join(', ') }}{% else %}[laut Etikett zu ergänzen]{% endif %}</p>
+        <p>Bitte beachten Sie stets die Angaben auf dem Etikett. Bei Fragen zu Allergenen schreiben Sie uns gern vor der Bestellung: [E-MAIL].</p>
+      </div>
+      {% endcall %}
+
+      {% call shop.acc('acc-naehrwerte', 'Nährwerte', false, 'pdp', 'h2') %}
+      <div class="acc__body">
+        {% set per = 'je 100 ml' if p.basePriceUnit == 'l' else 'je 100 g' %}
+        <table class="nutri">
+          <caption class="sr-only">Durchschnittliche Nährwerte {{ per }}</caption>
+          <thead><tr><th scope="col">Durchschnittliche Nährwerte</th><th scope="col">{{ per }}</th></tr></thead>
+          <tbody>
+            {% set N = p.nutrition or {} %}
+            <tr><th scope="row">Energie</th><td>{{ N.energy or '[X] kJ / [X] kcal' }}</td></tr>
+            <tr><th scope="row">Fett</th><td>{{ N.fat or '[X] g' }}</td></tr>
+            <tr><th scope="row" class="ind">davon gesättigte Fettsäuren</th><td>{{ N.saturates or '[X] g' }}</td></tr>
+            <tr><th scope="row">Kohlenhydrate</th><td>{{ N.carbs or '[X] g' }}</td></tr>
+            <tr><th scope="row" class="ind">davon Zucker</th><td>{{ N.sugars or '[X] g' }}</td></tr>
+            <tr><th scope="row">Eiweiß</th><td>{{ N.protein or '[X] g' }}</td></tr>
+            <tr><th scope="row">Salz</th><td>{{ N.salt or '[X] g' }}</td></tr>
+          </tbody>
+        </table>
+        {% if not p.nutrition %}<p class="muted small">Nährwertangaben folgen – [NÄHRWERTE laut Etikett].</p>{% endif %}
+      </div>
+      {% endcall %}
+
+      {% call shop.acc('acc-aufbewahrung', 'Aufbewahrung', false, 'pdp', 'h2') %}
+      <div class="acc__body"><p>{{ p.storage or '[AUFBEWAHRUNG – laut Etikett]' }}</p><p>Mindesthaltbarkeitsdatum: siehe Packung.</p></div>
+      {% endcall %}
+
+      {% call shop.acc('acc-herkunft', 'Herkunft & Hersteller', false, 'pdp', 'h2') %}
+      <div class="acc__body">
+        <p><strong>Herkunft:</strong> {{ p.origin or '[HERKUNFT – laut Etikett]' }}</p>
+        <p><strong>Hersteller / Inverkehrbringer:</strong> {{ p.producer or '[HERSTELLER – laut Etikett]' }}</p>
+        {% if p.trademarkNote %}<p class="trademark">{{ p.trademarkNote }}</p>{% endif %}
+      </div>
+      {% endcall %}
+
+      {% call shop.acc('acc-versand', 'Versand & Abholung', false, 'pdp', 'h2') %}
+      <div class="acc__body">
+        <p>Ihre Bestellung senden Sie als unverbindliche Anfrage; wir bestätigen Verfügbarkeit, Versandkosten und Gesamtbetrag persönlich per E-Mail.</p>
+        <p>Versand innerhalb Deutschlands: [VERSANDKOSTEN] · Lieferzeit [LIEFERZEIT] nach Zahlungseingang. Abholung in Memmingen nach Absprache – kostenlos.</p>
+        <p>Alles zum Widerrufsrecht finden Sie in unserer <a href="/widerruf">Widerrufsbelehrung</a>, Details zu Versand und Zahlung unter <a href="/versand-zahlung">Versand &amp; Zahlung</a>.</p>
+      </div>
+      {% endcall %}
+    </div>
+  </div>
+</div>
+
+{% if m.crossSell.length %}
+<section class="band-foam" aria-labelledby="h-cross">
+  <div class="wrap section">
+    <div class="sec-head reveal"><h2 class="h2" id="h-cross">Passt perfekt dazu</h2></div>
+    <div class="grid grid--4 reveal">{% for c in m.crossSell %}{{ shop.card(c, 'h3') }}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+
+{% if m.available %}
+<div class="buybar" data-buybar role="region" aria-label="Schnellkauf {{ p.name }}">
+  <div class="buybar__info"><strong data-price>{{ sel.price if sel else m.card.priceLabel }}</strong><span><span data-choice-label>{{ sel.label if (sel and m.hasChoice) else (p.subtitle) }}</span></span></div>
+  <button type="submit" form="add-form" class="btn buy" data-buybar-buy>{{ shop.buyInner('In den Warenkorb') }}</button>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,87 @@
+{#- Owner: BUILD-CORPORATE · Formularfelder im Stil der freigegebenen Vorschau (.fld / .fld__control).
+    IDs: "f-<name>" (die Fehlerübersicht forms.errorSummary verlinkt darauf).
+    Fehlermeldungen kommen vom Server (validate.js) und werden zusätzlich clientseitig
+    (public/js/site.js) in dieselben Elemente geschrieben. Alles wird automatisch escaped.
+    Import:  {% import "macros/fields.njk" as f %} -#}
+{% import "macros/ui.njk" as ui %}
+
+{% macro _req(attrs) -%}
+{% if attrs.required %}<span aria-hidden="true"> *</span>{% endif %}
+{%- endmacro %}
+
+{% macro _describedby(name, attrs) %} aria-describedby="{% if attrs.hint %}f-{{ name }}-hint {% endif %}f-{{ name }}-err"{% endmacro %}
+
+{% macro _common(attrs) -%}
+{% if attrs.required %} required{% endif %}
+{%- if attrs.autocomplete %} autocomplete="{{ attrs.autocomplete }}"{% endif %}
+{%- if attrs.inputmode %} inputmode="{{ attrs.inputmode }}"{% endif %}
+{%- if attrs.placeholder %} placeholder="{{ attrs.placeholder }}"{% endif %}
+{%- if attrs.maxlength %} maxlength="{{ attrs.maxlength }}"{% endif %}
+{%- if attrs.spellcheck is defined %} spellcheck="{{ attrs.spellcheck }}"{% endif %}
+{%- if attrs.msgMissing %} data-msg-missing="{{ attrs.msgMissing }}"{% endif %}
+{%- if attrs.msgInvalid %} data-msg-invalid="{{ attrs.msgInvalid }}"{% endif %}
+{%- endmacro %}
+
+{% macro err(name, error) -%}
+<p class="fld__err" id="f-{{ name }}-err"{% if not error %} hidden{% endif %}>{{ ui.errIcon() }}<span>{{ error or '' }}</span></p>
+{%- endmacro %}
+
+{% macro input(name, label, type='text', value='', error=null, attrs={}) -%}
+<div class="fld{% if error %} is-invalid{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  <label class="fld__label" for="f-{{ name }}">{{ label }}{{ _req(attrs) }}</label>
+  {%- if attrs.hint %}
+  <p class="fld__hint" id="f-{{ name }}-hint">{{ attrs.hint }}</p>
+  {%- endif %}
+  <input class="fld__control" type="{{ type }}" id="f-{{ name }}" name="{{ name }}" value="{{ value if value else '' }}"{{ _common(attrs) }}{{ _describedby(name, attrs) }}{% if error %} aria-invalid="true"{% endif %}>
+  {{ err(name, error) }}
+</div>
+{%- endmacro %}
+
+{% macro textarea(name, label, value='', error=null, attrs={}) -%}
+<div class="fld{% if error %} is-invalid{% endif %}{% if attrs.wrapperClass %} {{ attrs.wrapperClass }}{% endif %}">
+  <label class="fld__label" for="f-{{ name }}">{{ label }}{{ _req(attrs) }}</label>
+  {%- if attrs.hint %}
+  <p class="fld__hint" id="f-{{ name }}-hint">{{ attrs.hint }}</p>
+  {%- endif %}
+  <textarea class="fld__control" id="f-{{ name }}" name="{{ name }}" rows="{{ attrs.rows or 5 }}"{{ _common(attrs) }}{{ _describedby(name, attrs) }}{% if error %} aria-invalid="true"{% endif %}>{{ value if value else '' }}</textarea>
+  {{ err(name, error) }}
+</div>
+{%- endmacro %}
+
+{% macro select(name, label, options=[], selected='', error=null, attrs={}) -%}
+<div class="fld{% if error %} is-invalid{% endif %}">
+  <label class="fld__label" for="f-{{ name }}">{{ label }}{{ _req(attrs) }}</label>
+  <div class="select-wrap">
+    <select class="fld__control" id="f-{{ name }}" name="{{ name }}"{{ _common(attrs) }}{{ _describedby(name, attrs) }}{% if error %} aria-invalid="true"{% endif %}>
+      <option value="">{{ attrs.placeholder or 'Bitte wählen' }}</option>
+      {% for o in options %}
+      <option value="{{ o.value }}"{% if selected and o.value == selected %} selected{% endif %}>{{ o.label }}</option>
+      {% endfor %}
+    </select>
+    {{ ui.chevron() }}
+  </div>
+  {{ err(name, error) }}
+</div>
+{%- endmacro %}
+
+{#- Checkbox-Gruppe (Mehrfachauswahl). options: [{ value, label }] · checked: Array der gewählten Werte -#}
+{% macro checkGroup(name, legend, options=[], checked=[], error=null) -%}
+<fieldset class="fieldset{% if error %} is-invalid{% endif %}" aria-describedby="f-{{ name }}-err">
+  <legend>{{ legend }}</legend>
+  <div class="chk-row">
+    {% for o in options %}
+    {%- set cid = ('f-' ~ name) if loop.first else ('f-' ~ name ~ '-' ~ o.value) -%}
+    <label class="chk" for="{{ cid }}"><input type="checkbox" id="{{ cid }}" name="{{ name }}" value="{{ o.value }}"{% if checked and (o.value in checked) %} checked{% endif %}>{{ o.label }}</label>
+    {% endfor %}
+  </div>
+  {{ err(name, error) }}
+</fieldset>
+{%- endmacro %}
+
+{#- Einzelne Checkbox mit Fließtext-Label (z. B. Datenschutz). labelHtml: vertrauenswürdiges, eigenes HTML. -#}
+{% macro consent(name, labelHtml, checked=false, error=null, attrs={}) -%}
+<div class="consent-wrap fld{% if error %} is-invalid{% endif %}">
+  <label class="chk chk--consent" for="f-{{ name }}"><input type="checkbox" id="f-{{ name }}" name="{{ name }}" value="on"{% if checked %} checked{% endif %}{{ _common(attrs) }} aria-describedby="f-{{ name }}-err"{% if error %} aria-invalid="true"{% endif %}><span>{{ labelHtml }}</span></label>
+  {{ err(name, error) }}
+</div>
+{%- endmacro %}
