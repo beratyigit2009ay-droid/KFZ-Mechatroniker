@@ -1,0 +1,27 @@
+{#- Owner: BUILD-AUTH · Anmeldung. Variablen: values, errors, formError, nextPath, idleExpired -#}
+{% extends "auth/_base.njk" %}
+{% block authCard %}
+<header class="auth__head">
+  <p class="ac-eyebrow">Kundenkonto</p>
+  <h1 id="auth-h" class="ac-title">Willkommen <em>zurück</em></h1>
+  <p class="ac-lead">Melden Sie sich an, um Ihre Bestellanfragen und Ihre Kontodaten zu sehen.</p>
+</header>
+{% if idleExpired %}
+<p class="note" role="status">{{ ui.icon('clock', 20, 1.6) }}<span>Sie wurden nach längerer Inaktivität aus Sicherheitsgründen abgemeldet. Bitte melden Sie sich erneut an.</span></p>
+{% endif %}
+{% if formError %}<p class="form-error" role="alert" id="login-error">{{ formError }}</p>{% endif %}
+{{ forms.errorSummary(errors) }}
+<form class="auth__form" method="post" action="/konto/anmelden" novalidate data-once>
+  {{ forms.csrf() }}
+  {% if nextPath %}<input type="hidden" name="next" value="{{ nextPath }}">{% endif %}
+  {{ forms.field('email', 'E-Mail-Adresse', 'email', values.email, errors.email, { required: true, autocomplete: 'username', maxlength: 254, inputmode: 'email', autocapitalize: 'none', spellcheck: 'false' }) }}
+  <div data-pw>{{ forms.field('password', 'Passwort', 'password', '', errors.password, { required: true, autocomplete: 'current-password', maxlength: 1024 }) }}</div>
+  <div class="auth__row">
+    <a class="link-btn" href="/konto/passwort-vergessen">Passwort vergessen?</a>
+  </div>
+  <button type="submit" class="btn btn-dark btn--lg">Anmelden {{ ui.icon('arrow', 18, 1.8) }}</button>
+</form>
+<p class="ac-divider">Noch kein Konto?</p>
+<a class="btn btn-o btn--lg" href="/konto/registrieren">Kundenkonto anlegen</a>
+<p class="auth__fine">Bestellen ist auch ohne Kundenkonto möglich. Mit Konto behalten Sie Ihre Bestellanfragen im Blick.</p>
+{% endblock %}

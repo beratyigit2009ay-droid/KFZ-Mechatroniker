@@ -134,8 +134,36 @@ router.post('/warenkorb/rabatt/entfernen', noStore, (req, res) => {
 
 /* ------------------------------------------------------------------------ API */
 router.get('/api/warenkorb', noIndex, noStore, (req, res) => {
-  const sum = cart.build(req.session.data.cart);
-  res.json({ count: sum.count, subtotalCents: sum.subtotalCents });
+  if (req.query.details !== '1') {
+    const sum = cart.build(req.session.data.cart);
+    return res.json({ count: sum.count, subtotalCents: sum.subtotalCents });
+  }
+  // ?details=1 – Mini-Warenkorb (Drawer in shop.js): Zeilen und Summen, alles serverseitig berechnet
+  const s = cart.summarize(req);
+  return res.json({
+    count: s.count,
+    subtotalCents: s.subtotalCents,
+    subtotal: formatEuro(s.subtotalCents),
+    discount: s.discount
+      ? { code: s.discount.code, label: s.discount.label, cents: s.discount.cents, amount: `−${formatEuro(s.discount.cents)}` }
+      : null,
+    totalCents: s.totalCents,
+    total: formatEuro(s.totalCents),
+    notices: s.notices.map((n) => n.message),
+    lines: s.lines.map((l) => ({
+      key: l.key,
+      name: l.name,
+      meta: l.bundle.length
+        ? `Ihre Auswahl: ${l.bundleText}`
+        : [l.variantLabel, l.size && l.size !== l.variantLabel ? l.size : ''].filter(Boolean).join(' · '),
+      qty: l.qty,
+      maxQty: cart.MAX_QTY,
+      unit: formatEuro(l.unitCents),
+      line: formatEuro(l.lineCents),
+      href: l.href,
+      photoId: (l.photo && l.photo.id) || '',
+    })),
+  });
 });
 
 module.exports = router;

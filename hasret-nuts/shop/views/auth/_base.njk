@@ -1,0 +1,38 @@
+{#- Owner: BUILD-AUTH · Grundgerüst der Zugangsseiten (Anmelden, Registrieren, Bestätigen, Passwort).
+    Blöcke: authCard (Formularkarte), authAside (Markenseite; leer lassen = Standardtext),
+    Variable authSolo = true → nur die Karte, zentriert. -#}
+{% extends "layout.njk" %}
+{% import "macros/forms.njk" as forms with context %}
+{% import "account/_ui.njk" as ui %}
+{% block bodyClass %}page-auth{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ asset('/static/css/account.css') }}">{% endblock %}
+{% block content %}
+<section class="auth wrap" aria-labelledby="auth-h">
+  <div class="auth__grid{% if authSolo %} auth__grid--solo{% endif %}">
+    <div class="auth__card">
+      {% block authCard %}{% endblock %}
+    </div>
+    {% if not authSolo %}
+    <aside class="auth__aside on-dark" aria-label="Ihr Kundenkonto bei Hasret Nuts">
+      {% block authAside %}
+      <div class="auth__brand">
+        {% set logoVariant = 'color' %}{% set logoId = 'hnl-a' %}{% set logoDecorative = true %}{% set logoStatic = true %}
+        {% include "partials/logo.njk" %}
+        <span class="auth__word" aria-hidden="true"><b>HASRET</b><span>NUTS · KUNDENKONTO</span></span>
+      </div>
+      <div>
+        <p class="auth__quote">Sehnsucht, die man schmecken kann.</p>
+        <p class="auth__quote-sub">Ihr persönlicher Zugang zu unseren Spezialitäten aus Memmingen – übersichtlich, sicher und ganz ohne Umwege.</p>
+      </div>
+      <ul class="auth__perks">
+        <li><span class="auth__perk-ic" aria-hidden="true">{{ ui.icon('bag', 19, 1.5) }}</span><span><strong>Bestellanfragen im Blick</strong>Alle Anfragen und ihr aktueller Stand an einem Ort.</span></li>
+        <li><span class="auth__perk-ic" aria-hidden="true">{{ ui.icon('mail', 19, 1.5) }}</span><span><strong>Persönlich bestätigt</strong>Jede Bestellung bestätigt Ihnen Inhaber Eyyüp Koca per E-Mail.</span></li>
+        <li><span class="auth__perk-ic" aria-hidden="true">{{ ui.icon('shield', 19, 1.5) }}</span><span><strong>Sparsam mit Ihren Daten</strong>Nur technisch notwendige Cookies – Ihr Konto können Sie jederzeit selbst löschen.</span></li>
+      </ul>
+      {% endblock %}
+    </aside>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ asset('/static/js/account.js') }}" defer></script>{% endblock %}

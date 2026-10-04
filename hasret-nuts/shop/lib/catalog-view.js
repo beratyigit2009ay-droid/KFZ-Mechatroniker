@@ -91,9 +91,20 @@ function ratioCss(ratio) {
 }
 
 /** Einheitliches Fotoplatzhalter-Objekt (Foto-ID, Seitenverhältnis, Mindestgröße, Motiv). */
+/**
+ * Echte Fotos: Sobald der Inhaber ein Bild liefert, genügt in catalog.json/offers.json beim
+ * jeweiligen Foto ein Feld "src" (z. B. "/static/img/produkte/S-P01-A.jpg", Datei unter
+ * shop/public/img/…). Erlaubt sind nur eigene Pfade unter /static oder /assets (CSP img-src 'self').
+ */
+const PHOTO_SRC_RE = /^\/(static|assets)\/[A-Za-z0-9._\/-]{1,200}\.(jpe?g|png|webp|avif)$/i;
+function photoSrc(v) {
+  return typeof v === 'string' && PHOTO_SRC_RE.test(v) && !v.includes('..') ? v : '';
+}
+
 function photo(p, fallback = {}) {
   const src = p || fallback || {};
   return {
+    src: photoSrc(src.src),
     id: src.id || fallback.id || 'FOTO',
     label: src.label || `Foto ${src.id || ''}`.trim(),
     ratio: src.ratio || fallback.ratio || '4:5',
@@ -477,6 +488,7 @@ function search(q) {
 }
 
 module.exports = {
+  photoSrc,
   VORLAEUFIG,
   variantsOf,
   availableVariants,

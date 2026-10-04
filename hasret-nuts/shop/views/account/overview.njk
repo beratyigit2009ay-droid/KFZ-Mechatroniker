@@ -1,0 +1,55 @@
+{#- Owner: BUILD-AUTH · Kontoübersicht. Variablen: recent, orderTotal, nameValue, nameError -#}
+{% extends "account/_layout.njk" %}
+{% block accountContent %}
+<div class="acct__section-head">
+  <h1>Ihre Übersicht</h1>
+  <p class="ac-meta">Kunde seit {{ user.createdAt | date('monthYear') }}</p>
+</div>
+
+<section class="acard" aria-labelledby="h-data">
+  <div class="acard__head">
+    <h2 id="h-data" class="acard__title">{{ ui.icon('user', 22, 1.5) }} Ihre Daten</h2>
+    {% if user.emailVerified %}{{ ui.chip('E-Mail bestätigt', 'ok') }}{% else %}{{ ui.chip('E-Mail nicht bestätigt', 'new') }}{% endif %}
+  </div>
+  <dl class="facts">
+    <div><dt>Name</dt><dd>{{ user.name or '–' }}</dd></div>
+    <div><dt>E-Mail-Adresse</dt><dd>{{ user.email }}</dd></div>
+    <div><dt>Bestätigt am</dt><dd>{{ (user.emailVerifiedAt | date('date')) if user.emailVerifiedAt else 'noch nicht bestätigt' }}</dd></div>
+  </dl>
+  <form class="name-form" method="post" action="/konto/name" novalidate>
+    {{ forms.csrf() }}
+    {{ forms.field('name', 'Name ändern', 'text', nameValue, nameError, { required: true, autocomplete: 'name', maxlength: 100 }) }}
+    <button type="submit" class="btn btn-quiet">Speichern</button>
+  </form>
+  <p class="ac-meta">Ihre E-Mail-Adresse ist zugleich Ihr Benutzername. Möchten Sie sie ändern, schreiben Sie uns bitte über das <a href="/feedback">Kontaktformular</a>.</p>
+</section>
+
+<section class="acard acard--white" aria-labelledby="h-recent">
+  <div class="acard__head">
+    <h2 id="h-recent" class="acard__title">{{ ui.icon('bag', 22, 1.5) }} Letzte Bestellanfragen</h2>
+    {% if orderTotal > 3 %}<a class="link-u" href="/konto/bestellungen">Alle {{ orderTotal }} ansehen</a>{% endif %}
+  </div>
+  {% if recent.length %}
+  {% include "account/_order-list.njk" %}
+  {% else %}
+  <div class="empty empty--left">
+    <h3 class="h2" style="font-size:24px">Noch keine Bestellanfragen</h3>
+    <p class="muted">Sobald Sie angemeldet eine Bestellanfrage senden, finden Sie sie hier – mit aktuellem Stand.</p>
+    <a class="btn btn-dark" href="/">Sortiment entdecken</a>
+  </div>
+  {% endif %}
+</section>
+
+<div class="acard__grid">
+  <section class="acard" aria-labelledby="h-sec">
+    <h2 id="h-sec" class="acard__title">{{ ui.icon('shield', 22, 1.5) }} Sicherheit</h2>
+    <p class="muted">Ein starkes, einzigartiges Passwort schützt Ihr Konto. Nach einer Änderung werden Sie auf allen anderen Geräten abgemeldet.</p>
+    <div><a class="btn btn-quiet btn--sm" href="/konto/passwort">Passwort ändern</a></div>
+  </section>
+  <section class="acard" aria-labelledby="h-help">
+    <h2 id="h-help" class="acard__title">{{ ui.icon('chat', 22, 1.5) }} Fragen zu einer Bestellung?</h2>
+    <p class="muted">Antworten Sie einfach auf unsere Bestätigungs-E-Mail oder schreiben Sie uns – wir melden uns persönlich.</p>
+    <div><a class="btn btn-quiet btn--sm" href="/feedback">Nachricht senden</a></div>
+  </section>
+</div>
+{% endblock %}

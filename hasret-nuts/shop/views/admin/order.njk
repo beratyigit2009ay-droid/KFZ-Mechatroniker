@@ -1,0 +1,82 @@
+{#- Owner: BUILD-AUTH · Verwaltung – Bestellanfrage im Detail.
+    Variablen: order (dekoriert), items, account, previous, statuses, replySubject -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<div><a class="back-link link-u" href="/admin/bestellungen" style="margin-top:0">{{ ui.icon('back', 18, 1.8) }} Alle Bestellanfragen</a></div>
+<header class="admin__head">
+  <div class="stack">
+    <p class="ac-eyebrow">Bestellanfrage</p>
+    <h1>{{ order.public_id }}</h1>
+    <p class="ac-meta">Eingegangen am {{ order.created_at | date('datetime') }} Uhr{% if order.updated_at and order.updated_at != order.created_at %} · zuletzt geändert {{ order.updated_at | date('datetime') }} Uhr{% endif %}</p>
+  </div>
+  {{ ui.chip(order.statusLabel, order.tone) }}
+</header>
+<div class="order-grid">
+  <div class="stack" style="gap:20px">
+    <section class="acard acard--white" aria-labelledby="h-items">
+      <h2 id="h-items" class="acard__title">{{ ui.icon('bag', 22, 1.5) }} Positionen</h2>
+      <table class="items">
+        <caption class="sr-only">Positionen der Bestellanfrage {{ order.public_id }}</caption>
+        <thead><tr><th scope="col">Artikel</th><th scope="col" class="num">Einzelpreis</th><th scope="col" class="num">Menge</th><th scope="col" class="num">Summe</th></tr></thead>
+        <tbody>
+          {% for it in items %}
+          <tr>
+            <td class="items__cell-name"><span class="items__name">{{ it.name }}</span>{% if it.variant %}<span class="items__sub">{{ it.variant }}</span>{% endif %}<span class="items__sub ac-mono">{{ it.sku }}</span>
+              {% if it.bundle.length %}<ul class="items__bundle" aria-label="Zusammenstellung">{% for b in it.bundle %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}</td>
+            <td class="num items__cell-unit" data-label="Einzelpreis">{{ it.unit_price_cents | euro }}</td>
+            <td class="num" data-label="Menge">× {{ it.qty }}</td>
+            <td class="num"><strong>{{ it.line_total_cents | euro }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="sum">
+        <div><span>Zwischensumme</span><span>{{ order.subtotal_cents | euro }}</span></div>
+        {% if order.discount_cents %}<div class="is-discount"><span>Rabatt{% if order.discount_code %} ({{ order.discount_code }}){% endif %}</span><span>− {{ order.discount_cents | euro }}</span></div>{% endif %}
+        <div class="is-total"><span>Summe</span><span>{{ order.total_cents | euro }}</span></div>
+        <p class="ac-meta">inkl. MwSt.{% if order.delivery == 'versand' %}, Versandkosten noch nicht enthalten{% endif %}</p>
+      </div>
+    </section>
+    {% if order.message %}
+    <section class="acard" aria-labelledby="h-msg">
+      <h2 id="h-msg" class="acard__title">{{ ui.icon('chat', 22, 1.5) }} Nachricht der Kundin / des Kunden</h2>
+      <p class="ac-pre">{{ order.message }}</p>
+    </section>
+    {% endif %}
+  </div>
+  <aside class="order-side" aria-label="Kunde und Status">
+    <section class="acard" aria-labelledby="h-status">
+      <h2 id="h-status" class="acard__title">{{ ui.icon('check-circle', 22, 1.5) }} Status</h2>
+      <form class="status-form" method="post" action="/admin/bestellungen/{{ order.id }}/status">
+        {{ forms.csrf() }}
+        {{ forms.select('status', 'Status ändern', statuses, order.status, null, {}) }}
+        <button type="submit" class="btn btn-dark btn--sm">Speichern</button>
+      </form>
+      <p class="ac-meta">Den Kunden informieren Sie bitte zusätzlich per E-Mail – eine Statusänderung versendet keine Nachricht.</p>
+    </section>
+    <section class="acard" aria-labelledby="h-cust">
+      <h2 id="h-cust" class="acard__title">{{ ui.icon('user', 22, 1.5) }} Kontakt</h2>
+      <div class="contact-lines">
+        <strong>{{ order.name }}</strong>
+        <a href="mailto:{{ order.email }}?subject={{ replySubject | urlencode }}">{{ order.email }}</a>
+        {% if order.phone %}<span>{{ order.phone }}</span>{% endif %}
+        <span class="ac-meta">{% if account %}Kundenkonto{% if account.email_verified_at %} (bestätigt){% endif %}{% else %}Ohne Kundenkonto{% endif %}{% if previous %} · {{ previous }} weitere {{ 'Anfrage' if previous == 1 else 'Anfragen' }} mit dieser Adresse{% endif %}</span>
+      </div>
+      <a class="btn btn-quiet btn--sm" href="mailto:{{ order.email }}?subject={{ replySubject | urlencode }}">{{ ui.icon('mail', 18, 1.6) }} Antwort per E-Mail</a>
+    </section>
+    <section class="acard" aria-labelledby="h-deliv">
+      <h2 id="h-deliv" class="acard__title">{{ ui.icon('truck' if order.delivery == 'versand' else 'pin', 22, 1.5) }} {{ order.deliveryLabel }}</h2>
+      <div class="contact-lines">
+        {% if order.delivery == 'versand' %}
+        <span>{{ order.street }}</span>
+        <span>{{ order.zip }} {{ order.city }}</span>
+        <span>{{ 'Österreich' if order.country == 'AT' else 'Deutschland' }}</span>
+        {% else %}
+        <span>Abholung in Memmingen – Termin per E-Mail abstimmen.</span>
+        {% endif %}
+        {% if order.payment_pref %}<span class="ac-meta">Zahlungswunsch: {{ order.payment_pref }}</span>{% endif %}
+      </div>
+    </section>
+  </aside>
+</div>
+{% endblock %}

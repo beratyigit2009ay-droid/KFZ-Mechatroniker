@@ -1,0 +1,58 @@
+{#- Owner: BUILD-AUTH · E-Mail-Bestätigung.
+    state: pending (nach Registrierung) | confirm (Link geöffnet → Button) | invalid (Link ungültig/abgelaufen) | unverified (Anmeldung ohne Bestätigung)
+    Variablen: token, email, errors -#}
+{% extends "auth/_base.njk" %}
+{% block authCard %}
+{% if state == 'confirm' %}
+<header class="auth__head">
+  <span class="auth__icon" aria-hidden="true">{{ ui.icon('mail-open', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Letzter Schritt</p>
+  <h1 id="auth-h" class="ac-title">E-Mail-Adresse <em>bestätigen</em></h1>
+  <p class="ac-lead">Bitte bestätigen Sie mit einem Klick, dass diese E-Mail-Adresse Ihnen gehört. Danach ist Ihr Kundenkonto aktiv und Sie sind angemeldet.</p>
+</header>
+<form class="auth__form" method="post" action="/konto/bestaetigen" data-once>
+  {{ forms.csrf() }}
+  <input type="hidden" name="token" value="{{ token }}">
+  <button type="submit" class="btn btn-dark btn--lg">{{ ui.icon('check', 20, 1.8) }} E-Mail-Adresse jetzt bestätigen</button>
+</form>
+<p class="auth__fine">Warum ein extra Klick? So kann kein automatischer Link-Scanner Ihr Konto versehentlich bestätigen.</p>
+{% else %}
+<header class="auth__head">
+  {% if state == 'invalid' %}
+  <span class="auth__icon auth__icon--warn" aria-hidden="true">{{ ui.icon('warn', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Bestätigungslink</p>
+  <h1 id="auth-h" class="ac-title">Dieser Link ist <em>nicht mehr gültig</em></h1>
+  <p class="ac-lead">Bestätigungslinks gelten 24 Stunden und lassen sich nur einmal verwenden. Vielleicht haben Sie Ihre Adresse bereits bestätigt – dann können Sie sich einfach <a href="/konto/anmelden">anmelden</a>. Andernfalls fordern Sie unten einen neuen Link an.</p>
+  {% elif state == 'unverified' %}
+  <span class="auth__icon" aria-hidden="true">{{ ui.icon('mail', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Fast geschafft</p>
+  <h1 id="auth-h" class="ac-title">E-Mail-Adresse noch <em>nicht bestätigt</em></h1>
+  <p class="ac-lead">Bevor Sie sich anmelden können, bestätigen Sie bitte Ihre E-Mail-Adresse über den Link, den wir Ihnen nach der Registrierung gesendet haben.</p>
+  {% else %}
+  <span class="auth__icon" aria-hidden="true">{{ ui.icon('mail', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Fast geschafft</p>
+  <h1 id="auth-h" class="ac-title">Bitte bestätigen Sie Ihre <em>E-Mail-Adresse</em></h1>
+  <p class="ac-lead">Wir haben Ihnen{% if email %} an <strong class="nowrap">{{ email }}</strong>{% endif %} eine E-Mail mit einem Bestätigungslink gesendet. Der Link ist 24 Stunden gültig.</p>
+  {% endif %}
+</header>
+{% if state == 'pending' %}
+<ol class="auth__steps">
+  <li><span><strong>Postfach öffnen</strong><span>Absender: Hasret Nuts. Bitte sehen Sie auch im Spam-Ordner nach.</span></span></li>
+  <li><span><strong>Link anklicken</strong><span>Auf der folgenden Seite bestätigen Sie mit einem Klick.</span></span></li>
+  <li><span><strong>Fertig</strong><span>Sie sind angemeldet und sehen Ihr Kundenkonto.</span></span></li>
+</ol>
+{% endif %}
+<section class="auth__resend" aria-labelledby="resend-h">
+  <h2 id="resend-h">Keine E-Mail erhalten?</h2>
+  {{ forms.errorSummary(errors) }}
+  <form class="auth__form" method="post" action="/konto/bestaetigung-erneut" novalidate data-once>
+    {{ forms.csrf() }}
+    {{ forms.honeypot() }}
+    {{ forms.field('email', 'E-Mail-Adresse', 'email', email, errors.email, { required: true, autocomplete: 'email', maxlength: 254, inputmode: 'email', autocapitalize: 'none', spellcheck: 'false' }) }}
+    <button type="submit" class="btn btn-o">Bestätigungslink erneut senden</button>
+  </form>
+  <p class="auth__fine">Aus Sicherheitsgründen senden wir höchstens drei E-Mails pro Stunde an eine Adresse.</p>
+</section>
+<p class="auth__alt">Bereits bestätigt? <a href="/konto/anmelden">Zur Anmeldung</a></p>
+{% endif %}
+{% endblock %}

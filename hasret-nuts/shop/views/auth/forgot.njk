@@ -1,0 +1,29 @@
+{#- Owner: BUILD-AUTH · Passwort vergessen. Variablen: values, errors, sent -#}
+{% extends "auth/_base.njk" %}
+{% block authCard %}
+{% if sent %}
+<header class="auth__head" tabindex="-1" data-focus-on-load>
+  <span class="auth__icon auth__icon--ok" aria-hidden="true">{{ ui.icon('check', 28, 2) }}</span>
+  <p class="ac-eyebrow">Passwort vergessen</p>
+  <h1 id="auth-h" class="ac-title">Bitte sehen Sie in <em>Ihr Postfach</em></h1>
+  <p class="ac-lead" role="status">Falls zu dieser E-Mail-Adresse ein Kundenkonto besteht, haben wir Ihnen soeben einen Link zum Festlegen eines neuen Passworts gesendet. Der Link ist 60 Minuten gültig.</p>
+</header>
+<p class="note">{{ ui.icon('info', 20, 1.6) }}<span>Keine E-Mail erhalten? Bitte prüfen Sie auch den Spam-Ordner. Aus Sicherheitsgründen senden wir höchstens drei E-Mails pro Stunde an eine Adresse.</span></p>
+<div class="ac-actions"><a class="btn btn-dark" href="/konto/anmelden">Zur Anmeldung</a><a class="link-btn" href="/konto/passwort-vergessen">Erneut anfordern</a></div>
+{% else %}
+<header class="auth__head">
+  <span class="auth__icon" aria-hidden="true">{{ ui.icon('key', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Passwort vergessen</p>
+  <h1 id="auth-h" class="ac-title">Neues Passwort <em>festlegen</em></h1>
+  <p class="ac-lead">Geben Sie die E-Mail-Adresse Ihres Kundenkontos ein. Wir senden Ihnen einen Link, mit dem Sie ein neues Passwort festlegen.</p>
+</header>
+{{ forms.errorSummary(errors) }}
+<form class="auth__form" method="post" action="/konto/passwort-vergessen" novalidate data-once>
+  {{ forms.csrf() }}
+  {{ forms.honeypot() }}
+  {{ forms.field('email', 'E-Mail-Adresse', 'email', values.email, errors.email, { required: true, autocomplete: 'email', maxlength: 254, inputmode: 'email', autocapitalize: 'none', spellcheck: 'false' }) }}
+  <button type="submit" class="btn btn-dark btn--lg">Link anfordern {{ ui.icon('arrow', 18, 1.8) }}</button>
+</form>
+<p class="auth__alt">Passwort wieder eingefallen? <a href="/konto/anmelden">Zur Anmeldung</a></p>
+{% endif %}
+{% endblock %}

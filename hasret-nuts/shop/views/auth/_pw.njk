@@ -1,0 +1,9 @@
+{#- Owner: BUILD-AUTH · Passwortfelder (neues Passwort + Wiederholung) mit Längenhinweis.
+    Aufruf: {% import "auth/_pw.njk" as pw with context %}{{ pw.newPassword(errors, 'Neues Passwort') }} -#}
+{% import "macros/forms.njk" as forms with context %}
+{% macro newPassword(errors, label='Passwort', confirmLabel='Passwort wiederholen') -%}
+<div data-pw>{{ forms.field('password', label, 'password', '', errors.password, { required: true, autocomplete: 'new-password', minlength: 10, maxlength: 128, hint: 'Mindestens 10 Zeichen. Am besten ein Satz oder mehrere Wörter, die nur Sie kennen.' }) }}</div>
+<div class="pw-meter" data-pw-meter="f-password" hidden aria-hidden="true"><span class="pw-meter__bar"><span class="pw-meter__fill"></span></span><span class="pw-meter__text">Mindestens 10 Zeichen</span></div>
+<div data-pw>{{ forms.field('passwordConfirm', confirmLabel, 'password', '', errors.passwordConfirm, { required: true, autocomplete: 'new-password', maxlength: 128 }) }}</div>
+<p class="pw-meter" data-pw-match="f-password,f-passwordConfirm" hidden aria-live="polite"></p>
+{%- endmacro %}

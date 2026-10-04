@@ -237,6 +237,123 @@
     if (msg) announce(msg);
   }
 
+  /* ------------------------------------------- Mini-Warenkorb (Drawer) */
+  /* Ohne JavaScript (oder ohne fetch) bleibt das Warenkorb-Symbol ein Link auf /warenkorb.
+     Daten: GET /api/warenkorb?details=1 (alle Preise serverseitig), Änderungen per POST mit CSRF-Header. */
+  var Drawer = (function () {
+    var el = $('[data-drawer]');
+    if (!el || !cartBtn || !canFetch()) return null;
+    var list = $('[data-cart-list]', el), empty = $('[data-cart-empty]', el), foot = $('[data-cart-foot]', el);
+    var countLabel = $('[data-cart-count-label]', el), notice = $('[data-cart-notice]', el), closeBtn = $('[data-cart-close]', el);
+    var subtotal = $('[data-cart-subtotal]', el), discRow = $('[data-cart-discount-row]', el);
+    var discLabel = $('[data-cart-discount-label]', el), disc = $('[data-cart-discount]', el);
+    var tpl = $('[data-ci-tpl]', el);
+    var busy = false;
+
+    function load() {
+      return fetch('/api/warenkorb?details=1', { headers: { 'Accept': 'application/json' }, credentials: 'same-origin', cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; });
+    }
+    function fill(node, sel, text) { $$(sel, node).forEach(function (x) { x.textContent = text; }); }
+    function render(d) {
+      while (list.firstChild) list.removeChild(list.firstChild);
+      var lines = d.lines || [];
+      lines.forEach(function (l) {
+        var li = tpl && tpl.content ? tpl.content.firstElementChild.cloneNode(true) : null;
+        if (!li) return;
+        li.setAttribute('data-key', l.key);
+        $$('[data-ci-href]', li).forEach(function (a) { a.setAttribute('href', l.href); });
+        fill(li, '[data-ci-photo]', l.photoId);
+        fill(li, '[data-ci-name]', l.name);
+        fill(li, '[data-ci-meta]', l.meta);
+        fill(li, '[data-ci-unit]', 'Einzelpreis ' + l.unit);
+        fill(li, '[data-ci-qty]', String(l.qty));
+        fill(li, '[data-ci-line]', l.line);
+        var meta = $('[data-ci-meta]', li); if (meta && !l.meta) meta.hidden = true;
+        var group = $('[data-ci-group]', li); if (group) group.setAttribute('aria-label', 'Menge ' + l.name + ': ' + l.qty);
+        var dec = $('[data-ci="dec"]', li), inc = $('[data-ci="inc"]', li), rm = $('[data-ci="remove"]', li);
+        if (dec) { dec.setAttribute('aria-label', 'Menge von ' + l.name + ' verringern'); dec.disabled = l.qty <= 1; }
+        if (inc) { inc.setAttribute('aria-label', 'Menge von ' + l.name + ' erhöhen'); inc.disabled = l.qty >= (l.maxQty || 99); }
+        if (rm) rm.setAttribute('aria-label', l.name + ' entfernen');
+        list.appendChild(li);
+      });
+      var n = d.count || 0;
+      if (empty) empty.hidden = n > 0;
+      if (foot) foot.hidden = n === 0;
+      list.hidden = n === 0;
+      if (countLabel) countLabel.textContent = n ? '(' + n + ' Artikel)' : '';
+      if (subtotal) subtotal.textContent = d.subtotal || euro(d.subtotalCents);
+      if (discRow) {
+        discRow.hidden = !d.discount;
+        if (d.discount) {
+          if (discLabel) discLabel.textContent = 'Rabatt (' + d.discount.code + ')';
+          if (disc) disc.textContent = d.discount.amount;
+        }
+      }
+      if (notice) {
+        var msg = (d.notices || []).join(' ');
+        notice.textContent = msg;
+        notice.hidden = !msg;
+      }
+      setBadge(n);
+    }
+    function refresh() {
+      el.setAttribute('aria-busy', 'true');
+      return load().then(function (d) {
+        el.removeAttribute('aria-busy');
+        if (!d) { window.location.href = '/warenkorb'; return null; }
+        render(d);
+        return d;
+      }).catch(function () { el.removeAttribute('aria-busy'); window.location.href = '/warenkorb'; });
+    }
+    function open() {
+      refresh().then(function (d) { if (d) Layer.open(el, cartBtn, closeBtn); });
+    }
+    function post(url, data) {
+      return fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'x-csrf-token': csrf() },
+        body: new URLSearchParams(data).toString()
+      });
+    }
+    cartBtn.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (Layer.cur && Layer.cur.el === el) Layer.close(); else open();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', function () { Layer.close(); });
+    list.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ci]');
+      if (!b || busy || b.disabled) return;
+      var li = b.closest('.ci'), key = li && li.getAttribute('data-key');
+      if (!key) return;
+      var action = b.getAttribute('data-ci');
+      var name = ($('[data-ci-name]', li) || {}).textContent || 'Artikel';
+      var idx = $$('.ci', list).indexOf(li);
+      busy = true;
+      var req = action === 'remove' ? post('/warenkorb/entfernen', { key: key }) : post('/warenkorb/aendern', { key: key, step: action });
+      req.then(function () { return refresh(); }).then(function (d) {
+        busy = false;
+        if (!d) return;
+        var rows = $$('.ci', list), target = null;
+        if (action === 'remove') {
+          announce(name + ' wurde entfernt.');
+          var next = rows[Math.min(idx, rows.length - 1)];
+          target = next ? $('[data-ci="remove"]', next) : closeBtn;
+        } else {
+          var row = rows[idx];
+          target = row && $('[data-ci="' + action + '"]', row);
+          if (target && target.disabled) target = $('[data-ci]:not([disabled])', row);
+          var q = row && $('[data-ci-qty]', row);
+          if (q) announce('Menge von ' + name + ': ' + q.textContent + '.');
+        }
+        focusEl(target);
+      }).catch(function () { busy = false; window.location.href = '/warenkorb'; });
+    });
+    return { open: open, refresh: refresh };
+  })();
+
   /* ---------------------------------------------- Bundle (Messe-Bundle) */
   function bundleState(form) {
     var box = $('[data-bundle]', form);

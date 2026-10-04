@@ -33,7 +33,13 @@ const ORDER_STATUS = {
 };
 const DELIVERY_LABEL = { versand: 'Versand', abholung: 'Abholung in Memmingen' };
 
-const guard = [requireAuth, noIndex];
+/** Anzahl eigener Bestellanfragen für die Kontonavigation. */
+function navCounts(req, res, next) {
+  if (req.user) res.locals.orderTotal = orderCount(req.user.id);
+  next();
+}
+
+const guard = [requireAuth, noIndex, navCounts];
 
 /* ------------------------------------------------------------------ Helfer */
 
@@ -146,13 +152,21 @@ router.get('/konto/bestellungen', guard, (req, res) => {
     )
     .all(userId, PAGE_SIZE, (page - 1) * PAGE_SIZE)
     .map(decorateOrder);
+  const pageUrl = (n) => (n > 1 ? `/konto/bestellungen?seite=${n}` : '/konto/bestellungen');
   res.render('account/orders.njk', {
     meta: meta(req, 'Meine Bestellanfragen', '/konto/bestellungen'),
     section: 'orders',
     orders,
     total,
-    page,
-    pages,
+    pager: {
+      page,
+      pages,
+      total,
+      prev: page > 1 ? pageUrl(page - 1) : null,
+      next: page < pages ? pageUrl(page + 1) : null,
+      from: total ? (page - 1) * PAGE_SIZE + 1 : 0,
+      to: Math.min(page * PAGE_SIZE, total),
+    },
   });
 });
 

@@ -87,7 +87,9 @@ function product(p) {
     name: p.name,
     description,
     url,
-    image: [abs('/assets/logo/og-default.png')],
+    // Bis eigene Produktfotos vorliegen: Markenbild als Platzhalter (siehe Foto-Shotliste)
+    image: [abs(view.photoSrc(p.photos && p.photos.packshot && p.photos.packshot.src) || '/assets/logo/og-default.png')],
+    brand: { '@type': 'Brand', name: 'Hasret Nuts' },
     category: view.categoryName(p.category),
     sku: vs.length === 1 ? vs[0].sku : p.slug,
   };

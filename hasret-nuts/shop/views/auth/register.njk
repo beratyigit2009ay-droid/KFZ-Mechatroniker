@@ -1,0 +1,21 @@
+{#- Owner: BUILD-AUTH · Registrierung. Variablen: values, errors -#}
+{% extends "auth/_base.njk" %}
+{% import "auth/_pw.njk" as pw with context %}
+{% block authCard %}
+<header class="auth__head">
+  <p class="ac-eyebrow">Neu bei Hasret Nuts</p>
+  <h1 id="auth-h" class="ac-title">Kundenkonto <em>anlegen</em></h1>
+  <p class="ac-lead">In wenigen Augenblicken erledigt. Nach der Registrierung bestätigen Sie Ihre E-Mail-Adresse über einen Link.</p>
+</header>
+{{ forms.errorSummary(errors) }}
+<form class="auth__form" method="post" action="/konto/registrieren" novalidate data-once>
+  {{ forms.csrf() }}
+  {{ forms.honeypot() }}
+  {{ forms.field('name', 'Ihr Name', 'text', values.name, errors.name, { required: true, autocomplete: 'name', maxlength: 100 }) }}
+  {{ forms.field('email', 'E-Mail-Adresse', 'email', values.email, errors.email, { required: true, autocomplete: 'email', maxlength: 254, inputmode: 'email', autocapitalize: 'none', spellcheck: 'false' }) }}
+  {{ pw.newPassword(errors) }}
+  {{ forms.checkbox('privacy', 'Ich habe die <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> zur Kenntnis genommen und bin mit der Speicherung meiner Angaben für mein Kundenkonto einverstanden.' | safe, values.privacy, errors.privacy, { required: true }) }}
+  <button type="submit" class="btn btn-dark btn--lg">Konto anlegen {{ ui.icon('arrow', 18, 1.8) }}</button>
+</form>
+<p class="auth__alt">Sie haben bereits ein Konto? <a href="/konto/anmelden">Jetzt anmelden</a></p>
+{% endblock %}

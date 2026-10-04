@@ -563,6 +563,114 @@ describe('Shop', () => {
     assert.match(r.text, /20,00\s€/, 'Bundle-Preis aus dem Katalog');
     assert.match(r.text, /1,00\s€ bis 4,00\s€/, 'Ersparnis berechnet');
   });
+
+  it('beantwortet Warenkorb-Aktionen per JSON (Fly-to-Cart) mit Serverpreisen', async () => {
+    const c = client(app.baseUrl);
+    await c.get('/produkt/leblebi');
+    let r = await c.postJson('/warenkorb/hinzufuegen', { sku: 'leblebi-200g', qty: 2, priceCents: 1 });
+    assert.equal(r.status, 200);
+    let data = r.json();
+    assert.equal(data.ok, true);
+    assert.equal(data.count, 2);
+    assert.equal(data.subtotalCents, 500, '2 × 2,50 € aus dem Katalog');
+    assert.match(data.message, /Leblebi/);
+    r = await c.postJson('/warenkorb/hinzufuegen', { sku: 'gibt-es-nicht', qty: 1 });
+    assert.ok(r.status >= 400 && r.status < 500);
+    assert.equal(r.json().ok, false);
+    r = await c.postJson('/warenkorb/hinzufuegen', { sku: 'sarma-lokum-messe-bundle', bundle: ['sarma-lokum-rose'] });
+    assert.equal(r.status, 422);
+    assert.equal(r.json().ok, false);
+    const api = await c.get('/api/warenkorb');
+    assert.match(api.headers.get('content-type'), /application\/json/);
+    assert.match(api.headers.get('cache-control') || '', /no-store/);
+    assert.deepEqual(api.json(), { count: 2, subtotalCents: 500 });
+    const det = (await c.get('/api/warenkorb?details=1')).json();
+    assert.equal(det.count, 2);
+    assert.equal(det.lines.length, 1);
+    assert.equal(det.lines[0].key, 'leblebi-200g');
+    assert.equal(det.lines[0].qty, 2);
+    assert.match(det.lines[0].line, /5,00\s€/);
+    assert.match(det.subtotal, /5,00\s€/);
+    assert.equal(det.discount, null);
+    assert.equal(det.lines[0].href, '/produkt/leblebi');
+    // Ohne gültiges Token auch per JSON kein Zugriff
+    r = await c.postJson('/warenkorb/hinzufuegen', { sku: 'leblebi-200g' }, { headers: { 'x-csrf-token': 'falsch' } });
+    assert.equal(r.status, 403);
+  });
+
+  it('legt bei ausgefülltem Honeypot keine Bestellung an', async () => {
+    const c = client(app.baseUrl);
+    app.outbox.length = 0;
+    await addToCart(c, { sku: 'pistazien-200g', qty: '1' }, '/produkt/pistazien');
+    await c.get('/kasse');
+    const before = app.db.prepare('SELECT COUNT(*) AS n FROM orders').get().n;
+    const r = await c.post('/kasse', { ...CHECKOUT_FORM, email: 'bot@example.com', website: 'https://spam.example' });
+    assert.equal(r.status, 303);
+    assert.equal(app.db.prepare('SELECT COUNT(*) AS n FROM orders').get().n, before);
+    assert.equal(app.outbox.length, 0, 'keine Mails an Bots');
+  });
+
+  it('belegt die Kasse für angemeldete Kundinnen vor und verknüpft die Bestellung mit dem Konto', async () => {
+    const auth = require('../shared/auth');
+    const user = await auth.createUser({ email: 'stammkundin@example.com', password: 'Sehnsucht-Pistazie-2026', name: 'Elif Demir', emailVerified: true });
+    const c = client(app.baseUrl);
+    await c.get('/konto/anmelden');
+    const login = await c.post('/konto/anmelden', { email: 'stammkundin@example.com', password: 'Sehnsucht-Pistazie-2026' });
+    assert.equal(login.status, 303, 'Anmeldung erfolgreich');
+    await addToCart(c, { sku: 'erdnuesse-200g', qty: '3' }, '/produkt/erdnuesse');
+    const kasse = await c.get('/kasse');
+    assert.equal(kasse.status, 200);
+    assert.match(kasse.text, /value="stammkundin@example\.com"/);
+    assert.match(kasse.text, /value="Elif Demir"/);
+    const r = await c.post('/kasse', { ...CHECKOUT_FORM, name: 'Elif Demir', email: 'stammkundin@example.com' });
+    assert.equal(r.status, 303);
+    const order = app.db.prepare('SELECT * FROM orders ORDER BY id DESC LIMIT 1').get();
+    assert.equal(order.user_id, user.id);
+    assert.equal(order.total_cents, 660, '3 × 2,20 €');
+  });
+
+  it('ersetzt Foto-Platzhalter durch echte Bilder, sobald im Katalog ein eigener Bildpfad steht', async () => {
+    const c = client(app.baseUrl);
+    const p = catalog.getProduct('pistazien');
+    const packshot = p.photos.packshot;
+    const original = packshot.src;
+    try {
+      packshot.src = '/static/img/produkte/S-P07-A.jpg';
+      let r = await c.get('/produkt/pistazien');
+      assert.match(r.text, /<img src="\/static\/img\/produkte\/S-P07-A\.jpg" alt="[^"]*" loading="(lazy|eager)" decoding="async">/);
+      const ld = [...r.text.matchAll(/<script type="application\/ld\+json" nonce="[^"]+">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1])).find((b) => b['@type'] === 'Product');
+      assert.ok(ld.image[0].endsWith('/static/img/produkte/S-P07-A.jpg'), 'JSON-LD nutzt das echte Produktfoto');
+      assert.equal(ld.brand.name, 'Hasret Nuts');
+      for (const bad of ['//evil.example/x.jpg', 'https://evil.example/x.jpg', 'javascript:alert(1)', '/static/../shared/config.js', '/static/x.jpg" onerror="alert(1)']) {
+        packshot.src = bad;
+        r = await c.get('/produkt/pistazien');
+        assert.ok(!r.text.includes('evil.example') && !r.text.includes('javascript:alert') && !r.text.includes('onerror'), `unsicherer Pfad ignoriert: ${bad}`);
+        assert.match(r.text, /FOTO-PLATZHALTER/);
+      }
+    } finally {
+      if (original === undefined) delete packshot.src;
+      else packshot.src = original;
+    }
+  });
+
+  it('enthält keine gesundheitsbezogenen Angaben, keine Bewertungen und keine Google-Fonts-Aufrufe', async () => {
+    const c = client(app.baseUrl);
+    const paths = ['/', '/angebote', '/allergene', ...catalog.getCategories().map((k) => `/kategorie/${k.slug}`), ...catalog.getProducts().map((p) => `/produkt/${p.slug}`)];
+    const forbidden = /\b(gesund\w*|Superfood|stärkt|reich an Vitamin\w*|Immunsystem|entgiftet|heilend)\b/i;
+    for (const p of paths) {
+      const r = await c.get(p);
+      assert.equal(r.status, 200, p);
+      const visible = r.text.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ');
+      const hit = visible.match(forbidden);
+      assert.ok(!hit, `${p}: unzulässige Angabe „${hit && hit[0]}“`);
+      assert.ok(!/fonts\.(googleapis|gstatic)\.com/.test(r.text), `${p}: keine Google-Fonts`);
+      assert.ok(!/aggregateRating|ratingValue|reviewCount/.test(r.text), `${p}: keine Bewertungen`);
+      assert.ok(!/\son[a-z]+\s*=\s*["']/i.test(r.text), `${p}: keine Inline-Event-Handler`);
+      for (const m of r.text.matchAll(/<script\b(?![^>]*\bsrc=)([^>]*)>/g)) {
+        assert.match(m[1], /nonce="[^"]+"/, `${p}: Inline-Skript ohne Nonce`);
+      }
+    }
+  });
 });
 
 /* ======================================================= Ratenlimit Rabattcodes */

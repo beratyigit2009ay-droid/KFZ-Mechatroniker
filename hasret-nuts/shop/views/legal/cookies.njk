@@ -7,21 +7,21 @@
 
 <h2>Was wir auf Ihrem Gerät speichern</h2>
 <div class="table-wrap" role="region" aria-labelledby="cookie-caption" tabindex="0">
-  <table class="data-table">
+  <table class="data-table data-table--stack">
     <caption id="cookie-caption">Technisch notwendige Speicherung im Hasret Nuts Shop</caption>
     <thead><tr><th scope="col">Name</th><th scope="col">Art</th><th scope="col">Zweck</th><th scope="col">Speicherdauer</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row"><code>{{ sessionCookie }}</code></th>
-        <td>Cookie, nur für diese Shop-Domain, verschlüsselt übertragen (HttpOnly, Secure, SameSite=Lax)</td>
-        <td>Sitzungskennung: hält Ihren Warenkorb, einen eingelösten Rabattcode und – falls Sie sich anmelden – Ihre Anmeldung fest. Außerdem schützt sie unsere Formulare vor gefälschten Anfragen (CSRF-Schutz). Das Cookie enthält nur eine zufällige Zeichenfolge, keine persönlichen Angaben.</td>
-        <td>Bis zu {{ sessionDays }} Tage nach Ihrem letzten Besuch; bei der Abmeldung wird die Sitzung sofort beendet.</td>
+        <td data-label="Art">Cookie, nur für diese Shop-Domain, verschlüsselt übertragen (HttpOnly, Secure, SameSite=Lax)</td>
+        <td data-label="Zweck">Sitzungskennung: hält Ihren Warenkorb, einen eingelösten Rabattcode und – falls Sie sich anmelden – Ihre Anmeldung fest. Außerdem schützt sie unsere Formulare vor gefälschten Anfragen (CSRF-Schutz). Das Cookie enthält nur eine zufällige Zeichenfolge, keine persönlichen Angaben.</td>
+        <td data-label="Speicherdauer">Bis zu {{ sessionDays }} Tage nach Ihrem letzten Besuch; bei der Abmeldung wird die Sitzung sofort beendet.</td>
       </tr>
       <tr>
         <th scope="row"><code>hn_intro_seen</code></th>
-        <td>Eintrag im Sitzungsspeicher Ihres Browsers (sessionStorage) – kein Cookie, wird nicht an uns übertragen</td>
-        <td>Merkt sich, dass die Eröffnungsanimation bereits gezeigt wurde, damit sie nicht bei jedem Seitenwechsel erneut abläuft.</td>
-        <td>Bis Sie den Browser-Tab schließen.</td>
+        <td data-label="Art">Eintrag im Sitzungsspeicher Ihres Browsers (sessionStorage) – kein Cookie, wird nicht an uns übertragen</td>
+        <td data-label="Zweck">Merkt sich, dass die Eröffnungsanimation bereits gezeigt wurde, damit sie nicht bei jedem Seitenwechsel erneut abläuft.</td>
+        <td data-label="Speicherdauer">Bis Sie den Browser-Tab schließen.</td>
       </tr>
     </tbody>
   </table>

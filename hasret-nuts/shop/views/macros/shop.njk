@@ -49,10 +49,16 @@
 {%- endmacro %}
 
 {% macro photo(ph, cls='', opts={}) -%}
+{%- if ph.src -%}
+<figure class="photo photo--img{% if cls %} {{ cls }}{% endif %}" data-photo="{{ ph.id }}" style="--ar:{{ ph.ar }}"{% if opts.decorative or not ph.alt %} aria-hidden="true"{% endif %}{% if opts.attrs %} {{ opts.attrs | safe }}{% endif %}>
+  <img src="{{ ph.src }}" alt="{{ '' if (opts.decorative or not ph.alt) else ph.alt }}" loading="{{ 'eager' if opts.eager else 'lazy' }}" decoding="async">
+</figure>
+{%- else -%}
 <figure class="photo{% if cls %} {{ cls }}{% endif %}" data-photo="{{ ph.id }}" style="--ar:{{ ph.ar }}"{% if opts.decorative or not ph.alt %} aria-hidden="true"{% else %} role="img" aria-label="{{ ph.alt }}"{% endif %}{% if opts.attrs %} {{ opts.attrs | safe }}{% endif %}>
   {{ icon('cam', 22, 1.4, 'photo__icon') }}
   <figcaption><span class="photo__label">{{ ph.label }}</span><span class="photo__text">{{ ph.text }}</span></figcaption>
 </figure>
+{%- endif -%}
 {%- endmacro %}
 
 {% macro buyInner(label='In den Warenkorb') -%}

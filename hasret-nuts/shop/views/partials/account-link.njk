@@ -1,0 +1,14 @@
+{#- Owner: BUILD-AUTH · Konto-Schalter im Shop-Header (eingebunden von partials/header.njk).
+    Abgemeldet: „Anmelden“ · Angemeldet: „Mein Konto“ (+ „Verwaltung“ für Administratoren).
+    Gestaltung über .account-slot a in shop.css (44-px-Ziel, runde Fläche). -#}
+{% import "account/_ui.njk" as ui %}
+{%- if user -%}
+{%- set _inKonto = currentPath and (currentPath == '/konto' or currentPath.indexOf('/konto/') == 0) -%}
+{%- set _inAdmin = currentPath and (currentPath == '/admin' or currentPath.indexOf('/admin/') == 0) -%}
+{%- if user.role == 'admin' -%}
+<a href="/admin" class="account-link account-link--admin" aria-label="Verwaltung" title="Verwaltung"{% if _inAdmin %} aria-current="page"{% endif %}>{{ ui.icon('grid', 21, 1.6) }}</a>
+{%- endif -%}
+<a href="/konto" class="account-link" aria-label="Mein Konto{% if user.name %} ({{ user.name }}){% endif %}" title="Mein Konto"{% if _inKonto %} aria-current="page"{% endif %} style="position:relative">{{ ui.icon('user', 22, 1.6) }}<span aria-hidden="true" style="position:absolute;right:9px;bottom:10px;width:9px;height:9px;border-radius:50%;background:#4F6B2A;box-shadow:0 0 0 2px #F3EBDD"></span></a>
+{%- else -%}
+<a href="/konto/anmelden" class="account-link" aria-label="Anmelden" title="Anmelden"{% if currentPath == '/konto/anmelden' or currentPath == '/konto/registrieren' %} aria-current="page"{% endif %}>{{ ui.icon('user', 22, 1.6) }}</a>
+{%- endif -%}

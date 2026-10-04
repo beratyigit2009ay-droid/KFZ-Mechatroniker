@@ -198,6 +198,10 @@ router.get('/admin', (req, res) => {
     customers: db.prepare("SELECT COUNT(*) AS n FROM users WHERE role = 'customer'").get().n,
     customersVerified: db.prepare("SELECT COUNT(*) AS n FROM users WHERE role = 'customer' AND email_verified_at IS NOT NULL").get().n,
     newsletter: db.prepare('SELECT COUNT(*) AS n FROM newsletter WHERE confirmed_at IS NOT NULL AND unsubscribed_at IS NULL').get().n,
+    loginFailures24: db
+      .prepare("SELECT COUNT(*) AS n FROM security_events WHERE type IN ('login_failure', 'login_locked') AND created_at >= ?")
+      .get(nowIso(-24 * 3600 * 1000)).n,
+    locks24: db.prepare("SELECT COUNT(*) AS n FROM security_events WHERE type = 'account_locked' AND created_at >= ?").get(nowIso(-24 * 3600 * 1000)).n,
   };
   const recentOrders = db
     .prepare('SELECT id, public_id, name, total_cents, status, delivery, created_at FROM orders ORDER BY created_at DESC, id DESC LIMIT 6')
@@ -221,6 +225,7 @@ router.get('/admin', (req, res) => {
   res.render('admin/dashboard.njk', {
     meta: meta(req, 'Übersicht'),
     section: 'dashboard',
+    now: nowIso(),
     stats,
     recentOrders,
     recentInquiries,
