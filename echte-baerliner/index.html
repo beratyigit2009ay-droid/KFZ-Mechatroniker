@@ -374,6 +374,7 @@ body.still .enter,body.still .enter-zoom{animation-play-state:running !important
 .squiggle{display:block;width:min(220px,60%);height:18px;margin-top:4px;overflow:visible}
 .squiggle path{fill:none;stroke:#E5531B;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.1s ease .25s}
 .squiggle.reveal{opacity:1;translate:none}
+#allergene.reveal{translate:none}
 .squiggle.reveal path{stroke-dashoffset:1}
 .squiggle.reveal.in path{stroke-dashoffset:0}
 
@@ -397,8 +398,9 @@ body.still .enter,body.still .enter-zoom{animation-play-state:running !important
 .card:hover .card-media img{scale:1.07;rotate:-3deg}
 .card.avoid .card-media img{filter:grayscale(1);opacity:.45}
 .card.avoid{box-shadow:inset 0 0 0 3px #B32A14}
-.avoid-badge{position:absolute;left:50%;bottom:16px;translate:-50% 0;max-width:90%;padding:8px 14px;border-radius:999px;background:#B32A14;color:#fff;font-size:13px;font-weight:800;text-align:center;line-height:1.3;z-index:2}
+.avoid-badge{position:absolute;left:5%;right:5%;bottom:16px;width:fit-content;margin-inline:auto;padding:8px 14px;border-radius:999px;background:#B32A14;color:#fff;font-size:13px;font-weight:800;text-align:center;line-height:1.3;text-wrap:balance;z-index:2}
 .al-codes{margin:0;font-size:14px;color:var(--muted-ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .al-codes abbr{text-decoration:none;font-weight:800;color:var(--ink);cursor:help}
 .allergens{margin-top:48px;background:#fff;border-radius:28px;padding:40px;display:grid;gap:24px}
 .allergens-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 32px}
@@ -412,7 +414,7 @@ body.still .enter,body.still .enter-zoom{animation-play-state:running !important
 .al b{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--ink);color:var(--gold);font-weight:900;font-size:16px}
 .al small{display:block;margin-top:2px;font-size:12px;font-weight:500;color:var(--muted-ink)}
 .al[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
-.al[aria-pressed="true"] b{background:#E8361B;color:#fff}
+.al[aria-pressed="true"] b{background:#D8331A;color:#fff}
 .al[aria-pressed="true"] small{color:var(--muted-2)}
 .al-result{margin:0;min-height:26px;font-size:17px;font-weight:700}
 .al-result.ok{color:#1E7A43}
@@ -706,17 +708,17 @@ body.still .enter,body.still .enter-zoom{animation-play-state:running !important
         <button class="al" type="button" data-al="E" aria-pressed="false"><b>E</b><span>Erdnüsse</span></button>
         <button class="al" type="button" data-al="F" aria-pressed="false"><b>F</b><span>Soja</span></button>
         <button class="al" type="button" data-al="G" aria-pressed="false"><b>G</b><span>Milch<small>inkl. Laktose</small></span></button>
-        <button class="al" type="button" data-al="H" aria-pressed="false"><b>H</b><span>Schalenfrüchte<small>Nüsse</small></span></button>
+        <button class="al" type="button" data-al="H" aria-pressed="false"><b>H</b><span>Schalen&shy;früchte<small>Nüsse</small></span></button>
         <button class="al" type="button" data-al="I" aria-pressed="false"><b>I</b><span>Sellerie</span></button>
         <button class="al" type="button" data-al="J" aria-pressed="false"><b>J</b><span>Senf</span></button>
         <button class="al" type="button" data-al="K" aria-pressed="false"><b>K</b><span>Sesam</span></button>
-        <button class="al" type="button" data-al="L" aria-pressed="false"><b>L</b><span>Sulfite<small>Schwefeldioxid</small></span></button>
+        <button class="al" type="button" data-al="L" aria-pressed="false"><b>L</b><span>Sulfite<small>Schwefel&shy;dioxid</small></span></button>
         <button class="al" type="button" data-al="M" aria-pressed="false"><b>M</b><span>Lupinen</span></button>
         <button class="al" type="button" data-al="N" aria-pressed="false"><b>N</b><span>Weichtiere</span></button>
       </div>
       <p class="al-result" id="al-result" aria-live="polite">Noch nichts ausgewählt.</p>
       <p class="al-note" id="al-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Vorläufige Angaben, noch nicht vom Laden bestätigt. Wenn du eine Allergie hast, frag bitte vor der Bestellung im Laden nach.</span></p>
-      <p class="al-foot">Kennzeichnung der 14 Hauptallergene nach Lebensmittelinformationsverordnung (LMIV), Anhang II. Spuren durch die gemeinsame Zubereitung sind möglich.</p>
+      <p class="al-foot">Kennzeichnung der 14 Hauptallergene nach Anhang II der Lebensmittelinformationsverordnung (LMIV). Spuren durch die gemeinsame Zubereitung sind möglich.</p>
     </div>
 
     <div class="menu-note">
@@ -1048,6 +1050,10 @@ const CONFIG = {
       ab.title = AL[c]; ab.textContent = c;
       line.append(i ? ', ' : '', ab);
     });
+    const sr = document.createElement('span');
+    sr.className = 'sr';
+    sr.textContent = ' (' + codes.map((c) => AL[c]).join(', ') + ')';
+    line.append(sr);
   });
   const alNote = $('#al-note');
   if (alNote) alNote.hidden = !!CONFIG.allergeneGeprueft;
@@ -1066,10 +1072,12 @@ const CONFIG = {
     });
     if (!alResult) return;
     if (!avoid.size) { alResult.className = 'al-result'; alResult.textContent = 'Noch nichts ausgewählt.'; return; }
-    const without = 'Ohne ' + listText([...avoid].map((c) => AL[c]));
-    if (fits.length) { alResult.className = 'al-result ok'; alResult.textContent = without + ' passt: ' + listText(fits) + '.'; }
-    else if (unknown.length) { alResult.className = 'al-result'; alResult.textContent = without + ': Für ' + listText(unknown) + ' fehlen noch Angaben. Frag bitte im Laden nach.'; }
-    else { alResult.className = 'al-result none'; alResult.textContent = without + ': Leider enthält jedes Gericht oben mindestens eins davon. Frag im Laden nach Alternativen.'; }
+    const sel = [...avoid].sort();
+    const without = 'Ohne ' + listText(sel.map((c) => AL[c]));
+    const missing = unknown.length ? ' Für ' + listText(unknown) + ' fehlen noch Angaben. Frag bitte im Laden nach.' : '';
+    if (fits.length) { alResult.className = 'al-result ok'; alResult.textContent = without + (fits.length > 1 ? ' passen: ' : ' passt: ') + listText(fits) + '.' + missing; }
+    else if (unknown.length) { alResult.className = 'al-result'; alResult.textContent = without + ':' + missing; }
+    else { alResult.className = 'al-result none'; alResult.textContent = without + ': Leider enthält jedes Gericht oben ' + (sel.length > 1 ? 'mindestens eins davon' : AL[sel[0]]) + '. Frag im Laden nach Alternativen.'; }
   };
   $$('.al').forEach((btn) => btn.addEventListener('click', () => {
     const c = btn.dataset.al;
