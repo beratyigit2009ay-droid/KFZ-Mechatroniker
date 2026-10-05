@@ -139,6 +139,12 @@ describe('safeRedirectPath (Open-Redirect-Schutz)', () => {
       'data:text/html,hi',
       '/%2F%2Fevil.com',
       '/%5Cevil.com',
+      // Punkt-Segmente, die new URL() zu "//evil.com" auflöst
+      '/.//evil.com',
+      '/%2e//evil.com',
+      '/%2e%2e//evil.com',
+      '/x/..//evil.com',
+      '/a/.././/evil.com',
       ' /konto',
       '/konto\r\nSet-Cookie: x=1',
       '',

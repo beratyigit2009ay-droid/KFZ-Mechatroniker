@@ -52,6 +52,7 @@ Zähler pro Client-IP und App-Prozess (die echte IP hinter dem Reverse Proxy wir
 | `login` | 10 / 15 min | `POST /konto/anmelden` – zusätzlich **Kontosperre 15 min nach 5 Fehlversuchen** |
 | `register` | 5 / 60 min | Registrierung |
 | `forgot` | 5 / 60 min | Passwort vergessen – zusätzlich max. 3 Mails/h je Adresse (`mailQuota`) |
+| Bestellbestätigung | – | Gast-Bestellanfragen: Bestätigung an die eingegebene Adresse max. 3/h je Adresse (`mailQuota('order-confirmation')`); der Freitext der Anfrage wird nur an den Inhaber geschickt, nie an die eingegebene Adresse (kein Versand fremder Inhalte über die Shop-Mail) |
 | `resend` | 3 / 60 min | Bestätigungsmail erneut senden |
 | `forms` | 10 / 60 min | Händleranfrage, Feedback, Bestellanfrage |
 | `discount` | 20 / 10 min | Rabattcode-Eingabe (Schutz vor Durchprobieren) |
@@ -86,7 +87,7 @@ Nunjucks rendert ausschließlich Template-**Dateien** aus `corporate/views`, `sh
 
 ### 2.8 Open Redirects
 
-`safeRedirectPath(next, fallback = '/')` akzeptiert nur Pfade, die mit genau einem `/` beginnen, keinen Backslash und keine Steuerzeichen/Leerzeichen enthalten, auch nach URL-Dekodierung nicht mit `//` beginnen und beim Auflösen gegen eine Dummy-Origin dieselbe Origin behalten. Getestet u. a. mit `//evil.com`, `https://evil.com`, `/\evil.com`, `javascript:alert(1)`, `/%2F%2Fevil.com`.
+`safeRedirectPath(next, fallback = '/')` akzeptiert nur Pfade, die mit genau einem `/` beginnen, keinen Backslash und keine Steuerzeichen/Leerzeichen enthalten, auch nach URL-Dekodierung nicht mit `//` beginnen und beim Auflösen gegen eine Dummy-Origin dieselbe Origin behalten. Zusätzlich wird der **aufgelöste** Pfad erneut geprüft, denn `new URL()` macht aus Punkt-Segmenten wie `/.//evil.com`, `/%2e//evil.com` oder `/x/..//evil.com` den fremden Pfad `//evil.com`. Getestet u. a. mit `//evil.com`, `https://evil.com`, `/\evil.com`, `javascript:alert(1)`, `/%2F%2Fevil.com` und diesen Punkt-Segment-Varianten.
 
 ### 2.9 CSRF
 

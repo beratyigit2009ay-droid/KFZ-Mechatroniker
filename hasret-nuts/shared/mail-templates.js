@@ -287,7 +287,9 @@ const templates = {
       totalsText(o),
       '',
       ...details,
-      o.message ? `\nIhre Nachricht:\n${String(o.message).slice(0, 2000)}` : null,
+      // Freitext des Formulars wird bewusst NICHT an die eingegebene Adresse gespiegelt (sonst ließe sich
+      // die Shop-Mail mit fremdem Text an beliebige Empfänger schicken). Er geht nur an den Inhaber.
+      o.message ? '\nIhre Nachricht haben wir an Eyyüp Koca weitergeleitet.' : null,
       url ? `\n${url}` : null,
     ]);
     const html = layout({
@@ -298,7 +300,7 @@ const templates = {
 <p style="margin:16px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:18px;color:${C.emerald}">Ihre Auswahl</p>
 ${itemsHtml(its)}${totalsHtml(o)}
 ${details.map((d) => `<p style="margin:0 0 6px;font-size:14px">${escapeHtml(d)}</p>`).join('')}
-${o.message ? `<p style="margin:16px 0 4px;font-size:14px;font-weight:bold">Ihre Nachricht</p>${paragraphsHtml(String(o.message).slice(0, 2000))}` : ''}`,
+${o.message ? '<p style="margin:16px 0 0;font-size:14px">Ihre Nachricht haben wir an Eyyüp Koca weitergeleitet.</p>' : ''}`,
     });
     return { subject, text, html };
   },

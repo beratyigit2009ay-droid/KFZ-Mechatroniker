@@ -98,7 +98,11 @@ function safeRedirectPath(next, fallback = '/') {
     const base = 'http://same-origin.invalid';
     const url = new URL(next, base);
     if (url.origin !== base) return fallback;
-    return url.pathname + url.search + url.hash;
+    // Das Ergebnis erneut prüfen: new URL() löst Punkt-Segmente auf ("/.//evil.com", "/x/..//evil.com",
+    // "/%2e//evil.com" → "//evil.com") – ein solcher Pfad wäre im Browser eine fremde Adresse.
+    const out = url.pathname + url.search + url.hash;
+    if (!out.startsWith('/') || out.startsWith('//') || out.includes('\\')) return fallback;
+    return out;
   } catch {
     return fallback;
   }

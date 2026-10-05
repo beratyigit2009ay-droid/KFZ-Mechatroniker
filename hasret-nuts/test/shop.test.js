@@ -610,6 +610,27 @@ describe('Shop', () => {
     assert.equal(app.outbox.length, 0, 'keine Mails an Bots');
   });
 
+  it('spiegelt den Freitext des Formulars nicht an die eingegebene Adresse', async () => {
+    const c = client(app.baseUrl);
+    app.outbox.length = 0;
+    const victim = 'opfer@victim.example';
+    const message = 'WICHTIG: Bitte zahlen Sie vorab unter https://zahlung.evil.example/pay?id=4711';
+    await addToCart(c, { sku: 'leblebi-200g', qty: '1' }, '/produkt/leblebi');
+    await c.get('/kasse');
+    const r = await c.post('/kasse', { ...CHECKOUT_FORM, name: 'Kundenservice Hasret Nuts', email: victim, message });
+    assert.equal(r.status, 303);
+    const toVictim = app.outbox.filter((m) => m.toList.some((a) => a.toLowerCase() === victim));
+    assert.equal(toVictim.length, 1);
+    for (const m of toVictim) {
+      assert.doesNotMatch(m.text, /evil\.example/, 'Freitext nicht in der Bestätigung (Text)');
+      assert.doesNotMatch(m.html, /evil\.example/, 'Freitext nicht in der Bestätigung (HTML)');
+      assert.match(m.text, /an Eyyüp Koca weitergeleitet/);
+    }
+    const toOwner = app.outbox.filter((m) => m.toList.some((a) => a.toLowerCase() === app.config.mail.ownerEmail.toLowerCase()));
+    assert.equal(toOwner.length, 1);
+    assert.match(toOwner[0].text, /zahlung\.evil\.example/, 'der Inhaber sieht die Nachricht weiterhin');
+  });
+
   it('belegt die Kasse für angemeldete Kundinnen vor und verknüpft die Bestellung mit dem Konto', async () => {
     const auth = require('../shared/auth');
     const user = await auth.createUser({ email: 'stammkundin@example.com', password: 'Sehnsucht-Pistazie-2026', name: 'Elif Demir', emailVerified: true });
@@ -703,5 +724,32 @@ describe('Shop – Schutz vor Code-Raten und Indexierung außerhalb der Produkti
     assert.equal(robots.text, 'User-agent: *\nDisallow: /\n');
     const home = await c.get('/');
     assert.match(home.text, /<meta name="robots" content="noindex, nofollow">/);
+  });
+});
+
+/* ======================================================= Mail-Kontingent Bestellbestätigung */
+describe('Shop – Bestellbestätigungen pro Empfänger begrenzt', () => {
+  let app;
+  before(async () => {
+    app = await startApp('shop', { env: { RATE_LIMIT_MAIL_PER_ADDRESS_MAX: '3' } });
+  });
+  after(async () => {
+    if (app) await app.close();
+  });
+
+  it('sendet höchstens 3 Bestätigungen pro Adresse, der Inhaber erhält jede Anfrage', async () => {
+    const c = client(app.baseUrl);
+    app.outbox.length = 0;
+    const victim = 'opfer@victim.example';
+    for (let i = 0; i < 4; i += 1) {
+      await addToCart(c, { sku: 'leblebi-200g', qty: '1' });
+      await c.get('/kasse');
+      const r = await c.post('/kasse', { ...CHECKOUT_FORM, email: victim });
+      assert.equal(r.status, 303, `Anfrage ${i + 1}`);
+    }
+    const to = (addr) => app.outbox.filter((m) => m.toList.some((a) => a.toLowerCase() === addr.toLowerCase()));
+    assert.equal(to(victim).length, 3);
+    assert.equal(to(app.config.mail.ownerEmail).length, 4);
+    assert.equal(app.db.prepare('SELECT COUNT(*) AS n FROM orders').get().n, 4, 'Anfragen werden trotzdem gespeichert');
   });
 });

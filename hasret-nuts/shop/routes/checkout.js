@@ -13,7 +13,7 @@ const config = require('../../shared/config');
 const { transaction, getDb } = require('../../shared/db');
 const mailer = require('../../shared/mailer');
 const { buildMeta } = require('../../shared/seo');
-const { noIndex, rateLimits, honeypot } = require('../../shared/security');
+const { noIndex, rateLimits, honeypot, mailQuota } = require('../../shared/security');
 const { parse, schemas, z, optional, oneOf } = require('../../shared/validate');
 const cart = require('../lib/cart');
 
@@ -266,9 +266,11 @@ router.post(
       const order = { ...orderData, public_id: saved.publicId };
       const shopUrl = config.apps.shop.baseUrl;
       const owner = mailer.ownerEmail();
-      const mails = [
-        mailer.send('orderConfirmation', d.email, { order, items: saved.items, shopUrl }, owner ? { replyTo: owner } : {}),
-      ];
+      const mails = [];
+      // Bestätigung an die eingegebene Adresse nur begrenzt oft pro Empfänger (Schutz vor Mail-Bombing über Gast-Anfragen)
+      if (mailQuota('order-confirmation', d.email)) {
+        mails.push(mailer.send('orderConfirmation', d.email, { order, items: saved.items, shopUrl }, owner ? { replyTo: owner } : {}));
+      }
       if (owner) {
         mails.push(
           mailer.send('ownerNewOrder', owner, { order, items: saved.items, adminUrl: `${shopUrl}/admin/bestellungen/${saved.orderId}` }, { replyTo: d.email })
