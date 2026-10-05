@@ -101,6 +101,18 @@ describe('Shop', () => {
     assert.equal(nf.status, 404);
   });
 
+  it('Nuss-Bewegung: Nüsse im Intro, schwebende Nüsse rund um das Hero-Foto der Startseite', async () => {
+    const c = client(app.baseUrl);
+    const home = await c.get('/');
+    assert.equal((home.text.match(/class="hn-intro__nut"/g) || []).length, 12);
+    assert.match(home.text, /<div class="hero__media nut-host">/);
+    assert.match(home.text, /<div class="nut-field nut-field--shop" data-nut-field aria-hidden="true">/);
+    assert.equal((home.text.match(/<span class="nut" style="/g) || []).length, 6);
+    assert.match(home.text, /<script src="\/assets\/motion\/nuts\.js[^"]*" defer><\/script>/);
+    const cat = await c.get('/kategorie/feinkost');
+    assert.doesNotMatch(cat.text, /data-nut-field/);
+  });
+
   it('zeigt auf jeder Produktseite die Preise aus catalog.json', async () => {
     const c = client(app.baseUrl);
     for (const p of catalog.getProducts()) {

@@ -129,6 +129,26 @@ describe('Corporate Hub – Seiten, Formulare, Sicherheit', () => {
     assert.doesNotMatch(res.text, /fonts\.googleapis|fonts\.gstatic|https?:\/\/(?!127\.0\.0\.1|localhost|schema\.org|www\.w3\.org)[a-z0-9.-]+\/[^"]*\.(js|css)/i);
   });
 
+  it('Nuss-Bewegung: Nüsse im Intro auf jeder Seite, schwebende Nüsse nur im Hero der Startseite', async () => {
+    const c = client(app.baseUrl);
+    const home = await c.get('/');
+    assert.equal((home.text.match(/class="hn-intro__nut"/g) || []).length, 12, 'zwölf Nüsse springen aus dem Logo');
+    assert.match(home.text, /<div class="nut-field nut-field--corporate" data-nut-field aria-hidden="true">/);
+    assert.equal((home.text.match(/<span class="nut" style="/g) || []).length, 6, 'sechs schwebende Nüsse');
+    assert.match(home.text, /<use href="#hnl-pista"\/>/, 'nutzt die Symbole des Kopfzeilen-Logos');
+    assert.match(home.text, /id="hnl-pista"/, 'Symbol ist im Kopfzeilen-Logo definiert');
+    assert.match(home.text, /href="\/assets\/motion\/nuts\.css[^"]*"/);
+    assert.match(home.text, /<script src="\/assets\/motion\/nuts\.js[^"]*" defer><\/script>/);
+    const sub = await c.get('/philosophie');
+    assert.equal((sub.text.match(/class="hn-intro__nut"/g) || []).length, 12);
+    assert.doesNotMatch(sub.text, /data-nut-field/);
+    for (const [path, type] of [['/assets/motion/nuts.css', /text\/css/], ['/assets/motion/nuts.js', /javascript/]]) {
+      const r = await c.get(path);
+      assert.equal(r.status, 200, path);
+      assert.match(r.headers.get('content-type') || '', type, path);
+    }
+  });
+
   it('Händlerbereich: Sortiment für den Handel mit fünf Gruppen, ohne Preise', async () => {
     const res = await client(app.baseUrl).get('/haendler');
     assert.match(res.text, /id="sortiment"/);

@@ -24,6 +24,7 @@
 <link rel="preload" href="/assets/fonts/dm-sans/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ asset('/assets/css/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset('/assets/motion/logo-spin.css') }}">
+<link rel="stylesheet" href="{{ asset('/assets/motion/nuts.css') }}">
 <link rel="stylesheet" href="{{ asset('/static/css/shop.css') }}">
 {% if storeJsonLd %}<script type="application/ld+json" nonce="{{ nonce }}">{{ storeJsonLd | jsonld }}</script>{% endif %}
 {% block head %}{% endblock %}
@@ -38,6 +39,7 @@
 </main>
 {% include "partials/footer.njk" %}
 <div class="sr-only" aria-live="polite" aria-atomic="true" id="live-region" data-live></div>
+<script src="{{ asset('/assets/motion/nuts.js') }}" defer></script>
 <script src="{{ asset('/static/js/shop.js') }}" defer></script>
 {% block scripts %}{% endblock %}
 </body>

@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Hasret Nuts – Nuss-Bewegung
+   Markup: shared/views/partials/nuts.njk · Verhalten: nuts.js (optional)
+   1) Eröffnung: Beim Öffnen der Türen springen Nüsse aus dem Logo und fallen
+      mit leichter Schwerkraft aus dem Bild (endet mit dem Overlay bei 1,86 s).
+   2) Startseite: einige Nüsse schweben sanft um das Hero-Foto, mit leichter
+      Parallaxe beim Scrollen und – auf Geräten mit Maus – zur Zeigerposition.
+   Grafiken: dieselben Nuss-Symbole wie im Kopfzeilen-Logo (<use href="#hnl-…">).
+   Reduzierte Bewegung: keine Animation, die Hero-Nüsse stehen still.
+   Doku: docs/LOGO-UND-INTRO.md
+   ========================================================================== */
+
+/* ---------- 1) Eröffnung: Nüsse springen aus dem Logo ---------- */
+.hn-intro__nuts{position:absolute;left:50%;top:50%;width:0;height:0;z-index:1;pointer-events:none}
+.hn-intro__nut{
+  position:absolute;left:0;top:0;
+  width:var(--w,54px);height:var(--w,54px);
+  margin:calc(var(--w,54px) / -2) 0 0 calc(var(--w,54px) / -2);
+  opacity:0;will-change:transform,opacity;
+  animation:hn-nut-burst .95s var(--bd,.9s) both;
+}
+.hn-intro__nut svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 8px 10px var(--hn-intro-nut-shadow,rgba(4,22,17,.35)))}
+.hn-intro--shop{--hn-intro-nut-shadow:rgba(59,36,24,.3)}
+@keyframes hn-nut-burst{
+  0%  {opacity:0;transform:translate3d(0,0,0) scale(.3) rotate(0deg);animation-timing-function:cubic-bezier(.15,.8,.35,1)}
+  14% {opacity:1}
+  55% {transform:translate3d(calc(var(--dx) * .8),calc(var(--dy) * .8),0) scale(var(--s,1)) rotate(calc(var(--r) * .6));animation-timing-function:cubic-bezier(.5,0,.85,.5)}
+  72% {opacity:1}
+  100%{opacity:0;transform:translate3d(var(--dx),calc(var(--dy) + 14vh),0) scale(var(--s,1)) rotate(var(--r))}
+}
+
+/* ---------- 2) Startseite: schwebende Nüsse um das Hero-Foto ---------- */
+.nut-host{position:relative}
+.nut-field{position:absolute;inset:0;z-index:2;pointer-events:none;--nut-delay:.25s}
+html.hn-intro-on .nut-field{--nut-delay:1.6s}
+.nut{
+  position:absolute;
+  width:var(--w,56px);height:var(--w,56px);
+  transform:translate3d(calc(var(--mx,0) * var(--d,1) * 14px),calc(var(--my,0) * var(--d,1) * 14px + var(--py,0) * var(--d,1) * -.1px),0);
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.nut__in,.nut__float{display:block;width:100%;height:100%}
+.nut__in{animation:nut-in 1s cubic-bezier(.16,1,.3,1) calc(var(--nut-delay) + var(--i,0) * 90ms) both}
+.nut__float{animation:nut-float var(--t,7s) ease-in-out var(--fd,0s) infinite}
+.nut svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 12px 12px var(--hn-nut-shadow,rgba(10,58,45,.22)))}
+.nut-field--shop{--hn-nut-shadow:rgba(59,36,24,.24)}
+@keyframes nut-in{
+  from{opacity:0;transform:translate3d(0,-34px,0) scale(.55) rotate(-50deg)}
+  to  {opacity:1;transform:none}
+}
+@keyframes nut-float{
+  0%,100%{transform:translate3d(0,0,0) rotate(var(--r0,0deg))}
+  50%    {transform:translate3d(var(--fx,6px),var(--fy,-14px),0) rotate(var(--r1,12deg))}
+}
+
+/* Handy: kleinere Nüsse, freie Stellen, kein Text verdeckt */
+@media (max-width:640px){
+  .nut{width:calc(var(--w,56px) * .7);height:calc(var(--w,56px) * .7)}
+  .nut-field--corporate .nut:nth-child(5){left:auto !important;right:6% !important;bottom:5% !important}
+  .nut-field--corporate .nut:nth-child(6){right:4% !important;top:64% !important}
+  .nut-field--shop .nut:nth-child(1){left:auto !important;right:24% !important;top:3% !important}
+  .nut-field--shop .nut:nth-child(2){left:0 !important}
+  .nut-field--shop .nut:nth-child(3){bottom:auto !important;left:4% !important;top:56% !important}
+  .nut-field--shop .nut:nth-child(4){right:0 !important;top:14% !important}
+  .nut-field--shop .nut:nth-child(5){right:0 !important;top:44% !important}
+  .nut-field--shop .nut:nth-child(6){display:none}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .nut{transform:none !important;transition:none}
+  .nut__in,.nut__float{animation:none !important}
+  .nut__float{transform:rotate(var(--r0,0deg))}
+}
+@media print{ .nut-field,.hn-intro__nuts{display:none} }

@@ -16,6 +16,9 @@ Dieses Dokument beschreibt das Hasret-Nuts-Logo als Vektorgrafik, das drehende L
 | `shared/views/partials/intro.njk` | Eröffnungsanimation, bestehend aus Head-Teil und Body-Teil |
 | `shared/assets/motion/intro.css` | Eröffnungsanimation (reines CSS) |
 | `shared/assets/motion/intro.js` | Optionale Verbesserung: Überspringen, einmal pro Sitzung, vollständige Hover-Drehung |
+| `shared/views/partials/nuts.njk` | Nuss-Bewegung: Nüsse im Eröffnungs-Overlay (`nutsPart = 'burst'`, bindet `intro.njk` selbst ein) und schwebende Nüsse im Hero (`nutsPart = 'field'`, `nutsLayout = 'corporate' \| 'shop'`) |
+| `shared/assets/motion/nuts.css` | Nuss-Bewegung (reines CSS) |
+| `shared/assets/motion/nuts.js` | Optionale Verbesserung: leichte Parallaxe der Hero-Nüsse beim Scrollen und zur Mausposition |
 
 Alle Assets liegen unter `/assets/…`, denn `createBaseApp` bildet `/assets` auf `shared/assets` ab.
 
@@ -120,6 +123,15 @@ Die Varianten:
 - **`prefers-reduced-motion: reduce`:** Das Overlay wird gar nicht angezeigt (CSS und Skript). Auch im Druck ist es ausgeblendet.
 - **Sicherheitsnetz:** Das Overlay trägt inline `style="display:none"` und wird nur durch `intro.css` sichtbar. Fehlt das Stylesheet, bleibt die Seite unberührt. Die Seite wird also nie unbenutzbar.
 - **CSP:** Es gibt keine Inline-Event-Handler. Inline-Skripte tragen `nonce="{{ nonce }}"`, `intro.js` ist eine externe Datei (`defer`). Das Inline-`style`-Attribut ist durch `style-src-attr 'unsafe-inline'` gedeckt.
+
+### Nuss-Bewegung (`nuts.css`, `nuts.njk`, `nuts.js`)
+
+- **Eröffnung:** 12 Nüsse (Mandel, Pistazie, Haselnuss, Cashew, Walnuss, Blatt) springen ab 0,86–0,92 s strahlenförmig hinter dem Logo hervor, sobald sich die Türen öffnen, und fallen mit leichter Schwerkraft aus dem Bild (0,95 s: Ausflug mit `ease-out`, Fall mit `ease-in`, Drehung bis ±220°). Sie enden mit dem Overlay bei 1,86 s.
+- **Startseite:** 6 Nüsse fliegen nach dem Intro (bzw. 0,25 s nach dem Laden, wenn das Intro übersprungen wird) gestaffelt ein und schweben dann sanft (6,8–9 s pro Zyklus, leichte Drehung). Mit `nuts.js` bewegen sie sich beim Scrollen leicht schneller als der Inhalt und folgen auf Geräten mit Maus ein wenig der Zeigerposition. Am Handy sind sie 30 % kleiner und liegen an freien Stellen, damit kein Text verdeckt wird.
+- **Grafik:** Die Nüsse verweisen per `<use href="#hnl-…">` auf die Symbole des Kopfzeilen-Logos – ersetzt man das Logo, ändern sich die Nüsse mit (die Symbole `hazel`, `almond`, `cashew`, `pista`, `walnut`, `leaf` müssen dann im neuen `logo.njk` erhalten bleiben).
+- **Einbindung:** `nuts.css` im `<head>` beider Layouts, `nuts.js` mit `defer` am Ende. Im Hero: `{% set nutsPart = 'field' %}{% set nutsLayout = 'corporate' %}{% include "partials/nuts.njk" %}` innerhalb eines Elements mit `position:relative` (im Shop über die Klasse `nut-host`).
+- **Barrierefreiheit:** alles `aria-hidden`, nicht fokussierbar, `pointer-events:none`. Bei `prefers-reduced-motion: reduce` keine Animation – die Hero-Nüsse stehen still, das Intro (samt Nüssen) wird gar nicht gezeigt. Im Druck ausgeblendet.
+- **CSP:** keine Inline-Skripte; Positionen stehen in Inline-`style`-Attributen (durch `style-src-attr 'unsafe-inline'` gedeckt).
 
 ## 4. Gestaltungsentscheidungen
 

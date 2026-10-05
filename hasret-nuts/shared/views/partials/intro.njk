@@ -32,6 +32,7 @@
 <div class="hn-intro hn-intro--{{ _iv }}" data-hn-intro aria-hidden="true" style="display:none">
   <span class="hn-intro__door hn-intro__door--l"></span>
   <span class="hn-intro__door hn-intro__door--r"></span>
+  {% set nutsPart = 'burst' %}{% include "partials/nuts.njk" %}
   <span class="hn-intro__logo"><span class="hn-intro__mark"><img src="/assets/logo/hasret-logo.svg?v={{ assetV or '1' }}" alt="" width="600" height="420" decoding="async" fetchpriority="high"><span class="hn-intro__shine"></span></span></span>
 </div>
 <script src="/assets/motion/intro.js?v={{ assetV or '1' }}" defer></script>

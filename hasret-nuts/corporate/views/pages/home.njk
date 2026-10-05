@@ -23,6 +23,7 @@
     <div class="hero__media reveal">
       {{ ui.photo(photos['C-01'], 'hero__main') }}
       {{ ui.photo(photos['C-02'], 'hero__inset') }}
+      {% set nutsPart = 'field' %}{% set nutsLayout = 'corporate' %}{% include "partials/nuts.njk" %}
     </div>
   </div>
 

@@ -16,6 +16,7 @@
 <link rel="preload" href="/assets/fonts/jost/jost-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ asset('/assets/css/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset('/assets/motion/logo-spin.css') }}">
+<link rel="stylesheet" href="{{ asset('/assets/motion/nuts.css') }}">
 <link rel="stylesheet" href="{{ asset('/static/css/site.css') }}">
 {% if jsonLd %}
 <script type="application/ld+json" nonce="{{ nonce }}">{{ jsonLd | jsonld }}</script>
@@ -38,6 +39,7 @@
 
 {% include "partials/footer.njk" %}
 
+<script src="{{ asset('/assets/motion/nuts.js') }}" defer></script>
 <script src="{{ asset('/static/js/site.js') }}" defer></script>
 {% block scripts %}{% endblock %}
 </body>

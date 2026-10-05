@@ -12,9 +12,10 @@
       <a href="/angebote" class="btn btn--lg btn-o">Zu den Angeboten</a>
     </div>
   </div>
-  <div class="hero__media">
+  <div class="hero__media nut-host">
     {{ shop.photo({ id: 'S-01', label: 'Foto S-01 · Startseite Hero · 5:4 · min. 2500 × 2000 px', ar: '5/4', alt: 'Sarma Lokum, geröstete Pistazien, Turşu und Maulbeer-Schorle auf Creme-Leinen', text: '[FOTO-PLATZHALTER: Appetitliche Fülle – Sarma-Lokum-Scheiben auf kleinem Messingteller, Holzschale mit gerösteten Pistazien, ein Schälchen Turşu „Lila Gemüse“ und ein Glas Maulbeer-Schorle (Karadut Özü) auf Creme-Leinen, einige Pistazien „zufällig“ verstreut. Perspektive: 45° schräg von oben, warmes Licht (ca. 4800 K) von links hinten, glänzende Texturen.]' }, 'hero__photo hero__photo--wide') }}
     {{ shop.photo({ id: 'S-01-M', label: 'Foto S-01-M · Hero Smartphone · 4:5 · min. 1600 × 2000 px', ar: '4/5', alt: 'Sarma Lokum, geröstete Pistazien, Turşu und Maulbeer-Schorle auf Creme-Leinen', text: '[FOTO-PLATZHALTER: Dasselbe Motiv wie S-01 als Hochformat – Hauptmotiv in der unteren Bildhälfte, oben liegt die Überschrift. Perspektive: 45° schräg von oben, warmes Licht (ca. 4800 K) von links hinten.]' }, 'hero__photo hero__photo--tall') }}
+    {% set nutsPart = 'field' %}{% set nutsLayout = 'shop' %}{% include "partials/nuts.njk" %}
   </div>
 </section>
 
