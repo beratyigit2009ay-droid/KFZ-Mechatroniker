@@ -85,15 +85,41 @@ function nowIso(offsetMs = 0) {
   return new Date(Date.now() + offsetMs).toISOString();
 }
 
-/** Entfernt abgelaufene Sitzungen und alte Einmal-Tokens. */
+const UNVERIFIED_ACCOUNT_DAYS = 7;
+
+/**
+ * Entfernt abgelaufene Sitzungen, alte Einmal-Tokens, veraltete Anmelde-Zähler und
+ * Kundenkonten, deren E-Mail-Adresse nach 7 Tagen noch nicht bestätigt ist (verhindert,
+ * dass jemand fremde Adressen dauerhaft „vorab belegt“).
+ */
 function cleanupExpired() {
   const conn = getDb();
   const now = nowIso();
+  const weekAgo = nowIso(-7 * 24 * 3600 * 1000);
   const s = conn.prepare('DELETE FROM sessions WHERE expires_at <= ?').run(now).changes;
   const t = conn
     .prepare('DELETE FROM auth_tokens WHERE expires_at <= ? OR (used_at IS NOT NULL AND used_at <= ?)')
-    .run(nowIso(-7 * 24 * 3600 * 1000), nowIso(-7 * 24 * 3600 * 1000)).changes;
-  return { sessions: s, tokens: t };
+    .run(weekAgo, weekAgo).changes;
+  const a = conn
+    .prepare('DELETE FROM login_attempts WHERE updated_at <= ? AND (locked_until IS NULL OR locked_until <= ?)')
+    .run(nowIso(-24 * 3600 * 1000), now).changes;
+  const stale = nowIso(-UNVERIFIED_ACCOUNT_DAYS * 24 * 3600 * 1000);
+  const u = conn.transaction(() => {
+    const ids = conn
+      .prepare("SELECT id FROM users WHERE email_verified_at IS NULL AND role = 'customer' AND created_at <= ?")
+      .all(stale)
+      .map((r) => r.id);
+    for (const id of ids) {
+      conn.prepare('UPDATE orders SET user_id = NULL WHERE user_id = ?').run(id);
+      conn.prepare('UPDATE security_events SET user_id = NULL WHERE user_id = ?').run(id);
+      conn.prepare('DELETE FROM sessions WHERE user_id = ?').run(id);
+      conn.prepare('DELETE FROM auth_tokens WHERE user_id = ?').run(id);
+      conn.prepare('DELETE FROM login_attempts WHERE user_id = ?').run(id);
+      conn.prepare('DELETE FROM users WHERE id = ?').run(id);
+    }
+    return ids.length;
+  })();
+  return { sessions: s, tokens: t, loginAttempts: a, unverifiedUsers: u };
 }
 
 module.exports = { getDb, closeDb, transaction, migrate, nowIso, cleanupExpired };

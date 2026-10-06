@@ -286,18 +286,20 @@ describe('Template-Filter und SEO-Helfer', () => {
 
 describe('Konfiguration', () => {
   it('bricht in Produktion ohne HTTPS/SMTP/MAIL_FROM/LOG_SALT ab', () => {
-    const keys = ['NODE_ENV', 'CORPORATE_BASE_URL', 'SHOP_BASE_URL', 'SMTP_HOST', 'MAIL_FROM', 'OWNER_EMAIL', 'LOG_SALT'];
+    const keys = ['NODE_ENV', 'CORPORATE_BASE_URL', 'SHOP_BASE_URL', 'SMTP_HOST', 'MAIL_FROM', 'OWNER_EMAIL', 'LOG_SALT', 'TRUST_PROXY'];
     const saved = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
     try {
       Object.assign(process.env, { NODE_ENV: 'production', CORPORATE_BASE_URL: 'http://www.example', SHOP_BASE_URL: 'https://shop.example' });
       delete process.env.SMTP_HOST;
       delete process.env.MAIL_FROM;
       delete process.env.LOG_SALT;
+      delete process.env.TRUST_PROXY;
       assert.throws(() => config.reload(), (err) => {
         assert.match(err.message, /CORPORATE_BASE_URL/);
         assert.match(err.message, /SMTP_HOST/);
         assert.match(err.message, /MAIL_FROM/);
         assert.match(err.message, /LOG_SALT/);
+        assert.match(err.message, /TRUST_PROXY fehlt/);
         return true;
       });
     } finally {
@@ -610,6 +612,41 @@ describe('Basis-App (createBaseApp) im Testbetrieb', () => {
     assert.equal(ok.user.id, u.id);
     const unknown = await auth.authenticate('gibt-es-nicht@example.com', STRONG_PW);
     assert.deepEqual(unknown, { ok: false, reason: 'invalid' }, 'gleiche Antwort für unbekannte Adressen');
+  });
+
+  it('Login-Drosselung pro Gerät: Fremde können das Konto nicht für alle sperren', async () => {
+    const fakeReq = (ip) => ({ ip, get: () => '' });
+    const u = await auth.createUser({ email: 'admin-lock@example.com', password: STRONG_PW, role: 'admin', emailVerified: true });
+    for (let i = 0; i < 5; i += 1) await auth.authenticate('admin-lock@example.com', 'falsch-falsch-falsch', fakeReq('203.0.113.10'));
+    const attacker = await auth.authenticate('admin-lock@example.com', STRONG_PW, fakeReq('203.0.113.10'));
+    assert.deepEqual(attacker, { ok: false, reason: 'locked' }, 'Gerät des Angreifers ist gesperrt');
+    const owner = await auth.authenticate('admin-lock@example.com', STRONG_PW, fakeReq('198.51.100.77'));
+    assert.equal(owner.ok, true, 'Inhaber kommt von seinem Gerät weiterhin hinein');
+    assert.equal(owner.user.id, u.id);
+  });
+
+  it('Login-Drosselung ohne Wettlauf: parallele Versuche werden vor der Passwortprüfung gezählt', async () => {
+    await auth.createUser({ email: 'race@example.com', password: STRONG_PW, emailVerified: true });
+    const req = { ip: '192.0.2.44', get: () => '' };
+    const tries = Array.from({ length: 9 }, () => auth.authenticate('race@example.com', 'falsch-falsch-falsch', req));
+    tries.push(auth.authenticate('race@example.com', STRONG_PW, req));
+    const results = await Promise.all(tries);
+    assert.equal(results.filter((r) => r.reason === 'invalid' || r.ok).length <= 5, true, 'höchstens 5 echte Prüfungen');
+    assert.deepEqual(results[9], { ok: false, reason: 'locked' }, 'das richtige Passwort kommt nach dem Limit nicht mehr durch');
+  });
+
+  it('Login-Drosselung kontoweit: viele Fehlversuche aus verschiedenen Quellen sperren das Konto', async () => {
+    const u = await auth.createUser({ email: 'spread@example.com', password: STRONG_PW, emailVerified: true });
+    let n = 0;
+    for (let ip = 1; n < auth.ACCOUNT_LOCK_THRESHOLD; ip += 1) {
+      for (let k = 0; k < 4 && n < auth.ACCOUNT_LOCK_THRESHOLD; k += 1, n += 1) {
+        await auth.authenticate('spread@example.com', 'falsch-falsch-falsch', { ip: `198.18.0.${ip}`, get: () => '' });
+      }
+    }
+    const fresh = await auth.authenticate('spread@example.com', STRONG_PW, { ip: '198.18.9.9', get: () => '' });
+    assert.deepEqual(fresh, { ok: false, reason: 'locked' });
+    auth.resetLoginFailures(u.id);
+    assert.equal((await auth.authenticate('spread@example.com', STRONG_PW, { ip: '198.18.9.9', get: () => '' })).ok, true);
   });
 
   it('Konto löschen: Bestellungen bleiben, user_id wird NULL', async () => {

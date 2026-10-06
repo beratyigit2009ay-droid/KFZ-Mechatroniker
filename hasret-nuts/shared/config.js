@@ -104,7 +104,7 @@ const RATE_LIMIT_DEFAULTS = {
 
 function parseTrustProxy(raw) {
   const v = String(raw).trim();
-  if (v === '' || v === 'false' || v === '0' || v === 'no') return false;
+  if (v === '' || v === 'false' || v === '0' || v === 'no' || v === 'none') return false;
   if (v === 'true') return true;
   if (/^\d+$/.test(v)) return Number(v);
   return v; // z. B. "loopback" oder "127.0.0.1"
@@ -190,7 +190,12 @@ function build() {
     if (!e.LOG_SALT || e.LOG_SALT.length < 32 || e.LOG_SALT === DEV_LOG_SALT) {
       problems.push('LOG_SALT fehlt oder ist zu kurz (mind. 32 zufällige Zeichen, z. B. "openssl rand -hex 32").');
     }
-    if (parseTrustProxy(e.TRUST_PROXY) === true) {
+    const rawTrustProxy = String(process.env.TRUST_PROXY ?? '').trim();
+    if (!rawTrustProxy) {
+      // Hinter einem Reverse Proxy ohne TRUST_PROXY sähen alle Besucher wie 127.0.0.1 aus und
+      // teilten sich EINEN Ratenlimit-Zähler (ein Angreifer könnte den ganzen Shop sperren).
+      problems.push('TRUST_PROXY fehlt. Hinter einem Reverse Proxy die Anzahl der Proxys angeben (meist 1), ohne Proxy ausdrücklich "none".');
+    } else if (parseTrustProxy(e.TRUST_PROXY) === true) {
       problems.push('TRUST_PROXY=true vertraut jedem Proxy (IP-Spoofing möglich). Bitte die Anzahl der Proxys (z. B. 1) oder "loopback" angeben.');
     }
   }

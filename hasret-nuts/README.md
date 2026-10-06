@@ -104,7 +104,7 @@ Alle Einstellungen kommen aus Umgebungsvariablen bzw. der Datei `.env` (Vorlage 
 | `HOST` | | Bind-Adresse (`127.0.0.1` – hinter dem Proxy so lassen) |
 | `CORPORATE_PORT`, `SHOP_PORT` | | Ports (`3001`, `3002`) |
 | `CORPORATE_BASE_URL`, `SHOP_BASE_URL` | ✔ (https) | Öffentliche Adressen für Canonical, Sitemap, Open Graph, Mail-Links |
-| `TRUST_PROXY` | ✔ (z. B. `1`) | Anzahl vertrauenswürdiger Proxys für die echte Client-IP (`false`) |
+| `TRUST_PROXY` | ✔ (z. B. `1`) | Anzahl vertrauenswürdiger Proxys für die echte Client-IP; ohne Proxy ausdrücklich `none`. Fehlt der Wert, startet die App in Produktion nicht |
 | `DATABASE_PATH` | | SQLite-Datei (`data/hasret.db`) |
 | `MAIL_TRANSPORT` | | `smtp` · `file` · `memory` (Produktion: `smtp`, Entwicklung: `file`) |
 | `MAIL_FROM` | ✔ | Absender, z. B. `Hasret Nuts <shop@ihre-domain.de>` |
@@ -120,7 +120,7 @@ Alle Einstellungen kommen aus Umgebungsvariablen bzw. der Datei `.env` (Vorlage 
 | `ORDER_PREFIX` | | Präfix der Bestellnummern (`HN` → `HN-2026-0001`) |
 | `CATALOG_PATH`, `ALLERGENS_PATH`, `OFFERS_PATH` | | Abweichende Pfade der Katalogdateien (Tests) |
 
-In Produktion **startet die App nicht**, wenn eine Pflichtangabe fehlt, eine Basis-URL nicht mit `https://` beginnt oder `TRUST_PROXY=true` gesetzt ist – die Fehlermeldung nennt alle Probleme auf einmal.
+In Produktion **startet die App nicht**, wenn eine Pflichtangabe fehlt, eine Basis-URL nicht mit `https://` beginnt, `TRUST_PROXY` fehlt oder `TRUST_PROXY=true` gesetzt ist – die Fehlermeldung nennt alle Probleme auf einmal.
 
 ## Administrator anlegen
 

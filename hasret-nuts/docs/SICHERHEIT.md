@@ -39,7 +39,7 @@ Automatisch geprüft wird das meiste davon in `test/core.test.js` (`npm test`).
 ### 2.2 Geheimnisse und Konfiguration
 
 - Geheimnisse (`SMTP_PASS`, `LOG_SALT`) stehen nur in `.env` auf dem Server (Rechte `600`, Eigentümer Dienstnutzer) bzw. in der Prozessumgebung.
-- In Produktion verweigert die App den Start, wenn: eine Basis-URL nicht `https://` ist, `SMTP_HOST`/`MAIL_FROM`/`OWNER_EMAIL` fehlen, `LOG_SALT` fehlt oder kürzer als 32 Zeichen ist, `MAIL_TRANSPORT` nicht `smtp` ist oder `TRUST_PROXY=true` (IP-Spoofing) gesetzt ist.
+- In Produktion verweigert die App den Start, wenn: eine Basis-URL nicht `https://` ist, `SMTP_HOST`/`MAIL_FROM`/`OWNER_EMAIL` fehlen, `LOG_SALT` fehlt oder kürzer als 32 Zeichen ist, `MAIL_TRANSPORT` nicht `smtp` ist, `TRUST_PROXY` fehlt (ohne Proxy ausdrücklich `none`) oder `TRUST_PROXY=true` (IP-Spoofing) gesetzt ist.
 - Fehlermeldungen an Nutzer enthalten nie Konfigurationswerte, Stacktraces oder interne Fehlermeldungen (nur eine kurze Fehlerkennung zum Abgleich mit dem Server-Log).
 
 ### 2.3 Ratenlimits

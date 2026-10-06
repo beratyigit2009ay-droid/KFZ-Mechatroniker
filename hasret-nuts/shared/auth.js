@@ -16,8 +16,10 @@ const { destroyUserSessions } = require('./session');
 const scryptAsync = promisify(crypto.scrypt);
 
 const SCRYPT = { N: 2 ** 16, r: 8, p: 1, saltBytes: 16, keyLen: 64 };
-const LOCK_THRESHOLD = 5;
-const LOCK_MINUTES = 15;
+const LOCK_THRESHOLD = 5; // Fehlversuche pro Konto UND Gerät/IP → Sperre dieses Paares
+const ACCOUNT_LOCK_THRESHOLD = 25; // Fehlversuche pro Konto aus allen Quellen → Sperre des Kontos
+const LOCK_MINUTES = 15; // Sperrdauer und Zählfenster
+const NO_IP = 'none'; // Schlüssel, wenn kein Request vorliegt (Skripte, Tests)
 const TOKEN_TYPES = new Set(['verify_email', 'reset_password', 'newsletter']);
 
 function scryptMaxmem(N, r) {
@@ -236,6 +238,28 @@ async function createUser({ email, password, name = '', role = 'customer', email
   }
 }
 
+/**
+ * Neue Registrierung für eine Adresse, deren Konto noch NICHT bestätigt ist: Passwort und Name
+ * werden ersetzt, offene Bestätigungslinks entwertet. So kann niemand eine fremde Adresse
+ * „vorab belegen“ (Account-Pre-Hijacking) – es gilt immer die zuletzt registrierte Person,
+ * und aktiv wird das Konto erst mit dem Klick im Postfach. → Promise<boolean>
+ */
+async function replaceUnverifiedAccount(userId, { password, name = '' }) {
+  const hash = await hashPassword(password);
+  return transaction((db) => {
+    const now = nowIso();
+    const changed = db
+      .prepare(
+        'UPDATE users SET password_hash = ?, name = ?, failed_logins = 0, failed_since = NULL, locked_until = NULL, updated_at = ? WHERE id = ? AND email_verified_at IS NULL'
+      )
+      .run(hash, String(name || '').trim(), now, userId).changes;
+    if (changed !== 1) return false;
+    db.prepare("UPDATE auth_tokens SET used_at = ? WHERE user_id = ? AND type = 'verify_email' AND used_at IS NULL").run(now, userId);
+    db.prepare('DELETE FROM login_attempts WHERE user_id = ?').run(userId);
+    return true;
+  });
+}
+
 function markEmailVerified(userId) {
   const now = nowIso();
   return (
@@ -254,11 +278,10 @@ async function updatePassword(userId, newPassword) {
   const hash = await hashPassword(newPassword);
   transaction((db) => {
     const now = nowIso();
-    db.prepare('UPDATE users SET password_hash = ?, failed_logins = 0, locked_until = NULL, updated_at = ? WHERE id = ?').run(
-      hash,
-      now,
-      userId
-    );
+    db.prepare(
+      'UPDATE users SET password_hash = ?, failed_logins = 0, failed_since = NULL, locked_until = NULL, updated_at = ? WHERE id = ?'
+    ).run(hash, now, userId);
+    db.prepare('DELETE FROM login_attempts WHERE user_id = ?').run(userId);
     db.prepare("UPDATE auth_tokens SET used_at = ? WHERE user_id = ? AND type = 'reset_password' AND used_at IS NULL").run(now, userId);
   });
   destroyUserSessions(userId);
@@ -275,6 +298,7 @@ function deleteUser(userId) {
     db.prepare('UPDATE security_events SET user_id = NULL WHERE user_id = ?').run(userId);
     db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
     db.prepare('DELETE FROM auth_tokens WHERE user_id = ?').run(userId);
+    db.prepare('DELETE FROM login_attempts WHERE user_id = ?').run(userId);
     return db.prepare('DELETE FROM users WHERE id = ?').run(userId).changes === 1;
   });
 }
@@ -285,38 +309,96 @@ function userIdOf(userOrId) {
   return typeof userOrId === 'object' && userOrId !== null ? userOrId.id : userOrId;
 }
 
-/** Zählt einen Fehlversuch; ab 5 Fehlversuchen 15 Minuten Sperre. → { locked, lockedUntil } */
-function recordLoginFailure(userOrId) {
-  const id = userIdOf(userOrId);
+/**
+ * Reserviert einen Anmeldeversuch, BEVOR das Passwort (asynchron, ~200 ms) geprüft wird.
+ * Die Funktion läuft synchron in einer Transaktion – bei einem Node-Prozess mit better-sqlite3
+ * ist sie damit atomar: parallele Versuche werden mitgezählt, solange sie noch laufen, und können
+ * die Sperre nicht mehr „überholen“ (früher wurde erst nach der Prüfung gezählt).
+ * → { allowed: false } | { allowed: true, pairCount, acctCount }
+ */
+function reserveAttempt(userId, ipKey = NO_IP) {
   return transaction((db) => {
-    const row = db.prepare('SELECT failed_logins FROM users WHERE id = ?').get(id);
-    if (!row) return { locked: false, lockedUntil: null };
-    const count = row.failed_logins + 1;
-    if (count >= LOCK_THRESHOLD) {
-      const until = nowIso(LOCK_MINUTES * 60 * 1000);
-      db.prepare('UPDATE users SET failed_logins = 0, locked_until = ?, updated_at = ? WHERE id = ?').run(until, nowIso(), id);
-      return { locked: true, lockedUntil: until };
-    }
-    db.prepare('UPDATE users SET failed_logins = ?, updated_at = ? WHERE id = ?').run(count, nowIso(), id);
-    return { locked: false, lockedUntil: null };
+    const now = nowIso();
+    const windowStart = nowIso(-LOCK_MINUTES * 60 * 1000);
+    const u = db.prepare('SELECT failed_logins, failed_since, locked_until FROM users WHERE id = ?').get(userId);
+    if (!u) return { allowed: false };
+    if (u.locked_until && u.locked_until > now) return { allowed: false };
+    const pair = db.prepare('SELECT failures, locked_until, updated_at FROM login_attempts WHERE user_id = ? AND ip_hash = ?').get(userId, ipKey);
+    if (pair && pair.locked_until && pair.locked_until > now) return { allowed: false };
+    const pairCount = pair && pair.updated_at > windowStart ? pair.failures : 0;
+    const acctCount = u.failed_since && u.failed_since > windowStart ? u.failed_logins : 0;
+    if (pairCount >= LOCK_THRESHOLD || acctCount >= ACCOUNT_LOCK_THRESHOLD) return { allowed: false };
+    db.prepare(
+      `INSERT INTO login_attempts (user_id, ip_hash, failures, locked_until, updated_at) VALUES (?, ?, ?, NULL, ?)
+       ON CONFLICT (user_id, ip_hash) DO UPDATE SET failures = excluded.failures, locked_until = NULL, updated_at = excluded.updated_at`
+    ).run(userId, ipKey, pairCount + 1, now);
+    db.prepare('UPDATE users SET failed_logins = ?, failed_since = ? WHERE id = ?').run(acctCount + 1, acctCount ? u.failed_since : now, userId);
+    return { allowed: true, pairCount: pairCount + 1, acctCount: acctCount + 1 };
   });
 }
 
-/** true, solange das Konto gesperrt ist. Akzeptiert Nutzerzeile oder ID. */
-function isLocked(userOrId) {
-  const row = typeof userOrId === 'object' && userOrId !== null && 'locked_until' in userOrId ? userOrId : findUserById(userOrId);
-  return Boolean(row && row.locked_until && row.locked_until > nowIso());
+/** Wertet einen reservierten Versuch als Fehlversuch aus und sperrt ggf. → null | 'device' | 'account' */
+function finishFailure(userId, ipKey, gate) {
+  return transaction((db) => {
+    const now = nowIso();
+    const until = nowIso(LOCK_MINUTES * 60 * 1000);
+    let locked = null;
+    if (gate.pairCount >= LOCK_THRESHOLD) {
+      db.prepare('UPDATE login_attempts SET failures = 0, locked_until = ?, updated_at = ? WHERE user_id = ? AND ip_hash = ?').run(until, now, userId, ipKey);
+      locked = 'device';
+    }
+    if (gate.acctCount >= ACCOUNT_LOCK_THRESHOLD) {
+      db.prepare('UPDATE users SET failed_logins = 0, failed_since = NULL, locked_until = ?, updated_at = ? WHERE id = ?').run(until, now, userId);
+      locked = 'account';
+    }
+    return locked;
+  });
 }
 
+/** Erfolgreiche Anmeldung: Zähler dieses Geräts löschen, die eigene Reservierung zurücknehmen. */
+function finishSuccess(userId, ipKey) {
+  transaction((db) => {
+    db.prepare('DELETE FROM login_attempts WHERE user_id = ? AND ip_hash = ?').run(userId, ipKey);
+    db.prepare('UPDATE users SET failed_logins = MAX(failed_logins - 1, 0) WHERE id = ?').run(userId);
+  });
+}
+
+/** Zählt einen Fehlversuch (ohne Passwortprüfung, z. B. für Skripte). → { locked, lockedUntil } */
+function recordLoginFailure(userOrId, ipKey = NO_IP) {
+  const id = userIdOf(userOrId);
+  const gate = reserveAttempt(id, ipKey);
+  if (!gate.allowed) return { locked: true, lockedUntil: null };
+  const locked = finishFailure(id, ipKey, gate);
+  return { locked: Boolean(locked), lockedUntil: locked ? nowIso(LOCK_MINUTES * 60 * 1000) : null };
+}
+
+/** true, solange das Konto gesperrt ist – kontoweit oder für dieses Gerät/diese IP (ipKey). */
+function isLocked(userOrId, ipKey = NO_IP) {
+  const id = userIdOf(userOrId);
+  const now = nowIso();
+  const u = getDb().prepare('SELECT locked_until FROM users WHERE id = ?').get(id);
+  if (!u) return false;
+  if (u.locked_until && u.locked_until > now) return true;
+  const pair = getDb().prepare('SELECT locked_until FROM login_attempts WHERE user_id = ? AND ip_hash = ?').get(id, ipKey);
+  return Boolean(pair && pair.locked_until && pair.locked_until > now);
+}
+
+/** Hebt alle Sperren und Zähler eines Kontos auf (z. B. nach Passwort-Reset oder durch den Inhaber). */
 function resetLoginFailures(userOrId) {
-  getDb().prepare('UPDATE users SET failed_logins = 0, locked_until = NULL WHERE id = ?').run(userIdOf(userOrId));
+  const id = userIdOf(userOrId);
+  transaction((db) => {
+    db.prepare('UPDATE users SET failed_logins = 0, failed_since = NULL, locked_until = NULL WHERE id = ?').run(id);
+    db.prepare('DELETE FROM login_attempts WHERE user_id = ?').run(id);
+  });
 }
 
 /**
  * Komplette Anmeldeprüfung inkl. Sperre und Konstantzeit bei unbekannter Adresse.
  * → Promise<{ ok: true, user: row } | { ok: false, reason: 'invalid' | 'locked' }>
- * Empfehlung: für 'invalid' und 'locked' dieselbe neutrale Meldung anzeigen bzw. bei
- * 'locked' nur allgemein auf "zu viele Versuche" hinweisen. Ereignisse werden protokolliert,
+ * Drosselung: 5 Fehlversuche pro Konto UND Gerät/IP sperren nur dieses Paar für 15 Minuten –
+ * ein Fremder kann so nicht mehr das Konto (z. B. des Inhabers) für alle sperren. 25 Fehlversuche
+ * aus beliebigen Quellen innerhalb von 15 Minuten sperren das Konto (Schutz vor verteilten Angriffen).
+ * Für 'invalid' und 'locked' dieselbe neutrale Meldung anzeigen. Ereignisse werden protokolliert,
  * wenn req übergeben wird.
  */
 async function authenticate(email, password, req = null) {
@@ -326,18 +408,21 @@ async function authenticate(email, password, req = null) {
     if (req) logSecurityEvent('login_failure', null, req);
     return { ok: false, reason: 'invalid' };
   }
-  if (isLocked(user)) {
+  const ipKey = req ? clientIpHash(req) : NO_IP;
+  const gate = reserveAttempt(user.id, ipKey);
+  if (!gate.allowed) {
     await verifyPassword(String(password || 'x'), await dummyHash());
     if (req) logSecurityEvent('login_locked', user.id, req);
     return { ok: false, reason: 'locked' };
   }
   const valid = await verifyPassword(String(password || ''), user.password_hash);
   if (!valid) {
-    const { locked } = recordLoginFailure(user.id);
-    if (req) logSecurityEvent(locked ? 'account_locked' : 'login_failure', user.id, req);
+    const locked = finishFailure(user.id, ipKey, gate);
+    if (req) logSecurityEvent(locked === 'account' ? 'account_locked' : locked === 'device' ? 'device_locked' : 'login_failure', user.id, req);
+    if (locked === 'account') console.warn(`[auth] Konto ${user.id} nach ${ACCOUNT_LOCK_THRESHOLD} Fehlversuchen für ${LOCK_MINUTES} Minuten gesperrt.`);
     return { ok: false, reason: locked ? 'locked' : 'invalid' };
   }
-  resetLoginFailures(user.id);
+  finishSuccess(user.id, ipKey);
   if (req) logSecurityEvent('login_success', user.id, req);
   return { ok: true, user: findUserById(user.id) };
 }
@@ -372,6 +457,7 @@ module.exports = {
   findUserById,
   publicUser,
   markEmailVerified,
+  replaceUnverifiedAccount,
   updatePassword,
   deleteUser,
   recordLoginFailure,
@@ -381,6 +467,7 @@ module.exports = {
   logSecurityEvent,
   sha256Hex,
   LOCK_THRESHOLD,
+  ACCOUNT_LOCK_THRESHOLD,
   LOCK_MINUTES,
   SCRYPT,
 };

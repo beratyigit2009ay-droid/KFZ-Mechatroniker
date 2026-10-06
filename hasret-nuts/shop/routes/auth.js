@@ -7,7 +7,8 @@
  *   POST     /konto/abmelden              Abmeldung (CSRF, Sitzung wird verworfen)
  *   GET      /konto/bestaetigen[?token=]  ohne Token: „Bitte bestätigen Sie …“ + Erneut-senden-Formular
  *                                         mit Token: Seite mit Bestätigungs-Button (GET verbraucht NICHTS)
- *   POST     /konto/bestaetigen           verbraucht das Token (24 h, einmalig) → bestätigt → angemeldet
+ *   POST     /konto/bestaetigen           verbraucht das Token (24 h, einmalig) → bestätigt → angemeldet nur in der
+ *                                         Sitzung, die sich registriert hat; sonst weiter zur Anmeldung
  *   POST     /konto/bestaetigung-erneut   Bestätigungsmail erneut senden (neutral, gedrosselt)
  *   GET/POST /konto/passwort-vergessen    Reset-Link anfordern (immer dieselbe Antwort)
  *   GET/POST /konto/passwort-zuruecksetzen[?token=]   neues Passwort setzen (60 min, einmalig)
@@ -38,6 +39,7 @@ const MSG = {
   resent:
     'Falls zu dieser Adresse ein noch nicht bestätigtes Konto besteht, haben wir Ihnen soeben eine neue Bestätigungs-E-Mail gesendet.',
   verified: 'Vielen Dank – Ihre E-Mail-Adresse ist bestätigt. Herzlich willkommen bei Hasret Nuts!',
+  verifiedLogin: 'Vielen Dank – Ihre E-Mail-Adresse ist bestätigt. Bitte melden Sie sich jetzt mit Ihrem Passwort an.',
   loggedOut: 'Sie haben sich abgemeldet. Bis bald!',
   resetDone: 'Ihr neues Passwort ist gespeichert. Aus Sicherheitsgründen wurden alle anderen Anmeldungen beendet.',
 };
@@ -92,12 +94,20 @@ async function safeSend(fn) {
   }
 }
 
+/**
+ * Versendet im Hintergrund, ohne auf den Mailserver zu warten. Sonst verriete die Antwortzeit,
+ * ob zu einer Adresse ein Konto besteht (nur dann wird eine Mail verschickt).
+ */
+function sendInBackground(fn) {
+  safeSend(fn).catch(() => {});
+}
+
 /** Hinweis-Mail, wenn sich jemand mit einer bereits registrierten Adresse registriert. */
-function accountExistsMail({ name }) {
+function accountExistsMail() {
   const loginUrl = safeUrl(shopUrl('/konto/anmelden'));
   const forgotUrl = safeUrl(shopUrl('/konto/passwort-vergessen'));
-  const n = String(name || '').replace(/[\r\n\t]+/g, ' ').trim().slice(0, 100);
-  const greeting = n ? `Guten Tag ${n},` : 'Guten Tag,';
+  // Bewusst ohne Namen: Mails an unbestätigte Adressen enthalten keinen Text, den Dritte eingeben können.
+  const greeting = 'Guten Tag,';
   const intro =
     'soeben wurde versucht, mit dieser E-Mail-Adresse ein neues Kundenkonto bei Hasret Nuts anzulegen. Für diese Adresse besteht bereits ein Konto – ein zweites ist nicht nötig.';
   const how = 'Sie können sich wie gewohnt anmelden. Falls Sie Ihr Passwort nicht mehr wissen, legen Sie einfach ein neues fest.';
@@ -135,11 +145,10 @@ function accountExistsMail({ name }) {
   return { subject: 'Sie haben bereits ein Kundenkonto – Hasret Nuts', text, html };
 }
 
-async function sendVerification(user) {
+function sendVerification(user) {
   const token = auth.createToken(user.id, 'verify_email', VERIFY_TTL_MIN);
-  return safeSend(() =>
-    mailer.send('verifyEmail', user.email, { name: user.name, url: shopUrl(`/konto/bestaetigen?token=${token}`), ttlHours: 24 })
-  );
+  // Ohne Namen: Die Adresse ist noch nicht bestätigt, der Name stammt vom Absender des Formulars.
+  sendInBackground(() => mailer.send('verifyEmail', user.email, { name: '', url: shopUrl(`/konto/bestaetigen?token=${token}`), ttlHours: 24 }));
 }
 
 /* ------------------------------------------------------------ Validierung */
@@ -202,13 +211,19 @@ router.post(
       }
       const { name, email, password } = r.data;
       const existing = auth.findUserByEmail(email);
-      if (existing) {
+      if (existing && !existing.email_verified_at) {
+        // Noch nicht bestätigtes Konto: wie eine Neuanmeldung behandeln (neues Passwort, neuer Link).
+        // Wer die Adresse zuvor fremd registriert hat, verliert damit jeden Zugriff.
+        const replaced = await auth.replaceUnverifiedAccount(existing.id, { password, name });
+        auth.logSecurityEvent('register_replaced', existing.id, req);
+        if (replaced && mailQuota('verify', email)) sendVerification(auth.findUserById(existing.id));
+      } else if (existing) {
         // Gleiche Antwort wie bei einer Neuanmeldung (keine Konten-Ausspähung); vergleichbarer
         // Rechenaufwand wie das Anlegen. Der Inhaber der Adresse erhält einen Hinweis.
         await auth.hashPassword(password);
         if (mailQuota('account-exists', email)) {
-          const tpl = accountExistsMail({ name: existing.name });
-          await safeSend(() => mailer.sendMail({ to: existing.email, ...tpl }));
+          const tpl = accountExistsMail();
+          sendInBackground(() => mailer.sendMail({ to: existing.email, ...tpl }));
         }
         auth.logSecurityEvent('register_existing', existing.id, req);
       } else {
@@ -221,7 +236,7 @@ router.post(
         }
         if (user) {
           auth.logSecurityEvent('register', user.id, req);
-          if (mailQuota('verify', email)) await sendVerification(user);
+          if (mailQuota('verify', email)) sendVerification(user);
         }
       }
       req.session.data.pendingEmail = email;
@@ -262,7 +277,8 @@ router.get('/konto/bestaetigen', privatePage, tokenPage, (req, res) => {
   // Nur prüfen – NICHT verbrauchen (Link-Scanner und Vorschauen dürfen das Token nicht entwerten).
   const rec = token ? auth.peekToken(token, 'verify_email') : null;
   if (!rec) return renderVerify(req, res, { state: 'invalid', email: pendingEmail(req), status: 400 });
-  return renderVerify(req, res, { state: 'confirm', token });
+  const target = rec.userId != null ? auth.findUserById(rec.userId) : null;
+  return renderVerify(req, res, { state: 'confirm', token, email: target ? target.email : '' });
 });
 
 router.post('/konto/bestaetigen', privatePage, tokenPage, async (req, res, next) => {
@@ -274,7 +290,16 @@ router.post('/konto/bestaetigen', privatePage, tokenPage, async (req, res, next)
     auth.markEmailVerified(user.id);
     auth.resetLoginFailures(user.id);
     auth.logSecurityEvent('email_verified', user.id, req);
+    // Automatisch angemeldet wird nur die Sitzung, in der sich jemand mit genau dieser Adresse
+    // registriert hat. Wer einen fremden Link öffnet (oder auf einem anderen Gerät bestätigt),
+    // meldet sich anschließend mit dem eigenen Passwort an – so kann niemand einem Opfer ein
+    // Konto mit fremdem Passwort „unterschieben“ oder dessen Sitzung übernehmen.
+    const sameSession = pendingEmail(req).toLowerCase() === String(user.email).toLowerCase() && (!req.user || req.user.id === user.id);
     delete req.session.data.pendingEmail;
+    if (!sameSession) {
+      req.flash('success', MSG.verifiedLogin);
+      return res.redirect(303, '/konto/anmelden');
+    }
     await req.regenerateSession({ keepData: true, userId: user.id });
     req.flash('success', MSG.verified);
     return res.redirect(303, '/konto');
@@ -301,7 +326,7 @@ router.post(
       const { email } = r.data;
       const user = auth.findUserByEmail(email);
       if (user && !user.email_verified_at && mailQuota('verify', email)) {
-        await sendVerification(user);
+        sendVerification(user);
         auth.logSecurityEvent('verify_resent', user.id, req);
       }
       req.session.data.pendingEmail = email;
@@ -411,9 +436,9 @@ router.post(
       // Max. 3 Mails pro Stunde und Adresse; die Antwort ist in jedem Fall dieselbe.
       if (user && mailQuota('reset', email)) {
         const token = auth.createToken(user.id, 'reset_password', RESET_TTL_MIN);
-        await safeSend(() =>
+        sendInBackground(() =>
           mailer.send('resetPassword', user.email, {
-            name: user.name,
+            name: user.email_verified_at ? user.name : '',
             url: shopUrl(`/konto/passwort-zuruecksetzen?token=${token}`),
             ttlMinutes: RESET_TTL_MIN,
           })
@@ -469,7 +494,7 @@ router.post('/konto/passwort-zuruecksetzen', privatePage, tokenPage, rateLimits.
     await auth.updatePassword(user.id, r.data.password); // beendet ALLE Sitzungen, hebt Sperre auf
     auth.markEmailVerified(user.id); // Zugriff auf das Postfach ist nachgewiesen
     auth.logSecurityEvent('password_reset', user.id, req);
-    await safeSend(() =>
+    sendInBackground(() =>
       mailer.send('passwordChanged', user.email, { name: user.name, forgotUrl: shopUrl('/konto/passwort-vergessen') })
     );
     delete req.session.data.pendingEmail;

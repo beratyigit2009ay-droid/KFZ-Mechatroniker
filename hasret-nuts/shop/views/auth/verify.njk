@@ -8,7 +8,8 @@
   <span class="auth__icon" aria-hidden="true">{{ ui.icon('mail-open', 28, 1.5) }}</span>
   <p class="ac-eyebrow">Letzter Schritt</p>
   <h1 id="auth-h" class="ac-title">E-Mail-Adresse <em>bestätigen</em></h1>
-  <p class="ac-lead">Bitte bestätigen Sie mit einem Klick, dass diese E-Mail-Adresse Ihnen gehört. Danach ist Ihr Kundenkonto aktiv und Sie sind angemeldet.</p>
+  <p class="ac-lead">Bitte bestätigen Sie mit einem Klick, dass {% if email %}die E-Mail-Adresse <strong class="nowrap">{{ email }}</strong>{% else %}diese E-Mail-Adresse{% endif %} Ihnen gehört. Danach ist Ihr Kundenkonto aktiv.</p>
+  <p class="auth__fine">Sie haben kein Kundenkonto angelegt? Dann bestätigen Sie bitte nicht und ignorieren Sie die E-Mail – ohne Bestätigung wird das Konto nach 7 Tagen gelöscht.</p>
 </header>
 <form class="auth__form" method="post" action="/konto/bestaetigen" data-once>
   {{ forms.csrf() }}

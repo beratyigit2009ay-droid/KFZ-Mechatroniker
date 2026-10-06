@@ -206,7 +206,7 @@ describe('Registrierung, Bestätigung, Anmeldung, Abmeldung', () => {
     assert.ok(raw && /^[a-f0-9]{16,}$/.test(raw.ip_hash) && !raw.ip_hash.includes('127.0.0.1'), 'nur gehashte IP');
   });
 
-  it('5 Fehlversuche sperren das Konto – auch das richtige Passwort wird dann neutral abgelehnt', async () => {
+  it('5 Fehlversuche sperren das Konto für dieses Gerät – auch das richtige Passwort wird dann neutral abgelehnt', async () => {
     const email = uniqueEmail('lock');
     await auth.createUser({ email, password: PW, name: 'Gesperrt', emailVerified: true });
     const c = client(srv.baseUrl);
@@ -215,16 +215,58 @@ describe('Registrierung, Bestätigung, Anmeldung, Abmeldung', () => {
       assert.equal(r.status, 422);
     }
     const row = auth.findUserByEmail(email);
-    assert.ok(row.locked_until && row.locked_until > nowIso(), 'locked_until gesetzt');
+    const lock = srv.db.prepare('SELECT locked_until FROM login_attempts WHERE user_id = ?').get(row.id);
+    assert.ok(lock && lock.locked_until > nowIso(), 'Sperre für Konto + Gerät gesetzt');
+    assert.equal(row.locked_until, null, 'kein kontoweites Sperren durch einen einzelnen Absender');
     const ok = await login(c, email, PW);
     assert.equal(ok.status, 422);
     assert.match(ok.text, /E-Mail oder Passwort ist nicht korrekt\./);
     assert.equal((await c.get('/konto')).status, 302);
 
     // Nach Ablauf der Sperre klappt es wieder
-    srv.db.prepare('UPDATE users SET locked_until = ? WHERE id = ?').run(nowIso(-1000), row.id);
+    srv.db.prepare('UPDATE login_attempts SET locked_until = ? WHERE user_id = ?').run(nowIso(-1000), row.id);
     const later = await login(c, email, PW);
     assert.equal(later.status, 303);
+  });
+
+  it('Pre-Hijacking: fremd vorab registrierte Adresse – die echte Inhaberin übernimmt, der Angreifer verliert den Zugriff', async () => {
+    const email = uniqueEmail('prehijack');
+    const attacker = client(srv.baseUrl);
+    await register(attacker, { email, password: 'Angreifer-Kennwort-42', name: 'Angreifer' });
+    const victim = client(srv.baseUrl);
+    const reg = await register(victim, { email, password: 'Opfer-eigenes-Pw-456', name: 'Echte Inhaberin' });
+    assert.equal(reg.status, 303);
+    assert.equal(auth.findUserByEmail(email).name, 'Echte Inhaberin', 'neue Registrierung ersetzt das unbestätigte Konto');
+    const mails = srv.outbox.filter((m) => m.toList.includes(email));
+    const lastToken = extractToken(mails[mails.length - 1].text);
+    const firstToken = extractToken(mails[0].text);
+    assert.notEqual(firstToken, lastToken);
+    assert.equal((await attacker.post('/konto/bestaetigen', { token: firstToken })).status, 400, 'alter Link des Angreifers ist entwertet');
+    await victim.get(`/konto/bestaetigen?token=${lastToken}`);
+    const ok = await victim.post('/konto/bestaetigen', { token: lastToken });
+    assert.equal(ok.location, '/konto', 'die Inhaberin ist in ihrer eigenen Sitzung angemeldet');
+    assert.equal((await login(client(srv.baseUrl), email, 'Angreifer-Kennwort-42')).status, 422, 'Passwort des Angreifers gilt nicht');
+    assert.equal((await login(client(srv.baseUrl), email, 'Opfer-eigenes-Pw-456')).status, 303);
+    for (const m of mails) assert.doesNotMatch(m.text, /Angreifer|Echte Inhaberin/, 'Mails an unbestätigte Adressen ohne eingegebenen Namen');
+  });
+
+  it('Bestätigungslink in fremder Sitzung: bestätigt, meldet aber niemanden an und übernimmt keine Sitzung', async () => {
+    const email = uniqueEmail('foreignlink');
+    const owner = client(srv.baseUrl);
+    await register(owner, { email });
+    const token = extractToken(lastMail(srv.outbox, email).text);
+    const other = client(srv.baseUrl);
+    const someone = await verifiedUser(other, { email: uniqueEmail('someone'), name: 'Jemand Anderes' });
+    const page = await other.get(`/konto/bestaetigen?token=${token}`);
+    assert.ok(page.text.includes(email), 'Bestätigungsseite nennt die Adresse');
+    const post = await other.post('/konto/bestaetigen', { token });
+    assert.equal(post.status, 303);
+    assert.equal(post.location, '/konto/anmelden');
+    assert.ok(auth.findUserByEmail(email).email_verified_at, 'Adresse ist bestätigt');
+    const konto = await other.get('/konto');
+    assert.match(konto.text, /Jemand Anderes/, 'die laufende Sitzung gehört weiterhin dem eigenen Konto');
+    assert.equal(srv.db.prepare('SELECT COUNT(*) AS n FROM sessions WHERE user_id = ?').get(auth.findUserByEmail(email).id).n, 0);
+    assert.ok(someone.id);
   });
 
   it('unbestätigte Konten können sich nicht anmelden (Hinweis + Erneut senden, keine Sitzung)', async () => {
