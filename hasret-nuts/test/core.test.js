@@ -284,6 +284,27 @@ describe('Template-Filter und SEO-Helfer', () => {
   });
 });
 
+describe('Mail-Kontingent pro Empfänger', () => {
+  it('begrenzt pro Mailart und zusätzlich über alle Mailarten zusammen', () => {
+    security.resetMailQuota();
+    const addr = 'opfer@victim.example';
+    const opts = { max: 3, windowMs: 3600000 };
+    const saved = config.rateLimits.mailPerAddressTotal;
+    config.rateLimits.mailPerAddressTotal = { max: 5, windowMs: 3600000 };
+    try {
+      const sent = [];
+      for (const kind of ['verify', 'reset', 'newsletter', 'order-confirmation', 'account-exists']) {
+        for (let i = 0; i < 3; i += 1) sent.push(security.mailQuota(kind, addr, opts));
+      }
+      assert.equal(sent.filter(Boolean).length, 5, 'höchstens 5 Mails pro Stunde an eine Adresse – egal über welches Formular');
+      assert.equal(security.mailQuota('verify', 'andere@example.com', opts), true, 'andere Adressen sind nicht betroffen');
+    } finally {
+      config.rateLimits.mailPerAddressTotal = saved;
+      security.resetMailQuota();
+    }
+  });
+});
+
 describe('Konfiguration', () => {
   it('bricht in Produktion ohne HTTPS/SMTP/MAIL_FROM/LOG_SALT ab', () => {
     const keys = ['NODE_ENV', 'CORPORATE_BASE_URL', 'SHOP_BASE_URL', 'SMTP_HOST', 'MAIL_FROM', 'OWNER_EMAIL', 'LOG_SALT', 'TRUST_PROXY'];
@@ -757,7 +778,10 @@ describe('Mailer (Header-Injection-Schutz, Vorlagen)', () => {
     const items = [
       { name: 'Premium Sarma Lokum', variant: 'Pistazie', qty: 3, unit_price_cents: 800, line_total_cents: 2400, bundle_json: null },
     ];
-    const t = mailer.templates.orderConfirmation({ order, items, shopUrl: 'http://localhost:3002' });
+    const guest = mailer.templates.orderConfirmation({ order: { ...order, name: 'Kunde www-zahlung', street: 'Geheimweg 7' }, items, shopUrl: 'http://localhost:3002' });
+    assert.doesNotMatch(guest.text, /Kunde www-zahlung|Geheimweg 7/, 'Gast-Bestätigung ohne Formulartext (Name, Adresse)');
+    assert.match(guest.text, /^Guten Tag,/);
+    const t = mailer.templates.orderConfirmation({ order, items, shopUrl: 'http://localhost:3002', personal: true });
     assert.match(t.subject, /HN-2026-0001/);
     assert.match(t.text, /unverbindliche Bestellanfrage/);
     assert.match(t.text, /24,00\u00a0€/);

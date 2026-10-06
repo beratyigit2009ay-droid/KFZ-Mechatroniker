@@ -20,7 +20,7 @@
   {% elif state == 'unsubscribe' %}
   <span class="status-page__icon" aria-hidden="true">{{ shop.icon('mail', 30, 1.4) }}</span>
   <h1 id="h-nl" class="page-title">Newsletter abmelden</h1>
-  <p class="page-intro">Geben Sie die E-Mail-Adresse ein, mit der Sie unseren Newsletter erhalten. Sie können sich außerdem jederzeit über den Link in jeder Newsletter-E-Mail abmelden.</p>
+  <p class="page-intro">Am schnellsten geht es über den Link in jeder Newsletter-E-Mail. Alternativ geben Sie hier Ihre Adresse ein – wir senden Ihnen dann einen Link, mit dem Sie die Abmeldung bestätigen.</p>
   <form class="unsub" method="post" action="/newsletter/abmelden" novalidate>
     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
     <div class="field{% if error %} field--error{% endif %}">
@@ -30,6 +30,26 @@
     </div>
     <button type="submit" class="btn btn-dark">Abmelden</button>
   </form>
+  {% elif state == 'unsubscribeConfirm' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('mail', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Newsletter abmelden</h1>
+  <p class="page-intro">Möchten Sie <strong class="nowrap">{{ unsubEmail }}</strong> wirklich vom Newsletter abmelden?</p>
+  <form method="post" action="/newsletter/abmelden">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="e" value="{{ unsubEmail }}">
+    <input type="hidden" name="t" value="{{ unsubToken }}">
+    <button type="submit" class="btn btn--lg btn-dark">Ja, abmelden</button>
+  </form>
+  {% elif state == 'unsubscribeSent' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('mail', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Bitte sehen Sie in Ihr Postfach.</h1>
+  <p class="page-intro">Falls diese Adresse für unseren Newsletter eingetragen ist, haben wir Ihnen soeben einen Link zur Abmeldung gesendet. Mit einem Klick darauf ist die Abmeldung erledigt.</p>
+  <a class="btn btn-o" href="/">Zur Startseite</a>
+  {% elif state == 'unsubscribeInvalid' %}
+  <span class="status-page__icon" aria-hidden="true">{{ shop.icon('info', 30, 1.4) }}</span>
+  <h1 id="h-nl" class="page-title">Dieser Abmelde-Link ist ungültig.</h1>
+  <p class="page-intro">Bitte verwenden Sie den Link aus der E-Mail vollständig – oder fordern Sie unten einen neuen an.</p>
+  <a class="btn btn-dark" href="/newsletter/abmelden">Neuen Link anfordern</a>
   {% elif state == 'unsubscribed' %}
   <span class="status-page__icon" aria-hidden="true">{{ shop.icon('check', 30, 2) }}</span>
   <h1 id="h-nl" class="page-title">Sie wurden abgemeldet.</h1>

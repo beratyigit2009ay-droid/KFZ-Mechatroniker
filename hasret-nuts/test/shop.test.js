@@ -520,11 +520,47 @@ describe('Shop', () => {
     assert.equal(again.status, 200);
     assert.match(again.json().message, /Fast geschafft/);
     assert.equal(app.outbox.length, n);
-    // Abmelden
+    // Abmelden: Die Adresse allein meldet nicht ab, sondern verschickt einen signierten Link
+    const unsubRow = () => app.db.prepare("SELECT unsubscribed_at FROM newsletter WHERE email = 'abo@example.com'").get().unsubscribed_at;
     await c.get('/newsletter/abmelden');
     const un = await c.post('/newsletter/abmelden', { email: 'abo@example.com' });
     assert.equal(un.status, 303);
-    assert.ok(app.db.prepare("SELECT unsubscribed_at FROM newsletter WHERE email = 'abo@example.com'").get().unsubscribed_at);
+    assert.equal(un.location, '/newsletter/abmelden?gesendet=1');
+    assert.equal(unsubRow(), null, 'Adresse allein meldet nicht ab');
+    await new Promise((r2) => setImmediate(r2));
+    const unMail = lastMail(app.outbox, 'abo@example.com');
+    assert.match(unMail.subject, /abmelden/i);
+    const unLink = unMail.text.match(/https?:\/\/\S+\/newsletter\/abmelden\?e=\S+/)[0];
+    const params = new URL(unLink).searchParams;
+    // Gefälschtes Token wird abgelehnt
+    const confirmPage = await c.get(pathOf(unLink));
+    assert.equal(confirmPage.status, 200);
+    assert.equal(unsubRow(), null, 'GET meldet nicht ab');
+    const bad = await c.post('/newsletter/abmelden', { e: 'abo@example.com', t: '0'.repeat(params.get('t').length) });
+    assert.equal(bad.status, 400);
+    assert.equal(unsubRow(), null);
+    const bad2 = await c.get('/newsletter/abmelden?e=abo%40example.com&t=abc');
+    assert.match(bad2.text, /ungültig|nicht mehr gültig|abgelaufen/i);
+    const ok = await c.post('/newsletter/abmelden', { e: params.get('e'), t: params.get('t') });
+    assert.equal(ok.status, 303);
+    assert.equal(ok.location, '/newsletter/abmelden?erledigt=1');
+    assert.ok(unsubRow());
+  });
+
+  it('Newsletter: Dritte können niemanden ohne Link aus dem Postfach abmelden', async () => {
+    const c = client(app.baseUrl);
+    app.db.prepare("INSERT OR REPLACE INTO newsletter (email, created_at, confirmed_at) VALUES ('fremd@example.com', datetime('now'), datetime('now'))").run();
+    app.outbox.length = 0;
+    await c.get('/newsletter/abmelden');
+    const r = await c.post('/newsletter/abmelden', { email: 'fremd@example.com' });
+    assert.equal(r.status, 303);
+    // Unbekannte Adresse: gleiche Antwort, keine Mail
+    const r2 = await c.post('/newsletter/abmelden', { email: 'niemand@example.com' });
+    assert.equal(r2.location, r.location);
+    await new Promise((r3) => setImmediate(r3));
+    assert.equal(app.db.prepare("SELECT unsubscribed_at FROM newsletter WHERE email = 'fremd@example.com'").get().unsubscribed_at, null);
+    assert.equal(app.outbox.filter((m) => String(m.to).includes('niemand@')).length, 0);
+    assert.equal(app.outbox.filter((m) => String(m.to).includes('fremd@')).length, 1, 'Link geht nur an die Abonnentin');
   });
 
   it('speichert Feedback und Fehlermeldungen und benachrichtigt den Inhaber', async () => {

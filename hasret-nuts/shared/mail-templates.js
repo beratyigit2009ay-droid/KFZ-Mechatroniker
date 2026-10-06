@@ -260,9 +260,21 @@ const templates = {
     };
   },
 
-  /** data: { order, items, shopUrl } – order/items wie in den Tabellen orders/order_items */
-  orderConfirmation({ order, items, shopUrl } = {}) {
+  /**
+   * data: { order, items, shopUrl, personal } – order/items wie in den Tabellen orders/order_items.
+   * personal: true nur, wenn ein angemeldetes Konto mit BESTÄTIGTER Adresse bestellt. Sonst (Gast)
+   * enthält die Mail keinen Text aus dem Formular (Name, Adresse, Telefon, Nachricht) – sie geht
+   * an eine Adresse, die niemand bestätigt hat, und darf nicht für fremde Inhalte missbraucht werden.
+   */
+  orderConfirmation({ order, items, shopUrl, personal = false } = {}) {
     const o = normalizeOrder(order);
+    if (!personal) {
+      o.name = '';
+      o.phone = '';
+      o.street = '';
+      o.zip = '';
+      o.city = '';
+    }
     const its = normalizeItems(items);
     const subject = `Ihre Bestellanfrage ${oneLine(o.publicId, 40)} – Hasret Nuts`;
     const intro = `vielen Dank für Ihre Bestellanfrage bei Hasret Nuts. Wir haben sie unter der Nummer ${o.publicId} erhalten.`;

@@ -12,7 +12,7 @@ Automatisch geprüft wird das meiste davon in `test/core.test.js` (`npm test`).
 |---|---|---|---|---|
 | 1 | Geschützte private Seiten | `requireAuth` (Anmeldung nötig, Weiterleitung mit sicherem `next`), `requireAdmin` (Rolle `admin`, sonst 403); zusätzlich in `shop/app.js` global vor `/admin/**`, `/konto`, `/konto/passwort`, `/konto/loeschen`. Private Seiten: `Cache-Control: no-store`, `X-Robots-Tag: noindex`. Admin-Abmeldung nach 30 min Inaktivität. | `shared/security.js`, `shop/app.js`, `shared/session.js` | ✔ |
 | 2 | Keine API-Schlüssel/Geheimnisse im Code | Alle Werte nur aus Umgebungsvariablen (`.env`, per `.gitignore` ausgeschlossen; `.env.example` ohne echte Werte). zod-Prüfung; in Produktion Startabbruch bei fehlenden/unsicheren Werten. | `shared/config.js` | ✔ |
-| 3 | Ratenlimits | `express-rate-limit` je Zweck und IP, deutsche 429-Seite, Standard-Header (`RateLimit`, `Retry-After`); Login-Sperre nach 5 Fehlversuchen; max. 3 Mails/Stunde je Empfängeradresse. | `shared/security.js`, `shared/auth.js` | ✔ |
+| 3 | Ratenlimits | `express-rate-limit` je Zweck und IP, deutsche 429-Seite, Standard-Header (`RateLimit`, `Retry-After`); Login-Sperre nach 5 Fehlversuchen je Konto und Gerät (kontoweit nach 25); max. 3 Mails/Stunde je Empfängeradresse und Zweck, insgesamt max. 5/Stunde. | `shared/security.js`, `shared/auth.js` | ✔ |
 | 4 | Schutz vor SQL-Injection | Ausschließlich vorbereitete Statements mit gebundenen Parametern (better-sqlite3); keine String-Verkettung in SQL. | `shared/db.js`, alle Routen | ✔ |
 | 5 | Schutz vor XSS | Nunjucks-Autoescaping (immer an), strikte CSP mit Nonce pro Anfrage, `script-src-attr 'none'` (keine Inline-Event-Handler), sicherer `jsonld`-Filter für strukturierte Daten, `nosniff`. | `shared/views.js`, `shared/app-base.js` | ✔ |
 | 6 | Header-/E-Mail-Injection | Einzeilige Felder lehnen CR/LF/Steuerzeichen ab; Mailer entfernt CR/LF aus Betreff/Namen und validiert jede Adresse streng (keine Kommas, Klammern, Umbrüche). | `shared/validate.js`, `shared/mailer.js` | ✔ |
@@ -49,14 +49,15 @@ Zähler pro Client-IP und App-Prozess (die echte IP hinter dem Reverse Proxy wir
 | Name | Standard | Einsatz |
 |---|---|---|
 | `global` | 300 / 15 min | alle Seitenaufrufe (statische Dateien ausgenommen) |
-| `login` | 10 / 15 min | `POST /konto/anmelden` – zusätzlich **Kontosperre 15 min nach 5 Fehlversuchen** |
+| `login` | 10 / 15 min | `POST /konto/anmelden` – zusätzlich **Sperre 15 min nach 5 Fehlversuchen je Konto und IP**, kontoweit nach 25 (siehe 2.11) |
 | `register` | 5 / 60 min | Registrierung |
 | `forgot` | 5 / 60 min | Passwort vergessen – zusätzlich max. 3 Mails/h je Adresse (`mailQuota`) |
 | Bestellbestätigung | – | Gast-Bestellanfragen: Bestätigung an die eingegebene Adresse max. 3/h je Adresse (`mailQuota('order-confirmation')`); der Freitext der Anfrage wird nur an den Inhaber geschickt, nie an die eingegebene Adresse (kein Versand fremder Inhalte über die Shop-Mail) |
 | `resend` | 3 / 60 min | Bestätigungsmail erneut senden |
 | `forms` | 10 / 60 min | Händleranfrage, Feedback, Bestellanfrage |
 | `discount` | 20 / 10 min | Rabattcode-Eingabe (Schutz vor Durchprobieren) |
-| `newsletter` | 5 / 60 min | Newsletter-Anmeldung |
+| `newsletter` | 5 / 60 min | Newsletter-Anmeldung und -Abmeldung; Abmelde-Link per Mail max. 3/h je Adresse |
+| Mail-Gesamtlimit | 5 / 60 min | `mailQuota` prüft zusätzlich zum Limit je Zweck ein **gemeinsames Limit je Empfängeradresse** über alle Mailarten (`RATE_LIMIT_MAIL_PER_ADDRESS_TOTAL_MAX`, Standard 5) – die Shop-Mail kann nicht zum Zuspammen fremder Postfächer missbraucht werden |
 
 Anpassbar über `RATE_LIMIT_<NAME>_MAX` und `RATE_LIMIT_<NAME>_WINDOW_MIN`. Hinweis: Die Zähler liegen im Arbeitsspeicher – daher je App genau ein Prozess (kein Cluster-Modus).
 
@@ -102,13 +103,15 @@ Nunjucks rendert ausschließlich Template-**Dateien** aus `corporate/views`, `sh
 - Cookie: `__Host-hn_sid_<app>` (Produktion) mit `HttpOnly; Secure; SameSite=Lax; Path=/`, ohne `Domain` → nur für genau diese Domain, nicht per JavaScript lesbar.
 - Laufzeit 14 Tage, rollierend; Admin-Leerlauf 30 Minuten; abgelaufene Sitzungen werden stündlich gelöscht.
 - `req.regenerateSession()` bei Anmeldung, Abmeldung und Passwortänderung: altes Token wird sofort ungültig (Schutz vor Session-Fixation), neues CSRF-Token.
-- Sitzungen entstehen erst bei Bedarf (Warenkorb, Formular, Anmeldung) – reine Seitenaufrufe und Bots erzeugen keine Datensätze.
+- Sitzungen entstehen erst bei Bedarf: sobald eine Seite ein CSRF-Token braucht (Formulare, Newsletter-Feld, `<meta name="csrf-token">`), für Warenkorb oder Anmeldung. Auch Bots, die solche Seiten abrufen, erzeugen deshalb einen Datensatz. Leere anonyme Sitzungen (ohne Warenkorb und Anmeldung) laufen serverseitig nach **24 Stunden** ab und werden mit der stündlichen Bereinigung gelöscht. Das Cookie enthält keine personenbezogenen Daten.
 
 ### 2.11 Passwortspeicherung
 
 - `crypto.scrypt` mit N = 2^16, r = 8, p = 1, 16 Byte Zufalls-Salt, 64 Byte Schlüssel; Format `scrypt$N$r$p$salt$hash`; Vergleich mit `timingSafeEqual`. Parameter aus gespeicherten Hashes werden auf sinnvolle Bereiche begrenzt (Schutz vor manipulierten Hashes/DoS).
 - Passwortregeln: 10–128 Zeichen, nicht in einer Liste häufiger Passwörter, nicht gleich der E-Mail-Adresse, nicht nur ein wiederholtes Zeichen.
-- Login-Sperre: 5 Fehlversuche → 15 Minuten gesperrt (auch das richtige Passwort wird dann abgelehnt). Das Passwort-Zurücksetzen hebt die Sperre auf.
+- Login-Sperre (Tabelle `login_attempts`): **5 Fehlversuche je Konto und IP (gehasht)** → dieses Gerät ist 15 Minuten für das Konto gesperrt (auch das richtige Passwort wird abgelehnt). Ein Angreifer sperrt so nicht die echte Inhaberin aus (wichtig für das Admin-Konto). Erst **25 Fehlversuche kontoweit** (verteilte Angriffe) sperren das Konto für alle Geräte für 15 Minuten.
+- Der Versuch wird **vor** dem scrypt-Vergleich in einer synchronen Transaktion reserviert – parallele Anfragen können das Limit nicht überholen (Race-Condition-Schutz).
+- Das Passwort-Zurücksetzen hebt alle Sperren auf; eine erfolgreiche Anmeldung löscht die Zähler des Geräts.
 
 ### 2.12 Schutz vor Konten-Ausspähung (Account Enumeration)
 
@@ -116,6 +119,9 @@ Nunjucks rendert ausschließlich Template-**Dateien** aus `corporate/views`, `sh
 - **Passwort vergessen:** immer dieselbe Antwort („Falls ein Konto mit dieser Adresse existiert, haben wir Ihnen einen Link gesendet.“), unabhängig davon, ob das Konto existiert.
 - **Registrierung:** bei bereits registrierter Adresse dieselbe Erfolgsmeldung wie bei einer neuen Registrierung; der Inhaber der Adresse erhält stattdessen einen Hinweis bzw. kann das Passwort zurücksetzen.
 - **Bestätigungsmail erneut senden:** neutrale Antwort, gedrosselt.
+- **Antwortzeit:** Mails (Bestätigung, Reset, Hinweis „Konto existiert bereits“) werden im Hintergrund versendet – die Antwort kommt unabhängig vom Mailversand gleich schnell, die Existenz eines Kontos lässt sich nicht an der Antwortzeit ablesen.
+- **Pre-Hijacking:** Registriert jemand eine fremde Adresse, ohne sie zu bestätigen, und meldet sich danach die echte Inhaberin an, werden Passwort und Name des unbestätigten Kontos ersetzt und alte Bestätigungslinks ungültig. Die Bestätigung meldet nur an, wenn sie in derselben Sitzung angefordert wurde; sonst folgt die normale Anmeldung. Unbestätigte Kundenkonten werden nach **7 Tagen** gelöscht.
+- Mails an noch **unbestätigte** Adressen (Gast-Bestellbestätigung, Reset bei unbestätigtem Konto) enthalten keine eingegebenen Namen, Anschriften oder Freitexte – nur neutrale Angaben.
 - Ratenlimits begrenzen automatisiertes Durchprobieren zusätzlich.
 
 ### 2.13 Einmal-Tokens (E-Mail-Bestätigung, Passwort-Reset, Newsletter)
@@ -125,6 +131,7 @@ Nunjucks rendert ausschließlich Template-**Dateien** aus `corporate/views`, `sh
 - Ein neues Token entwertet ältere unbenutzte Tokens desselben Typs.
 - Links in Mails öffnen zuerst eine Seite mit Bestätigungs-Button (GET verbraucht nichts); erst das Absenden (POST, mit CSRF-Schutz) verbraucht das Token – E-Mail-Scanner und Link-Vorschauen können Tokens so nicht „verbrauchen“.
 - Tokens erscheinen nie in Server-Logs (Fehlerprotokolle enthalten nur den Pfad ohne Query-String).
+- **Newsletter-Abmeldung:** Jede Abmeldung braucht einen Link mit HMAC-Signatur (`e` = Adresse, `t` = HMAC-SHA-256 mit aus `LOG_SALT` abgeleitetem Schlüssel, Vergleich in konstanter Zeit). Wer nur eine Adresse eingibt, erhält keinen Hinweis, ob sie abonniert ist – an aktive Abonnentinnen geht ein Abmelde-Link per Mail. Dritte können so niemanden abmelden. Für künftige Newsletter-Mails liefert `router.unsubscribeUrl(email)` (in `shop/routes/feedback.js`) den Ein-Klick-Link.
 
 ### 2.14 Protokollierung ohne rohe IP-Adressen
 
@@ -166,6 +173,8 @@ Formulare enthalten ein für Menschen unsichtbares Honeypot-Feld (`website`). Is
 
 - Gespeichert wird nur, was für Bestellanfragen, Händleranfragen, Feedback, Konten und Newsletter (Double-Opt-in) nötig ist.
 - Keine Analyse-/Tracking-Werkzeuge, keine externen Schriften, keine eingebetteten Drittinhalte.
+- Die Dankeseite nach einer Bestellanfrage zeigt die Bestelldaten nur **30 Minuten** lang in derselben Sitzung.
+- Unbestätigte Kundenkonten werden nach 7 Tagen automatisch gelöscht, veraltete Login-Zähler nach einem Tag.
 - Konto löschen entfernt Anmeldedaten, Sitzungen und Tokens sofort; Bestellanfragen bleiben wegen gesetzlicher Aufbewahrungspflichten erhalten, sind aber nicht mehr mit einem Konto verknüpft.
 
 ---

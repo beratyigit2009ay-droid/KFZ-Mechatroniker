@@ -100,6 +100,8 @@ const RATE_LIMIT_DEFAULTS = {
   newsletter: { windowMin: 60, max: 5 },
   /* max. Mails pro Empfängeradresse und Stunde (Passwort vergessen, Bestätigung erneut, Newsletter) */
   mailPerAddress: { windowMin: 60, max: 3 },
+  /* max. Mails pro Empfängeradresse und Stunde über ALLE Mailarten zusammen */
+  mailPerAddressTotal: { windowMin: 60, max: 5 },
 };
 
 function parseTrustProxy(raw) {

@@ -25,6 +25,13 @@ const NAME_RE = /^[\p{L}\p{M}][\p{L}\p{M}\s.'’-]*$/u;
 const COMPANY_RE = /^[\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\s&.,'’()/+–-]*$/u;
 const CITY_RE = /^[\p{L}\p{M}][\p{L}\p{M}\s.'’()/-]*$/u;
 const STREET_RE = /^[\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\s.,'’()/-]*$/u;
+/**
+ * Web-Adressen in Namens- und Adressfeldern (z. B. „www.zahlung-xy.de“). Solche Felder können in
+ * Mails an Dritte landen – eine Domain dort wäre ein Phishing-Hebel. ':' und '@' sind ohnehin
+ * nicht erlaubt; hier zusätzlich „www“ und Wörter mit gängiger Domain-Endung.
+ */
+const LINKLIKE_RE = /(^|[^\p{L}])www([^\p{L}]|$)|\p{L}{2,}\.(de|com|net|org|eu|info|biz|io|co|at|ch|nl|fr|it|es|pl|tr|ru|cn|uk|us|me|app|shop|online|site|store|top|xyz|club|link|click|page)(?![\p{L}\p{N}])/iu;
+const NO_LINKS_MSG = 'Bitte geben Sie hier keine Web-Adressen ein.';
 const PHONE_RE = /^\+?[0-9][0-9\s()/-]{4,28}[0-9]$/;
 
 /** Kleine Liste häufiger Passwörter (Vergleich ohne Groß-/Kleinschreibung). */
@@ -107,6 +114,7 @@ const name = str('Bitte geben Sie Ihren Namen ein.')
       .min(2, 'Bitte geben Sie Ihren Namen ein (mindestens 2 Zeichen).')
       .max(100, 'Der Name ist zu lang (höchstens 100 Zeichen).')
       .regex(NAME_RE, 'Der Name darf nur Buchstaben, Leerzeichen, Punkt, Apostroph und Bindestrich enthalten.')
+      .refine((v) => !LINKLIKE_RE.test(v), NO_LINKS_MSG)
   );
 
 const company = str('Bitte geben Sie den Namen Ihres Unternehmens ein.')
@@ -140,6 +148,7 @@ const city = str('Bitte geben Sie Ihren Ort ein.')
       .min(2, 'Bitte geben Sie Ihren Ort ein.')
       .max(100, 'Der Ortsname ist zu lang.')
       .regex(CITY_RE, 'Der Ort enthält unzulässige Zeichen.')
+      .refine((v) => !LINKLIKE_RE.test(v), NO_LINKS_MSG)
   );
 
 const street = str('Bitte geben Sie Straße und Hausnummer ein.')
@@ -151,6 +160,7 @@ const street = str('Bitte geben Sie Straße und Hausnummer ein.')
       .min(3, 'Bitte geben Sie Straße und Hausnummer ein.')
       .max(150, 'Die Adresse ist zu lang.')
       .regex(STREET_RE, 'Die Adresse enthält unzulässige Zeichen.')
+      .refine((v) => !LINKLIKE_RE.test(v), NO_LINKS_MSG)
   );
 
 /**

@@ -269,7 +269,9 @@ router.post(
       const mails = [];
       // Bestätigung an die eingegebene Adresse nur begrenzt oft pro Empfänger (Schutz vor Mail-Bombing über Gast-Anfragen)
       if (mailQuota('order-confirmation', d.email)) {
-        mails.push(mailer.send('orderConfirmation', d.email, { order, items: saved.items, shopUrl }, owner ? { replyTo: owner } : {}));
+        // Persönliche Angaben nur, wenn ein angemeldetes Konto mit bestätigter Adresse an sich selbst bestellt.
+        const personal = Boolean(req.user && req.user.emailVerified && String(req.user.email).toLowerCase() === String(d.email).toLowerCase());
+        mails.push(mailer.send('orderConfirmation', d.email, { order, items: saved.items, shopUrl, personal }, owner ? { replyTo: owner } : {}));
       }
       if (owner) {
         mails.push(
@@ -284,6 +286,7 @@ router.post(
       req.session.data.cart = [];
       delete req.session.data.discountCode;
       req.session.data.lastOrder = saved.publicId;
+      req.session.data.lastOrderAt = Date.now();
       return res.redirect(303, '/bestellung/danke');
     } catch (err) {
       return next(err);
@@ -292,7 +295,16 @@ router.post(
 );
 
 /* ------------------------------------------------------------------- Danke-Seite */
+const THANKS_VISIBLE_MS = 30 * 60 * 1000;
+
 router.get('/bestellung/danke', noIndex, noStore, (req, res) => {
+  // Nur kurz nach dem Absenden sichtbar: Auf geteilten Geräten soll die nächste Person nicht
+  // Name, E-Mail und Adresse einer früheren Gastbestellung sehen können.
+  const at = Number(req.session.data.lastOrderAt) || 0;
+  if (req.session.data.lastOrder && Date.now() - at > THANKS_VISIBLE_MS) {
+    delete req.session.data.lastOrder;
+    delete req.session.data.lastOrderAt;
+  }
   const publicId = typeof req.session.data.lastOrder === 'string' ? req.session.data.lastOrder : null;
   const db = getDb();
   const order = publicId ? db.prepare('SELECT * FROM orders WHERE public_id = ?').get(publicId) : null;

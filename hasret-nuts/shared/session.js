@@ -27,6 +27,14 @@ const { getDb, nowIso } = require('./db');
 const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 const MAX_DATA_BYTES = 64 * 1024;
 const TOUCH_INTERVAL_MS = 60 * 1000;
+// Leere anonyme Sitzungen (nur CSRF-Token, z. B. durch Bots oder reine Formularaufrufe)
+// laufen serverseitig schon nach 24 h ab statt nach SESSION_TTL_DAYS.
+const ANON_TTL_MS = 24 * 3600 * 1000;
+
+function ttlFor(dataStr, userId) {
+  if (userId == null && dataStr === '{}') return ANON_TTL_MS;
+  return config.security.sessionTtlDays * 24 * 3600 * 1000;
+}
 
 function sha256Hex(value) {
   return crypto.createHash('sha256').update(String(value)).digest('hex');
@@ -121,7 +129,7 @@ function createSessionMiddleware(appName) {
       const token = randomToken();
       const id = sha256Hex(token);
       if (!session.csrfToken) session.csrfToken = randomToken();
-      const ttlMs = config.security.sessionTtlDays * 24 * 3600 * 1000;
+      const ttlMs = ttlFor(dataStr, session.userId);
       db.prepare(
         `INSERT INTO sessions (id, user_id, app, data, csrf_token, created_at, expires_at, last_seen_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
@@ -158,7 +166,7 @@ function createSessionMiddleware(appName) {
         const changed = dataStr !== state.origData;
         const stale = !state.lastSeen || Date.now() - Date.parse(state.lastSeen) > TOUCH_INTERVAL_MS;
         if (changed || stale) {
-          const ttlMs = config.security.sessionTtlDays * 24 * 3600 * 1000;
+          const ttlMs = ttlFor(dataStr, session.userId);
           const info = db
             .prepare('UPDATE sessions SET data = ?, last_seen_at = ?, expires_at = ? WHERE id = ?')
             .run(dataStr, nowIso(), nowIso(ttlMs), session.id);

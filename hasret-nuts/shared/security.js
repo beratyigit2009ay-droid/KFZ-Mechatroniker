@@ -261,20 +261,31 @@ const mailBuckets = new Map();
  */
 function mailQuota(kind, address, opts = {}) {
   const defaults = config.rateLimits.mailPerAddress;
+  const totals = config.rateLimits.mailPerAddressTotal || defaults;
   const max = opts.max ?? defaults.max;
   const windowMs = opts.windowMs ?? defaults.windowMs;
-  const key = crypto.createHash('sha256').update(`${kind}|${String(address).trim().toLowerCase()}`).digest('hex');
+  const addr = String(address).trim().toLowerCase();
+  const keyOf = (k) => crypto.createHash('sha256').update(`${k}|${addr}`).digest('hex');
   const now = Date.now();
-  const hits = (mailBuckets.get(key) || []).filter((t) => t > now - windowMs);
   if (mailBuckets.size > 20000) {
-    for (const [k, v] of mailBuckets) if (!v.some((t) => t > now - windowMs)) mailBuckets.delete(k);
+    const longest = Math.max(windowMs, totals.windowMs);
+    for (const [k, v] of mailBuckets) if (!v.some((t) => t > now - longest)) mailBuckets.delete(k);
   }
-  if (hits.length >= max) {
-    mailBuckets.set(key, hits);
+  // 1) pro Mailart (z. B. 3 Reset-Mails/h), 2) über alle Mailarten zusammen (z. B. 5 Mails/h) –
+  // sonst ließen sich durch Kombinieren der Formulare viele Mails an eine fremde Adresse auslösen.
+  const kindKey = keyOf(kind);
+  const totalKey = keyOf('*');
+  const kindHits = (mailBuckets.get(kindKey) || []).filter((t) => t > now - windowMs);
+  const totalHits = (mailBuckets.get(totalKey) || []).filter((t) => t > now - totals.windowMs);
+  if (kindHits.length >= max || totalHits.length >= totals.max) {
+    mailBuckets.set(kindKey, kindHits);
+    mailBuckets.set(totalKey, totalHits);
     return false;
   }
-  hits.push(now);
-  mailBuckets.set(key, hits);
+  kindHits.push(now);
+  totalHits.push(now);
+  mailBuckets.set(kindKey, kindHits);
+  mailBuckets.set(totalKey, totalHits);
   return true;
 }
 
