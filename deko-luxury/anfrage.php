@@ -62,7 +62,11 @@ if ($ts > 0 && (time() * 1000 - $ts) < MIN_SEKUNDEN * 1000) {
 
 $name = zeile(feld('name', 120));
 $email = zeile(feld('email', 160));
-if (mb_strlen($name) < 2 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+$telefon = zeile(feld('telefon', 60));
+// Pflicht: Name und E-Mail oder Telefon (mindestens eins davon, jeweils gültig)
+$emailOk = $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL);
+$telefonOk = $telefon !== '' && strlen(preg_replace('/\D/', '', $telefon) ?? '') >= 6;
+if (mb_strlen($name) < 2 || (!$emailOk && !$telefonOk) || ($email !== '' && !$emailOk)) {
     antwort(422, ['ok' => false, 'error' => 'validation']);
 }
 
@@ -79,9 +83,9 @@ $felder = [
     'Anliegen'              => zeile(feld('anliegen', 40)),
     'Name'                  => $name,
     'E-Mail'                => $email,
-    'Telefon'               => zeile(feld('telefon', 60)),
+    'Telefon'               => $telefon,
     'Eventart'              => zeile(feld('eventart', 60)),
-    'Veranstaltungsdatum'   => zeile(feld('datum', 20)),
+    'Datum / Zeitraum'      => zeile(feld('datum', 80)),
     'Location'              => zeile(feld('location', 160)),
     'Gästeanzahl'           => zeile(feld('gaeste', 40)),
     'Budgetrahmen'          => zeile(feld('budget', 40)),
@@ -110,11 +114,15 @@ $betreff = '=?UTF-8?B?' . base64_encode($betreff) . '?=';
 
 $header = [
     'From: LUXURY EVENTS Website <' . $absender . '>',
-    'Reply-To: ' . $name . ' <' . $email . '>',
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
     'Content-Transfer-Encoding: 8bit',
 ];
+
+if ($emailOk) {
+    // Antworten gehen direkt an die anfragende Person
+    $header[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+}
 
 $gesendet = mail(EMPFAENGER, $betreff, $text, implode("\r\n", $header), '-f' . $absender);
 

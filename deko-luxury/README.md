@@ -1,7 +1,7 @@
 # LUXURY EVENTS by DEKO.LUXURY – Website
 
 Statische Website (HTML, CSS, JavaScript) ohne Framework und ohne Build-Schritt.
-Sie läuft auf jedem Webhosting. Das Kontaktformular nutzt PHP, das bei üblichen deutschen
+Sie läuft auf jedem Webhosting. Das Anfrageformular nutzt PHP, das bei üblichen deutschen
 Hostern (IONOS, Strato, all-inkl …) bereits vorhanden ist.
 
 ```
@@ -14,12 +14,70 @@ deko-luxury/
 ├── robots.txt / sitemap.xml / site.webmanifest / .htaccess
 ├── favicon.svg / favicon.ico / apple-touch-icon.png
 ├── assets/
-│   ├── css/style.css     Gestaltung (Farben & Schriften als Variablen ganz oben)
-│   ├── js/main.js        Interaktionen (Menü, Galerie, Formular, Karte, Animationen)
+│   ├── css/style.css     Gestaltung (entspricht „styles.css“; Farben & Schriften als Variablen ganz oben)
+│   ├── js/main.js        Interaktionen (entspricht „script.js“; Kontaktdaten ganz oben)
 │   ├── fonts/            Schriften lokal eingebunden (keine Verbindung zu Google)
 │   ├── brand/            Logo (aus dem Original vektorisiert), Monogramm, Social-Media-Bild
 │   └── img/              Bilder als WebP in mehreren Größen
 └── tools/bilder-optimieren.mjs   Macht eigene Fotos webfertig
+```
+
+## Aufbau der Startseite
+
+Die Reihenfolge ist fest:
+
+1. **Hero** – Original-Logo mit Glanz (Lichtstreifen beim Laden, danach sparsam alle paar Sekunden),
+   Leitsatz „Wir dekorieren eure Veranstaltungen nach euren Wünschen ✨“, Buttons
+   „Beratung anfragen“ (scrollt zum Kontakt) und „WhatsApp“. Hintergrund mit Lichtsäumen,
+   Gold-Ornament und dezentem Glitzer, die sich leicht mit Maus und Scrollen bewegen.
+2. **Info-Streifen** – Showroom in Burgau · Premium Dekoration · Nach euren Wünschen · 24/7 geöffnet ·
+   Bewertungen (Platzhalter). Die Icons zeichnen sich beim Scrollen.
+3. **Über uns** – kurzer Text und die drei Punkte Planung, Design, Umsetzung.
+4. **Leistungen** – acht Karten mit Gold-Icons; beim Hover heben sie sich mit sanftem Schimmer.
+   Ein Klick wählt im Formular die passende Event-Art bzw. Leistung vor.
+5. **Galerie** – sechs echte Arbeiten, jedes Bild vollständig im eigenen Format. Beim Hover Zoom und
+   eingleitende Bildunterschrift, Klick öffnet die große Ansicht.
+6. **Showroom & Ablauf** – Adresse **Kapuzinerstr. 4, Burgau 89331**, Route planen, Karte und der
+   Zeitstrahl Erstgespräch → Design & Planung → Dekoration vor Ort mit goldener SVG-Linie.
+7. **Öffnungszeiten** – Tabelle Montag bis Sonntag, der heutige Tag ist markiert.
+8. **Termin & Kontakt** – Formular (Name, E-Mail oder Telefon, Event-Art, Datum/Wunschzeitraum,
+   Nachricht) und Buttons E-Mail, Kurz anrufen, WhatsApp, Instagram.
+9. **FAQ** – sechs Fragen zum Aufklappen (auch als strukturierte Daten für Google).
+10. **Footer** – Adresse, Kontakt, Impressum/Datenschutz, Instagram, „Nach oben“.
+
+Dazu: die Eröffnung mit dem Tor (siehe unten) und eine kleine Leiste „Beratung anfragen“,
+die beim Scrollen erscheint und am Kontaktformular wieder verschwindet.
+
+## Vor dem Livegang: Checkliste
+
+Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestrichelt hervorgehoben.
+
+| Wo | Was fehlt |
+| --- | --- |
+| `assets/js/main.js` → `KONTAKT` (ganz oben) | **Telefon, WhatsApp, Instagram** eintragen. Danach sind alle Buttons auf der Website automatisch verknüpft. Solange ein Feld leer ist, zeigt der Button „folgt“ und beim Klick einen freundlichen Hinweis. |
+| `index.html` → Info-Streifen | **Bewertungen**: nur echte Angaben eintragen (z. B. „4,9 ★ · 37 Google-Bewertungen“) und auf das Profil verlinken. |
+| `index.html` → FAQ | Letzte Antwort um Telefon/WhatsApp ergänzen, sobald vorhanden. |
+| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `sameAs` (Instagram). |
+| `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg. Bitte bestätigen oder anpassen. |
+| **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen. Vor der Veröffentlichung das Einverständnis einholen oder ein anderes Foto wählen. |
+| `impressum.html` | Name, Rechtsform, Telefon, USt-IdNr., Verbraucherstreitbeilegung, Bildnachweise. Die Anschrift Kapuzinerstr. 4 ist eingetragen – bitte prüfen, ob sie auch die ladungsfähige Anschrift ist. |
+| `datenschutz.html` | Hosting-Anbieter, E-Mail-Anbieter, Stand. Bitte rechtlich prüfen lassen. |
+| `sitemap.xml`, `robots.txt` | Domain eintragen. |
+| Karte | Die interaktive Karte zeigt Burgau. Für eine Stecknadel genau am Showroom die Koordinaten in `MAP_SRC` (`assets/js/main.js`) ergänzen (`&marker=Breite,Länge`). |
+| Logo | Aus dem Screenshot vektorisiert. Liegt die Originaldatei (SVG/PDF/AI) vor, `assets/brand/logo-gold.svg`, `logo-tor.svg` und `monogramm.svg` damit ersetzen. |
+
+## Kontaktdaten eintragen
+
+Ganz oben in `assets/js/main.js`:
+
+```js
+var KONTAKT = {
+  email: 'deko.luxury@gmx.de',
+  telefon: '+49 8222 123456',          // Beispiel
+  whatsapp: '491701234567',            // international, ohne + und Leerzeichen
+  instagram: 'https://www.instagram.com/profilname/',
+  whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
+};
 ```
 
 ## Lokal ansehen
@@ -32,149 +90,105 @@ npm start            # öffnet einen kleinen Server auf http://localhost:8080
 Ohne Node.js reicht auch ein Doppelklick auf `index.html`. Das Formular braucht dann
 allerdings PHP und bietet automatisch den Versand per E-Mail-Programm an.
 
-## Vor dem Livegang: Checkliste
-
-Es wurden **keine Unternehmensdaten erfunden**. Wo Angaben fehlen, stehen gestrichelt
-unterstrichene Platzhalter (CSS-Klasse `ph`) oder Kommentare mit `PLATZHALTER`.
-Alle Stellen findet man mit der Suche nach `PLATZHALTER` und `class="ph"`.
-
-| Wo | Was fehlt |
-| --- | --- |
-| **Bilder** | Die Website zeigt nur noch echte Fotos und SVG-Linienzeichnungen, keine generierten Platzhalter mehr. Für „Hochzeiten“ und den Showroom stehen Zeichnungen, bis echte Fotos vorliegen. In `index.html` ist dafür jeweils eine `<img>`-Vorlage als Kommentar hinterlegt. |
-| **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen, auf einem Detailfoto Initialen. Vor der Veröffentlichung das Einverständnis der Kund:innen einholen oder ein anderes Foto wählen. |
-| `index.html` → Portfolio | Titel und Eventtyp sind aus den Fotos abgeleitet. Bitte prüfen und Location, Konzept und Beschreibung ergänzen (`data-location`, `data-konzept`, `data-beschreibung`). Leere Felder blendet die Galerie aus. |
-| `index.html` → Showroom | Straße & Hausnummer, Link „Route planen“ (Adresse in `query=` eintragen). Öffnungszeiten (24/7) sind eingetragen. |
-| `index.html` → Kontakt | Telefonnummer (Beispiel für Click-to-Call steht im Kommentar). |
-| `index.html` → Kundenstimmen | Abschnitt ist ausgeblendet (`hidden`). Nur echte, freigegebene Bewertungen einsetzen, dann `hidden` entfernen. Vorlage steht im Kommentar über dem Bereich. Ab zwei Stimmen erscheint automatisch eine Blätter-Navigation. Optional: Link zum Google-Profil, Eventlocations, Presse – ebenfalls als Kommentar vorbereitet. |
-| `index.html` → Footer | Instagram-Link nur einfügen, wenn das Profil existiert (auskommentierte Vorlage). |
-| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image` (absolute Adressen). Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `streetAddress`, `sameAs` (Instagram). |
-| `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg (aus den gewünschten Suchbegriffen abgeleitet). Bitte bestätigen oder anpassen. |
-| `index.html` → Formular | Budgetrahmen und Gästezahl-Stufen prüfen und bei Bedarf an die eigenen Pakete anpassen. |
-| `impressum.html` | Name, Rechtsform, Anschrift, Telefon, USt-IdNr., Verbraucherstreitbeilegung, Bildnachweise. |
-| `datenschutz.html` | Hosting-Anbieter, Speicherdauer der Logfiles, E-Mail-Anbieter, Stand. Bitte rechtlich prüfen lassen. |
-| `sitemap.xml`, `robots.txt` | Domain eintragen. |
-| Logo | Das Logo wurde aus dem Screenshot vektorisiert. Liegt die Originaldatei (SVG/PDF/AI) vor, `assets/brand/logo-gold.svg` und `monogramm.svg` damit ersetzen. |
-
 ## Eigene Fotos einsetzen
 
 1. Fotos in den Ordner `bilder-original/` legen und wie das zu ersetzende Bild benennen,
-   z. B. `hero.jpg`, `leistung-floristik.jpg`, `portfolio-04.jpg`.
+   z. B. `portfolio-04.jpg` oder `stil.jpg`.
 2. `npm install` (einmalig), dann `npm run bilder`.
 3. Das Skript erzeugt alle benötigten Größen als WebP in `assets/img/`.
-4. In `index.html` die **Alt-Texte** an das neue Motiv anpassen. Gute Alt-Texte beschreiben
-   das Bild und nennen den Anlass, z. B. „Hochzeitstafel mit weißen Rosen und Kerzenlicht in Burgau“.
+4. In `index.html` die **Alt-Texte** an das neue Motiv anpassen, z. B.
+   „Hochzeitstafel mit weißen Rosen und Kerzenlicht in Burgau“.
 
-| Datei | Bereich | Aktuell | Hinweis |
-| --- | --- | --- | --- |
-| `portfolio-01` … `-08` | Portfolio | Eure Fotos | Jedes Bild erscheint vollständig in seinem eigenen Format. 02, 08 und 03 laufen zusätzlich im Bogenfenster oben, dafür eignen sich Hochformat-Fotos (etwa 4:5). Mindestens 1600 px breit ist ideal. |
-| `stil` | Unser Stil | Detail der Gartentafel | Hochformat, mind. 1400 px |
-| `leistung-eventdekoration`, `-floristik`, `-tischdekoration`, `-trauungen`, `-konzepte` | Leistungen | Eure Fotos | Werden einheitlich im Format 4:3 gezeigt, Querformat passt am besten |
-| `leistung-hochzeiten` | Leistungen | SVG-Zeichnung | Mit echtem Hochzeitsfoto: Datei erzeugen und die `<img>`-Vorlage im Kommentar einsetzen |
-| `showroom-1` … `-3` | Showroom | SVG-Zeichnung | Mit echten Showroom-Fotos: Dateien erzeugen und im Abschnitt Showroom einbauen |
+| Datei | Bereich | Hinweis |
+| --- | --- | --- |
+| `portfolio-01` … `-08` | Galerie (01, 02, 03, 04, 07, 08) | Jedes Bild erscheint vollständig in seinem Format. 02, 08 und 03 laufen zusätzlich im Bogenfenster oben (Hochformat etwa 4:5 ideal). Mindestens 1600 px breit. 05 und 06 liegen bereit, falls ihr tauschen möchtet. |
+| `stil` | Über uns | Hochformat, mind. 1400 px |
 
-Die gelieferten Fotos waren nur 600–1200 px breit. Sie wurden mit einem KI-Upscaler (ESRGAN)
-auf die doppelte Auflösung hochgerechnet und dezent nachgeschärft. Das wirkt sauberer, ersetzt
-aber keine echten Details. Am besten werden die Bilder mit den Originaldateien aus der Kamera
-oder vom Fotografen. Diese einfach durch `npm run bilder` schicken.
+Neue Arbeit in der Galerie: in `index.html` einen `<li class="gal__item">`-Block kopieren und
+Bild, Kategorie und Titel anpassen.
 
-Portfolio, Leistungen und „Unser Stil“ zeigen jedes Foto vollständig in seinem eigenen
-Format. Die Einleitung kommt ohne Foto aus: Der Text steht in einem gezeichneten Bogen. Nur das Bogenfenster oben hat eine feste Form. Dort lässt sich der Ausschnitt pro Foto über
-`style="object-position: …"` am jeweiligen `<img class="hero__slide">` in `index.html` anpassen.
+Die gelieferten Fotos waren nur 600–1200 px breit und wurden mit einem KI-Upscaler (ESRGAN)
+auf die doppelte Auflösung hochgerechnet. Am besten werden die Bilder mit den Originaldateien.
+
+## KI-Bilder für Vorschau & Moodboards
+
+Die Galerie zeigt bewusst nur **echte Arbeiten**. KI-Bilder eignen sich für Moodboards,
+Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unsere Arbeiten“.
+
+1. **Luxury Wedding Tablescape**
+   *Prompt:* Photorealistic, cinematic photo of a long luxury wedding banquet table in an elegant European indoor venue, ivory linen, cascading white and blush roses, pampas grass, gold cutlery, crystal glassware, tall taper candles in gold candelabras, white arched backdrop panels in the background.
+   *Licht:* warm golden candlelight with soft ambient fill, gentle bokeh · *Perspektive:* eye level, three-quarter view along the table, 85 mm, shallow depth of field · *Format:* 3:2
+   *Negativ:* no people, no text, no logos, no watermark, no plastic look, no distorted cutlery
+2. **Sweet Table**
+   *Prompt:* Photorealistic luxury dessert table for a celebration: three-tier white cake with gold leaf, macarons in champagne and blush, glass cake stands, small arrangements of white roses and eucalyptus, round white arch backdrop with gold details.
+   *Licht:* soft natural side light with warm highlights · *Perspektive:* frontal, slightly elevated, symmetrical · *Format:* 4:5
+   *Negativ:* no lettering on the cake, no text, no watermark, no people, no fake-looking food
+3. **Glam Photo Corner**
+   *Prompt:* Photorealistic glamorous photo corner for an evening event: white and champagne balloon garland arching over a round backdrop, warm fairy lights, cream bouclé armchairs, white and blush flowers on acrylic pedestals, soft neon glow without letters.
+   *Licht:* warm golden fairy lights, dim ambience, subtle haze, cinematic glow · *Perspektive:* eye level, 35 mm, centred · *Format:* 4:5
+   *Negativ:* no readable text, no neon words, no logos, no watermark, no people
+4. **Eventsaal mit europäischem Flair**
+   *Prompt:* Cinematic, photorealistic wide shot of an elegant event hall in a historic European building with vaulted ceiling, set for a gala dinner: round tables with ivory linen, low gold centrepieces with white flowers and candles, warm uplighting on stone walls.
+   *Licht:* warm amber uplighting and candle glow, evening mood · *Perspektive:* elevated wide angle from a corner of the room · *Format:* 16:9
+   *Negativ:* no text, no signage, no place names, no watermark, no faces, no distorted chairs
+5. **Detail: Blumen & Gold**
+   *Prompt:* Macro detail photo of white garden roses, ranunculus and dried pampas next to a gold-rimmed charger plate, folded linen napkin with gold ring and a champagne glass with light reflections.
+   *Licht:* soft directional warm light, glittering highlights, creamy bokeh · *Perspektive:* close-up, 45° from above, 100 mm macro · *Format:* 1:1
+   *Negativ:* no text, no watermark, no harsh shadows, no wilted flowers
+6. **Planung mit Designboard**
+   *Prompt:* Photorealistic hands-on luxury event planning: a designer's hands arranging fabric swatches in ivory, champagne and gold, fresh flower samples, a mood board with sketches of an arched floral backdrop, colour cards and a gold pen on a marble table.
+   *Licht:* soft daylight from a large window, warm and airy · *Perspektive:* top-down flat lay, only hands visible · *Format:* 3:2
+   *Negativ:* no faces, no readable text, no brand logos, no watermark
 
 ## Eröffnung & Animationen
 
 - **Eröffnung („Tor“):** Beim Aufruf steht ein geschlossenes, zweiflügeliges Tor mit feiner Goldkassette.
-  Darauf entsteht das Original-Logo in Gold: Ein Lichtpunkt zieht den Kreis, das „D“ wird scharf,
-  „DEKO LUXURY“ schwebt Buchstabe für Buchstabe zusammen, „LUXURY EVENT DECORATION“ öffnet sich
-  von der Mitte, dann läuft ein Glanz über das Logo. Danach leuchtet in der Mitte ein Lichtspalt auf,
-  und beide Torflügel schwingen nach innen auf. Das Logo teilt sich dabei, Licht und Goldfunken strömen heraus,
-  und die Website erscheint, während die Überschrift Wort für Wort aufsteigt (rund 3,9 Sekunden).
-  Die Eröffnung läuft bei jedem Aufruf der Startseite, aber nicht beim Zurückkommen von einer Unterseite.
-  Klick, Taste oder Scrollen überspringen sie, die Seite startet dann sofort. Wer im Betriebssystem
-  „Bewegung reduzieren“ eingestellt hat, sieht sie nicht.
-- Das Logo der Eröffnung ist aus dem Original-Logo nachgezeichnet (SVG, jeder Buchstabe einzeln).
-  `assets/brand/logo-tor.svg` ist das komplette Logo auf den Torflügeln, `logo-zeile.svg` die Schriftzeile.
-- **Header:** Auf allen Seiten steht das Logo-Emblem als SVG. Der Goldring zeichnet sich beim Laden.
-- **Linienzeichnungen:** Einleitungs-Bogen, Hochzeits-Karte und Showroom-Szene sind SVG-Zeichnungen in Gold.
-  Sie zeichnen sich, sobald sie ins Bild scrollen.
-- **Bogenfenster:** Rechts im Hero wechseln vier Arbeiten im Bogen, der an eure Bogen-Rückwände angelehnt ist.
-  Der Wechsel lässt sich über den Pause-Knopf anhalten und stoppt, wenn der Bereich nicht sichtbar ist.
-- Dauer der Eröffnung: `--intro` und die Zeiten im Abschnitt „Eröffnung“ in `style.css`.
+  Darauf entsteht das Original-Logo in Gold, dann leuchtet in der Mitte ein Lichtspalt auf und beide
+  Flügel schwingen nach innen auf (rund 3,9 Sekunden). Läuft bei jedem Aufruf der Startseite, aber nicht
+  beim Zurückkommen von einer Unterseite. Klick, Taste oder Scrollen überspringen sie.
+- **Logo-Glanz im Hero:** weiches Leuchten und ein Lichtstreifen über dem Logo, sparsam im Abstand
+  von sieben Sekunden; pausiert, sobald der Hero nicht sichtbar ist.
+- **Hintergrund:** Lichtsäume, Ornament und Glitzer liegen in Ebenen mit leichter Parallax-Bewegung
+  (Maus nur am Computer, Scrollen überall). Goldstaub nur auf größeren Bildschirmen.
+- **Scroll-Effekte:** Abschnitte, Karten, Icons und der Zeitstrahl erscheinen per IntersectionObserver.
+- **Hover:** Buttons mit Glanz, Karten heben sich mit Gold-Schimmer, Galerie mit Zoom und Unterschrift.
+- Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat, bekommt eine ruhige Seite ohne
+  Eröffnung, Glitzer und Parallax. Alle Inhalte sind auch ohne JavaScript sichtbar.
 
-## Übersicht & Erreichbarkeit
+## Anfrageformular
 
-- **Grüner Live-Punkt „Jetzt geöffnet · 24/7“:** im Hero, in der Infoleiste, im Handy-Menü, bei den
-  Öffnungszeiten und in der Kontaktbox. Öffnungszeiten laut Inhaber: 24 Stunden, 7 Tage die Woche.
-  Sie stehen auch in den strukturierten Daten für Google. Ändern sich die Zeiten, die Stellen über die Suche
-  nach `24/7` bzw. `Jetzt geöffnet` anpassen.
-- **Infoleiste „Auf einen Blick“** direkt unter dem Hero: Showroom Burgau, 24/7 erreichbar, Individuelle Konzepte,
-  Persönliche Beratung mit E-Mail.
-- **Leistungen** stehen in einem gleichmäßigen Raster mit gleich großen Bildern (4:3).
-- **Kundenstimmen** sind vorbereitet, aber ausgeblendet, bis echte Bewertungen vorliegen
-  (im Abschnitt `id="stimmen"` das Attribut `hidden` entfernen).
-
-## Luxus-Details
-
-- **Blattgold:** Emblem, Logo, Eröffnungs-Logo, die kursiven Schlüsselwörter und die Ablauf-Ziffern
-  tragen einen metallischen Goldverlauf (`--foil` und SVG-Verlauf `#foil`). Über die großen Gold-Zeilen
-  läuft nach dem Laden zweimal ein langsamer Glanz.
-- **Gold-Buttons:** Die wichtigsten Aufrufe haben eine Blattgold-Fläche mit Glanzlicht beim Darüberfahren (`btn--foil`).
-- **Schwarze Galerie:** Portfolio und Abschluss-Aufruf bilden ein dunkles Kapitel. Die Fotos bekommen beim
-  Darüberfahren einen Goldrahmen. Mit Maus erscheint über den Bildern ein runder „Ansehen“-Cursor.
-- **Passepartouts:** Leistungs- und Stil-Fotos haben einen feinen Goldrahmen mit Abstand.
-- **Goldstaub:** Im Hero schweben feine Goldpartikel (ab Tablet-Breite). Sie starten erst nach dem Laden und pausieren außerhalb des Bildschirms. Auf Handys entfällt der Effekt zugunsten schneller Ladezeiten.
-- **Körnung & Ornamente:** Dunkle Flächen haben eine feine Filmkörnung, Abschnitte werden mit Gold-Ornamenten getrennt.
-  Der Footer endet mit einem großen Schriftzug „DEKO.LUXURY“.
-- Bei „Bewegung reduzieren“ entfallen Goldstaub, Cursor und Glanz-Animation.
-
-## Kontaktformular
-
-- Die Anfrage läuft in drei kurzen Schritten mit Fortschrittsanzeige:
-  **1. Anlass** (Kacheln für die Eventart, Datum, Gäste, Location),
-  **2. Wünsche** (Leistungen, Budgetrahmen, Nachricht),
-  **3. Kontakt** (Name, E-Mail, Telefon) mit einer Zusammenfassung aller Angaben vor dem Absenden.
-  Über „Ändern“ springt man direkt zurück in den jeweiligen Schritt; nichts geht verloren.
-- Pflicht sind nur Name und E-Mail. Ein Datum in der Vergangenheit wird freundlich abgefangen.
-- Die Links „… anfragen“ bei den Leistungen wählen die passende Leistung schon vor,
-  „Termin vereinbaren“ schaltet auf Showroom-Termin um.
-- Ohne JavaScript erscheinen alle drei Schritte untereinander und das Formular funktioniert normal.
 - `anfrage.php` sendet jede Anfrage an **deko.luxury@gmx.de** (Einstellung oben in der Datei).
-  Antworten gehen per „Antworten“ direkt an die anfragende Person.
-- Für gute Zustellbarkeit in `ABSENDER` eine Adresse der eigenen Domain eintragen
-  (z. B. `website@ihre-domain.de`).
+  Gibt jemand eine E-Mail an, geht „Antworten“ direkt an diese Person.
+- Pflicht sind nur Name und **E-Mail oder Telefon**. Nach dem Absenden erscheint die Bestätigung
+  „Danke! Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.“ In der Vorschau steht dort
+  „Anfrage gesendet (Vorschau)“, es wird nichts verschickt.
+- Für gute Zustellbarkeit in `ABSENDER` eine Adresse der eigenen Domain eintragen.
 - Spamschutz: unsichtbares Honeypot-Feld und Mindestzeit, kein Captcha nötig.
-- Ist kein PHP verfügbar (z. B. GitHub Pages, Netlify), zeigt die Seite automatisch an,
-  dass die Anfrage per E-Mail-Programm gesendet werden kann. Alle Angaben sind dann schon vorausgefüllt.
-  Alternativ kann ein Formulardienst (z. B. Formspree) eingetragen werden: nur das `action`-Attribut
-  des Formulars ändern. Der Dienst muss mit JSON antworten (`{"ok": true}`).
+- Ist kein PHP verfügbar (z. B. GitHub Pages, Netlify), bietet die Seite automatisch den Versand
+  per E-Mail-Programm an, alle Angaben sind schon vorausgefüllt.
 
 ## Datenschutz & Cookies
 
 - Keine Tracking- oder Marketing-Cookies, keine externen Schriften, kein Cookie-Banner nötig.
 - Die interaktive Karte (OpenStreetMap) lädt erst nach Klick bzw. Zustimmung
-  („Cookie-Einstellungen“ im Footer). Vorher zeigt die Seite eine eigene, lagegetreue Übersichtskarte.
-- Die Auswahl wird nur im Browser gespeichert (localStorage).
+  („Cookie-Einstellungen“ im Footer). Vorher zeigt die Seite eine eigene Übersichtskarte.
+- WhatsApp und Instagram sind einfache Links; es wird nichts eingebettet.
 
 ## SEO
 
-- Title, Description, Open-Graph-Bild (`assets/brand/og-image.jpg`), saubere H1/H2-Struktur.
-- Strukturierte Daten (`LocalBusiness`) mit Ort Burgau und Leistungen.
-- Portfolio-Kategorien entsprechen den gezeigten Arbeiten (Birthdays, Baby Party, Table Styling,
-  Lounge & Details). Mit neuen Projekten (z. B. Hochzeiten) einfach eine Kategorie ergänzen.
-- Suchbegriffe wie Eventdekoration, Hochzeitsdekoration, Floristik, Burgau, Ulm und Augsburg
-  stehen natürlich im Text, ohne Keyword-Stuffing.
-- Empfehlung: Google-Unternehmensprofil für den Showroom anlegen. Für Local SEO ist das der
-  wirksamste Schritt. Danach den Profil-Link unter „Kundenstimmen“ einbauen.
+- Title, Description, Open-Graph-Bild, saubere H1/H2-Struktur, Alt-Texte für alle Bilder.
+- Strukturierte Daten: `LocalBusiness` mit Adresse Kapuzinerstr. 4, 89331 Burgau, Öffnungszeiten
+  und Leistungen sowie `FAQPage` für die FAQ.
+- Empfehlung: Google-Unternehmensprofil für den Showroom anlegen; das ist der wirksamste Schritt
+  für die lokale Suche. Danach die Bewertungen im Info-Streifen verlinken.
 
 ## Technik & Qualität
 
 - Lighthouse (lokal, mit Kompression wie beim Hoster): Desktop 99 Performance, Mobil 92 Performance;
-  Barrierefreiheit, Best Practices und SEO jeweils 100. Die Eröffnungsanimation kostet auf dem Handy
-  etwas Ladezeit.
+  Barrierefreiheit, Best Practices und SEO jeweils 100. Layoutverschiebung unter 0,04 (gut).
 - Keine Layoutsprünge beim Laden: Die Ersatzschriften sind metrisch an die Webfonts angeglichen.
-- Bilder als WebP in mehreren Größen mit Lazy Loading.
-- Animationen respektieren „Bewegung reduzieren“ des Betriebssystems.
-  Inhalte sind auch ohne JavaScript vollständig sichtbar.
+- Bilder als WebP in mehreren Größen mit Lazy Loading. Endlos-Animationen laufen nur über
+  `transform`/`opacity` und pausieren außerhalb des Sichtbereichs.
 - Schriften: Cormorant Garamond, Jost, Cinzel (SIL Open Font License, lokal eingebunden).
 
 ## Design-Grundlagen
@@ -183,8 +197,8 @@ Farben und Schriften sind als Variablen am Anfang von `assets/css/style.css` def
 
 | Variable | Farbe | Einsatz |
 | --- | --- | --- |
-| `--ink` | #151311 | Tiefes Schwarz (Hero, CTA, Footer) |
-| `--char` | #201d1a | Anthrazit (Ablauf) |
-| `--ivory` | #f6f1e9 | Warmes Off-White (Grundfläche) |
-| `--sand` | #ede4d6 | Champagner-Fläche (Showroom) |
+| `--ink` | #151311 | Tiefes Schwarz (Hero, Galerie, Öffnungszeiten, Footer) |
+| `--ivory` / `--paper` | #f6f1e9 / #fbf8f3 | Warmes Off-White (Über uns, Leistungen, Kontakt, FAQ) |
+| `--sand` | #ede4d6 | Champagner-Fläche (Showroom & Ablauf) |
 | `--gold` / `--gold-soft` | #a8834c / #cdb07a | Feine Linien und Akzente, sparsam eingesetzt |
+| `--foil` | Verlauf | Blattgold für Buttons, Schlüsselwörter und Ziffern |
