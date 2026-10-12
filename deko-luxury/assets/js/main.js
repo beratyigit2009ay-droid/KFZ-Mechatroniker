@@ -102,32 +102,57 @@ var KONTAKT = {
   }
 
   /* ---------- Einblendungen beim Scrollen (IntersectionObserver) ----------
-     Alles ist im Ruhezustand sichtbar. Elemente unterhalb des Sichtbereichs erhalten die
-     Klasse .is-in kurz bevor sie erscheinen; erst dann spielt die Animation ab.
-     Elemente, die beim Laden schon sichtbar sind, bekommen .is-shown (ohne Animation). */
+     Ohne JavaScript ist alles sichtbar. Elemente, die beim Laden schon im Bild sind, bleiben
+     unverändert (.is-shown). Alles darunter wartet unsichtbar (.rv-wait) und gleitet sanft herein,
+     sobald es den Sichtbereich erreicht. Was gleichzeitig hereinkommt, erscheint nacheinander (Stagger). */
   function initReveal() {
     var els = $$('[data-reveal], [data-reveal-img]');
     if (!('IntersectionObserver' in window) || reduceMotion.matches) {
       els.forEach(function (el) { el.classList.add('is-shown'); });
       return;
     }
-    var vh = window.innerHeight;
+    var reveal = function (el, delay) {
+      el.style.setProperty('--d', delay.toFixed(3) + 's');
+      el.classList.remove('rv-wait');
+      el.classList.add('is-in');
+    };
+    var row = function (e) { return Math.round(e.boundingClientRect.top / 24); };
     var io = new IntersectionObserver(function (entries) {
-      var batch = 0;
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        if (!el.style.getPropertyValue('--d')) el.style.setProperty('--d', Math.min(batch, 5) * 0.09 + 's');
-        el.classList.add('is-in');
-        batch += 1;
-        io.unobserve(el);
+      // Stagger je Gruppe (z. B. Kartenraster): von oben links nach unten rechts, Gruppen leicht versetzt
+      var groups = [];
+      entries
+        .filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return (row(a) - row(b)) || (a.boundingClientRect.left - b.boundingClientRect.left); })
+        .forEach(function (entry) {
+          var parent = entry.target.parentElement;
+          var g = groups.filter(function (x) { return x.parent === parent; })[0];
+          if (!g) { g = { parent: parent, els: [] }; groups.push(g); }
+          g.els.push(entry.target);
+        });
+      groups.forEach(function (g, gi) {
+        g.els.forEach(function (el, i) {
+          reveal(el, Math.min(0.6, gi * 0.06 + i * 0.075));
+          io.unobserve(el);
+        });
       });
-    }, { rootMargin: '0px 0px 10% 0px', threshold: 0 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+    var vh = window.innerHeight;
     els.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.top < vh * 0.92 && r.bottom > 0) { el.classList.add('is-shown'); return; }
+      el.classList.add('rv-wait');
       io.observe(el);
     });
+    // Sicherheitsnetz: nichts bleibt versteckt, falls ein Beobachter-Ereignis ausbleibt
+    var sweep = function () {
+      $$('.rv-wait').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) { io.unobserve(el); reveal(el, 0); }
+      });
+    };
+    if (doc.readyState === 'complete') window.setTimeout(sweep, 1200);
+    else window.addEventListener('load', function () { window.setTimeout(sweep, 1200); });
+    window.addEventListener('pageshow', sweep);
   }
 
   /* ---------- Zeitstrahl: goldene Linie zeichnet sich beim Hineinscrollen ---------- */
@@ -187,6 +212,54 @@ var KONTAKT = {
     }).observe(hero);
   }
 
+  /* ---------- Parallax beim Scrollen ----------
+     Bevorzugt per CSS-Scroll-Timeline (Klasse .sd, läuft im Compositor und ruckelt auch auf dem
+     iPhone nicht). Ältere Browser am Computer bekommen eine schlanke JS-Variante; auf älteren
+     Smartphones bleibt es bei den Einblendungen, damit nichts nachzieht. */
+  var canSD = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()') && CSS.supports('animation-range: cover 0% cover 100%'));
+  if (canSD && !reduceMotion.matches) root.classList.add('sd');
+  var par = (!canSD && !reduceMotion.matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches) ? {
+    content: $('.hero__content'), arch: $('.hero__arch'),
+    frame: $('.about__frame'), img: $('.about__par'),
+    mark: $('.footer__mark'), markY: 0, heroOn: false
+  } : null;
+  var clamp01 = function (v) { return v < 0 ? 0 : (v > 1 ? 1 : v); };
+  function updateParallax() {
+    if (!par) return;
+    var vh = window.innerHeight;
+    var y = window.scrollY;
+    var wide = window.innerWidth > 900;
+    if (wide && y < vh * 1.3) {
+      var p = clamp01(y / (vh * 0.85));
+      if (par.content) { par.content.style.opacity = (1 - 0.65 * p).toFixed(3); par.content.style.transform = 'translate3d(0,' + (-56 * p).toFixed(1) + 'px,0)'; }
+      if (par.arch) par.arch.style.transform = 'translate3d(0,' + (96 * clamp01(y / vh)).toFixed(1) + 'px,0)';
+      par.heroOn = true;
+    } else if (!wide && par.heroOn) {
+      [par.content, par.arch].forEach(function (el) { if (el) { el.style.opacity = ''; el.style.transform = ''; } });
+      par.heroOn = false;
+    }
+    if (par.frame && par.img) {
+      var r = par.frame.getBoundingClientRect();
+      var q = clamp01((vh - r.top) / (vh + r.height));
+      par.img.style.transform = 'translate3d(0,' + (-3.5 + 7 * q).toFixed(2) + '%,0) scale(1.08)';
+    }
+    if (par.mark) {
+      var m = par.mark.getBoundingClientRect();
+      var top = m.top - par.markY; // Position ohne eigene Verschiebung
+      par.markY = 56 * (1 - clamp01((vh - top) / m.height));
+      par.mark.style.transform = 'translate3d(0,' + par.markY.toFixed(1) + 'px,0)';
+    }
+  }
+
+  /* ---------- Scroll-Fortschritt (Fallback ohne CSS-Scroll-Timeline) ---------- */
+  var progressBar = $('[data-progress]');
+  var progressJS = !!progressBar && !(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
+  function updateProgress() {
+    if (!progressJS) return;
+    var max = root.scrollHeight - window.innerHeight;
+    progressBar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0).toFixed(4) + ')';
+  }
+
   /* ---------- Mini-Leiste „Beratung anfragen“ ---------- */
   var actionBar = $('[data-action-bar]');
   var contactInView = false;
@@ -215,11 +288,16 @@ var KONTAKT = {
       onScrollHeader();
       kickLayers();
       updateActionBar();
+      updateProgress();
+      updateParallax();
       ticking = false;
     });
   }, { passive: true });
   var resizeTimer = null;
-  window.addEventListener('resize', function () { window.clearTimeout(resizeTimer); resizeTimer = window.setTimeout(sizeTimeline, 150); });
+  window.addEventListener('resize', function () {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function () { sizeTimeline(); updateProgress(); updateParallax(); }, 150);
+  });
 
   /* ---------- Eröffnung (Tor) ---------- */
   var intro = $('[data-intro]');
@@ -779,4 +857,7 @@ var KONTAKT = {
   updateActionBar();
   initReveal();
   kickLayers();
+  updateProgress();
+  updateParallax();
+  window.addEventListener('load', updateProgress);
 })();

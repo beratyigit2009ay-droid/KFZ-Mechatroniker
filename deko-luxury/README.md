@@ -150,7 +150,23 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
   von sieben Sekunden; pausiert, sobald der Hero nicht sichtbar ist.
 - **Hintergrund:** Lichtsäume, Ornament und Glitzer liegen in Ebenen mit leichter Parallax-Bewegung
   (Maus nur am Computer, Scrollen überall). Goldstaub nur auf größeren Bildschirmen.
-- **Scroll-Effekte:** Abschnitte, Karten, Icons und der Zeitstrahl erscheinen per IntersectionObserver.
+- **Scroll-Effekte** (ohne zusätzliche Bibliothek):
+  - *Smooth Scrolling:* Menü- und Button-Links gleiten weich zum Abschnitt; die Navigation verdeckt
+    dabei keine Überschrift. Das Scrollen selbst bleibt nativ (kein „Scroll-Hijacking“), damit es
+    auf dem iPhone natürlich und flüssig bleibt.
+  - *Reveal on Scroll:* Texte, Bilder und Karten gleiten beim Erreichen des Sichtbereichs sanft nach
+    oben und blenden ein; Galeriebilder zoomen dabei leicht zurück.
+  - *Stagger:* Was gleichzeitig hereinkommt (z. B. die Leistungskarten), erscheint nacheinander –
+    von oben links nach unten rechts, mit kurzen Abständen (maximal 0,6 s).
+  - *Parallax:* Im Startbereich wandern Inhalt und Bogenfenster beim Herunterscrollen unterschiedlich
+    schnell, das Bild bei „Über uns“ bewegt sich langsamer als sein Rahmen, der große Schriftzug im
+    Footer gleitet herein. Läuft per CSS-Scroll-Timeline im Grafikprozessor; ältere Browser am Computer
+    bekommen eine schlanke JS-Variante, ältere Smartphones verzichten darauf, damit nichts ruckelt.
+  - *Scroll-Fortschritt:* dünne Goldlinie ganz oben.
+  - *Navigation:* bleibt sichtbar, bekommt beim Herunterscrollen einen hellen, leicht transparenten
+    Hintergrund und einen dezenten Schatten.
+  - Sicherheitsnetz: Ohne JavaScript, ohne IntersectionObserver oder bei „Bewegung reduzieren“
+    bleibt jedes Element sichtbar; nichts kann dauerhaft unsichtbar bleiben.
 - **Hover:** Buttons mit Glanz, Karten heben sich mit Gold-Schimmer, Galerie mit Zoom und Unterschrift.
 - Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat, bekommt eine ruhige Seite ohne
   Eröffnung, Glitzer und Parallax. Alle Inhalte sind auch ohne JavaScript sichtbar.

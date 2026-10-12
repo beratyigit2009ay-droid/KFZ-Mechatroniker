@@ -147,6 +147,8 @@
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+  <!-- Scroll-Fortschritt: dünne Goldlinie ganz oben -->
+  <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__bar" data-progress></span></div>
 
   <!-- Eröffnung: Das Logo entsteht in Gold auf einem geschlossenen Tor, dann schwingt das Tor auf. Klick, Taste oder Scrollen überspringt. -->
   <div class="gate" aria-hidden="true" data-intro>
@@ -340,7 +342,7 @@
           </ul>
         </div>
         <figure class="about__media" data-reveal-img>
-          <img src="assets/img/stil-700.webp" srcset="assets/img/stil-700.webp 700w, assets/img/stil-1400.webp 1400w" sizes="(min-width: 900px) 40vw, 92vw" width="1400" height="1587" loading="lazy" decoding="async" alt="Sesselecke mit weißen Bögen, Blumen in Creme und gedecktem Tisch im warmen Licht">
+          <span class="about__frame"><span class="about__par"><img src="assets/img/stil-700.webp" srcset="assets/img/stil-700.webp 700w, assets/img/stil-1400.webp 1400w" sizes="(min-width: 900px) 40vw, 92vw" width="1400" height="1587" loading="lazy" decoding="async" alt="Sesselecke mit weißen Bögen, Blumen in Creme und gedecktem Tisch im warmen Licht"></span></span>
           <span class="about__badge" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="47"/><use href="#monogram" x="28.5" y="27" width="43" height="44.4"/></svg></span>
         </figure>
       </div>
@@ -706,17 +708,17 @@
   <!-- ============ 10. FOOTER ============ -->
   <footer class="footer grain">
     <div class="wrap footer__top">
-      <div class="footer__brand">
+      <div class="footer__brand" data-reveal>
         <img class="footer__logo" src="assets/brand/logo-gold.svg" width="220" height="219" alt="DEKO LUXURY – Luxury Event Decoration" loading="lazy">
         <p class="footer__claim">Wir dekorieren eure Veranstaltungen nach euren Wünschen <svg class="sparkle" viewBox="0 0 24 24" aria-hidden="true"><use href="#sparkle"/></svg></p>
       </div>
       <div class="footer__cols">
-        <div class="footer__col">
+        <div class="footer__col" data-reveal>
           <h2 class="footer__title">Showroom</h2>
           <address>Kapuzinerstr. 4,<br>Burgau 89331</address>
           <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Kapuzinerstr.+4%2C+89331+Burgau" target="_blank" rel="noopener">Route planen</a></p>
         </div>
-        <div class="footer__col">
+        <div class="footer__col" data-reveal>
           <h2 class="footer__title">Kontakt</h2>
           <ul>
             <li><a href="mailto:deko.luxury@gmx.de" data-contact="email">deko.luxury@gmx.de</a></li>
@@ -725,7 +727,7 @@
             <li><a href="#kontakt">Anfrage stellen</a></li>
           </ul>
         </div>
-        <div class="footer__col">
+        <div class="footer__col" data-reveal>
           <h2 class="footer__title">Entdecken</h2>
           <ul>
             <li><a href="#leistungen">Leistungen</a></li>
@@ -734,7 +736,7 @@
             <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
-        <div class="footer__col">
+        <div class="footer__col" data-reveal>
           <h2 class="footer__title">Rechtliches</h2>
           <ul>
             <li><a href="impressum.html">Impressum</a></li>

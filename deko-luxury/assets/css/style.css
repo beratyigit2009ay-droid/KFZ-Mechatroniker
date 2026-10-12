@@ -255,7 +255,7 @@ address { font-style: normal; }
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
   backdrop-filter: blur(16px) saturate(1.2);
   color: var(--ink);
-  box-shadow: 0 1px 0 var(--line);
+  box-shadow: 0 1px 0 var(--line), 0 14px 34px -26px rgba(21, 19, 17, 0.38);
 }
 .is-scrolled .site-header__inner { height: 72px; }
 
@@ -1238,6 +1238,61 @@ address { font-style: normal; }
 .status--inline { gap: 9px; }
 
 
+/* ==========================================================================
+   Scroll-Effekte: Fortschritt, Einblendungen, Parallax
+   Alles läuft über transform/opacity (Grafikkarte). Ohne JavaScript, ohne
+   IntersectionObserver oder bei „Bewegung reduzieren“ bleibt jedes Element sichtbar.
+   ========================================================================== */
+
+/* Scroll-Fortschritt: dünne Goldlinie über der Navigation */
+.scroll-progress { position: fixed; left: 0; right: 0; top: env(safe-area-inset-top, 0px); z-index: 55; height: 2px; pointer-events: none; }
+.scroll-progress__bar {
+  display: block; height: 100%;
+  background: var(--foil); background-size: 100vw 100%;
+  box-shadow: 0 0 10px rgba(240, 220, 167, 0.5);
+  transform: scaleX(0); transform-origin: 0 50%;
+  will-change: transform;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress__bar { animation: progress-grow linear both; animation-timeline: scroll(root block); }
+}
+@keyframes progress-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Reveal on Scroll: Elemente unterhalb des Sichtbereichs warten unsichtbar (.rv-wait, nur per JS gesetzt)
+   und gleiten beim Erreichen des Sichtbereichs sanft nach oben; Verzögerungen (--d) ergeben das Stagger. */
+.js .rv-wait { opacity: 0; }
+.js .gal__item.is-in .gal__media img { animation: img-settle 1.7s var(--ease) var(--d, 0s) backwards; }
+@keyframes img-settle { from { transform: scale(1.1); } to { transform: none; } }
+
+/* Hero: sanfter Einstieg des Bogenfensters (nur Bewegung, damit das Bild sofort zählt) */
+.hero__frame { animation: frame-in 1.7s var(--ease) var(--intro) backwards; }
+@keyframes frame-in { from { transform: translate3d(0, 36px, 0) scale(0.985); } to { transform: none; } }
+
+/* Parallax-Rahmen für das Bild bei „Über uns“ */
+.about__frame { display: block; overflow: hidden; }
+.about__par { display: block; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Parallax per CSS-Scroll-Timeline (läuft im Compositor, ruckelfrei auch auf neuen iPhones).
+     Die Klasse .sd setzt main.js nur, wenn der Browser das unterstützt; sonst übernimmt JS am Computer. */
+  .sd .about__frame { view-timeline: --about-frame block; }
+  .sd .about__par { animation: par-img linear both; animation-timeline: --about-frame; animation-range: cover 0% cover 100%; }
+  .sd .footer__mark { animation: mark-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+  @media (min-width: 901px) {
+    .sd .hero__content { animation: hero-out linear both; animation-timeline: scroll(root block); animation-range: 0 85vh; }
+    .sd .hero__arch { animation: arch-drift linear both; animation-timeline: scroll(root block); animation-range: 0 100vh; }
+  }
+}
+@keyframes par-img { from { transform: translate3d(0, -3.5%, 0) scale(1.08); } to { transform: translate3d(0, 3.5%, 0) scale(1.08); } }
+@keyframes mark-rise { from { transform: translate3d(0, 56px, 0); } to { transform: none; } }
+@keyframes hero-out { to { opacity: 0.35; transform: translate3d(0, -56px, 0); } }
+@keyframes arch-drift { to { transform: translate3d(0, 96px, 0); } }
+
+@media print {
+  .js .rv-wait { opacity: 1 !important; }
+  .scroll-progress { display: none; }
+}
+
 /* ---------- Animationen ---------- */
 @keyframes rise { from { opacity: 0; transform: translate3d(0, 26px, 0); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
@@ -1257,6 +1312,7 @@ address { font-style: normal; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .gate { display: none; }
+  .scroll-progress__bar { animation-duration: auto !important; }
   .hero__slide { transition: none; }
   .hero__dust, .hero__glitter, .hero__seams, .view-cursor { display: none; }
   .status__dot::after { animation: none; opacity: 0; }
