@@ -323,6 +323,15 @@ var KONTAKT = {
         intro.classList.add('is-skipped');
         window.setTimeout(endIntro, 480);
       };
+      // Sicherung: Das Logo der Eröffnung verschwindet garantiert, sobald die Torflügel aufgehen
+      // (Safari/iPhone ignorierte das reine CSS-Ausblenden über „visibility“). Die Flügel tragen
+      // in diesem Moment dasselbe Logo, daher ist der Wechsel unsichtbar.
+      var hideIntroLogo = function () {
+        var logo = $('.gate__logo', intro);
+        if (logo) logo.style.display = 'none';
+      };
+      intro.addEventListener('animationstart', function (e) { if (e.animationName === 'gate-l') hideIntroLogo(); });
+      window.setTimeout(hideIntroLogo, 3200);
       intro.addEventListener('click', skipIntro);
       skipEvents.forEach(function (type) { window.addEventListener(type, skipIntro, { passive: true }); });
       window.setTimeout(endIntro, 4200);
