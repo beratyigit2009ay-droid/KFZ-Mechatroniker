@@ -26,8 +26,7 @@ deko-luxury/
 
 Die Reihenfolge ist fest:
 
-1. **Hero** – Original-Logo mit Glanz (Lichtstreifen beim Laden, danach sparsam alle paar Sekunden),
-   Leitsatz „Wir dekorieren eure Veranstaltungen nach euren Wünschen ✨“, Buttons
+1. **Hero** – Leitsatz „Wir dekorieren eure Veranstaltungen nach euren Wünschen ✨“, Buttons
    „Beratung anfragen“ (scrollt zum Kontakt) und „WhatsApp“. Hintergrund mit Lichtsäumen,
    Gold-Ornament und dezentem Glitzer, die sich leicht mit Maus und Scrollen bewegen.
 2. **Info-Streifen** – Showroom in Burgau · Premium Dekoration · Nach euren Wünschen · 24/7 geöffnet ·
@@ -147,11 +146,10 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
   ein Lichtpunkt zieht den Kreis, das „D“ blüht aus der Unschärfe auf und „DEKO LUXURY“ fliegt
   Buchstabe für Buchstabe zusammen. Dahinter drehen sich Lichtstrahlen, ein Glanz läuft über das Logo.
   Dann reißt ein Lichtspalt auf: Blitz, Druckwelle, Goldkonfetti – die Torflügel schwingen auf und die
-  „Kamera“ fährt hindurch auf die Website. Läuft bei jedem Aufruf der Startseite, aber nicht beim
+  „Kamera“ fährt hindurch auf die Website. Das Logo ist nur während des Aufgehens zu sehen
+  und bleibt danach nicht stehen (oben in der Navigation steht nur das kleine Markenzeichen). Läuft bei jedem Aufruf der Startseite, aber nicht beim
   Zurückkommen von einer Unterseite. Klick, Taste oder Scrollen überspringen sie; bei „Bewegung
   reduzieren“ entfällt sie. Alles läuft über transform/opacity, auf Handys mit halb so vielen Partikeln.
-- **Logo-Glanz im Hero:** weiches Leuchten und ein Lichtstreifen über dem Logo, sparsam im Abstand
-  von sieben Sekunden; pausiert, sobald der Hero nicht sichtbar ist.
 - **Hintergrund:** Lichtsäume, Ornament und Glitzer liegen in Ebenen mit leichter Parallax-Bewegung
   (Maus nur am Computer, Scrollen überall). Goldstaub nur auf größeren Bildschirmen.
 - **Scroll-Effekte** (ohne zusätzliche Bibliothek):

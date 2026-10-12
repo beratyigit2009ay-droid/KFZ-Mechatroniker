@@ -384,7 +384,8 @@ address { font-style: normal; }
 .gate__door--l .gate__frame::before { right: 0; border-right: 0; }
 .gate__door--r .gate__frame { right: var(--m); left: 0; border-left: 0; animation-name: frame-r; }
 .gate__door--r .gate__frame::before { left: 0; border-left: 0; }
-.gate__img { position: absolute; top: 50%; width: var(--size); height: auto; max-width: none; transform: translate(-50%, -50%); opacity: 0; animation: gate-show 0.01s linear 2.58s forwards; }
+/* Logo auf den Flügeln nur im Moment des Aufgehens, danach blendet es aus */
+.gate__img { position: absolute; top: 50%; width: var(--size); height: auto; max-width: none; transform: translate(-50%, -50%); opacity: 0; animation: gate-show 0.01s linear 2.58s forwards, gate-img-out 0.5s ease-in 2.82s forwards; }
 .gate__door--l .gate__img { left: 100%; }
 .gate__door--r .gate__img { left: 0; }
 
@@ -508,6 +509,7 @@ address { font-style: normal; }
 @keyframes gate-glint { from { background-position: 100% 0; } to { background-position: 0% 0; } }
 @keyframes art-flare { 0%, 100% { filter: brightness(1); } 45% { filter: brightness(1.5); } }
 @keyframes gate-show { to { opacity: 1; } }
+@keyframes gate-img-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes gate-seam { 0% { opacity: 0; transform: scaleY(0); } 30% { opacity: 1; } 45% { transform: scaleY(1); } 70% { opacity: 1; } 100% { opacity: 0; transform: scaleY(1); } }
 @keyframes gate-l { 82% { opacity: 1; } to { transform: rotateY(90deg); opacity: 0; } }
 @keyframes gate-r { 82% { opacity: 1; } to { transform: rotateY(-90deg); opacity: 0; } }
@@ -606,7 +608,7 @@ address { font-style: normal; }
 }
 .hero__dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 /* Endlos-Animationen ruhen, sobald der Hero aus dem Bild ist */
-.hero.is-off .hero__seams i, .hero.is-off .hero__glitter i, .hero.is-off .hero__logo::before, .hero.is-off .hero__logo-glint { animation-play-state: paused; }
+.hero.is-off .hero__seams i, .hero.is-off .hero__glitter i { animation-play-state: paused; }
 
 .hero__inner {
   display: grid;
@@ -616,29 +618,7 @@ address { font-style: normal; }
 }
 .hero__content { min-width: 0; }
 
-/* Logo mit Schein: weiches Leuchten und ein Lichtstreifen, der über das Logo läuft */
-.hero__logo {
-  position: relative; isolation: isolate;
-  width: clamp(104px, 8.6vw, 148px); aspect-ratio: 726 / 724;
-  margin-bottom: clamp(18px, 2.8vh, 28px);
-  animation: logo-in 1.5s var(--ease) var(--intro) backwards;
-}
-.hero__logo img { width: 100%; height: 100%; }
-.hero__logo::before {
-  content: ""; position: absolute; inset: -42%; z-index: -1; border-radius: 50%;
-  background: radial-gradient(circle, rgba(240, 220, 167, 0.34) 0%, rgba(205, 176, 122, 0.12) 38%, rgba(205, 176, 122, 0) 66%);
-  animation: logo-glow 7s ease-in-out calc(var(--intro) + 0.4s) infinite;
-}
-.hero__logo-glint {
-  position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(105deg, rgba(255, 250, 235, 0) 40%, rgba(255, 250, 235, 0.95) 50%, rgba(255, 250, 235, 0) 60%) 100% 0 / 300% 100% no-repeat;
-  -webkit-mask: url("../brand/logo-gold.svg") center / 100% 100% no-repeat;
-          mask: url("../brand/logo-gold.svg") center / 100% 100% no-repeat;
-  animation: logo-glint 7s cubic-bezier(0.45, 0, 0.3, 1) calc(var(--intro) + 0.5s) infinite;
-}
 @keyframes logo-in { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: none; } }
-@keyframes logo-glow { 0%, 100% { opacity: 0.5; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1.05); } }
-@keyframes logo-glint { 0% { background-position: 100% 0; } 18%, 100% { background-position: 0% 0; } }
 
 .hero__lockup {
   display: flex; align-items: center; gap: 18px;
@@ -1428,7 +1408,6 @@ address { font-style: normal; }
   .brand__emblem { width: 40px; height: 40px; }
   .is-scrolled .brand__emblem { width: 36px; height: 36px; }
   .hero { min-height: 0; }
-  .hero__logo { width: 96px; }
   .hero__lockup { gap: 12px; }
   .hero__lockup-main { letter-spacing: 0.24em; font-size: 0.74rem; }
   .hero__lockup-rule { width: 24px; }
