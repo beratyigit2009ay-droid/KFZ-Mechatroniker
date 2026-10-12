@@ -306,7 +306,7 @@ var KONTAKT = {
     if (root.classList.contains('no-intro')) {
       intro.parentNode.removeChild(intro);
     } else {
-      introMs = 2900;
+      introMs = 3000;
       var introOver = false;
       var skipEvents = ['keydown', 'wheel', 'scroll'];
       var endIntro = function () {
@@ -319,13 +319,13 @@ var KONTAKT = {
         introOver = true;
         // Hero-Animationen sofort starten statt auf das Ende der Eröffnung zu warten
         var now = doc.timeline && doc.timeline.currentTime ? doc.timeline.currentTime / 1000 : 0;
-        if (now < 2.9) root.style.setProperty('--intro', now.toFixed(2) + 's');
+        if (now < 3) root.style.setProperty('--intro', now.toFixed(2) + 's');
         intro.classList.add('is-skipped');
         window.setTimeout(endIntro, 480);
       };
       intro.addEventListener('click', skipIntro);
       skipEvents.forEach(function (type) { window.addEventListener(type, skipIntro, { passive: true }); });
-      window.setTimeout(endIntro, 4000);
+      window.setTimeout(endIntro, 4200);
     }
   }
 

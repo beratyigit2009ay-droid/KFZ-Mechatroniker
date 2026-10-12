@@ -64,7 +64,7 @@ Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestri
 | `datenschutz.html` | Hosting-Anbieter, E-Mail-Anbieter, Stand. Bitte rechtlich prüfen lassen. |
 | `sitemap.xml`, `robots.txt` | Domain eintragen. |
 | Karte | Die interaktive Karte zeigt Burgau. Für eine Stecknadel genau am Showroom die Koordinaten in `MAP_SRC` (`assets/js/main.js`) ergänzen (`&marker=Breite,Länge`). |
-| Logo | Aus dem Screenshot vektorisiert. Liegt die Originaldatei (SVG/PDF/AI) vor, `assets/brand/logo-gold.svg`, `logo-tor.svg` und `monogramm.svg` damit ersetzen. |
+| Logo | Aus dem Screenshot vektorisiert. Liegt die Originaldatei (SVG/PDF/AI) vor, `assets/brand/logo-gold.svg`, `logo-zeile.svg` und `monogramm.svg` damit ersetzen. |
 
 ## Kontaktdaten eintragen
 
@@ -142,10 +142,14 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
 
 ## Eröffnung & Animationen
 
-- **Eröffnung („Tor“):** Beim Aufruf steht ein geschlossenes, zweiflügeliges Tor mit feiner Goldkassette.
-  Darauf entsteht das Original-Logo in Gold, dann leuchtet in der Mitte ein Lichtspalt auf und beide
-  Flügel schwingen nach innen auf (rund 3,9 Sekunden). Läuft bei jedem Aufruf der Startseite, aber nicht
-  beim Zurückkommen von einer Unterseite. Klick, Taste oder Scrollen überspringen sie.
+- **Eröffnung („Tor“, rund 4 Sekunden):** schwarz-goldene Bühne mit Goldstaub. Eine anamorphe
+  Goldlinie mit Lichtfleck leuchtet auf, die Goldkassette des Tors zeichnet sich von der Mitte aus,
+  ein Lichtpunkt zieht den Kreis, das „D“ blüht aus der Unschärfe auf und „DEKO LUXURY“ fliegt
+  Buchstabe für Buchstabe zusammen. Dahinter drehen sich Lichtstrahlen, ein Glanz läuft über das Logo.
+  Dann reißt ein Lichtspalt auf: Blitz, Druckwelle, Goldkonfetti – die Torflügel schwingen auf und die
+  „Kamera“ fährt hindurch auf die Website. Läuft bei jedem Aufruf der Startseite, aber nicht beim
+  Zurückkommen von einer Unterseite. Klick, Taste oder Scrollen überspringen sie; bei „Bewegung
+  reduzieren“ entfällt sie. Alles läuft über transform/opacity, auf Handys mit halb so vielen Partikeln.
 - **Logo-Glanz im Hero:** weiches Leuchten und ein Lichtstreifen über dem Logo, sparsam im Abstand
   von sieben Sekunden; pausiert, sobald der Hero nicht sichtbar ist.
 - **Hintergrund:** Lichtsäume, Ornament und Glitzer liegen in Ebenen mit leichter Parallax-Bewegung
