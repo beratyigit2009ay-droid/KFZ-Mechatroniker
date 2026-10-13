@@ -1,6 +1,7 @@
 -- Alarm.client.lua
 -- Wenn deine Stadt angegriffen wird: Sirene im Kopfhörer und ein roter, blinkender Balken.
 -- Wenn eine andere Stadt angegriffen wird: kurzer gelber Hinweis.
+-- Das gilt für Raketen, Panzer und Jets.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -68,11 +69,11 @@ local function alarmAnzeigen(text: string, farbe: Color3, dauer: number, blinken
 	end)
 end
 
-Remotes:WaitForChild("Alarm").OnClientEvent:Connect(function(zielIndex: number, angreifer: string, dauer: number)
+Remotes:WaitForChild("Alarm").OnClientEvent:Connect(function(zielIndex: number, textZiel: string, textAndere: string, dauer: number)
 	if zielIndex == spieler:GetAttribute("Stadt") then
 		Sirene.starten(ton, dauer)
-		alarmAnzeigen("LUFTALARM! Rakete von " .. angreifer .. "!", Color3.fromRGB(200, 0, 0), dauer, true)
+		alarmAnzeigen(textZiel, Color3.fromRGB(200, 0, 0), dauer, true)
 	elseif not blinktGerade then
-		alarmAnzeigen(angreifer .. " greift Stadt " .. zielIndex .. " an!", Color3.fromRGB(200, 140, 0), 3, false)
+		alarmAnzeigen(textAndere, Color3.fromRGB(200, 140, 0), 3, false)
 	end
 end)

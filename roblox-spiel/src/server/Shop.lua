@@ -1,5 +1,5 @@
 -- Shop.lua
--- Kaufen von Gebäuden, Flugabwehr und Raketen.
+-- Kaufen von Gebäuden, Raketen, Panzern und Jets.
 -- Wichtig: Der Server prüft alles selbst (Geld, Platz), damit niemand schummeln kann.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -9,7 +9,7 @@ local StadtManager = require(script.Parent.StadtManager)
 
 local Shop = {}
 
--- art: "Gebaeude" oder "Rakete", typ: z.B. "Haus" oder "Kurzstrecke"
+-- art: "Gebaeude" oder "Waffe", typ: z.B. "Haus", "Kurzstrecke" oder "Panzer"
 -- Gibt zurück: hat es geklappt (true/false) und eine Nachricht für den Spieler
 function Shop.kaufen(spieler: Player, art: any, typ: any): (boolean, string)
 	if typeof(art) ~= "string" or typeof(typ) ~= "string" then
@@ -35,17 +35,21 @@ function Shop.kaufen(spieler: Player, art: any, typ: any): (boolean, string)
 			return false, "Deine Stadt ist voll! Kein freier Bauplatz mehr."
 		end
 		geld.Value -= info.Preis
+		local w = StadtManager.werte(stadt)
+		if w.stromausfall then
+			return true, info.Name .. " gebaut! Achtung: Zu wenig Strom, bau ein Kraftwerk!"
+		end
 		return true, info.Name .. " gebaut!"
-	elseif art == "Rakete" then
-		local info = Config.Raketen[typ]
+	elseif art == "Waffe" then
+		local info = Config.waffe(typ)
 		if not info then
-			return false, "Diese Rakete gibt es nicht."
+			return false, "Diese Waffe gibt es nicht."
 		end
 		if geld.Value < info.Preis then
 			return false, "Nicht genug Geld! " .. info.Name .. " kostet " .. info.Preis .. " $."
 		end
 		geld.Value -= info.Preis
-		local attribut = "Rakete_" .. typ
+		local attribut = "Lager_" .. typ
 		spieler:SetAttribute(attribut, (spieler:GetAttribute(attribut) or 0) + 1)
 		return true, info.Name .. " gekauft!"
 	end

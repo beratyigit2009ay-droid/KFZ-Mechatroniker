@@ -8,67 +8,148 @@ local Config = {}
 Config.MAX_STAEDTE = 4
 
 -- Geld
-Config.STARTGELD = 500
+Config.STARTGELD = 600
 Config.GRUNDEINKOMMEN = 10 -- so viel Geld gibt es immer, auch ohne Gebäude
 Config.EINKOMMEN_INTERVALL = 5 -- alle 5 Sekunden gibt es Geld
+Config.STEUER_PRO_BEWOHNER = 0.3 -- jeder Bewohner zahlt 0,3 $ Steuern pro Runde
+
+-- Strom
+-- Jede Stadt hat ein kleines Grund-Netz. Für mehr Gebäude brauchst du Kraftwerke.
+-- Ohne genug Strom gibt es nur das halbe Einkommen (Stromausfall!).
+Config.GRUNDSTROM = 10
 
 -- Städte
 Config.STADT_GROESSE = 120 -- Kantenlänge einer Stadt in Studs
 Config.STADT_ABSTAND = 170 -- Abstand der Stadtmitte zur Kartenmitte
 
--- Raketen
-Config.SCHUSS_PAUSE = 2 -- Sekunden zwischen zwei Abschüssen
+-- Angriffe
+Config.ANGRIFF_PAUSE = 2 -- Sekunden zwischen zwei Angriffen
+Config.MAX_ANZAHL = 10 -- so viele Raketen/Panzer/Jets kann man auf einmal schicken
 Config.BELOHNUNG_ANTEIL = 0.5 -- für ein zerstörtes Gebäude bekommst du 50 % seines Preises
 
 -- Gebäude, die man in seiner Stadt bauen kann
+-- Bewohner: wie viele Leute darin wohnen (zahlen Steuern)
+-- Strom: positiv = erzeugt Strom, negativ = verbraucht Strom
 Config.Gebaeude = {
 	Haus = {
 		Name = "Haus",
 		Preis = 50,
-		Einkommen = 3,
+		Bewohner = 10,
+		Strom = -2,
 		Leben = 100,
+	},
+	Hochhaus = {
+		Name = "Hochhaus",
+		Preis = 250,
+		Bewohner = 50,
+		Strom = -8,
+		Leben = 250,
 	},
 	Fabrik = {
 		Name = "Fabrik",
 		Preis = 150,
 		Einkommen = 8,
+		Strom = -6,
 		Leben = 150,
+	},
+	Kraftwerk = {
+		Name = "Kraftwerk",
+		Preis = 200,
+		Strom = 30,
+		Leben = 200,
 	},
 	Abwehr = {
 		Name = "Flugabwehr",
 		Preis = 300,
-		Einkommen = 0,
+		Strom = -4,
 		Leben = 200,
-		IstAbwehr = true,
-		Reichweite = 140, -- so nah muss eine Rakete kommen, damit die Abwehr schießt
-		Trefferchance = 0.6, -- 60 % Chance, die Rakete abzufangen
+		IstFlugabwehr = true, -- schießt auf Raketen und Jets
+		Reichweite = 140, -- so nah muss eine Rakete/ein Jet kommen, damit die Abwehr schießt
+		Trefferchance = 0.6, -- 60 % Chance zu treffen
 		Nachladezeit = 4, -- Sekunden bis zum nächsten Schuss
 	},
+	Panzerabwehr = {
+		Name = "Panzerabwehr",
+		Preis = 250,
+		Strom = -3,
+		Leben = 200,
+		IstPanzerabwehr = true, -- schießt auf Panzer
+		Reichweite = 110,
+		Schaden = 45,
+		Nachladezeit = 2.5,
+	},
 }
-Config.GebaeudeReihenfolge = { "Haus", "Fabrik", "Abwehr" }
+Config.GebaeudeReihenfolge = { "Haus", "Hochhaus", "Fabrik", "Kraftwerk", "Abwehr", "Panzerabwehr" }
 
--- Raketen, die man kaufen und abschießen kann
+-- Raketen: je stärker, desto teurer
+-- Abfangbar: 1 = die Flugabwehr trifft normal, 0.4 = nur noch 40 % so oft
 Config.Raketen = {
 	Kurzstrecke = {
 		Name = "Kurzstrecken-Rakete",
 		Preis = 100,
-		Schaden = 70,
-		Radius = 22, -- Explosionsradius in Studs
-		Flugzeit = 7, -- Sekunden in der Luft
-		Hoehe = 120, -- wie hoch der Bogen geht
-		Groesse = 1,
+		Schaden = 60,
+		Radius = 18, -- Explosionsradius in Studs
+		Flugzeit = 6, -- Sekunden in der Luft
+		Hoehe = 110, -- wie hoch der Bogen geht
+		Groesse = 0.9,
+		Abfangbar = 1,
+	},
+	Mittelstrecke = {
+		Name = "Mittelstrecken-Rakete",
+		Preis = 200,
+		Schaden = 90,
+		Radius = 24,
+		Flugzeit = 7,
+		Hoehe = 140,
+		Groesse = 1.2,
+		Abfangbar = 0.85,
 	},
 	Schwer = {
 		Name = "Schwere Rakete",
-		Preis = 250,
-		Schaden = 140,
+		Preis = 400,
+		Schaden = 150,
 		Radius = 32,
-		Flugzeit = 10,
+		Flugzeit = 9,
 		Hoehe = 180,
 		Groesse = 1.6,
+		Abfangbar = 0.7,
+	},
+	Mega = {
+		Name = "Mega-Rakete",
+		Preis = 1000,
+		Schaden = 300,
+		Radius = 50,
+		Flugzeit = 11,
+		Hoehe = 230,
+		Groesse = 2.3,
+		Abfangbar = 0.4,
 	},
 }
-Config.RaketenReihenfolge = { "Kurzstrecke", "Schwer" }
+Config.RaketenReihenfolge = { "Kurzstrecke", "Mittelstrecke", "Schwer", "Mega" }
+
+-- Fahrzeuge: Panzer fahren über den Boden, Jets fliegen über die Stadt und werfen Bomben.
+-- Was den Angriff überlebt, kommt zurück in dein Lager.
+Config.Einheiten = {
+	Panzer = {
+		Name = "Panzer",
+		Preis = 200,
+		Leben = 120,
+		Tempo = 22, -- Studs pro Sekunde
+		Schaden = 30, -- pro Schuss
+		Schuesse = 6,
+		Schussabstand = 1.5, -- Sekunden zwischen zwei Schüssen
+	},
+	Jet = {
+		Name = "Kampfjet",
+		Preis = 400,
+		Tempo = 130,
+		Hoehe = 90,
+		Bomben = 3,
+		BombenSchaden = 70,
+		BombenRadius = 18,
+	},
+}
+Config.EinheitenReihenfolge = { "Panzer", "Jet" }
 
 -- Sounds
 -- Die "rbxasset://"-Sounds sind in Roblox eingebaut und funktionieren immer.
@@ -82,5 +163,10 @@ Config.Sounds = {
 	Sirene = "",
 	Piep = "rbxasset://sounds/electronicpingshort.wav",
 }
+
+-- Hilfsfunktion: Infos zu einer Waffe (Rakete oder Fahrzeug) holen
+function Config.waffe(typ: string)
+	return Config.Raketen[typ] or Config.Einheiten[typ]
+end
 
 return Config

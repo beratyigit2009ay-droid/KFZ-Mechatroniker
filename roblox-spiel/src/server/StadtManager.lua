@@ -73,6 +73,7 @@ function StadtManager.erstellen()
 			index = i,
 			name = "Stadt " .. i,
 			modell = modell,
+			farbe = FARBEN[i],
 			besitzer = nil :: Player?,
 			mitte = Vector3.new(mitte.X, teile.oben, mitte.Z),
 			startPunkt = teile.startPunkt,
@@ -128,9 +129,12 @@ function StadtManager.spielerBeitreten(spieler: Player)
 	geld.Parent = leaderstats
 	leaderstats.Parent = spieler
 
-	-- Raketen-Lager: z.B. Attribut "Rakete_Kurzstrecke" = Anzahl
+	-- Waffen-Lager: z.B. Attribut "Lager_Kurzstrecke" = Anzahl
 	for typ in pairs(Config.Raketen) do
-		spieler:SetAttribute("Rakete_" .. typ, 0)
+		spieler:SetAttribute("Lager_" .. typ, 0)
+	end
+	for typ in pairs(Config.Einheiten) do
+		spieler:SetAttribute("Lager_" .. typ, 0)
 	end
 
 	-- Freie Stadt suchen
@@ -147,6 +151,7 @@ function StadtManager.spielerBeitreten(spieler: Player)
 		spieler:SetAttribute("Stadt", frei.index)
 		spielstand:SetAttribute("Besitzer" .. frei.index, spieler.Name)
 		frei.schild.Text = frei.name .. ": " .. spieler.Name
+		StadtManager.aktualisieren(frei)
 	else
 		-- Alle 4 Städte sind vergeben: Spieler schaut nur zu
 		spieler:SetAttribute("Stadt", 0)
@@ -204,32 +209,75 @@ function StadtManager.bauen(stadt, typ: string): boolean
 	gebaeude:SetAttribute("Typ", typ)
 	gebaeude:SetAttribute("Leben", info.Leben)
 	gebaeude:SetAttribute("MaxLeben", info.Leben)
+
+	-- Bewohner, die vor dem Haus stehen (1 Figur pro 5 Bewohner, höchstens 4)
+	local anzahl = math.min(math.floor((info.Bewohner or 0) / 5), 4)
+	for i = 1, anzahl do
+		local x = (i - (anzahl + 1) / 2) * 2.2
+		local pos = platz.pos + Vector3.new(x, 0, -8 - math.random() * 1.5)
+		Modelle.bewohner(gebaeude, pos, math.rad(180 + math.random(-40, 40)))
+	end
+
 	gebaeude.Parent = stadt.gebaeudeOrdner
 	platz.gebaeude = gebaeude
+	StadtManager.aktualisieren(stadt)
 	return true
 end
 
--- Alle Flugabwehr-Stellungen einer Stadt
-function StadtManager.abwehrIn(stadt): { Model }
+-- Alle Gebäude einer Stadt mit einer bestimmten Eigenschaft, z.B. "IstFlugabwehr"
+function StadtManager.gebaeudeMit(stadt, eigenschaft: string): { Model }
 	local liste = {}
 	for _, platz in ipairs(stadt.plaetze) do
 		local g = platz.gebaeude
-		if g and Config.Gebaeude[g:GetAttribute("Typ")].IstAbwehr then
+		if g and Config.Gebaeude[g:GetAttribute("Typ")][eigenschaft] then
 			table.insert(liste, g)
 		end
 	end
 	return liste
 end
 
--- Wie viel Geld die Stadt pro Runde verdient
-function StadtManager.einkommen(stadt): number
-	local summe = Config.GRUNDEINKOMMEN
+-- Rechnet Bewohner, Strom und Einkommen einer Stadt aus
+function StadtManager.werte(stadt)
+	local bewohner, fabrikGeld = 0, 0
+	local stromErzeugt, stromBedarf = Config.GRUNDSTROM, 0
 	for _, platz in ipairs(stadt.plaetze) do
 		if platz.gebaeude then
-			summe += Config.Gebaeude[platz.gebaeude:GetAttribute("Typ")].Einkommen
+			local info = Config.Gebaeude[platz.gebaeude:GetAttribute("Typ")]
+			bewohner += info.Bewohner or 0
+			fabrikGeld += info.Einkommen or 0
+			local strom = info.Strom or 0
+			if strom > 0 then
+				stromErzeugt += strom
+			else
+				stromBedarf -= strom
+			end
 		end
 	end
-	return summe
+	local stromausfall = stromBedarf > stromErzeugt
+	local einkommen = Config.GRUNDEINKOMMEN + math.floor(bewohner * Config.STEUER_PRO_BEWOHNER) + fabrikGeld
+	if stromausfall then
+		einkommen = math.floor(einkommen / 2) -- Stromausfall: nur halbes Einkommen
+	end
+	return {
+		bewohner = bewohner,
+		stromErzeugt = stromErzeugt,
+		stromBedarf = stromBedarf,
+		stromausfall = stromausfall,
+		einkommen = einkommen,
+	}
+end
+
+-- Schreibt die Werte der Stadt an den Besitzer, damit seine Anzeige sie zeigen kann
+function StadtManager.aktualisieren(stadt)
+	local spieler = stadt.besitzer
+	if not spieler then
+		return
+	end
+	local w = StadtManager.werte(stadt)
+	spieler:SetAttribute("Bewohner", w.bewohner)
+	spieler:SetAttribute("StromErzeugt", w.stromErzeugt)
+	spieler:SetAttribute("StromBedarf", w.stromBedarf)
+	spieler:SetAttribute("Einkommen", w.einkommen)
 end
 
 -- Sucht ein Ziel in der Stadt: ein zufälliges Gebäude oder eine zufällige Stelle
@@ -299,6 +347,10 @@ function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angre
 				end
 			end
 		end
+	end
+
+	for _, stadt in ipairs(staedte) do
+		StadtManager.aktualisieren(stadt)
 	end
 
 	if angreifer and angreifer.Parent and belohnung > 0 then

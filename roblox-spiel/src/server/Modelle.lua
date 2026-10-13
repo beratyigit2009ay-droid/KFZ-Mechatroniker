@@ -264,6 +264,272 @@ function Modelle.Abwehr(pos: Vector3): Model
 	return m
 end
 
+function Modelle.Hochhaus(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Hochhaus"
+	local turm = teil(m, {
+		Name = "Turm",
+		Size = Vector3.new(12, 30, 12),
+		CFrame = CFrame.new(pos + Vector3.new(0, 15, 0)),
+		Color = Color3.fromRGB(175, 185, 200),
+		Material = Enum.Material.Concrete,
+	})
+	-- Fensterreihen auf allen 4 Seiten
+	for stock = 1, 6 do
+		local y = stock * 4.6
+		teil(m, {
+			Name = "Fenster",
+			Size = Vector3.new(12.2, 2, 12.2),
+			CFrame = CFrame.new(pos + Vector3.new(0, y, 0)),
+			Color = Color3.fromRGB(120, 170, 220),
+			Material = Enum.Material.Glass,
+		})
+	end
+	teil(m, {
+		Name = "Dach",
+		Size = Vector3.new(4, 3, 4),
+		CFrame = CFrame.new(pos + Vector3.new(2, 31.5, 2)),
+		Color = Color3.fromRGB(90, 90, 95),
+		Material = Enum.Material.Metal,
+	})
+	m.PrimaryPart = turm
+	return m
+end
+
+function Modelle.Kraftwerk(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Kraftwerk"
+	local halle = teil(m, {
+		Name = "Halle",
+		Size = Vector3.new(8, 7, 12),
+		CFrame = CFrame.new(pos + Vector3.new(-3.5, 3.5, 0)),
+		Color = Color3.fromRGB(200, 200, 190),
+		Material = Enum.Material.Concrete,
+	})
+	-- Kühlturm mit Dampf
+	local kuehlturm = teil(m, {
+		Name = "Kuehlturm",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(14, 7, 7),
+		CFrame = CFrame.new(pos + Vector3.new(4, 7, 0)) * STEHEND,
+		Color = Color3.fromRGB(215, 215, 210),
+		Material = Enum.Material.Concrete,
+	})
+	local dampf = Instance.new("Smoke")
+	dampf.Color = Color3.fromRGB(245, 245, 245)
+	dampf.Size = 5
+	dampf.RiseVelocity = 5
+	dampf.Opacity = 0.25
+	dampf.Parent = kuehlturm
+	-- gelbes Blitz-Schild
+	teil(m, {
+		Name = "Schild",
+		Size = Vector3.new(3, 3, 0.3),
+		CFrame = CFrame.new(pos + Vector3.new(-3.5, 4.5, -6.1)) * CFrame.Angles(0, 0, GRAD(45)),
+		Color = Color3.fromRGB(250, 210, 0),
+		Material = Enum.Material.Neon,
+	})
+	m.PrimaryPart = halle
+	return m
+end
+
+function Modelle.Panzerabwehr(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Panzerabwehr"
+	local sandsaecke = teil(m, {
+		Name = "Sandsaecke",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(3, 9, 9),
+		CFrame = CFrame.new(pos + Vector3.new(0, 1.5, 0)) * STEHEND,
+		Color = Color3.fromRGB(170, 145, 100),
+		Material = Enum.Material.Sand,
+	})
+	teil(m, {
+		Name = "Geschuetz",
+		Size = Vector3.new(3, 2, 4),
+		CFrame = CFrame.new(pos + Vector3.new(0, 4, 0)),
+		Color = Color3.fromRGB(70, 75, 60),
+		Material = Enum.Material.Metal,
+	})
+	teil(m, {
+		Name = "Rohr",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(8, 0.8, 0.8),
+		CFrame = CFrame.new(pos + Vector3.new(0, 4.3, -5)) * LIEGEND,
+		Color = Color3.fromRGB(50, 50, 45),
+		Material = Enum.Material.Metal,
+	})
+	m.PrimaryPart = sandsaecke
+	return m
+end
+
+-- Ein kleiner Bewohner, der vor seinem Haus steht
+function Modelle.bewohner(eltern: Instance, pos: Vector3, drehung: number)
+	local cf = CFrame.new(pos) * CFrame.Angles(0, drehung, 0)
+	local hemden = {
+		Color3.fromRGB(200, 60, 60),
+		Color3.fromRGB(60, 120, 200),
+		Color3.fromRGB(60, 160, 80),
+		Color3.fromRGB(230, 180, 40),
+		Color3.fromRGB(150, 80, 180),
+	}
+	local haut = Color3.fromRGB(240, 200, 160)
+	local function koerperteil(name, groesse, versatz, farbe)
+		teil(eltern, {
+			Name = name,
+			Size = groesse,
+			CFrame = cf * CFrame.new(versatz),
+			Color = farbe,
+			Material = Enum.Material.SmoothPlastic,
+			CanCollide = false,
+		})
+	end
+	koerperteil("Bein", Vector3.new(0.45, 1.2, 0.45), Vector3.new(-0.25, 0.6, 0), Color3.fromRGB(40, 50, 90))
+	koerperteil("Bein", Vector3.new(0.45, 1.2, 0.45), Vector3.new(0.25, 0.6, 0), Color3.fromRGB(40, 50, 90))
+	koerperteil("Bauch", Vector3.new(1, 1.2, 0.5), Vector3.new(0, 1.8, 0), hemden[math.random(1, #hemden)])
+	koerperteil("Arm", Vector3.new(0.35, 1.1, 0.35), Vector3.new(-0.7, 1.8, 0), haut)
+	koerperteil("Arm", Vector3.new(0.35, 1.1, 0.35), Vector3.new(0.7, 1.8, 0), haut)
+	koerperteil("Kopf", Vector3.new(0.7, 0.7, 0.7), Vector3.new(0, 2.8, 0), haut)
+end
+
+------------------------------------------------------------------------
+-- FAHRZEUGE (zeigen nach vorne = -Z, Mittelpunkt unten auf dem Boden)
+------------------------------------------------------------------------
+
+function Modelle.panzer(farbe: Color3): Model
+	local m = Instance.new("Model")
+	m.Name = "Panzer"
+	local oliv = Color3.fromRGB(85, 95, 55)
+	local function neu(eigenschaften)
+		eigenschaften.CanCollide = false
+		eigenschaften.CanQuery = false
+		return teil(m, eigenschaften)
+	end
+	local wurzel = neu({ Name = "Wurzel", Size = Vector3.one * 0.2, Transparency = 1, CFrame = CFrame.new() })
+	for _, x in ipairs({ -3.8, 3.8 }) do
+		neu({
+			Name = "Kette",
+			Size = Vector3.new(2, 2.2, 12),
+			CFrame = CFrame.new(x, 1.1, 0),
+			Color = Color3.fromRGB(35, 35, 35),
+			Material = Enum.Material.DiamondPlate,
+		})
+	end
+	neu({ Name = "Wanne", Size = Vector3.new(6, 2.4, 11), CFrame = CFrame.new(0, 2.3, 0), Color = oliv, Material = Enum.Material.Metal })
+	neu({ Name = "Turm", Size = Vector3.new(5, 2, 5.5), CFrame = CFrame.new(0, 4.4, 0.5), Color = oliv, Material = Enum.Material.Metal })
+	-- Streifen in der Farbe der eigenen Stadt
+	neu({ Name = "Streifen", Size = Vector3.new(5.1, 0.6, 5.6), CFrame = CFrame.new(0, 5.2, 0.5), Color = farbe, Material = Enum.Material.SmoothPlastic })
+	local rohr = neu({
+		Name = "Rohr",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(8, 0.7, 0.7),
+		CFrame = CFrame.new(0, 4.4, -6) * LIEGEND,
+		Color = Color3.fromRGB(60, 65, 40),
+		Material = Enum.Material.Metal,
+	})
+	-- Mündung vorne am Rohr, für den Mündungsblitz
+	local muendung = Instance.new("Attachment")
+	muendung.Name = "Muendung"
+	muendung.Position = Vector3.new(4, 0, 0) -- das gedrehte Rohr zeigt mit +X nach vorne
+	muendung.Parent = rohr
+	-- Staub hinter den Ketten
+	local staub = Instance.new("ParticleEmitter")
+	staub.Name = "Staub"
+	staub.Texture = "rbxasset://textures/particles/smoke_main.dds"
+	staub.Color = ColorSequence.new(Color3.fromRGB(160, 140, 110))
+	staub.Size = NumberSequence.new(1.5, 5)
+	staub.Transparency = NumberSequence.new(0.4, 1)
+	staub.Lifetime = NumberRange.new(1, 2)
+	staub.Rate = 25
+	staub.Speed = NumberRange.new(2, 5)
+	staub.SpreadAngle = Vector2.new(30, 30)
+	staub.EmissionDirection = Enum.NormalId.Back
+	staub.Enabled = false
+	staub.Parent = neu({ Name = "Staubquelle", Size = Vector3.new(8, 0.5, 0.5), Transparency = 1, CFrame = CFrame.new(0, 0.5, 6.5) })
+
+	local motor = Instance.new("Sound")
+	motor.Name = "Motor"
+	motor.Looped = true
+	motor.Volume = 0.5
+	motor.PlaybackSpeed = 0.4
+	motor.RollOffMaxDistance = 300
+	motor.Parent = wurzel
+
+	m.PrimaryPart = wurzel
+	return m
+end
+
+function Modelle.jet(farbe: Color3): Model
+	local m = Instance.new("Model")
+	m.Name = "Jet"
+	local grau = Color3.fromRGB(140, 145, 155)
+	local function neu(eigenschaften)
+		eigenschaften.CanCollide = false
+		eigenschaften.CanQuery = false
+		eigenschaften.CanTouch = false
+		return teil(m, eigenschaften)
+	end
+	local wurzel = neu({ Name = "Wurzel", Size = Vector3.one * 0.2, Transparency = 1, CFrame = CFrame.new() })
+	neu({ Name = "Rumpf", Shape = Enum.PartType.Cylinder, Size = Vector3.new(14, 2, 2), CFrame = LIEGEND, Color = grau, Material = Enum.Material.Metal })
+	local nase = neu({ Name = "Nase", Size = Vector3.new(2, 2, 5), CFrame = CFrame.new(0, 0, -7), Color = grau, Material = Enum.Material.Metal })
+	local kugel = Instance.new("SpecialMesh")
+	kugel.MeshType = Enum.MeshType.Sphere
+	kugel.Parent = nase
+	local cockpit = neu({ Name = "Cockpit", Size = Vector3.new(1.4, 1.2, 3.5), CFrame = CFrame.new(0, 1, -3.5), Color = Color3.fromRGB(40, 60, 90), Material = Enum.Material.Glass })
+	local kugel2 = Instance.new("SpecialMesh")
+	kugel2.MeshType = Enum.MeshType.Sphere
+	kugel2.Parent = cockpit
+	neu({ Name = "Fluegel", Size = Vector3.new(16, 0.35, 4.5), CFrame = CFrame.new(0, -0.2, 0.5), Color = grau, Material = Enum.Material.Metal })
+	neu({ Name = "Fluegelspitze", Size = Vector3.new(16.2, 0.4, 1), CFrame = CFrame.new(0, -0.2, 2.2), Color = farbe, Material = Enum.Material.SmoothPlastic })
+	neu({ Name = "Hoehenruder", Size = Vector3.new(7, 0.3, 2.2), CFrame = CFrame.new(0, 0, 6), Color = grau, Material = Enum.Material.Metal })
+	neu({ Name = "Seitenruder", Size = Vector3.new(0.3, 3.5, 2.8), CFrame = CFrame.new(0, 1.8, 6), Color = farbe, Material = Enum.Material.SmoothPlastic })
+
+	-- Nachbrenner
+	local ausstoss = neu({ Name = "Ausstoss", Size = Vector3.one * 0.4, Transparency = 1, CFrame = CFrame.new(0, 0, 7.4) })
+	local feuer = Instance.new("ParticleEmitter")
+	feuer.Name = "Feuer"
+	feuer.Texture = "rbxasset://textures/particles/fire_main.dds"
+	feuer.Color = ColorSequence.new(Color3.fromRGB(255, 220, 150), Color3.fromRGB(255, 90, 20))
+	feuer.LightEmission = 1
+	feuer.Size = NumberSequence.new(1.4, 0.2)
+	feuer.Transparency = NumberSequence.new(0.1, 1)
+	feuer.Lifetime = NumberRange.new(0.1, 0.2)
+	feuer.Rate = 120
+	feuer.Speed = NumberRange.new(20, 30)
+	feuer.EmissionDirection = Enum.NormalId.Back
+	feuer.Parent = ausstoss
+	local licht = Instance.new("PointLight")
+	licht.Color = Color3.fromRGB(255, 140, 50)
+	licht.Brightness = 4
+	licht.Range = 20
+	licht.Parent = ausstoss
+
+	local ton = Instance.new("Sound")
+	ton.Name = "Flug"
+	ton.Looped = true
+	ton.Volume = 0.8
+	ton.PlaybackSpeed = 0.7
+	ton.RollOffMinDistance = 30
+	ton.RollOffMaxDistance = 700
+	ton.Parent = wurzel
+
+	m.PrimaryPart = wurzel
+	return m
+end
+
+function Modelle.bombe(): Part
+	local bombe = Instance.new("Part")
+	bombe.Name = "Bombe"
+	bombe.Shape = Enum.PartType.Cylinder
+	bombe.Size = Vector3.new(2.4, 0.9, 0.9)
+	bombe.Color = Color3.fromRGB(50, 55, 45)
+	bombe.Material = Enum.Material.Metal
+	bombe.Anchored = true
+	bombe.CanCollide = false
+	bombe.CanQuery = false
+	return bombe
+end
+
 ------------------------------------------------------------------------
 -- RAKETE
 ------------------------------------------------------------------------
