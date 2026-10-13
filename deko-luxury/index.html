@@ -30,7 +30,7 @@
 
   <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="assets/img/portfolio-02-800.webp" imagesrcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" imagesizes="(min-width: 900px) 40vw, 68vw" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/galerie-01-900.webp" imagesrcset="assets/img/galerie-01-600.webp 600w, assets/img/galerie-01-900.webp 900w, assets/img/galerie-01-1500.webp 1500w" imagesizes="(min-width: 900px) 40vw, 68vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     (function (d) {
@@ -44,7 +44,7 @@
   <script src="assets/js/main.js" defer></script>
 
   <!-- Strukturierte Daten (Local SEO). Nur echte Angaben verwenden.
-       TODO ergänzen, sobald bekannt: "url", "image", "logo" (absolute URLs), "telephone", "sameAs" (Instagram-Profil).
+       TODO ergänzen, sobald die Domain feststeht: "url", "image", "logo" (absolute URLs).
        Öffnungszeiten laut Inhaber: 24/7. -->
   <script type="application/ld+json">
   {
@@ -55,6 +55,8 @@
     "slogan": "Wir dekorieren eure Veranstaltungen nach euren Wünschen",
     "description": "Eventdekoration für Hochzeiten, Geburtstage, Firmenveranstaltungen und private Feiern – individuell geplant und mit Liebe zum Detail umgesetzt. Showroom in Burgau.",
     "email": "deko.luxury@gmx.de",
+    "telephone": "+49 179 4310823",
+    "sameAs": ["https://www.instagram.com/deko.luxury/"],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Kapuzinerstr. 4",
@@ -138,7 +140,7 @@
         "name": "Wie erreichen wir euch am schnellsten?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Über das Anfrageformular oder per E-Mail an deko.luxury@gmx.de."
+          "text": "Per Telefon oder WhatsApp unter +49 179 4310823, über das Anfrageformular oder per E-Mail an deko.luxury@gmx.de."
         }
       }
     ]
@@ -264,8 +266,7 @@
           <p class="hero__lead">Hochzeiten, Geburtstage, Firmenfeiern und private Feste – individuell geplant und mit Liebe zum Detail umgesetzt. Showroom in Burgau.</p>
           <div class="hero__actions">
             <a class="btn btn--foil" href="#kontakt" data-cta>Beratung anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
-            <!-- WhatsApp-Nummer in assets/js/main.js unter KONTAKT eintragen (TODO) -->
-            <a class="btn btn--ghost" href="#kontakt" data-contact="whatsapp"><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
+            <a class="btn btn--ghost" href="https://wa.me/491794310823" target="_blank" rel="noopener" data-contact="whatsapp"><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
           </div>
           <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>Jetzt geöffnet</strong> · 24/7 · Kapuzinerstr. 4, Burgau</span></p>
         </div>
@@ -277,13 +278,13 @@
               <path pathLength="1" d="M0 645 V270 A270 270 0 0 1 540 270 V645"/>
             </svg>
             <div class="hero__window">
-              <img class="hero__slide is-active" src="assets/img/portfolio-02-800.webp" srcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 68vw" width="1600" height="2019" fetchpriority="high" decoding="async" data-cat="Table Styling" data-title="Sommertafel im Garten" alt="Lange Gartentafel mit üppigen Blumen in Pink, Koralle und Gelb, Kerzen, Goldbesteck und Ballonbogen">
-              <img class="hero__slide" src="assets/img/portfolio-08-800.webp" srcset="assets/img/portfolio-08-600.webp 600w, assets/img/portfolio-08-800.webp 800w, assets/img/portfolio-08-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 68vw" width="1600" height="1981" loading="lazy" decoding="async" data-cat="Birthdays" data-title="Unterwasserwelt zum ersten Geburtstag" alt="Ballongirlande in Hellblau und Weiß mit Seesternen, Quallen und Fischernetz an einer weißen Rundwand zum ersten Geburtstag">
-              <img class="hero__slide" src="assets/img/portfolio-03-800.webp" srcset="assets/img/portfolio-03-600.webp 600w, assets/img/portfolio-03-800.webp 800w, assets/img/portfolio-03-1600.webp 1600w" sizes="(min-width: 900px) 40vw, 68vw" width="1600" height="2127" loading="lazy" decoding="async" data-cat="Birthdays" data-title="Erdbeeren zum ersten Geburtstag" alt="Rosa Bogenwand mit Ballongirlande, Erdbeer-Folienballons und leuchtender 1 zum ersten Geburtstag">
+              <img class="hero__slide is-active" src="assets/img/galerie-01-900.webp" srcset="assets/img/galerie-01-600.webp 600w, assets/img/galerie-01-900.webp 900w, assets/img/galerie-01-1500.webp 1500w" sizes="(min-width: 900px) 40vw, 68vw" width="1500" height="2000" fetchpriority="high" decoding="async" data-cat="Table Styling" data-title="Festsaal in Salbeigrün &amp; Gold" alt="Festsaal mit weißen Gewölbebögen, runden Tafeln in Weiß, salbeigrünen Läufern und Servietten, Goldbesteck, weißen Blumen und Kerzen">
+              <img class="hero__slide" src="assets/img/galerie-02-900.webp" srcset="assets/img/galerie-02-600.webp 600w, assets/img/galerie-02-900.webp 900w, assets/img/galerie-02-1500.webp 1179w" sizes="(min-width: 900px) 40vw, 68vw" width="1179" height="1563" loading="lazy" decoding="async" data-cat="Baby Party" data-title="Oh Baby in Weiß" alt="Leuchtbuchstaben „OH BABY“ vor einer weißen Ballonwand, dazu eine runde Tafel mit weißen Ballons, Teddybär, Kerzen und Pampasgras unter Lichterketten">
+              <img class="hero__slide" src="assets/img/galerie-03-900.webp" srcset="assets/img/galerie-03-600.webp 600w, assets/img/galerie-03-900.webp 900w, assets/img/galerie-03-1500.webp 1500w" sizes="(min-width: 900px) 40vw, 68vw" width="1500" height="2000" loading="lazy" decoding="async" data-cat="Table Styling" data-title="Sommertafel mit Blüten &amp; Limetten" alt="Nahaufnahme einer Tafel mit Dahlien, Hortensien und gelben Blüten, salbeigrünem Läufer, grünen Kristallgläsern und Limetten auf den Tellern">
             </div>
           </div>
           <figcaption class="hero__cap">
-            <span class="hero__cap-text"><span class="hero__cap-cat" data-slide-cat>Table Styling</span><span class="hero__cap-title" data-slide-title>Sommertafel im Garten</span></span>
+            <span class="hero__cap-text"><span class="hero__cap-cat" data-slide-cat>Table Styling</span><span class="hero__cap-title" data-slide-title>Festsaal in Salbeigrün &amp; Gold</span></span>
             <span class="hero__cap-count" data-slide-count>01 / 03</span>
             <button type="button" class="hero__pause" data-slide-pause aria-pressed="false" aria-label="Bildwechsel pausieren"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12"/><path class="i-play" d="M8 5.5v13l11-6.5z"/></svg></button>
           </figcaption>
@@ -344,7 +345,7 @@
           </ul>
         </div>
         <figure class="about__media" data-reveal-img>
-          <span class="about__frame"><span class="about__par"><img src="assets/img/stil-700.webp" srcset="assets/img/stil-700.webp 700w, assets/img/stil-1400.webp 1400w" sizes="(min-width: 900px) 40vw, 92vw" width="1400" height="1587" loading="lazy" decoding="async" alt="Sesselecke mit weißen Bögen, Blumen in Creme und gedecktem Tisch im warmen Licht"></span></span>
+          <span class="about__frame"><span class="about__par"><img src="assets/img/galerie-04-600.webp" srcset="assets/img/galerie-04-600.webp 600w, assets/img/galerie-04-900.webp 900w, assets/img/galerie-04-1500.webp 909w" sizes="(min-width: 900px) 40vw, 92vw" width="909" height="1600" loading="lazy" decoding="async" alt="Hauseingang mit weißem Blütenkreis, Satinschleife an der Tür, weißem Läufer, Blumensäule und Willkommensschild"></span></span>
           <span class="about__badge" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="47"/><use href="#monogram" x="28.5" y="27" width="43" height="44.4"/></svg></span>
         </figure>
       </div>
@@ -444,39 +445,33 @@
         </header>
         <ul class="gal" data-gallery-grid>
           <li class="gal__item" data-reveal style="--d:0.00s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-02-1600.webp" data-category="Table Styling" data-title="Sommertafel im Garten" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-02-800.webp" srcset="assets/img/portfolio-02-600.webp 600w, assets/img/portfolio-02-800.webp 800w, assets/img/portfolio-02-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1600" height="2019" loading="lazy" decoding="async" alt="Lange Gartentafel mit üppigen Blumen in Pink, Koralle und Gelb, Kerzen, Goldbesteck und Ballonbogen"></span>
-              <span class="gal__cap"><span class="gal__cat">Table Styling</span><span class="gal__title">Sommertafel im Garten</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/galerie-01-1500.webp" data-category="Table Styling" data-title="Festsaal in Salbeigrün &amp; Gold" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <span class="gal__media"><img src="assets/img/galerie-01-600.webp" srcset="assets/img/galerie-01-600.webp 600w, assets/img/galerie-01-900.webp 900w, assets/img/galerie-01-1500.webp 1500w" sizes="(min-width: 900px) 30vw, 46vw" width="1500" height="2000" loading="lazy" decoding="async" alt="Festsaal mit weißen Gewölbebögen, runden Tafeln in Weiß, salbeigrünen Läufern und Servietten, Goldbesteck, weißen Blumen und Kerzen"></span>
+              <span class="gal__cap"><span class="gal__cat">Table Styling</span><span class="gal__title">Festsaal in Salbeigrün &amp; Gold</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
             </button>
           </li>
           <li class="gal__item" data-reveal style="--d:0.08s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-07-1600.webp" data-category="Birthdays" data-title="Schwarz &amp; Gold zum 30." data-eventtyp="Geburtstag" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-07-800.webp" srcset="assets/img/portfolio-07-600.webp 600w, assets/img/portfolio-07-800.webp 800w, assets/img/portfolio-07-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1600" height="1185" loading="lazy" decoding="async" alt="Geburtstagsdekoration in Schwarz und Gold mit runder Rückwand „Happy 30th Birthday“ und leuchtender 30"></span>
-              <span class="gal__cap"><span class="gal__cat">Birthdays</span><span class="gal__title">Schwarz &amp; Gold zum 30.</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/galerie-02-1500.webp" data-category="Baby Party" data-title="Oh Baby in Weiß" data-eventtyp="Baby-Party" data-location="" data-konzept="" data-beschreibung="">
+              <span class="gal__media"><img src="assets/img/galerie-02-600.webp" srcset="assets/img/galerie-02-600.webp 600w, assets/img/galerie-02-900.webp 900w, assets/img/galerie-02-1500.webp 1179w" sizes="(min-width: 900px) 30vw, 46vw" width="1179" height="1563" loading="lazy" decoding="async" alt="Leuchtbuchstaben „OH BABY“ vor einer weißen Ballonwand, dazu eine runde Tafel mit weißen Ballons, Teddybär, Kerzen und Pampasgras unter Lichterketten"></span>
+              <span class="gal__cap"><span class="gal__cat">Baby Party</span><span class="gal__title">Oh Baby in Weiß</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
             </button>
           </li>
           <li class="gal__item" data-reveal style="--d:0.16s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-01-1600.webp" data-category="Baby Party" data-title="Oh Baby im Schnee" data-eventtyp="Baby-Party" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-01-800.webp" srcset="assets/img/portfolio-01-600.webp 600w, assets/img/portfolio-01-800.webp 800w, assets/img/portfolio-01-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1600" height="900" loading="lazy" decoding="async" alt="Leuchtbuchstaben „OH BABY“ mit Ballonbogen in Blau, Rosé und Kupfer vor verschneiter Berglandschaft"></span>
-              <span class="gal__cap"><span class="gal__cat">Baby Party</span><span class="gal__title">Oh Baby im Schnee</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/galerie-03-1500.webp" data-category="Table Styling" data-title="Sommertafel mit Blüten &amp; Limetten" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <span class="gal__media"><img src="assets/img/galerie-03-600.webp" srcset="assets/img/galerie-03-600.webp 600w, assets/img/galerie-03-900.webp 900w, assets/img/galerie-03-1500.webp 1500w" sizes="(min-width: 900px) 30vw, 92vw" width="1500" height="2000" loading="lazy" decoding="async" alt="Nahaufnahme einer Tafel mit Dahlien, Hortensien und gelben Blüten, salbeigrünem Läufer, grünen Kristallgläsern und Limetten auf den Tellern"></span>
+              <span class="gal__cap"><span class="gal__cat">Table Styling</span><span class="gal__title">Sommertafel mit Blüten &amp; Limetten</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
             </button>
           </li>
-          <li class="gal__item" data-reveal style="--d:0.00s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-04-1600.webp" data-category="Lounge &amp; Details" data-title="Lounge in Creme und Weiß" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-04-800.webp" srcset="assets/img/portfolio-04-600.webp 600w, assets/img/portfolio-04-800.webp 800w, assets/img/portfolio-04-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1192" height="1998" loading="lazy" decoding="async" alt="Lounge mit weißen Bögen, Plüschsesseln, Blumen in Creme und Neonschrift"></span>
-              <span class="gal__cap"><span class="gal__cat">Lounge &amp; Details</span><span class="gal__title">Lounge in Creme und Weiß</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+          <li class="gal__item" data-reveal style="--d:0.04s">
+            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/galerie-04-1500.webp" data-category="Welcome &amp; Entrance" data-title="Empfang mit Blütenkreis" data-eventtyp="" data-location="" data-konzept="" data-beschreibung="">
+              <span class="gal__media"><img src="assets/img/galerie-04-600.webp" srcset="assets/img/galerie-04-600.webp 600w, assets/img/galerie-04-900.webp 900w, assets/img/galerie-04-1500.webp 909w" sizes="(min-width: 900px) 30vw, 46vw" width="909" height="1600" loading="lazy" decoding="async" alt="Hauseingang mit weißem Blütenkreis, Satinschleife an der Tür, weißem Läufer, Blumensäule und Willkommensschild"></span>
+              <span class="gal__cap"><span class="gal__cat">Welcome &amp; Entrance</span><span class="gal__title">Empfang mit Blütenkreis</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
             </button>
           </li>
-          <li class="gal__item" data-reveal style="--d:0.08s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-08-1600.webp" data-category="Birthdays" data-title="Unterwasserwelt zum ersten Geburtstag" data-eventtyp="Kindergeburtstag" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-08-800.webp" srcset="assets/img/portfolio-08-600.webp 600w, assets/img/portfolio-08-800.webp 800w, assets/img/portfolio-08-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1600" height="1981" loading="lazy" decoding="async" alt="Ballongirlande in Hellblau und Weiß mit Seesternen, Quallen und Fischernetz an einer weißen Rundwand zum ersten Geburtstag"></span>
-              <span class="gal__cap"><span class="gal__cat">Birthdays</span><span class="gal__title">Unterwasserwelt zum ersten Geburtstag</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-            </button>
-          </li>
-          <li class="gal__item" data-reveal style="--d:0.16s">
-            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/portfolio-03-1600.webp" data-category="Birthdays" data-title="Erdbeeren zum ersten Geburtstag" data-eventtyp="Kindergeburtstag" data-location="" data-konzept="" data-beschreibung="">
-              <span class="gal__media"><img src="assets/img/portfolio-03-800.webp" srcset="assets/img/portfolio-03-600.webp 600w, assets/img/portfolio-03-800.webp 800w, assets/img/portfolio-03-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 46vw" width="1600" height="2127" loading="lazy" decoding="async" alt="Rosa Bogenwand mit Ballongirlande, Erdbeer-Folienballons und leuchtender 1 zum ersten Geburtstag"></span>
-              <span class="gal__cap"><span class="gal__cat">Birthdays</span><span class="gal__title">Erdbeeren zum ersten Geburtstag</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+          <li class="gal__item" data-reveal style="--d:0.12s">
+            <button type="button" class="gal__card" data-gallery="portfolio" data-full="assets/img/galerie-05-1500.webp" data-category="Birthdays" data-title="Ballonwand in Grün &amp; Navy" data-eventtyp="Geburtstag" data-location="" data-konzept="" data-beschreibung="">
+              <span class="gal__media"><img src="assets/img/galerie-05-600.webp" srcset="assets/img/galerie-05-600.webp 600w, assets/img/galerie-05-900.webp 900w, assets/img/galerie-05-1500.webp 1125w" sizes="(min-width: 900px) 30vw, 46vw" width="1125" height="2000" loading="lazy" decoding="async" alt="Geburtstags-Rückwand in Navy und Karo mit Ballongirlande in Grün, Navy und Creme, Teddy-Aufsteller und Schaukelpferd aus Holz"></span>
+              <span class="gal__cap"><span class="gal__cat">Birthdays</span><span class="gal__title">Ballonwand in Grün &amp; Navy</span><span class="gal__more" aria-hidden="true">Ansehen <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
             </button>
           </li>
         </ul>
@@ -585,16 +580,17 @@
           <h2 class="h2" id="contact-title" data-reveal>Erzählt uns von <em class="foil-deep">eurem Event.</em></h2>
           <p class="contact__lead" data-reveal>Anlass, Datum, Ideen – schreibt uns ein paar Zeilen. Wir melden uns schnell und persönlich bei euch.</p>
 
-          <!-- Telefon, WhatsApp und Instagram in assets/js/main.js unter KONTAKT eintragen (TODO). -->
+          <!-- Telefon, WhatsApp und Instagram zentral in assets/js/main.js unter KONTAKT pflegen. -->
           <ul class="quick" data-reveal>
             <li><a class="quick__btn" href="mailto:deko.luxury@gmx.de" data-contact="email"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg><span><strong>E-Mail</strong><small data-contact-label>deko.luxury@gmx.de</small></span></a></li>
-            <li><a class="quick__btn" href="#kontakt" data-contact="phone"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg><span><strong>Kurz anrufen</strong><small data-contact-label>Nummer folgt</small></span></a></li>
-            <li><a class="quick__btn" href="#kontakt" data-contact="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg><span><strong>WhatsApp</strong><small data-contact-label>Nummer folgt</small></span></a></li>
-            <li><a class="quick__btn" href="#kontakt" data-contact="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg><span><strong>Instagram</strong><small data-contact-label>Profil folgt</small></span></a></li>
+            <li><a class="quick__btn" href="tel:+491794310823" data-contact="phone"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg><span><strong>Kurz anrufen</strong><small data-contact-label>+49 179 4310823</small></span></a></li>
+            <li><a class="quick__btn" href="https://wa.me/491794310823" target="_blank" rel="noopener" data-contact="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg><span><strong>WhatsApp</strong><small data-contact-label>Chat starten</small></span></a></li>
+            <li><a class="quick__btn" href="https://www.instagram.com/deko.luxury/" target="_blank" rel="noopener" data-contact="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg><span><strong>Instagram</strong><small data-contact-label>@deko.luxury</small></span></a></li>
           </ul>
 
           <dl class="contact__list" data-reveal>
             <div><dt>Showroom</dt><dd>Kapuzinerstr. 4, Burgau 89331</dd></div>
+            <div><dt>Telefon</dt><dd><a href="tel:+491794310823" data-contact="phone"><span data-contact-label>+49 179 4310823</span></a></dd></div>
             <div><dt>Geöffnet</dt><dd><span class="status status--inline"><span class="status__dot" aria-hidden="true"></span><span><strong>24/7</strong> · jetzt geöffnet</span></span></dd></div>
           </dl>
         </div>
@@ -697,10 +693,9 @@
             <summary class="faq__q"><span>Was kostet eine Dekoration?</span><span class="faq__icon" aria-hidden="true"></span></summary>
             <div class="faq__a"><p>Jede Dekoration ist individuell. Der Preis hängt vom Umfang, der Location und euren Wünschen ab – sprecht uns an, dann klären wir alles im Erstgespräch.</p></div>
           </details>
-          <!-- TODO: Sobald Telefon/WhatsApp feststehen, in der letzten Antwort ergänzen. -->
           <details class="faq__item" data-reveal style="--d:0.25s">
             <summary class="faq__q"><span>Wie erreichen wir euch am schnellsten?</span><span class="faq__icon" aria-hidden="true"></span></summary>
-            <div class="faq__a"><p>Über das Anfrageformular oder per E-Mail an <a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a>.</p></div>
+            <div class="faq__a"><p>Per Telefon oder WhatsApp unter <a href="tel:+491794310823">+49 179 4310823</a>, über das Anfrageformular oder per E-Mail an <a href="mailto:deko.luxury@gmx.de">deko.luxury@gmx.de</a>.</p></div>
           </details>
         </div>
       </div>
@@ -724,8 +719,8 @@
           <h2 class="footer__title">Kontakt</h2>
           <ul>
             <li><a href="mailto:deko.luxury@gmx.de" data-contact="email">deko.luxury@gmx.de</a></li>
-            <li><a href="#kontakt" data-contact="phone"><span data-contact-label>Telefon folgt</span></a></li>
-            <li><a href="#kontakt" data-contact="whatsapp"><span data-contact-label>WhatsApp folgt</span></a></li>
+            <li><a href="tel:+491794310823" data-contact="phone"><span data-contact-label>+49 179 4310823</span></a></li>
+            <li><a href="https://wa.me/491794310823" target="_blank" rel="noopener" data-contact="whatsapp">WhatsApp</a></li>
             <li><a href="#kontakt">Anfrage stellen</a></li>
           </ul>
         </div>
@@ -745,7 +740,7 @@
             <li><a href="datenschutz.html">Datenschutz</a></li>
             <li><button type="button" class="footer__btn" data-open-consent>Cookie-Einstellungen</button></li>
           </ul>
-          <a class="footer__social" href="#kontakt" data-contact="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg><span data-contact-label>Instagram folgt</span></a>
+          <a class="footer__social" href="https://www.instagram.com/deko.luxury/" target="_blank" rel="noopener" data-contact="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg><span data-contact-label>@deko.luxury</span></a>
         </div>
       </div>
     </div>
@@ -759,11 +754,11 @@
   <!-- Mini-Leiste „Beratung anfragen“: erscheint beim Scrollen, verschwindet am Kontaktformular -->
   <div class="action-bar" data-action-bar>
     <a class="action-bar__main" href="#kontakt" data-cta>Beratung anfragen</a>
-    <a class="action-bar__icon" href="#kontakt" data-contact="whatsapp" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
+    <a class="action-bar__icon" href="https://wa.me/491794310823" target="_blank" rel="noopener" data-contact="whatsapp" aria-label="WhatsApp-Chat starten"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
     <a class="action-bar__icon" href="mailto:deko.luxury@gmx.de" data-contact="email" aria-label="E-Mail an deko.luxury@gmx.de schreiben"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></a>
   </div>
 
-  <!-- Hinweis-Toast (z. B. wenn eine Nummer noch fehlt) -->
+  <!-- Hinweis-Toast (z. B. wenn ein Kontaktweg in KONTAKT leer ist) -->
   <div class="toast" role="status" aria-live="polite" data-toast hidden><span class="toast__text" data-toast-text></span></div>
 
   <!-- Bestätigung nach dem Absenden -->

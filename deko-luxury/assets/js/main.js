@@ -2,13 +2,13 @@
 
 /* ==========================================================================
    KONTAKTDATEN – hier eintragen, dann sind alle Buttons der Website verknüpft
-   (Startbereich, Kontakt, Footer, Mini-Leiste). Leer = Button zeigt „folgt“.
+   (Startbereich, Kontakt, Footer, Mini-Leiste). Leer = Button zeigt einen Hinweis.
    ========================================================================== */
 var KONTAKT = {
   email: 'deko.luxury@gmx.de',
-  telefon: '',    // TODO z. B. '+49 8222 123456'
-  whatsapp: '',   // TODO Nummer international ohne + und Leerzeichen, z. B. '491701234567'
-  instagram: '',  // TODO z. B. 'https://www.instagram.com/profilname/'
+  telefon: '+49 179 4310823',
+  whatsapp: '491794310823',  // international, ohne + und Leerzeichen
+  instagram: 'https://www.instagram.com/deko.luxury/',
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 

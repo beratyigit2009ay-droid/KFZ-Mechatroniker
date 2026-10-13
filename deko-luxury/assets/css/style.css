@@ -746,7 +746,7 @@ address { font-style: normal; }
 .pillar__title { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; line-height: 1.15; }
 .pillar__text { color: var(--muted); margin-top: 4px; }
 .about__media { position: relative; outline: 1px solid rgba(168, 131, 76, 0.38); outline-offset: 10px; margin: 10px; }
-.about__media img { width: 100%; height: auto; }
+.about__media img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 55%; }
 .about__badge {
   position: absolute; left: -34px; bottom: -34px; width: clamp(86px, 8vw, 118px); aspect-ratio: 1;
   display: grid; place-items: center; border-radius: 50%;
@@ -806,8 +806,11 @@ address { font-style: normal; }
 /* ---------- 5. Galerie ---------- */
 .gallery { background: var(--ink); color: var(--ivory); }
 .gallery .section-head__text { color: var(--muted-light); }
-.gal { columns: 3; column-gap: clamp(14px, 1.6vw, 24px); }
-.gal__item { break-inside: avoid; margin-bottom: clamp(14px, 1.6vw, 24px); }
+/* 3 Bilder oben, 2 mittig darunter – jedes Bild in seinem eigenen Format */
+.gal { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(14px, 1.6vw, 24px); align-items: start; }
+.gal__item { grid-column: span 2; }
+.gal__item:nth-child(4) { grid-column: 2 / span 2; }
+.gal__item:nth-child(5) { grid-column: 4 / span 2; }
 .gal__card { position: relative; display: block; width: 100%; overflow: hidden; text-align: left; cursor: zoom-in; background: var(--char); }
 .gal__media { display: block; overflow: hidden; }
 .gal__media img { width: 100%; height: auto; transition: transform 1.4s var(--ease); }
@@ -1382,7 +1385,11 @@ address { font-style: normal; }
   .hero__arch { justify-self: center; width: min(70vw, 340px); }
   .hero__ornament { right: -40vw; width: 120vw; margin-top: -60vw; top: 30%; }
   .is-scrolled .site-header__inner { height: 64px; }
-  .gal { columns: 2; }
+  /* Mobil: zwei Spalten, die Tafel-Nahaufnahme als breites Bild am Ende */
+  .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gal__item, .gal__item:nth-child(4), .gal__item:nth-child(5) { grid-column: auto; }
+  .gal__item:nth-child(3) { order: 5; grid-column: 1 / -1; }
+  .gal__item:nth-child(3) .gal__media img { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 62%; }
   /* Zeitstrahl wird senkrecht */
   .timeline__line--h { display: none; }
   .timeline__line--v { display: block; left: 22px; top: 32px; width: 20px; height: var(--tl-h, calc(100% - 140px)); }
@@ -1434,8 +1441,7 @@ address { font-style: normal; }
   .svc__icon svg { width: 34px; height: 34px; }
   .svc__tag { margin-bottom: 4px; }
   .svc__link { padding-top: 12px; }
-  .gal { column-gap: 10px; }
-  .gal__item { margin-bottom: 10px; }
+  .gal { gap: 10px; }
   .gal__title { font-size: 0.98rem; }
   .gal__cat { font-size: 0.54rem; letter-spacing: 0.2em; }
   .gallery__cta .btn { width: 100%; }

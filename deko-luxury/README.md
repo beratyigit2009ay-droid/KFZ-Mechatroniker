@@ -53,31 +53,33 @@ Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestri
 
 | Wo | Was fehlt |
 | --- | --- |
-| `assets/js/main.js` → `KONTAKT` (ganz oben) | **Telefon, WhatsApp, Instagram** eintragen. Danach sind alle Buttons auf der Website automatisch verknüpft. Solange ein Feld leer ist, zeigt der Button „folgt“ und beim Klick einen freundlichen Hinweis. |
 | `index.html` → Info-Streifen | **Bewertungen**: nur echte Angaben eintragen (z. B. „4,9 ★ · 37 Google-Bewertungen“) und auf das Profil verlinken. |
-| `index.html` → FAQ | Letzte Antwort um Telefon/WhatsApp ergänzen, sobald vorhanden. |
-| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `telephone`, `sameAs` (Instagram). |
+| `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `logo`. Telefon und Instagram sind bereits eingetragen. |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg. Bitte bestätigen oder anpassen. |
-| **Einverständnis** | Auf `portfolio-03` und `portfolio-08` sind Vornamen von Kindern zu lesen. Vor der Veröffentlichung das Einverständnis einholen oder ein anderes Foto wählen. |
-| `impressum.html` | Name, Rechtsform, Telefon, USt-IdNr., Verbraucherstreitbeilegung, Bildnachweise. Die Anschrift Kapuzinerstr. 4 ist eingetragen – bitte prüfen, ob sie auch die ladungsfähige Anschrift ist. |
+| **Einverständnis** | Auf `galerie-04` sind die Vornamen des Paares zu lesen (Willkommensschild), auf `galerie-05` ein Vorname (Geburtstagsschild). Auf `galerie-02` ist im Hintergrund ein Kennzeichen teilweise erkennbar. Vor der Veröffentlichung das Einverständnis einholen, unkenntlich machen oder ein anderes Foto wählen. |
+| `impressum.html` | Name, Rechtsform, USt-IdNr., Verbraucherstreitbeilegung, Bildnachweise. Telefon ist eingetragen. Die Anschrift Kapuzinerstr. 4 ist eingetragen – bitte prüfen, ob sie auch die ladungsfähige Anschrift ist. |
 | `datenschutz.html` | Hosting-Anbieter, E-Mail-Anbieter, Stand. Bitte rechtlich prüfen lassen. |
 | `sitemap.xml`, `robots.txt` | Domain eintragen. |
 | Karte | Die interaktive Karte zeigt Burgau. Für eine Stecknadel genau am Showroom die Koordinaten in `MAP_SRC` (`assets/js/main.js`) ergänzen (`&marker=Breite,Länge`). |
 | Logo | Aus dem Screenshot vektorisiert. Liegt die Originaldatei (SVG/PDF/AI) vor, `assets/brand/logo-gold.svg`, `logo-zeile.svg` und `monogramm.svg` damit ersetzen. |
 
-## Kontaktdaten eintragen
+## Kontaktdaten
 
-Ganz oben in `assets/js/main.js`:
+Ganz oben in `assets/js/main.js` stehen alle Kontaktwege. Die Buttons in Startbereich,
+Kontakt, Footer und Mini-Leiste werden daraus verknüpft:
 
 ```js
 var KONTAKT = {
   email: 'deko.luxury@gmx.de',
-  telefon: '+49 8222 123456',          // Beispiel
-  whatsapp: '491701234567',            // international, ohne + und Leerzeichen
-  instagram: 'https://www.instagram.com/profilname/',
+  telefon: '+49 179 4310823',
+  whatsapp: '491794310823',            // international, ohne + und Leerzeichen
+  instagram: 'https://www.instagram.com/deko.luxury/',
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 ```
+
+Die Links stehen zusätzlich direkt im HTML, damit sie auch ohne JavaScript funktionieren.
+Ändert sich eine Nummer, bitte auch in `index.html` (Suche nach `4310823`) und im Impressum anpassen.
 
 ## Lokal ansehen
 
@@ -92,7 +94,7 @@ allerdings PHP und bietet automatisch den Versand per E-Mail-Programm an.
 ## Eigene Fotos einsetzen
 
 1. Fotos in den Ordner `bilder-original/` legen und wie das zu ersetzende Bild benennen,
-   z. B. `portfolio-04.jpg` oder `stil.jpg`.
+   z. B. `galerie-02.jpg` oder `galerie-04.jpg`.
 2. `npm install` (einmalig), dann `npm run bilder`.
 3. Das Skript erzeugt alle benötigten Größen als WebP in `assets/img/`.
 4. In `index.html` die **Alt-Texte** an das neue Motiv anpassen, z. B.
@@ -100,14 +102,14 @@ allerdings PHP und bietet automatisch den Versand per E-Mail-Programm an.
 
 | Datei | Bereich | Hinweis |
 | --- | --- | --- |
-| `portfolio-01` … `-08` | Galerie (01, 02, 03, 04, 07, 08) | Jedes Bild erscheint vollständig in seinem Format. 02, 08 und 03 laufen zusätzlich im Bogenfenster oben (Hochformat etwa 4:5 ideal). Mindestens 1600 px breit. 05 und 06 liegen bereit, falls ihr tauschen möchtet. |
-| `stil` | Über uns | Hochformat, mind. 1400 px |
+| `galerie-01` … `-05` | Galerie | Jedes Bild erscheint vollständig in seinem Format: drei oben, zwei mittig darunter. 01, 02 und 03 laufen zusätzlich im Bogenfenster oben (Hochformat 3:4 oder 4:5 ideal). Mindestens 1500 px breit. |
+| `galerie-04` | Über uns | Wird dort im Format 4:5 gezeigt (Ausschnitt mittig). |
 
 Neue Arbeit in der Galerie: in `index.html` einen `<li class="gal__item">`-Block kopieren und
 Bild, Kategorie und Titel anpassen.
 
-Die gelieferten Fotos waren nur 600–1200 px breit und wurden mit einem KI-Upscaler (ESRGAN)
-auf die doppelte Auflösung hochgerechnet. Am besten werden die Bilder mit den Originaldateien.
+Einige der gelieferten Fotos sind schmaler als 1500 px (02: 1179 px, 04: 909 px, 05: 1125 px).
+Sie werden nicht hochgerechnet; im `srcset` steht jeweils die echte Breite.
 
 ## KI-Bilder für Vorschau & Moodboards
 

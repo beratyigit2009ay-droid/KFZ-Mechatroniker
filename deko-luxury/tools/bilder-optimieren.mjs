@@ -1,12 +1,12 @@
 // Wandelt eigene Fotos in die webfertigen Bilddateien der Website um.
 //
 // 1. Fotos (JPG, PNG, HEIC, WebP …) in den Ordner  bilder-original/  legen und so benennen
-//    wie das Bild, das ersetzt werden soll – z. B. hero.jpg, leistung-hochzeiten.jpg, portfolio-03.jpg
+//    wie das Bild, das ersetzt werden soll – z. B. galerie-01.jpg, galerie-04.jpg
 // 2. Einmalig:  npm install
 // 3. Dann:      npm run bilder
 //
 // Das Skript erzeugt pro Foto die benötigten Breiten als WebP in assets/img/ und
-// überschreibt dabei die bisherigen Platzhalter-Dateien gleichen Namens.
+// überschreibt dabei die bisherigen Dateien gleichen Namens.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -18,26 +18,13 @@ const OUT = path.join(ROOT, 'assets', 'img');
 
 // Bildname → Breiten, die auf der Website verwendet werden
 const SLOTS = {
-  'stil': [700, 1400],
-  'leistung-hochzeiten': [600, 1200],
-  'leistung-eventdekoration': [600, 1200],
-  'leistung-floristik': [600, 1200],
-  'leistung-tischdekoration': [600, 1200],
-  'leistung-trauungen': [600, 1200],
-  'leistung-konzepte': [600, 1200],
-  // Portfolio; 02, 08 und 03 erscheinen zusätzlich im Bogenfenster oben auf der Startseite
-  // (dort am besten Hochformat-Fotos im Verhältnis 4:5, damit nichts abgeschnitten wird)
-  'portfolio-01': [600, 800, 1600],
-  'portfolio-02': [600, 800, 1600],
-  'portfolio-03': [600, 800, 1600],
-  'portfolio-04': [600, 800, 1600],
-  'portfolio-05': [600, 800, 1600],
-  'portfolio-06': [600, 800, 1600],
-  'portfolio-07': [600, 800, 1600],
-  'portfolio-08': [600, 800, 1600],
-  'showroom-1': [800, 1600],
-  'showroom-2': [600, 1200],
-  'showroom-3': [800, 1600],
+  // Galerie (5 Bilder). 01–03 erscheinen zusätzlich im Bogenfenster oben auf der Startseite
+  // (dort am besten Hochformat-Fotos im Verhältnis 3:4 oder 4:5), 04 auch bei „Über uns“.
+  'galerie-01': [600, 900, 1500],
+  'galerie-02': [600, 900, 1500],
+  'galerie-03': [600, 900, 1500],
+  'galerie-04': [600, 900, 1500],
+  'galerie-05': [600, 900, 1500],
 };
 
 if (!fs.existsSync(SRC)) {
@@ -71,7 +58,7 @@ for (const file of files) {
       .toFile(target);
   }
   if ((meta.width || 0) < widths[widths.length - 1]) {
-    console.warn(`Hinweis: ${file} ist nur ${meta.width}px breit, empfohlen sind mindestens ${widths[widths.length - 1]}px.`);
+    console.warn(`Hinweis: ${file} ist nur ${meta.width}px breit, empfohlen sind mindestens ${widths[widths.length - 1]}px. In index.html beim größten Eintrag im srcset ${meta.width}w angeben.`);
   }
   console.log(`✓ ${file} → ${widths.map((w) => `${name}-${w}.webp`).join(', ')}`);
   count += 1;
