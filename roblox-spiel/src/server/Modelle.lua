@@ -150,41 +150,159 @@ end
 -- GEBÄUDE (pos = Mitte des Bauplatzes auf dem Boden)
 ------------------------------------------------------------------------
 
+-- Kleines Schild mit Text auf einer Seite eines Parts (z.B. "BANK")
+local function schrift(teilMitSchild: BasePart, seite: Enum.NormalId, inhalt: string, farbe: Color3)
+	local gui = Instance.new("SurfaceGui")
+	gui.Face = seite
+	gui.SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud
+	gui.PixelsPerStud = 40
+	gui.LightInfluence = 0
+	gui.Parent = teilMitSchild
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.fromScale(1, 1)
+	text.BackgroundTransparency = 1
+	text.Font = Enum.Font.GothamBlack
+	text.TextScaled = true
+	text.TextColor3 = farbe
+	text.Text = inhalt
+	text.Parent = gui
+end
+
+-- Fenster mit weißem Rahmen auf der Vorderseite (-Z) oder einer anderen Seite
+local function fenster(m: Model, cf: CFrame, breite: number, hoehe: number)
+	teil(m, {
+		Name = "Fensterrahmen",
+		Size = Vector3.new(breite + 0.4, hoehe + 0.4, 0.2),
+		CFrame = cf,
+		Color = Color3.fromRGB(245, 245, 240),
+		Material = Enum.Material.SmoothPlastic,
+	})
+	teil(m, {
+		Name = "Fenster",
+		Size = Vector3.new(breite, hoehe, 0.3),
+		CFrame = cf,
+		Color = Color3.fromRGB(150, 200, 240),
+		Material = Enum.Material.Glass,
+		Transparency = 0.2,
+	})
+end
+
+local function busch(m: Model, pos: Vector3, groesse: number)
+	teil(m, {
+		Name = "Busch",
+		Shape = Enum.PartType.Ball,
+		Size = Vector3.one * groesse,
+		CFrame = CFrame.new(pos + Vector3.new(0, groesse * 0.4, 0)),
+		Color = Color3.fromRGB(60, 130, 55),
+		Material = Enum.Material.Grass,
+		CanCollide = false,
+	})
+end
+
+local HAUSFARBEN = {
+	Color3.fromRGB(235, 220, 190),
+	Color3.fromRGB(245, 235, 215),
+	Color3.fromRGB(220, 180, 150),
+	Color3.fromRGB(200, 215, 230),
+	Color3.fromRGB(230, 205, 160),
+}
+local DACHFARBEN = {
+	Color3.fromRGB(150, 50, 40),
+	Color3.fromRGB(90, 70, 60),
+	Color3.fromRGB(70, 80, 95),
+}
+
 function Modelle.Haus(pos: Vector3): Model
 	local m = Instance.new("Model")
 	m.Name = "Haus"
+	local wandFarbe = HAUSFARBEN[math.random(1, #HAUSFARBEN)]
+	local dachFarbe = DACHFARBEN[math.random(1, #DACHFARBEN)]
+
+	-- Garten und Sockel
+	teil(m, { Name = "Garten", Size = Vector3.new(16, 0.2, 16), CFrame = CFrame.new(pos + Vector3.new(0, 0.1, 0)), Color = Color3.fromRGB(95, 160, 75), Material = Enum.Material.Grass })
+	teil(m, { Name = "Sockel", Size = Vector3.new(11, 0.8, 10), CFrame = CFrame.new(pos + Vector3.new(0, 0.5, 0)), Color = Color3.fromRGB(120, 120, 120), Material = Enum.Material.Concrete })
 	local wand = teil(m, {
 		Name = "Wand",
-		Size = Vector3.new(10, 8, 10),
-		CFrame = CFrame.new(pos + Vector3.new(0, 4, 0)),
-		Color = Color3.fromRGB(230, 215, 185),
-		Material = Enum.Material.Brick,
+		Size = Vector3.new(10, 7, 9),
+		CFrame = CFrame.new(pos + Vector3.new(0, 4.4, 0)),
+		Color = wandFarbe,
+		Material = Enum.Material.Plaster,
 	})
-	-- Ein um 45° gedrehter Block sieht aus wie ein Satteldach
+	-- Satteldach: ein um 45° gedrehter Block, der halb in der Wand steckt
 	teil(m, {
 		Name = "Dach",
-		Size = Vector3.new(7.2, 7.2, 10.6),
-		CFrame = CFrame.new(pos + Vector3.new(0, 8, 0)) * CFrame.Angles(0, 0, GRAD(45)),
-		Color = Color3.fromRGB(150, 50, 40),
+		Size = Vector3.new(8, 8, 8.98),
+		CFrame = CFrame.new(pos + Vector3.new(0, 7.9, 0)) * CFrame.Angles(0, 0, GRAD(45)),
+		Color = dachFarbe,
 		Material = Enum.Material.Slate,
 	})
 	teil(m, {
-		Name = "Tuer",
-		Size = Vector3.new(2.4, 4, 0.3),
-		CFrame = CFrame.new(pos + Vector3.new(0, 2, -5.1)),
-		Color = Color3.fromRGB(100, 60, 30),
-		Material = Enum.Material.Wood,
+		Name = "Schornstein",
+		Size = Vector3.new(1.4, 4, 1.4),
+		CFrame = CFrame.new(pos + Vector3.new(2.6, 11, 2)),
+		Color = Color3.fromRGB(140, 70, 55),
+		Material = Enum.Material.Brick,
 	})
-	for _, x in ipairs({ -3, 3 }) do
-		teil(m, {
-			Name = "Fenster",
-			Size = Vector3.new(2, 2, 0.3),
-			CFrame = CFrame.new(pos + Vector3.new(x, 5, -5.1)),
-			Color = Color3.fromRGB(150, 200, 255),
-			Material = Enum.Material.Glass,
-		})
+	-- Tür mit Vordach und Stufe
+	teil(m, { Name = "Tuer", Size = Vector3.new(2.2, 4, 0.3), CFrame = CFrame.new(pos + Vector3.new(0, 2.9, -4.6)), Color = Color3.fromRGB(110, 65, 35), Material = Enum.Material.Wood })
+	teil(m, { Name = "Tuerknauf", Shape = Enum.PartType.Ball, Size = Vector3.one * 0.3, CFrame = CFrame.new(pos + Vector3.new(0.7, 2.8, -4.8)), Color = Color3.fromRGB(230, 190, 60), Material = Enum.Material.Metal })
+	teil(m, { Name = "Vordach", Size = Vector3.new(3.6, 0.3, 1.6), CFrame = CFrame.new(pos + Vector3.new(0, 5.2, -5.2)), Color = dachFarbe, Material = Enum.Material.Slate })
+	teil(m, { Name = "Stufe", Size = Vector3.new(3, 0.4, 1.4), CFrame = CFrame.new(pos + Vector3.new(0, 0.3, -5.4)), Color = Color3.fromRGB(150, 150, 150), Material = Enum.Material.Concrete })
+	-- Fenster vorne und an den Seiten
+	for _, x in ipairs({ -3.2, 3.2 }) do
+		fenster(m, CFrame.new(pos + Vector3.new(x, 4.8, -4.55)), 1.8, 2)
 	end
+	for _, x in ipairs({ -5.05, 5.05 }) do
+		fenster(m, CFrame.new(pos + Vector3.new(x, 4.8, 0)) * CFrame.Angles(0, GRAD(90), 0), 2, 2)
+	end
+	-- Blumenkästen und Büsche
+	for _, x in ipairs({ -3.2, 3.2 }) do
+		teil(m, { Name = "Blumen", Size = Vector3.new(2, 0.5, 0.5), CFrame = CFrame.new(pos + Vector3.new(x, 3.6, -4.9)), Color = Color3.fromRGB(220, 70, 120), Material = Enum.Material.Grass })
+	end
+	busch(m, pos + Vector3.new(-6.5, 0, -5), 2.2)
+	busch(m, pos + Vector3.new(6.5, 0, -5), 2.2)
+	-- Briefkasten
+	teil(m, { Name = "Briefkasten", Size = Vector3.new(0.8, 0.7, 0.6), CFrame = CFrame.new(pos + Vector3.new(3.5, 2.2, -7.5)), Color = Color3.fromRGB(240, 200, 0), Material = Enum.Material.Metal })
+	teil(m, { Name = "Pfosten", Size = Vector3.new(0.2, 1.8, 0.2), CFrame = CFrame.new(pos + Vector3.new(3.5, 1, -7.5)), Color = Color3.fromRGB(80, 80, 80), Material = Enum.Material.Metal })
 	m.PrimaryPart = wand
+	return m
+end
+
+function Modelle.Hochhaus(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Hochhaus"
+	local beton = Color3.fromRGB(210, 205, 195)
+	-- Eingang aus Glas
+	teil(m, { Name = "Lobby", Size = Vector3.new(11, 4, 11), CFrame = CFrame.new(pos + Vector3.new(0, 2, 0)), Color = Color3.fromRGB(120, 170, 210), Material = Enum.Material.Glass, Transparency = 0.15 })
+	teil(m, { Name = "Vordach", Size = Vector3.new(6, 0.4, 3), CFrame = CFrame.new(pos + Vector3.new(0, 4.2, -6.5)), Color = Color3.fromRGB(60, 60, 65), Material = Enum.Material.Metal })
+	local turm = teil(m, {
+		Name = "Turm",
+		Size = Vector3.new(11.6, 30, 11.6),
+		CFrame = CFrame.new(pos + Vector3.new(0, 19, 0)),
+		Color = beton,
+		Material = Enum.Material.Concrete,
+	})
+	-- Stockwerke: Fensterband und Balkone
+	for stock = 0, 6 do
+		local y = 6.5 + stock * 4.2
+		teil(m, { Name = "Fensterband", Size = Vector3.new(11.8, 2.2, 11.8), CFrame = CFrame.new(pos + Vector3.new(0, y, 0)), Color = Color3.fromRGB(110, 160, 210), Material = Enum.Material.Glass })
+		teil(m, { Name = "Balkon", Size = Vector3.new(5, 0.3, 1.6), CFrame = CFrame.new(pos + Vector3.new(-2.5, y - 1.3, -6.5)), Color = beton, Material = Enum.Material.Concrete })
+		teil(m, { Name = "Gelaender", Size = Vector3.new(5, 0.9, 0.15), CFrame = CFrame.new(pos + Vector3.new(-2.5, y - 0.75, -7.25)), Color = Color3.fromRGB(70, 70, 75), Material = Enum.Material.Metal })
+	end
+	-- Ecksäulen
+	for _, ecke in ipairs({ { -5.9, -5.9 }, { 5.9, -5.9 }, { -5.9, 5.9 }, { 5.9, 5.9 } }) do
+		teil(m, { Name = "Saeule", Size = Vector3.new(0.8, 30, 0.8), CFrame = CFrame.new(pos + Vector3.new(ecke[1], 19, ecke[2])), Color = Color3.fromRGB(150, 150, 155), Material = Enum.Material.Metal })
+	end
+	-- Dach mit Antenne und rotem Warnlicht
+	teil(m, { Name = "Dachrand", Size = Vector3.new(12.4, 0.8, 12.4), CFrame = CFrame.new(pos + Vector3.new(0, 34.4, 0)), Color = Color3.fromRGB(90, 90, 95), Material = Enum.Material.Metal })
+	teil(m, { Name = "Technik", Size = Vector3.new(4, 2, 3), CFrame = CFrame.new(pos + Vector3.new(2, 35.8, 2)), Color = Color3.fromRGB(160, 160, 160), Material = Enum.Material.Metal })
+	teil(m, { Name = "Antenne", Size = Vector3.new(0.3, 7, 0.3), CFrame = CFrame.new(pos + Vector3.new(-3, 38.3, -3)), Color = Color3.fromRGB(200, 200, 200), Material = Enum.Material.Metal })
+	local lampe = teil(m, { Name = "Warnlicht", Shape = Enum.PartType.Ball, Size = Vector3.one * 0.7, CFrame = CFrame.new(pos + Vector3.new(-3, 42, -3)), Color = Color3.fromRGB(255, 40, 40), Material = Enum.Material.Neon })
+	local licht = Instance.new("PointLight")
+	licht.Color = Color3.fromRGB(255, 40, 40)
+	licht.Range = 10
+	licht.Parent = lampe
+	m.PrimaryPart = turm
 	return m
 end
 
@@ -193,33 +311,150 @@ function Modelle.Fabrik(pos: Vector3): Model
 	m.Name = "Fabrik"
 	local halle = teil(m, {
 		Name = "Halle",
-		Size = Vector3.new(14, 9, 12),
-		CFrame = CFrame.new(pos + Vector3.new(0, 4.5, 0)),
-		Color = Color3.fromRGB(150, 150, 160),
-		Material = Enum.Material.CorrodedMetal,
-	})
-	local schornstein = teil(m, {
-		Name = "Schornstein",
-		Shape = Enum.PartType.Cylinder,
-		Size = Vector3.new(10, 2.5, 2.5),
-		CFrame = CFrame.new(pos + Vector3.new(4, 14, 3)) * STEHEND,
-		Color = Color3.fromRGB(140, 60, 45),
+		Size = Vector3.new(15, 8, 12),
+		CFrame = CFrame.new(pos + Vector3.new(0, 4, 0)),
+		Color = Color3.fromRGB(165, 95, 70),
 		Material = Enum.Material.Brick,
 	})
-	local rauch = Instance.new("Smoke")
-	rauch.Color = Color3.fromRGB(90, 90, 90)
-	rauch.Size = 2
-	rauch.RiseVelocity = 6
-	rauch.Opacity = 0.3
-	rauch.Parent = schornstein
-	teil(m, {
-		Name = "Tor",
-		Size = Vector3.new(5, 5, 0.3),
-		CFrame = CFrame.new(pos + Vector3.new(-2, 2.5, -6.1)),
-		Color = Color3.fromRGB(70, 70, 75),
-		Material = Enum.Material.DiamondPlate,
-	})
+	-- Sheddach (Sägezahn-Dach) mit Oberlichtern
+	for i = 0, 2 do
+		local x = -5 + i * 5
+		teil(m, {
+			Name = "Sheddach",
+			Size = Vector3.new(3.6, 3.6, 11.98),
+			CFrame = CFrame.new(pos + Vector3.new(x, 8, 0)) * CFrame.Angles(0, 0, GRAD(45)),
+			Color = Color3.fromRGB(110, 115, 120),
+			Material = Enum.Material.CorrodedMetal,
+		})
+	end
+	for _, x in ipairs({ 4, 6.2 }) do
+		local schornstein = teil(m, {
+			Name = "Schornstein",
+			Shape = Enum.PartType.Cylinder,
+			Size = Vector3.new(12, 2.2, 2.2),
+			CFrame = CFrame.new(pos + Vector3.new(x, 12, 4.5)) * STEHEND,
+			Color = Color3.fromRGB(150, 65, 45),
+			Material = Enum.Material.Brick,
+		})
+		teil(m, { Name = "Ring", Shape = Enum.PartType.Cylinder, Size = Vector3.new(0.5, 2.4, 2.4), CFrame = CFrame.new(pos + Vector3.new(x, 16.5, 4.5)) * STEHEND, Color = Color3.fromRGB(240, 240, 240), Material = Enum.Material.SmoothPlastic })
+		local rauch = Instance.new("Smoke")
+		rauch.Color = Color3.fromRGB(90, 90, 90)
+		rauch.Size = 2
+		rauch.RiseVelocity = 6
+		rauch.Opacity = 0.3
+		rauch.Parent = schornstein
+	end
+	-- Rolltor, Rampe, Fenster und Rohre
+	teil(m, { Name = "Rolltor", Size = Vector3.new(5, 5, 0.3), CFrame = CFrame.new(pos + Vector3.new(-3, 2.5, -6.1)), Color = Color3.fromRGB(200, 200, 205), Material = Enum.Material.DiamondPlate })
+	teil(m, { Name = "Rampe", Size = Vector3.new(6, 0.8, 2.5), CFrame = CFrame.new(pos + Vector3.new(-3, 0.4, -7.2)), Color = Color3.fromRGB(110, 110, 110), Material = Enum.Material.Concrete })
+	for _, x in ipairs({ 2.5, 5.5 }) do
+		fenster(m, CFrame.new(pos + Vector3.new(x, 5, -6.05)), 2, 2.4)
+	end
+	teil(m, { Name = "Rohr", Shape = Enum.PartType.Cylinder, Size = Vector3.new(12, 0.6, 0.6), CFrame = CFrame.new(pos + Vector3.new(0, 7, 6.3)) * CFrame.Angles(0, 0, 0), Color = Color3.fromRGB(180, 180, 185), Material = Enum.Material.Metal })
+	teil(m, { Name = "Kiste", Size = Vector3.new(1.6, 1.6, 1.6), CFrame = CFrame.new(pos + Vector3.new(-6.8, 0.8, -7)), Color = Color3.fromRGB(160, 120, 70), Material = Enum.Material.WoodPlanks })
+	teil(m, { Name = "Kiste", Size = Vector3.new(1.6, 1.6, 1.6), CFrame = CFrame.new(pos + Vector3.new(-6.8, 2.4, -7)) * CFrame.Angles(0, GRAD(20), 0), Color = Color3.fromRGB(160, 120, 70), Material = Enum.Material.WoodPlanks })
 	m.PrimaryPart = halle
+	return m
+end
+
+-- Bürogebäude aus Glas: bringt viel Geld
+function Modelle.Buero(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Buero"
+	local glas = teil(m, {
+		Name = "Glasturm",
+		Size = Vector3.new(13, 24, 12),
+		CFrame = CFrame.new(pos + Vector3.new(0, 12.5, 0)),
+		Color = Color3.fromRGB(70, 130, 190),
+		Material = Enum.Material.Glass,
+		Reflectance = 0.25,
+	})
+	-- Metall-Streben, damit es nach Glasfassade aussieht
+	for i = -2, 2 do
+		teil(m, { Name = "Strebe", Size = Vector3.new(0.3, 24, 12.2), CFrame = CFrame.new(pos + Vector3.new(i * 3.1, 12.5, 0)), Color = Color3.fromRGB(200, 205, 215), Material = Enum.Material.Metal })
+	end
+	for stock = 1, 5 do
+		teil(m, { Name = "Etage", Size = Vector3.new(13.2, 0.3, 12.2), CFrame = CFrame.new(pos + Vector3.new(0, stock * 4.4, 0)), Color = Color3.fromRGB(200, 205, 215), Material = Enum.Material.Metal })
+	end
+	teil(m, { Name = "Sockel", Size = Vector3.new(14, 1, 13), CFrame = CFrame.new(pos + Vector3.new(0, 0.5, 0)), Color = Color3.fromRGB(60, 60, 65), Material = Enum.Material.Granite })
+	teil(m, { Name = "Eingang", Size = Vector3.new(5, 0.4, 3), CFrame = CFrame.new(pos + Vector3.new(0, 4, -7.4)), Color = Color3.fromRGB(40, 40, 45), Material = Enum.Material.Metal })
+	local dach = teil(m, { Name = "Dach", Size = Vector3.new(13.4, 1.2, 12.4), CFrame = CFrame.new(pos + Vector3.new(0, 25, 0)), Color = Color3.fromRGB(60, 60, 65), Material = Enum.Material.Metal })
+	schrift(dach, Enum.NormalId.Front, "BÜRO", Color3.fromRGB(120, 220, 255))
+	teil(m, { Name = "Klimaanlage", Size = Vector3.new(3, 1.5, 2), CFrame = CFrame.new(pos + Vector3.new(-3, 26.3, 2)), Color = Color3.fromRGB(180, 180, 180), Material = Enum.Material.Metal })
+	busch(m, pos + Vector3.new(-6, 0, -7.5), 1.8)
+	busch(m, pos + Vector3.new(6, 0, -7.5), 1.8)
+	m.PrimaryPart = glas
+	return m
+end
+
+-- Einkaufszentrum mit bunten Markisen: bringt viel Geld
+function Modelle.Einkaufszentrum(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Einkaufszentrum"
+	local bau = teil(m, {
+		Name = "Gebaeude",
+		Size = Vector3.new(17, 9, 12),
+		CFrame = CFrame.new(pos + Vector3.new(0, 4.5, 1)),
+		Color = Color3.fromRGB(240, 235, 225),
+		Material = Enum.Material.SmoothPlastic,
+	})
+	teil(m, { Name = "Glasfront", Size = Vector3.new(15, 5, 0.3), CFrame = CFrame.new(pos + Vector3.new(0, 3, -5.1)), Color = Color3.fromRGB(150, 200, 230), Material = Enum.Material.Glass, Transparency = 0.2 })
+	local markisen = { Color3.fromRGB(220, 60, 60), Color3.fromRGB(240, 190, 40), Color3.fromRGB(60, 160, 220), Color3.fromRGB(80, 180, 90) }
+	for i, farbe in ipairs(markisen) do
+		teil(m, {
+			Name = "Markise",
+			Size = Vector3.new(3.6, 0.3, 2),
+			CFrame = CFrame.new(pos + Vector3.new(-5.7 + (i - 1) * 3.8, 5.8, -6)) * CFrame.Angles(GRAD(-20), 0, 0),
+			Color = farbe,
+			Material = Enum.Material.Fabric,
+		})
+	end
+	local schild = teil(m, { Name = "Schild", Size = Vector3.new(10, 2.2, 0.4), CFrame = CFrame.new(pos + Vector3.new(0, 8, -5.2)), Color = Color3.fromRGB(200, 40, 90), Material = Enum.Material.SmoothPlastic })
+	schrift(schild, Enum.NormalId.Front, "SHOPPING", Color3.new(1, 1, 1))
+	-- kleiner Parkplatz mit Autos
+	teil(m, { Name = "Parkplatz", Size = Vector3.new(17, 0.15, 3.5), CFrame = CFrame.new(pos + Vector3.new(0, 0.1, -8)), Color = Color3.fromRGB(60, 60, 65), Material = Enum.Material.Asphalt })
+	for i, farbe in ipairs({ Color3.fromRGB(200, 30, 30), Color3.fromRGB(30, 80, 200), Color3.fromRGB(240, 240, 240) }) do
+		local x = -5 + (i - 1) * 5
+		teil(m, { Name = "Auto", Size = Vector3.new(2, 1, 3.2), CFrame = CFrame.new(pos + Vector3.new(x, 0.7, -8)), Color = farbe, Material = Enum.Material.SmoothPlastic })
+		teil(m, { Name = "Autodach", Size = Vector3.new(1.8, 0.7, 1.6), CFrame = CFrame.new(pos + Vector3.new(x, 1.5, -8.1)), Color = Color3.fromRGB(40, 50, 70), Material = Enum.Material.Glass })
+	end
+	m.PrimaryPart = bau
+	return m
+end
+
+-- Bank mit Säulen und Gold: bringt am meisten Geld
+function Modelle.Bank(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Bank"
+	local marmor = Color3.fromRGB(240, 238, 230)
+	teil(m, { Name = "Treppe1", Size = Vector3.new(15, 0.6, 13), CFrame = CFrame.new(pos + Vector3.new(0, 0.3, 0)), Color = marmor, Material = Enum.Material.Marble })
+	teil(m, { Name = "Treppe2", Size = Vector3.new(14, 0.6, 12), CFrame = CFrame.new(pos + Vector3.new(0, 0.9, 0.3)), Color = marmor, Material = Enum.Material.Marble })
+	local haus = teil(m, {
+		Name = "Halle",
+		Size = Vector3.new(12, 8, 8),
+		CFrame = CFrame.new(pos + Vector3.new(0, 5.2, 1.5)),
+		Color = Color3.fromRGB(225, 220, 205),
+		Material = Enum.Material.Marble,
+	})
+	-- Säulen vorne
+	for i = 0, 5 do
+		teil(m, {
+			Name = "Saeule",
+			Shape = Enum.PartType.Cylinder,
+			Size = Vector3.new(8, 1, 1),
+			CFrame = CFrame.new(pos + Vector3.new(-5.5 + i * 2.2, 5.2, -3.8)) * STEHEND,
+			Color = marmor,
+			Material = Enum.Material.Marble,
+		})
+	end
+	teil(m, { Name = "Gebaelk", Size = Vector3.new(14, 1.2, 10.5), CFrame = CFrame.new(pos + Vector3.new(0, 9.8, 0.3)), Color = marmor, Material = Enum.Material.Marble })
+	teil(m, { Name = "Attika", Size = Vector3.new(11, 1.4, 8.5), CFrame = CFrame.new(pos + Vector3.new(0, 11.1, 0.8)), Color = marmor, Material = Enum.Material.Marble })
+	local schild = teil(m, { Name = "Schild", Size = Vector3.new(6, 1.2, 0.3), CFrame = CFrame.new(pos + Vector3.new(0, 9.8, -5)), Color = Color3.fromRGB(30, 60, 40), Material = Enum.Material.SmoothPlastic })
+	schrift(schild, Enum.NormalId.Front, "BANK", Color3.fromRGB(255, 210, 60))
+	local dollar = teil(m, { Name = "Dollar", Shape = Enum.PartType.Cylinder, Size = Vector3.new(0.4, 3, 3), CFrame = CFrame.new(pos + Vector3.new(0, 13.3, 0.8)) * LIEGEND, Color = Color3.fromRGB(255, 200, 40), Material = Enum.Material.Neon })
+	schrift(dollar, Enum.NormalId.Right, "$", Color3.fromRGB(120, 80, 0))
+	teil(m, { Name = "Tuer", Size = Vector3.new(3, 5, 0.3), CFrame = CFrame.new(pos + Vector3.new(0, 3.7, -2.6)), Color = Color3.fromRGB(120, 85, 40), Material = Enum.Material.Wood })
+	m.PrimaryPart = haus
 	return m
 end
 
@@ -261,38 +496,6 @@ function Modelle.Abwehr(pos: Vector3): Model
 		Material = Enum.Material.Metal,
 	})
 	m.PrimaryPart = sockel
-	return m
-end
-
-function Modelle.Hochhaus(pos: Vector3): Model
-	local m = Instance.new("Model")
-	m.Name = "Hochhaus"
-	local turm = teil(m, {
-		Name = "Turm",
-		Size = Vector3.new(12, 30, 12),
-		CFrame = CFrame.new(pos + Vector3.new(0, 15, 0)),
-		Color = Color3.fromRGB(175, 185, 200),
-		Material = Enum.Material.Concrete,
-	})
-	-- Fensterreihen auf allen 4 Seiten
-	for stock = 1, 6 do
-		local y = stock * 4.6
-		teil(m, {
-			Name = "Fenster",
-			Size = Vector3.new(12.2, 2, 12.2),
-			CFrame = CFrame.new(pos + Vector3.new(0, y, 0)),
-			Color = Color3.fromRGB(120, 170, 220),
-			Material = Enum.Material.Glass,
-		})
-	end
-	teil(m, {
-		Name = "Dach",
-		Size = Vector3.new(4, 3, 4),
-		CFrame = CFrame.new(pos + Vector3.new(2, 31.5, 2)),
-		Color = Color3.fromRGB(90, 90, 95),
-		Material = Enum.Material.Metal,
-	})
-	m.PrimaryPart = turm
 	return m
 end
 

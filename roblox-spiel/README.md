@@ -7,7 +7,11 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
 
 - **4 Städte pro Server** (rot, blau, grün, gelb). Wer als 5. Spieler kommt, schaut nur zu.
 - **Laufen**: Jeder Spieler hat seine normale Roblox-Figur und läuft mit WASD durch seine Stadt.
-- **Bauen** (Shop, Reiter "Bauen"): Haus, Hochhaus, Fabrik, Kraftwerk, Flugabwehr, Panzerabwehr.
+  Spieler sind **Kommandanten**: Helm, Weste in der Farbe ihrer Stadt, leuchtender Umriss und
+  ein Namensschild. So sieht man sofort, wer Spieler und wer Bewohner ist.
+- **Bauen** (Shop, Reiter "Bauen"): Haus, Hochhaus, Fabrik, Bürogebäude, Einkaufszentrum, Bank,
+  Kraftwerk, Flugabwehr, Panzerabwehr. Häuser haben Garten, Fenster, Schornstein und Büsche.
+  - **Bürogebäude** (+20 $), **Einkaufszentrum** (+35 $) und **Bank** (+60 $) bringen viel Geld, brauchen aber Strom.
   - Häuser und Hochhäuser bringen **Bewohner**. Die stehen als kleine Figuren vor ihrem Haus und zahlen Steuern.
   - **Kraftwerke** machen Strom. Ohne genug Strom gibt es **Stromausfall** und nur das halbe Einkommen.
 - **Waffen** (Shop, Reiter "Waffen"): 4 Raketen, je stärker desto teurer

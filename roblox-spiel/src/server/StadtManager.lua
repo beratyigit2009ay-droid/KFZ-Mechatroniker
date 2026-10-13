@@ -109,6 +109,88 @@ end
 -- Spieler kommen und gehen
 ------------------------------------------------------------------------
 
+-- Klebt ein Ausrüstungsteil fest an einen Körperteil
+local function anbringen(koerperteil: BasePart, eigenschaften: { [string]: any }, versatz: CFrame): BasePart
+	local teil = Modelle.teil(koerperteil.Parent, eigenschaften)
+	teil.Anchored = false
+	teil.CanCollide = false
+	teil.CanQuery = false
+	teil.Massless = true
+	teil.CFrame = koerperteil.CFrame * versatz
+	local schweissnaht = Instance.new("WeldConstraint")
+	schweissnaht.Part0 = koerperteil
+	schweissnaht.Part1 = teil
+	schweissnaht.Parent = teil
+	return teil
+end
+
+-- Spieler sehen anders aus als die Bewohner: Sie sind Kommandanten mit Helm,
+-- Weste in der Farbe ihrer Stadt, einem leuchtenden Umriss und einem Namensschild.
+local function alsKommandantAusruesten(charakter: Model, stadt, spieler: Player)
+	local kopf = charakter:WaitForChild("Head", 5) :: BasePart?
+	local oberkoerper = (charakter:FindFirstChild("UpperTorso") or charakter:FindFirstChild("Torso")) :: BasePart?
+	if not kopf or not oberkoerper then
+		return
+	end
+
+	-- Helm
+	local helm = anbringen(kopf, {
+		Name = "Helm",
+		Size = Vector3.new(kopf.Size.X * 1.3, kopf.Size.Y * 0.75, kopf.Size.Z * 1.35),
+		Color = Color3.fromRGB(75, 85, 50),
+		Material = Enum.Material.Metal,
+	}, CFrame.new(0, kopf.Size.Y * 0.35, 0.05))
+	local helmForm = Instance.new("SpecialMesh")
+	helmForm.MeshType = Enum.MeshType.Sphere
+	helmForm.Parent = helm
+	-- Streifen in Stadtfarbe am Helm
+	anbringen(kopf, {
+		Name = "Helmband",
+		Size = Vector3.new(kopf.Size.X * 1.32, 0.2, kopf.Size.Z * 1.37),
+		Color = stadt.farbe,
+		Material = Enum.Material.Neon,
+	}, CFrame.new(0, kopf.Size.Y * 0.2, 0.05))
+
+	-- Weste in der Farbe der eigenen Stadt
+	anbringen(oberkoerper, {
+		Name = "Weste",
+		Size = oberkoerper.Size + Vector3.new(0.2, -0.1, 0.25),
+		Color = stadt.farbe,
+		Material = Enum.Material.Fabric,
+	}, CFrame.new())
+	-- Rucksack
+	anbringen(oberkoerper, {
+		Name = "Rucksack",
+		Size = Vector3.new(oberkoerper.Size.X * 0.7, oberkoerper.Size.Y * 0.8, 0.6),
+		Color = Color3.fromRGB(70, 60, 40),
+		Material = Enum.Material.Fabric,
+	}, CFrame.new(0, 0, oberkoerper.Size.Z / 2 + 0.3))
+
+	-- leuchtender Umriss in Stadtfarbe
+	local umriss = Instance.new("Highlight")
+	umriss.FillTransparency = 1
+	umriss.OutlineColor = stadt.farbe
+	umriss.DepthMode = Enum.HighlightDepthMode.Occluded
+	umriss.Parent = charakter
+
+	-- Namensschild über dem Kopf
+	local schild = Instance.new("BillboardGui")
+	schild.Name = "Rang"
+	schild.Size = UDim2.new(0, 220, 0, 36)
+	schild.StudsOffset = Vector3.new(0, 3.2, 0)
+	schild.MaxDistance = 150
+	schild.Parent = kopf
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.fromScale(1, 1)
+	text.BackgroundTransparency = 1
+	text.Font = Enum.Font.GothamBlack
+	text.TextScaled = true
+	text.TextColor3 = stadt.farbe
+	text.TextStrokeTransparency = 0
+	text.Text = "Kommandant " .. spieler.DisplayName
+	text.Parent = schild
+end
+
 local function zurStadtTeleportieren(spieler: Player, charakter: Model)
 	local stadt = StadtManager.stadtVon(spieler)
 	if not stadt then
@@ -117,6 +199,7 @@ local function zurStadtTeleportieren(spieler: Player, charakter: Model)
 	charakter:WaitForChild("HumanoidRootPart")
 	task.wait() -- kurz warten, sonst setzt Roblox den Spieler wieder auf den Spawn
 	charakter:PivotTo(stadt.spawn + Vector3.new(0, 4, 0))
+	alsKommandantAusruesten(charakter, stadt, spieler)
 end
 
 function StadtManager.spielerBeitreten(spieler: Player)

@@ -29,6 +29,7 @@ Config.BELOHNUNG_ANTEIL = 0.5 -- für ein zerstörtes Gebäude bekommst du 50 % 
 
 -- Gebäude, die man in seiner Stadt bauen kann
 -- Bewohner: wie viele Leute darin wohnen (zahlen Steuern)
+-- Einkommen: so viel Geld bringt das Gebäude zusätzlich pro Runde
 -- Strom: positiv = erzeugt Strom, negativ = verbraucht Strom
 Config.Gebaeude = {
 	Haus = {
@@ -51,6 +52,27 @@ Config.Gebaeude = {
 		Einkommen = 8,
 		Strom = -6,
 		Leben = 150,
+	},
+	Buero = {
+		Name = "Bürogebäude",
+		Preis = 400,
+		Einkommen = 20,
+		Strom = -8,
+		Leben = 200,
+	},
+	Einkaufszentrum = {
+		Name = "Einkaufszentrum",
+		Preis = 700,
+		Einkommen = 35,
+		Strom = -12,
+		Leben = 250,
+	},
+	Bank = {
+		Name = "Bank",
+		Preis = 1200,
+		Einkommen = 60,
+		Strom = -6,
+		Leben = 300,
 	},
 	Kraftwerk = {
 		Name = "Kraftwerk",
@@ -79,7 +101,8 @@ Config.Gebaeude = {
 		Nachladezeit = 2.5,
 	},
 }
-Config.GebaeudeReihenfolge = { "Haus", "Hochhaus", "Fabrik", "Kraftwerk", "Abwehr", "Panzerabwehr" }
+Config.GebaeudeReihenfolge =
+	{ "Haus", "Hochhaus", "Fabrik", "Buero", "Einkaufszentrum", "Bank", "Kraftwerk", "Abwehr", "Panzerabwehr" }
 
 -- Raketen: je stärker, desto teurer
 -- Abfangbar: 1 = die Flugabwehr trifft normal, 0.4 = nur noch 40 % so oft
