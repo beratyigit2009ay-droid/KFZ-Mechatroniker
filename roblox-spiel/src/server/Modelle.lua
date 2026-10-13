@@ -3,6 +3,8 @@
 -- Städte, Gebäude, Flugabwehr und Raketen.
 -- So brauchst du keine fertigen Modelle aus der Toolbox.
 
+local CollectionService = game:GetService("CollectionService")
+
 local Modelle = {}
 
 local GRAD = math.rad
@@ -177,7 +179,7 @@ local function fenster(m: Model, cf: CFrame, breite: number, hoehe: number)
 		Color = Color3.fromRGB(245, 245, 240),
 		Material = Enum.Material.SmoothPlastic,
 	})
-	teil(m, {
+	local glas = teil(m, {
 		Name = "Fenster",
 		Size = Vector3.new(breite, hoehe, 0.3),
 		CFrame = cf,
@@ -185,6 +187,8 @@ local function fenster(m: Model, cf: CFrame, breite: number, hoehe: number)
 		Material = Enum.Material.Glass,
 		Transparency = 0.2,
 	})
+	-- Nachts geht in vielen Fenstern das Licht an (siehe Welt.lua)
+	CollectionService:AddTag(glas, "Nachtfenster")
 end
 
 local function busch(m: Model, pos: Vector3, groesse: number)
@@ -285,7 +289,8 @@ function Modelle.Hochhaus(pos: Vector3): Model
 	-- Stockwerke: Fensterband und Balkone
 	for stock = 0, 6 do
 		local y = 6.5 + stock * 4.2
-		teil(m, { Name = "Fensterband", Size = Vector3.new(11.8, 2.2, 11.8), CFrame = CFrame.new(pos + Vector3.new(0, y, 0)), Color = Color3.fromRGB(110, 160, 210), Material = Enum.Material.Glass })
+		local band = teil(m, { Name = "Fensterband", Size = Vector3.new(11.8, 2.2, 11.8), CFrame = CFrame.new(pos + Vector3.new(0, y, 0)), Color = Color3.fromRGB(110, 160, 210), Material = Enum.Material.Glass })
+		CollectionService:AddTag(band, "Nachtfenster")
 		teil(m, { Name = "Balkon", Size = Vector3.new(5, 0.3, 1.6), CFrame = CFrame.new(pos + Vector3.new(-2.5, y - 1.3, -6.5)), Color = beton, Material = Enum.Material.Concrete })
 		teil(m, { Name = "Gelaender", Size = Vector3.new(5, 0.9, 0.15), CFrame = CFrame.new(pos + Vector3.new(-2.5, y - 0.75, -7.25)), Color = Color3.fromRGB(70, 70, 75), Material = Enum.Material.Metal })
 	end
@@ -846,6 +851,30 @@ function Modelle.rakete(s: number, farbe: Color3?): Model
 	rauch.Enabled = false
 	rauch.Parent = ausstoss
 
+	-- Kondensstreifen: eine lange weiße Spur, die langsam verblasst
+	local a0 = Instance.new("Attachment")
+	a0.Position = Vector3.new(-0.5 * dicke, 0, 0)
+	a0.Parent = ausstoss
+	local a1 = Instance.new("Attachment")
+	a1.Position = Vector3.new(0.5 * dicke, 0, 0)
+	a1.Parent = ausstoss
+	local spur = Instance.new("Trail")
+	spur.Name = "Spur"
+	spur.Attachment0 = a0
+	spur.Attachment1 = a1
+	spur.Color = ColorSequence.new(Color3.fromRGB(255, 220, 160), Color3.fromRGB(200, 200, 200))
+	spur.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.15),
+		NumberSequenceKeypoint.new(0.3, 0.55),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	spur.WidthScale = NumberSequence.new(0.6, 3)
+	spur.Lifetime = math.clamp(2.5 * s, 0.6, 4)
+	spur.FaceCamera = true
+	spur.MinLength = 0.2
+	spur.Enabled = false
+	spur.Parent = ausstoss
+
 	local licht = Instance.new("PointLight")
 	licht.Name = "Licht"
 	licht.Color = Color3.fromRGB(255, 150, 50)
@@ -882,10 +911,130 @@ function Modelle.zuenden(rakete: Model, an: boolean)
 		return
 	end
 	for _, effekt in ipairs(ausstoss:GetChildren()) do
-		if effekt:IsA("ParticleEmitter") or effekt:IsA("Light") then
+		if effekt:IsA("ParticleEmitter") or effekt:IsA("Light") or effekt:IsA("Trail") then
 			effekt.Enabled = an
 		end
 	end
+end
+
+------------------------------------------------------------------------
+-- LANDSCHAFT
+------------------------------------------------------------------------
+
+local BLATTFARBEN = {
+	Color3.fromRGB(60, 125, 50),
+	Color3.fromRGB(75, 140, 55),
+	Color3.fromRGB(50, 110, 60),
+	Color3.fromRGB(95, 145, 50),
+}
+
+-- Laubbaum: Stamm und 3 runde Baumkronen. groesse 1 = normal
+function Modelle.baum(eltern: Instance, pos: Vector3, groesse: number, zufall: Random)
+	local m = Instance.new("Model")
+	m.Name = "Baum"
+	local hoehe = 7 * groesse
+	teil(m, {
+		Name = "Stamm",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(hoehe, 1.3 * groesse, 1.3 * groesse),
+		CFrame = CFrame.new(pos + Vector3.new(0, hoehe / 2, 0)) * STEHEND,
+		Color = Color3.fromRGB(105, 75, 50),
+		Material = Enum.Material.Wood,
+	})
+	local farbe = BLATTFARBEN[zufall:NextInteger(1, #BLATTFARBEN)]
+	for i = 1, 3 do
+		local d = (5 + zufall:NextNumber() * 2.5) * groesse
+		local versatz = Vector3.new(zufall:NextNumber(-1.6, 1.6), zufall:NextNumber(-0.5, 1.5), zufall:NextNumber(-1.6, 1.6)) * groesse
+		teil(m, {
+			Name = "Krone",
+			Shape = Enum.PartType.Ball,
+			Size = Vector3.one * d,
+			CFrame = CFrame.new(pos + Vector3.new(0, hoehe + 0.5 * groesse * i, 0) + versatz),
+			Color = farbe:Lerp(Color3.new(0, 0, 0), zufall:NextNumber() * 0.15),
+			Material = Enum.Material.LeafyGrass,
+			CanCollide = false,
+		})
+	end
+	m.Parent = eltern
+	return m
+end
+
+-- Nadelbaum: Stamm und 3 übereinander gestapelte, immer kleinere "Etagen"
+function Modelle.tanne(eltern: Instance, pos: Vector3, groesse: number)
+	local m = Instance.new("Model")
+	m.Name = "Tanne"
+	teil(m, {
+		Name = "Stamm",
+		Size = Vector3.new(1, 4 * groesse, 1),
+		CFrame = CFrame.new(pos + Vector3.new(0, 2 * groesse, 0)),
+		Color = Color3.fromRGB(95, 65, 45),
+		Material = Enum.Material.Wood,
+	})
+	for i = 0, 2 do
+		local breite = (7 - i * 2) * groesse
+		local etage = teil(m, {
+			Name = "Zweige",
+			Size = Vector3.new(breite, 3.2 * groesse, breite),
+			CFrame = CFrame.new(pos + Vector3.new(0, (4.5 + i * 2.6) * groesse, 0)) * CFrame.Angles(0, math.rad(i * 30), 0),
+			Color = Color3.fromRGB(40, 95, 55),
+			Material = Enum.Material.LeafyGrass,
+			CanCollide = false,
+		})
+		-- gestauchte Kugel: sieht aus wie eine Etage aus Tannenzweigen
+		local form = Instance.new("SpecialMesh")
+		form.MeshType = Enum.MeshType.Sphere
+		form.Parent = etage
+	end
+	m.Parent = eltern
+	return m
+end
+
+-- Straßenlaterne: tagsüber aus, nachts an (Welt.lua schaltet alles mit dem Tag "Laterne")
+function Modelle.laterne(eltern: Instance, pos: Vector3, blickRichtung: Vector3)
+	local m = Instance.new("Model")
+	m.Name = "Laterne"
+	local cf = CFrame.lookAt(pos, pos + Vector3.new(blickRichtung.X, 0, blickRichtung.Z))
+	teil(m, {
+		Name = "Fuss",
+		Size = Vector3.new(1.4, 0.6, 1.4),
+		CFrame = cf * CFrame.new(0, 0.3, 0),
+		Color = Color3.fromRGB(50, 52, 58),
+		Material = Enum.Material.Metal,
+	})
+	teil(m, {
+		Name = "Mast",
+		Size = Vector3.new(0.5, 13, 0.5),
+		CFrame = cf * CFrame.new(0, 6.8, 0),
+		Color = Color3.fromRGB(60, 62, 70),
+		Material = Enum.Material.Metal,
+	})
+	teil(m, {
+		Name = "Arm",
+		Size = Vector3.new(0.4, 0.4, 3.5),
+		CFrame = cf * CFrame.new(0, 13.1, -1.6),
+		Color = Color3.fromRGB(60, 62, 70),
+		Material = Enum.Material.Metal,
+	})
+	local kopf = teil(m, {
+		Name = "Lampe",
+		Size = Vector3.new(1.4, 0.5, 2),
+		CFrame = cf * CFrame.new(0, 12.8, -3.2),
+		Color = Color3.fromRGB(120, 120, 110),
+		Material = Enum.Material.SmoothPlastic,
+		CanCollide = false,
+	})
+	local licht = Instance.new("SpotLight")
+	licht.Face = Enum.NormalId.Bottom
+	licht.Angle = 110
+	licht.Range = 28
+	licht.Brightness = 3
+	licht.Color = Color3.fromRGB(255, 210, 150)
+	licht.Shadows = false
+	licht.Enabled = false
+	licht.Parent = kopf
+	CollectionService:AddTag(kopf, "Laterne")
+	m.Parent = eltern
+	return m
 end
 
 return Modelle

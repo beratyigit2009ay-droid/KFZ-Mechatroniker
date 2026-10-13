@@ -59,37 +59,131 @@ function Effekte.rauchwolke(pos: Vector3, anzahl: number, groesse: number, farbe
 	Debris:AddItem(halter, 8)
 end
 
--- Explosion mit Lichtblitz und Rauch (nur Optik, der Schaden wird extra berechnet)
+-- Explosion mit Lichtblitz, Feuerball, Druckwelle, Funken, Trümmern und Rauch
+-- (nur Optik, der Schaden wird extra berechnet)
 function Effekte.explosion(pos: Vector3, radius: number)
 	local ex = Instance.new("Explosion")
 	ex.Position = pos
 	ex.BlastRadius = radius
 	ex.BlastPressure = 0 -- nichts wegschleudern
 	ex.DestroyJointRadiusPercent = 0 -- Spieler nicht sofort töten
-	ex.Parent = workspace
+	ex.Parent = workspace -- die Spieler-Kamera wackelt dabei (siehe Kamera.client.lua)
 
-	-- heller Feuerball, der größer und durchsichtig wird
-	local ball = Modelle.teil(ordner, {
+	local function effektTeil(eigenschaften)
+		eigenschaften.CanCollide = false
+		eigenschaften.CanQuery = false
+		eigenschaften.CanTouch = false
+		eigenschaften.CastShadow = false
+		return Modelle.teil(ordner, eigenschaften)
+	end
+
+	-- heller Kern und Feuerball, die größer und durchsichtig werden
+	local kern = effektTeil({
+		Name = "Kern",
+		Shape = Enum.PartType.Ball,
+		Size = Vector3.one * 2,
+		CFrame = CFrame.new(pos),
+		Color = Color3.fromRGB(255, 250, 220),
+		Material = Enum.Material.Neon,
+	})
+	TweenService:Create(kern, TweenInfo.new(0.25), { Size = Vector3.one * radius * 0.7, Transparency = 1 }):Play()
+	Debris:AddItem(kern, 0.3)
+
+	local ball = effektTeil({
 		Name = "Feuerball",
 		Shape = Enum.PartType.Ball,
 		Size = Vector3.one * 2,
 		CFrame = CFrame.new(pos),
-		Color = Color3.fromRGB(255, 170, 60),
+		Color = Color3.fromRGB(255, 140, 40),
 		Material = Enum.Material.Neon,
-		CanCollide = false,
-		CanQuery = false,
-		CanTouch = false,
+		Transparency = 0.1,
 	})
 	local licht = Instance.new("PointLight")
 	licht.Color = Color3.fromRGB(255, 160, 60)
-	licht.Brightness = 10
-	licht.Range = 60
+	licht.Brightness = 12
+	licht.Range = math.min(radius * 3, 60)
+	licht.Shadows = true
 	licht.Parent = ball
-	TweenService:Create(ball, TweenInfo.new(0.6), { Size = Vector3.one * radius * 1.4, Transparency = 1 }):Play()
-	TweenService:Create(licht, TweenInfo.new(0.8), { Brightness = 0 }):Play()
-	Debris:AddItem(ball, 1)
+	TweenService:Create(ball, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = Vector3.one * radius * 1.3,
+		Transparency = 1,
+		Color = Color3.fromRGB(120, 40, 20),
+	}):Play()
+	TweenService:Create(licht, TweenInfo.new(1.2), { Brightness = 0 }):Play()
+	Debris:AddItem(ball, 1.3)
 
-	Effekte.rauchwolke(pos, math.floor(radius * 1.5), radius / 4, Color3.fromRGB(60, 55, 50))
+	-- Druckwelle: flacher Ring, der schnell auseinanderläuft
+	local ring = effektTeil({
+		Name = "Druckwelle",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(0.4, 2, 2),
+		CFrame = CFrame.new(pos + Vector3.new(0, 0.5, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+		Color = Color3.fromRGB(255, 230, 200),
+		Material = Enum.Material.Neon,
+		Transparency = 0.3,
+	})
+	TweenService:Create(ring, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+		Size = Vector3.new(0.2, radius * 3.2, radius * 3.2),
+		Transparency = 1,
+	}):Play()
+	Debris:AddItem(ring, 0.6)
+
+	-- Funken, die in alle Richtungen fliegen und herunterfallen
+	local funkenHalter = effektTeil({ Name = "Funken", Size = Vector3.one, Transparency = 1, CFrame = CFrame.new(pos) })
+	local funken = Instance.new("ParticleEmitter")
+	funken.Texture = "rbxasset://textures/particles/fire_main.dds"
+	funken.Color = ColorSequence.new(Color3.fromRGB(255, 230, 150), Color3.fromRGB(255, 90, 20))
+	funken.LightEmission = 1
+	funken.Size = NumberSequence.new(0.8, 0)
+	funken.Lifetime = NumberRange.new(0.6, 1.4)
+	funken.Speed = NumberRange.new(radius * 1.5, radius * 3)
+	funken.SpreadAngle = Vector2.new(180, 180)
+	funken.Acceleration = Vector3.new(0, -60, 0)
+	funken.Drag = 1
+	funken.Enabled = false
+	funken.Parent = funkenHalter
+	funken:Emit(math.floor(20 + radius))
+	Debris:AddItem(funkenHalter, 2)
+
+	-- ein paar dunkle Trümmer fliegen weg
+	for _ = 1, math.clamp(math.floor(radius / 5), 3, 8) do
+		local stueck = Modelle.teil(ordner, {
+			Name = "Truemmer",
+			Size = Vector3.new(math.random(5, 15) / 10, math.random(5, 15) / 10, math.random(5, 15) / 10),
+			CFrame = CFrame.new(pos + Vector3.new(0, 1, 0)) * CFrame.Angles(math.random() * 6, math.random() * 6, 0),
+			Color = Color3.fromRGB(45, 40, 38),
+			Material = Enum.Material.Slate,
+			CanQuery = false,
+			CanTouch = false,
+		})
+		stueck.Anchored = false
+		stueck.AssemblyLinearVelocity = Vector3.new(math.random(-40, 40), math.random(30, 70), math.random(-40, 40))
+		stueck.AssemblyAngularVelocity = Vector3.new(math.random(-10, 10), math.random(-10, 10), math.random(-10, 10))
+		Debris:AddItem(stueck, 4)
+	end
+
+	-- Brandfleck auf dem Boden, wenn die Explosion nah am Boden war
+	local suche = RaycastParams.new()
+	suche.FilterType = Enum.RaycastFilterType.Exclude
+	suche.FilterDescendantsInstances = { ordner }
+	local boden = workspace:Raycast(pos + Vector3.new(0, 2, 0), Vector3.new(0, -20, 0), suche)
+	if boden then
+		local fleck = effektTeil({
+			Name = "Brandfleck",
+			Shape = Enum.PartType.Cylinder,
+			Size = Vector3.new(0.2, radius * 1.2, radius * 1.2),
+			CFrame = CFrame.new(boden.Position + Vector3.new(0, 0.08, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+			Color = Color3.fromRGB(30, 26, 24),
+			Material = Enum.Material.Slate,
+			Transparency = 0.15,
+		})
+		TweenService:Create(fleck, TweenInfo.new(25, Enum.EasingStyle.Linear), { Transparency = 1 }):Play()
+		Debris:AddItem(fleck, 25)
+	end
+
+	-- dicker Rauch: erst schwarz, dann grau
+	Effekte.rauchwolke(pos, math.floor(radius * 1.5), radius / 4, Color3.fromRGB(45, 40, 38))
+	Effekte.rauchwolke(pos + Vector3.new(0, radius / 3, 0), math.floor(radius), radius / 3, Color3.fromRGB(110, 105, 100))
 end
 
 -- Spieler in der Nähe einer Explosion bekommen Schaden

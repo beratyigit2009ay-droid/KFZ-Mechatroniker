@@ -16,12 +16,7 @@ local staedte = {}
 -- Ordner in ReplicatedStorage, über den die Clients sehen, wem welche Stadt gehört
 local spielstand: Folder
 
-local FARBEN = {
-	Color3.fromRGB(210, 60, 60), -- rot
-	Color3.fromRGB(60, 110, 220), -- blau
-	Color3.fromRGB(70, 180, 80), -- grün
-	Color3.fromRGB(235, 190, 40), -- gelb
-}
+local FARBEN = Config.STADT_FARBEN
 -- Die 4 Städte liegen in den 4 Ecken der Karte
 local RICHTUNGEN = {
 	Vector3.new(-1, 0, -1),
@@ -41,18 +36,6 @@ function StadtManager.erstellen()
 	local ordner = Instance.new("Folder")
 	ordner.Name = "Staedte"
 	ordner.Parent = workspace
-
-	-- Falls es keinen Boden gibt (z.B. leere Vorlage), bauen wir einen
-	if not workspace:FindFirstChild("Baseplate") then
-		local boden = Modelle.teil(workspace, {
-			Name = "Baseplate",
-			Size = Vector3.new(800, 2, 800),
-			CFrame = CFrame.new(0, -1, 0),
-			Color = Color3.fromRGB(90, 140, 70),
-			Material = Enum.Material.Grass,
-		})
-		boden.Locked = true
-	end
 
 	for i = 1, math.min(Config.MAX_STAEDTE, 4) do
 		local mitte = RICHTUNGEN[i] * Config.STADT_ABSTAND + Vector3.new(0, 0.5, 0)
@@ -361,6 +344,23 @@ function StadtManager.aktualisieren(stadt)
 	spieler:SetAttribute("StromErzeugt", w.stromErzeugt)
 	spieler:SetAttribute("StromBedarf", w.stromBedarf)
 	spieler:SetAttribute("Einkommen", w.einkommen)
+
+	-- Wie viele Gebäude jeder Sorte stehen und wie viele Bauplätze noch frei sind
+	local anzahl = {}
+	local frei = 0
+	for _, platz in ipairs(stadt.plaetze) do
+		if platz.gebaeude then
+			local typ = platz.gebaeude:GetAttribute("Typ")
+			anzahl[typ] = (anzahl[typ] or 0) + 1
+		else
+			frei += 1
+		end
+	end
+	for typ in pairs(Config.Gebaeude) do
+		spieler:SetAttribute("Gebaut_" .. typ, anzahl[typ] or 0)
+	end
+	spieler:SetAttribute("BauplaetzeFrei", frei)
+	spieler:SetAttribute("Bauplaetze", #stadt.plaetze)
 end
 
 -- Sucht ein Ziel in der Stadt: ein zufälliges Gebäude oder eine zufällige Stelle
@@ -380,6 +380,39 @@ end
 ------------------------------------------------------------------------
 -- Schaden
 ------------------------------------------------------------------------
+
+-- Lebensbalken über einem beschädigten Gebäude (grün -> gelb -> rot)
+local function lebensbalken(g: Model, leben: number, maxLeben: number)
+	local teil = g.PrimaryPart
+	if not teil then
+		return
+	end
+	local schild = teil:FindFirstChild("Lebensbalken") :: BillboardGui?
+	if not schild then
+		local neu = Instance.new("BillboardGui")
+		neu.Name = "Lebensbalken"
+		neu.Size = UDim2.new(0, 90, 0, 12)
+		neu.StudsOffsetWorldSpace = Vector3.new(0, teil.Size.Y / 2 + 4, 0)
+		neu.MaxDistance = 250
+		neu.AlwaysOnTop = true
+		neu.Parent = teil
+		local hinten = Instance.new("Frame")
+		hinten.Size = UDim2.fromScale(1, 1)
+		hinten.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+		hinten.Parent = neu
+		Instance.new("UICorner").Parent = hinten
+		local balken = Instance.new("Frame")
+		balken.Name = "Balken"
+		balken.Size = UDim2.fromScale(1, 1)
+		balken.Parent = hinten
+		Instance.new("UICorner").Parent = balken
+		schild = neu
+	end
+	local anteil = math.clamp(leben / maxLeben, 0, 1)
+	local balken = (schild :: BillboardGui).Frame.Balken
+	balken.Size = UDim2.fromScale(anteil, 1)
+	balken.BackgroundColor3 = Color3.fromRGB(230, 60, 50):Lerp(Color3.fromRGB(70, 210, 90), anteil)
+end
 
 local function zerstoeren(platz)
 	local gebaeude = platz.gebaeude
@@ -418,6 +451,7 @@ function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angre
 						end
 					else
 						g:SetAttribute("Leben", leben)
+						lebensbalken(g, leben, g:GetAttribute("MaxLeben"))
 						-- Beschädigte Gebäude brennen
 						if leben < g:GetAttribute("MaxLeben") / 2 and g.PrimaryPart and not g.PrimaryPart:FindFirstChild("Brand") then
 							local brand = Instance.new("Fire")

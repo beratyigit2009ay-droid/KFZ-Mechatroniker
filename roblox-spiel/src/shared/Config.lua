@@ -21,6 +21,18 @@ Config.GRUNDSTROM = 10
 -- Städte
 Config.STADT_GROESSE = 120 -- Kantenlänge einer Stadt in Studs
 Config.STADT_ABSTAND = 170 -- Abstand der Stadtmitte zur Kartenmitte
+Config.STADT_FARBEN = {
+	Color3.fromRGB(210, 60, 60), -- rot
+	Color3.fromRGB(60, 110, 220), -- blau
+	Color3.fromRGB(70, 180, 80), -- grün
+	Color3.fromRGB(235, 190, 40), -- gelb
+}
+
+-- Tag und Nacht: so viele Minuten dauert der Tag und die Nacht.
+-- Nachts leuchten Fenster und Straßenlaternen, Raketen sieht man dann besonders gut.
+Config.TAG_UND_NACHT = true -- auf false stellen, dann ist immer Nachmittag
+Config.TAG_MINUTEN = 9
+Config.NACHT_MINUTEN = 3
 
 -- Angriffe
 Config.ANGRIFF_PAUSE = 2 -- Sekunden zwischen zwei Angriffen
@@ -34,6 +46,7 @@ Config.BELOHNUNG_ANTEIL = 0.5 -- für ein zerstörtes Gebäude bekommst du 50 % 
 Config.Gebaeude = {
 	Haus = {
 		Name = "Haus",
+		Icon = "🏠", -- Bild auf dem Knopf (ein Emoji)
 		Preis = 50,
 		Bewohner = 10,
 		Strom = -2,
@@ -41,6 +54,7 @@ Config.Gebaeude = {
 	},
 	Hochhaus = {
 		Name = "Hochhaus",
+		Icon = "🏢",
 		Preis = 250,
 		Bewohner = 50,
 		Strom = -8,
@@ -48,6 +62,7 @@ Config.Gebaeude = {
 	},
 	Fabrik = {
 		Name = "Fabrik",
+		Icon = "🏭",
 		Preis = 150,
 		Einkommen = 8,
 		Strom = -6,
@@ -55,6 +70,7 @@ Config.Gebaeude = {
 	},
 	Buero = {
 		Name = "Bürogebäude",
+		Icon = "💼",
 		Preis = 400,
 		Einkommen = 20,
 		Strom = -8,
@@ -62,6 +78,7 @@ Config.Gebaeude = {
 	},
 	Einkaufszentrum = {
 		Name = "Einkaufszentrum",
+		Icon = "🛍️",
 		Preis = 700,
 		Einkommen = 35,
 		Strom = -12,
@@ -69,6 +86,7 @@ Config.Gebaeude = {
 	},
 	Bank = {
 		Name = "Bank",
+		Icon = "🏦",
 		Preis = 1200,
 		Einkommen = 60,
 		Strom = -6,
@@ -76,12 +94,14 @@ Config.Gebaeude = {
 	},
 	Kraftwerk = {
 		Name = "Kraftwerk",
+		Icon = "⚡",
 		Preis = 200,
 		Strom = 30,
 		Leben = 200,
 	},
 	Abwehr = {
 		Name = "Flugabwehr",
+		Icon = "🛡️",
 		Preis = 300,
 		Strom = -4,
 		Leben = 200,
@@ -92,6 +112,7 @@ Config.Gebaeude = {
 	},
 	Panzerabwehr = {
 		Name = "Panzerabwehr",
+		Icon = "🎯",
 		Preis = 250,
 		Strom = -3,
 		Leben = 200,
@@ -109,6 +130,7 @@ Config.GebaeudeReihenfolge =
 Config.Raketen = {
 	Kurzstrecke = {
 		Name = "Kurzstrecken-Rakete",
+		Icon = "🚀",
 		Preis = 100,
 		Schaden = 60,
 		Radius = 18, -- Explosionsradius in Studs
@@ -119,6 +141,7 @@ Config.Raketen = {
 	},
 	Mittelstrecke = {
 		Name = "Mittelstrecken-Rakete",
+		Icon = "🚀",
 		Preis = 200,
 		Schaden = 90,
 		Radius = 24,
@@ -129,6 +152,7 @@ Config.Raketen = {
 	},
 	Schwer = {
 		Name = "Schwere Rakete",
+		Icon = "🔥",
 		Preis = 400,
 		Schaden = 150,
 		Radius = 32,
@@ -139,6 +163,7 @@ Config.Raketen = {
 	},
 	Mega = {
 		Name = "Mega-Rakete",
+		Icon = "☢️",
 		Preis = 1000,
 		Schaden = 300,
 		Radius = 50,
@@ -155,6 +180,7 @@ Config.RaketenReihenfolge = { "Kurzstrecke", "Mittelstrecke", "Schwer", "Mega" }
 Config.Einheiten = {
 	Panzer = {
 		Name = "Panzer",
+		Icon = "💥",
 		Preis = 200,
 		Leben = 120,
 		Tempo = 22, -- Studs pro Sekunde
@@ -164,6 +190,7 @@ Config.Einheiten = {
 	},
 	Jet = {
 		Name = "Kampfjet",
+		Icon = "✈️",
 		Preis = 400,
 		Tempo = 130,
 		Hoehe = 90,
