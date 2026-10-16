@@ -1,8 +1,8 @@
 # LUXURY EVENTS by DEKO.LUXURY – Website
 
 Statische Website (HTML, CSS, JavaScript) ohne Framework und ohne Build-Schritt.
-Sie läuft auf jedem Webhosting. Das Anfrageformular nutzt PHP, das bei üblichen deutschen
-Hostern (IONOS, Strato, all-inkl …) bereits vorhanden ist.
+Sie läuft auf jedem Webhosting, auch kostenlos auf GitHub Pages. Das Anfrageformular verschickt
+über den Dienst FormSubmit oder – auf Webhosting mit PHP (IONOS, Strato, all-inkl …) – über `anfrage.php`.
 
 ```
 deko-luxury/
@@ -34,7 +34,7 @@ Die Reihenfolge ist fest:
 3. **Über uns** – kurzer Text und die drei Punkte Planung, Design, Umsetzung.
 4. **Leistungen** – acht Karten mit Gold-Icons; beim Hover heben sie sich mit sanftem Schimmer.
    Ein Klick wählt im Formular die passende Event-Art bzw. Leistung vor.
-5. **Galerie** – sechs echte Arbeiten, jedes Bild vollständig im eigenen Format. Beim Hover Zoom und
+5. **Galerie** – fünf echte Arbeiten, jedes Bild vollständig im eigenen Format. Beim Hover Zoom und
    eingleitende Bildunterschrift, Klick öffnet die große Ansicht.
 6. **Showroom & Ablauf** – Adresse **Kapuzinerstr. 4, Burgau 89331**, Route planen, Karte und der
    Zeitstrahl Erstgespräch → Design & Planung → Dekoration vor Ort mit goldener SVG-Linie.
@@ -53,7 +53,8 @@ Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestri
 
 | Wo | Was fehlt |
 | --- | --- |
-| **Formular-Test** | Anfragen gehen zum Testen an beratyigit.2009.ay@gmail.com. Vor dem Livegang zurückstellen: in `anfrage.php` `EMPFAENGER` wieder auf `deko.luxury@gmx.de`, in `assets/js/main.js` `anfrageAn` auf `''`. |
+| **Formular-Test** | Anfragen gehen zum Testen an beratyigit.2009.ay@gmail.com. Vor dem Livegang zurückstellen: in `assets/js/main.js` `anfrageAn` auf `''` (dann gilt `email`), in `anfrage.php` `EMPFAENGER` wieder auf `deko.luxury@gmx.de`. Danach einmal neu aktivieren (siehe „Anfrageformular“). |
+| `datenschutz.html` → Abschnitt 4 | Angaben zum Formular-Dienst FormSubmit prüfen und ergänzen. |
 | `index.html` → Info-Streifen | **Bewertungen** sind mit dem Google-Profil verlinkt. Optional die Zahl ergänzen (z. B. „4,9 ★ · 37 Bewertungen“) – nur wenn sie echt ist, und regelmäßig aktualisieren. |
 | `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `logo`. Telefon und Instagram sind bereits eingetragen. |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg. Bitte bestätigen oder anpassen. |
@@ -177,6 +178,23 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
   Eröffnung, Glitzer und Parallax. Alle Inhalte sind auch ohne JavaScript sichtbar.
 
 ## Anfrageformular
+
+**So wird verschickt** (Einstellung `formDienst` ganz oben in `assets/js/main.js`):
+
+- `formDienst: true` (aktuell): Versand über den kostenlosen Dienst **FormSubmit**. Funktioniert auch auf
+  GitHub Pages ohne PHP. Die Anfrage kommt als Tabelle per E-Mail an `anfrageAn` (bzw. `email`):
+  Betreff `Neue Anfrage: Hochzeit · 14.06.2027 · Anna Müller`, darin Event-Art, Datum, Nachricht,
+  Name, E-Mail, Telefon und ein WhatsApp-Link. „Antworten“ geht direkt an die anfragende Person.
+- **Einmalig aktivieren:** Beim allerersten Absenden (und nach jedem Wechsel der Empfänger-Adresse)
+  schickt FormSubmit statt der Anfrage eine E-Mail „Activate Form“ an den Empfänger. Den Knopf darin
+  anklicken, dann das Formular noch einmal absenden. Ab dann kommt jede Anfrage an.
+  Auch im Spam-Ordner nachsehen.
+- `formDienst: false`: Versand über `anfrage.php` auf eigenem Webhosting mit PHP (siehe unten).
+- Klappt der Versand nicht, erscheinen die Knöpfe „Per E-Mail senden“ und „Per WhatsApp senden“
+  mit fertig ausgefülltem Text. So geht keine Anfrage verloren.
+- In der Vorschau (claude.ai) wird nichts verschickt.
+
+**Mit eigenem PHP-Webhosting:**
 
 - `anfrage.php` sendet jede Anfrage an **deko.luxury@gmx.de** (Einstellung oben in der Datei).
 - Die E-Mail ist übersichtlich aufgebaut:

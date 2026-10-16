@@ -6,8 +6,11 @@
    ========================================================================== */
 var KONTAKT = {
   email: 'deko.luxury@gmx.de',
-  // Empfänger der Anfragen, wenn kein PHP läuft (E-Mail-Programm). TEST: danach wieder auf '' stellen (= email).
+  // Empfänger der Formular-Anfragen. TEST: danach wieder auf '' stellen (= email oben).
   anfrageAn: 'beratyigit.2009.ay@gmail.com',
+  // Versand des Formulars: true = kostenloser Dienst FormSubmit (für GitHub Pages, ohne PHP).
+  // false = Versand über anfrage.php (Webhosting mit PHP; Empfänger dann in anfrage.php).
+  formDienst: true,
   telefon: '+49 179 4310823',
   whatsapp: '491794310823',  // international, ohne + und Leerzeichen
   instagram: 'https://www.instagram.com/deko.luxury/',
@@ -624,19 +627,64 @@ var KONTAKT = {
       if (val('telefon')) lines.push('Telefon: ' + val('telefon'));
       return lines.join('\n');
     };
+    var subjectLine = function (prefix) {
+      var fd = new FormData(form);
+      var val = function (k) { return String(fd.get(k) || '').trim(); };
+      return prefix + [val('eventart') || 'Beratung', val('datum'), val('name')].filter(Boolean).join(' · ');
+    };
+    // Telefonnummer für WhatsApp-Links: nur Ziffern, international (0176… → 49176…)
+    var waNumber = function (tel) {
+      var d = String(tel).replace(/\D/g, '');
+      if (/^\s*\+/.test(tel)) return d;
+      if (d.indexOf('00') === 0) return d.slice(2);
+      if (d.indexOf('0') === 0) return '49' + d.slice(1);
+      return d;
+    };
     var firstName = function () { return (fields.name.el.value || '').trim().split(/\s+/)[0]; };
     var done = function (preview) {
       var n = firstName();
       showThanks('Danke' + (n ? ', ' + n : '') + '!',
-        preview ? 'Anfrage gesendet (Vorschau). Wir melden uns schnell.' : 'Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.');
+        preview ? 'Das ist nur die Vorschau – hier wird nichts verschickt. Auf der echten Website kommt die Anfrage per E-Mail bei uns an.' : 'Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.');
       form.reset();
       if (ts) ts.value = String(Date.now());
     };
-    // Ohne PHP (z. B. GitHub Pages): fertig ausgefüllte E-Mail an KONTAKT.email oder WhatsApp-Nachricht
-    var fallback = function () {
+
+    // Versand über den Formular-Dienst FormSubmit: kommt als übersichtliche Tabelle per E-Mail an.
+    // Beim allerersten Absenden schickt FormSubmit stattdessen eine Mail „Activate Form“ an den Empfänger.
+    var sendService = function () {
       var fd = new FormData(form);
-      var subject = 'Beratungsanfrage: ' + [String(fd.get('eventart') || '') || 'Beratung', String(fd.get('datum') || '').trim(), String(fd.get('name') || '').trim()]
-        .filter(Boolean).join(' · ');
+      var val = function (k) { return String(fd.get(k) || '').trim(); };
+      var data = {
+        _subject: subjectLine('Neue Anfrage: '),
+        _template: 'table',
+        _captcha: 'false',
+        _honey: val('website'),
+        'Event-Art': val('eventart') || 'nicht angegeben',
+        'Datum / Zeitraum': val('datum') || 'nicht angegeben',
+        'Nachricht': val('nachricht') || '–',
+        'Name': val('name'),
+        'E-Mail': val('email') || '–',
+        'Telefon': val('telefon') || '–'
+      };
+      if (val('telefon')) data.WhatsApp = 'https://wa.me/' + waNumber(val('telefon'));
+      if (val('email')) data._replyto = val('email');
+      return fetch('https://formsubmit.co/ajax/' + (KONTAKT.anfrageAn || KONTAKT.email), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (r) { return { ok: !!r && (r.success === true || r.success === 'true') }; });
+    };
+    // Versand über anfrage.php (Webhosting mit PHP)
+    var sendPhp = function () {
+      return fetch(form.getAttribute('action'), { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+        .then(function (res) { return res.json().catch(function () { return { ok: false, error: 'http' }; }); })
+        .then(function (r) { return { ok: !!(r && r.ok), validation: !!(r && r.error === 'validation') }; });
+    };
+    // Klappt der Versand nicht: fertig ausgefüllte E-Mail oder WhatsApp-Nachricht zum Selbst-Absenden
+    var fallback = function () {
+      var subject = subjectLine('Beratungsanfrage: ');
       var cut = function (t) { return t.length > 1800 ? t.slice(0, 1800) + ' …' : t; };
       var actions = [];
       var mail = doc.createElement('a');
@@ -669,14 +717,16 @@ var KONTAKT = {
       if (firstBad) { firstBad.focus(); return; }
 
       if (form.getAttribute('data-demo') === 'true') { done(true); return; }
+      // Spamschutz: Bots füllen das versteckte Feld aus oder senden sofort ab
+      var hp = form.elements.website;
+      if ((hp && hp.value) || (ts && Date.now() - Number(ts.value) < 3000)) { done(false); return; }
 
       submitBtn.disabled = true;
       submitLabel.textContent = 'Wird gesendet …';
-      fetch(form.getAttribute('action'), { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
-        .then(function (res) { return res.json().catch(function () { return { ok: false, error: 'http' }; }); })
-        .then(function (data) {
-          if (data && data.ok) done(false);
-          else if (data && data.error === 'validation') statusEl.textContent = 'Bitte prüft Name und E-Mail oder Telefon.';
+      (KONTAKT.formDienst ? sendService() : sendPhp())
+        .then(function (r) {
+          if (r.ok) done(false);
+          else if (r.validation) statusEl.textContent = 'Bitte prüft Name und E-Mail oder Telefon.';
           else fallback();
         })
         .catch(fallback)
