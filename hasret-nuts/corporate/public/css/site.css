@@ -325,6 +325,7 @@ main:focus{outline:none}
 .hero__media{flex:1 1 440px;min-width:0;position:relative;padding-bottom:48px}
 .hero__main{width:88%;margin-left:auto}
 .hero__inset{position:absolute;left:0;bottom:0;width:44%;border:10px solid var(--c-white);outline:1px dashed var(--t-emerald-40);outline-offset:-10px}
+.hero__inset.photo--img{outline:0}
 .hero__main .photo__cap{order:-1}
 .hero__main > .photo__icon{align-self:flex-end}
 

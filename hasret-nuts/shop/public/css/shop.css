@@ -589,6 +589,7 @@ main:focus{outline:none}
 .thumb span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:9px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--choc);background-color:var(--ph-a);background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 10px)}
 .thumb small{position:absolute;left:0;right:0;bottom:6px;font-size:10px;font-weight:500;color:var(--cocoa);text-align:center}
 .thumb--b span{background-color:var(--ph-b);background-image:repeating-linear-gradient(45deg,var(--hatch-b) 0 1px,transparent 1px 8px)}
+.thumb img{display:block;width:100%;height:100%;object-fit:cover;border-radius:9px}
 .thumb[aria-pressed="true"]{border-color:var(--choc)}
 .pdp__buy{flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:22px}
 .pdp__badges{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px}

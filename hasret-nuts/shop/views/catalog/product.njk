@@ -23,7 +23,7 @@
     </div>
     <div class="thumbs" role="group" aria-label="Produktbilder">
       {% for g in m.gallery %}
-      <button type="button" class="thumb{% if g.key == 'B' %} thumb--b{% endif %}" data-thumb="{{ g.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}" aria-label="Bild zeigen: {{ g.short }}"><span>{{ g.id }}</span><small>{{ g.short }}</small></button>
+      <button type="button" class="thumb{% if g.key == 'B' %} thumb--b{% endif %}" data-thumb="{{ g.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}" aria-label="Bild zeigen: {{ g.short }}">{% if g.src %}<img src="{{ g.src }}" alt="" loading="lazy" decoding="async">{% else %}<span>{{ g.id }}</span><small>{{ g.short }}</small>{% endif %}</button>
       {% endfor %}
     </div>
   </div>
