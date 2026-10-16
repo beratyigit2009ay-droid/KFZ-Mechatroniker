@@ -30,7 +30,7 @@ Die Reihenfolge ist fest:
    „Beratung anfragen“ (scrollt zum Kontakt) und „WhatsApp“. Hintergrund mit Lichtsäumen,
    Gold-Ornament und dezentem Glitzer, die sich leicht mit Maus und Scrollen bewegen.
 2. **Info-Streifen** – Showroom in Burgau · Premium Dekoration · Nach euren Wünschen · 24/7 geöffnet ·
-   Bewertungen (Platzhalter). Die Icons zeichnen sich beim Scrollen.
+   Bewertungen (verlinkt auf das Google-Profil). Die Icons zeichnen sich beim Scrollen.
 3. **Über uns** – kurzer Text und die drei Punkte Planung, Design, Umsetzung.
 4. **Leistungen** – acht Karten mit Gold-Icons; beim Hover heben sie sich mit sanftem Schimmer.
    Ein Klick wählt im Formular die passende Event-Art bzw. Leistung vor.
@@ -53,7 +53,7 @@ Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestri
 
 | Wo | Was fehlt |
 | --- | --- |
-| `index.html` → Info-Streifen | **Bewertungen**: nur echte Angaben eintragen (z. B. „4,9 ★ · 37 Google-Bewertungen“) und auf das Profil verlinken. |
+| `index.html` → Info-Streifen | **Bewertungen** sind mit dem Google-Profil verlinkt. Optional die Zahl ergänzen (z. B. „4,9 ★ · 37 Bewertungen“) – nur wenn sie echt ist, und regelmäßig aktualisieren. |
 | `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `logo`. Telefon und Instagram sind bereits eingetragen. |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg. Bitte bestätigen oder anpassen. |
 | **Einverständnis** | Auf `galerie-04` sind die Vornamen des Paares zu lesen (Willkommensschild), auf `galerie-05` ein Vorname (Geburtstagsschild). Auf `galerie-02` ist im Hintergrund ein Kennzeichen teilweise erkennbar. Vor der Veröffentlichung das Einverständnis einholen, unkenntlich machen oder ein anderes Foto wählen. |
@@ -178,29 +178,40 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
 ## Anfrageformular
 
 - `anfrage.php` sendet jede Anfrage an **deko.luxury@gmx.de** (Einstellung oben in der Datei).
+- Die E-Mail ist übersichtlich aufgebaut:
+  - Betreff: `Neue Anfrage: Hochzeit · 14.06.2027 · Anna Müller`
+  - oben **Was gewünscht ist** (Event-Art, Datum/Zeitraum, Nachricht),
+  - darunter **Kontakt** (Name, E-Mail, Telefon),
+  - Knöpfe **Per E-Mail antworten**, **Anrufen** und **WhatsApp schreiben**.
   Gibt jemand eine E-Mail an, geht „Antworten“ direkt an diese Person.
 - Pflicht sind nur Name und **E-Mail oder Telefon**. Nach dem Absenden erscheint die Bestätigung
   „Danke! Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.“ In der Vorschau steht dort
   „Anfrage gesendet (Vorschau)“, es wird nichts verschickt.
 - Für gute Zustellbarkeit in `ABSENDER` eine Adresse der eigenen Domain eintragen.
 - Spamschutz: unsichtbares Honeypot-Feld und Mindestzeit, kein Captcha nötig.
-- Ist kein PHP verfügbar (z. B. GitHub Pages, Netlify), bietet die Seite automatisch den Versand
-  per E-Mail-Programm an, alle Angaben sind schon vorausgefüllt.
+- Ist kein PHP verfügbar (z. B. GitHub Pages, Netlify), kann die Seite nicht selbst E-Mails senden.
+  Dann erscheint „Fast geschafft.“ mit zwei Knöpfen: **Per E-Mail senden** (öffnet das E-Mail-Programm
+  mit fertigem Text an deko.luxury@gmx.de) und **Per WhatsApp senden** (fertige Nachricht an
+  +49 179 4310823). Die Anfrage kommt erst an, wenn die Person dort auf „Senden“ tippt.
+  Für den vollautomatischen Versand die Website bei einem Hoster mit PHP ablegen.
+- Nach dem Umzug einmal selbst eine Testanfrage schicken und im GMX-Postfach auch den Spam-Ordner
+  prüfen. Landet sie dort, als „Kein Spam“ markieren.
 
 ## Datenschutz & Cookies
 
 - Keine Tracking- oder Marketing-Cookies, keine externen Schriften, kein Cookie-Banner nötig.
 - Die interaktive Karte (OpenStreetMap) lädt erst nach Klick bzw. Zustimmung
   („Cookie-Einstellungen“ im Footer). Vorher zeigt die Seite eine eigene Übersichtskarte.
-- WhatsApp und Instagram sind einfache Links; es wird nichts eingebettet.
+- WhatsApp, Instagram und das Google-Profil sind einfache Links; es wird nichts eingebettet.
 
 ## SEO
 
 - Title, Description, Open-Graph-Bild, saubere H1/H2-Struktur, Alt-Texte für alle Bilder.
 - Strukturierte Daten: `LocalBusiness` mit Adresse Kapuzinerstr. 4, 89331 Burgau, Öffnungszeiten
   und Leistungen sowie `FAQPage` für die FAQ.
-- Empfehlung: Google-Unternehmensprofil für den Showroom anlegen; das ist der wirksamste Schritt
-  für die lokale Suche. Danach die Bewertungen im Info-Streifen verlinken.
+- Das Google-Unternehmensprofil ist verlinkt (Info-Streifen, Showroom, Footer; `KONTAKT.google`
+  in `assets/js/main.js`). Sobald die Website online ist, ihre Adresse im Google-Profil unter
+  „Website“ eintragen – das ist der wirksamste Schritt für die lokale Suche.
 
 ## Technik & Qualität
 

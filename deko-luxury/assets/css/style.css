@@ -735,6 +735,10 @@ address { font-style: normal; }
 .strip__text small { font-size: 0.76rem; letter-spacing: 0.04em; color: var(--muted-light); overflow-wrap: anywhere; }
 .strip__item--live strong { color: #e9fbe9; }
 .strip .ph { color: var(--champagne); }
+.strip__item--link { position: relative; }
+.strip__a { color: var(--gold-soft); transition: color 0.3s; }
+.strip__a::after { content: ""; position: absolute; inset: 0; }
+.strip__item--link:hover .strip__a, .strip__a:focus-visible { color: var(--champagne); }
 
 /* ---------- 3. Über uns ---------- */
 .about { background: var(--ivory); }
@@ -1040,6 +1044,7 @@ address { font-style: normal; }
 .site-header.is-solid .link--small { margin-right: 8px; }
 
 .footer__col address { font-size: 0.95rem; line-height: 1.9; color: rgba(246, 241, 233, 0.82); }
+.footer__socials { display: flex; flex-wrap: wrap; gap: 0 24px; }
 .footer__social { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 0.9rem; color: rgba(246, 241, 233, 0.82); transition: color 0.3s; }
 .footer__social svg { width: 22px; height: 22px; color: var(--gold-soft); }
 .footer__social:hover { color: var(--gold-soft); }

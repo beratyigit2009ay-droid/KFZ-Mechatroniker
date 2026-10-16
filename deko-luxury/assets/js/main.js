@@ -9,6 +9,7 @@ var KONTAKT = {
   telefon: '+49 179 4310823',
   whatsapp: '491794310823',  // international, ohne + und Leerzeichen
   instagram: 'https://www.instagram.com/deko.luxury/',
+  google: 'https://share.google/bSpoMTGI2UBNDgjTF',  // Google-Profil (Bewertungen, Route)
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 
@@ -504,7 +505,8 @@ var KONTAKT = {
     email: KONTAKT.email ? { href: 'mailto:' + KONTAKT.email, label: KONTAKT.email } : null,
     phone: KONTAKT.telefon ? { href: 'tel:' + onlyDigits(KONTAKT.telefon), label: KONTAKT.telefon } : null,
     whatsapp: KONTAKT.whatsapp ? { href: 'https://wa.me/' + onlyDigits(KONTAKT.whatsapp).replace('+', '') + '?text=' + encodeURIComponent(KONTAKT.whatsappText || ''), label: 'Chat starten', external: true } : null,
-    instagram: KONTAKT.instagram ? { href: KONTAKT.instagram, label: '@' + KONTAKT.instagram.replace(/\/+$/, '').split('/').pop(), external: true } : null
+    instagram: KONTAKT.instagram ? { href: KONTAKT.instagram, label: '@' + KONTAKT.instagram.replace(/\/+$/, '').split('/').pop(), external: true } : null,
+    google: KONTAKT.google ? { href: KONTAKT.google, label: 'Auf Google ansehen', external: true } : null
   };
   var missingText = {
     phone: 'Die Telefonnummer folgt in Kürze. Schreibt uns bis dahin gern an ' + KONTAKT.email + ' oder über das Formular.',
@@ -605,17 +607,20 @@ var KONTAKT = {
       });
     });
 
-    var summary = function () {
+    // Übersichtliche Zusammenfassung: erst was gewünscht ist, dann die Kontaktdaten.
+    // wa = true formatiert Überschriften fett für WhatsApp.
+    var summary = function (wa) {
       var fd = new FormData(form);
-      var lines = [];
-      var add = function (label, val) { if (val && String(val).trim()) lines.push(label + ': ' + String(val).trim()); };
-      add('Name', fd.get('name'));
-      add('E-Mail', fd.get('email'));
-      add('Telefon', fd.get('telefon'));
-      add('Event-Art', fd.get('eventart'));
-      add('Datum / Wunschzeitraum', fd.get('datum'));
-      var msg = (fd.get('nachricht') || '').trim();
-      return lines.join('\n') + (msg ? '\n\nNachricht:\n' + msg : '');
+      var val = function (k) { return String(fd.get(k) || '').trim(); };
+      var head = function (t) { return wa ? '*' + t + '*' : t.toUpperCase(); };
+      var lines = ['Hallo DEKO.LUXURY,', '', 'hier ist meine Anfrage über eure Website:', '', head('Was ich mir wünsche')];
+      lines.push('Event-Art: ' + (val('eventart') || 'noch offen'));
+      lines.push('Datum / Wunschzeitraum: ' + (val('datum') || 'noch offen'));
+      if (val('nachricht')) lines.push('Nachricht:', val('nachricht'));
+      lines.push('', head('Kontakt'), 'Name: ' + val('name'));
+      if (val('email')) lines.push('E-Mail: ' + val('email'));
+      if (val('telefon')) lines.push('Telefon: ' + val('telefon'));
+      return lines.join('\n');
     };
     var firstName = function () { return (fields.name.el.value || '').trim().split(/\s+/)[0]; };
     var done = function (preview) {
@@ -625,16 +630,28 @@ var KONTAKT = {
       form.reset();
       if (ts) ts.value = String(Date.now());
     };
+    // Ohne PHP (z. B. GitHub Pages): fertig ausgefüllte E-Mail an KONTAKT.email oder WhatsApp-Nachricht
     var fallback = function () {
       var fd = new FormData(form);
-      var subject = 'Anfrage über die Website' + (fd.get('eventart') ? ' – ' + fd.get('eventart') : '');
-      var body = summary();
-      if (body.length > 1800) body = body.slice(0, 1800) + ' …';
-      var a = doc.createElement('a');
-      a.className = 'btn btn--foil';
-      a.href = 'mailto:' + KONTAKT.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      a.textContent = 'E-Mail öffnen';
-      showThanks('Fast geschafft.', 'Die Anfrage konnte gerade nicht automatisch übermittelt werden. Sendet sie uns einfach per E-Mail – eure Angaben sind schon vorbereitet.', [a]);
+      var subject = 'Beratungsanfrage: ' + [String(fd.get('eventart') || '') || 'Beratung', String(fd.get('datum') || '').trim(), String(fd.get('name') || '').trim()]
+        .filter(Boolean).join(' · ');
+      var cut = function (t) { return t.length > 1800 ? t.slice(0, 1800) + ' …' : t; };
+      var actions = [];
+      var mail = doc.createElement('a');
+      mail.className = 'btn btn--foil';
+      mail.href = 'mailto:' + KONTAKT.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(cut(summary(false)));
+      mail.textContent = 'Per E-Mail senden';
+      actions.push(mail);
+      if (KONTAKT.whatsapp) {
+        var wa = doc.createElement('a');
+        wa.className = 'btn btn--ghost';
+        wa.href = 'https://wa.me/' + onlyDigits(KONTAKT.whatsapp).replace('+', '') + '?text=' + encodeURIComponent(cut(summary(true)));
+        wa.target = '_blank';
+        wa.rel = 'noopener';
+        wa.textContent = 'Per WhatsApp senden';
+        actions.push(wa);
+      }
+      showThanks('Fast geschafft.', 'Ein Klick noch: Sendet uns eure Anfrage per E-Mail oder WhatsApp – alle Angaben sind schon eingetragen.', actions);
     };
 
     form.addEventListener('submit', function (e) {
