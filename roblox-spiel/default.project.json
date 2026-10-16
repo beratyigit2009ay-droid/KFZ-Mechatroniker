@@ -1,0 +1,82 @@
+{
+  "name": "RaketenKrieg",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "$properties": {
+        "CameraMaxZoomDistance": 220,
+        "CameraMinZoomDistance": 0.5
+      },
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "StarterGui": {
+      "$properties": {
+        "ScreenOrientation": "LandscapeSensor"
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Technology": "Future",
+        "Brightness": 3,
+        "ClockTime": 14,
+        "GeographicLatitude": 35,
+        "GlobalShadows": true,
+        "Ambient": [0.27, 0.27, 0.3],
+        "OutdoorAmbient": [0.5, 0.5, 0.55],
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
+        "ExposureCompensation": 0.1,
+        "ShadowSoftness": 0.2
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.3,
+          "Offset": 0.25,
+          "Color": [0.78, 0.82, 0.9],
+          "Decay": [0.42, 0.47, 0.58],
+          "Glare": 0.4,
+          "Haze": 1.5
+        }
+      },
+      "Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Intensity": 0.8,
+          "Size": 28,
+          "Threshold": 1.5
+        }
+      },
+      "SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Intensity": 0.06,
+          "Spread": 0.8
+        }
+      },
+      "ColorCorrection": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.02,
+          "Contrast": 0.12,
+          "Saturation": 0.18,
+          "TintColor": [1, 0.98, 0.95]
+        }
+      }
+    }
+  }
+}
