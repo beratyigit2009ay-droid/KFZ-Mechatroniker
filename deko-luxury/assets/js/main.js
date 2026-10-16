@@ -6,8 +6,8 @@
    ========================================================================== */
 var KONTAKT = {
   email: 'deko.luxury@gmx.de',
-  // Empfänger der Formular-Anfragen. TEST: danach wieder auf '' stellen (= email oben).
-  anfrageAn: 'beratyigit.2009.ay@gmail.com',
+  // Empfänger der Formular-Anfragen. Leer ('') = email oben.
+  anfrageAn: '',
   // Versand des Formulars: true = kostenloser Dienst FormSubmit (für GitHub Pages, ohne PHP).
   // false = Versand über anfrage.php (Webhosting mit PHP; Empfänger dann in anfrage.php).
   formDienst: true,

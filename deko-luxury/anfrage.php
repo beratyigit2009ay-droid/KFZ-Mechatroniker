@@ -16,8 +16,7 @@ declare(strict_types=1);
 // ------------------------------------------------------------------
 // Einstellungen
 // ------------------------------------------------------------------
-// TEST: Anfragen gehen vorübergehend an diese Adresse. Danach wieder 'deko.luxury@gmx.de' eintragen.
-const EMPFAENGER = 'beratyigit.2009.ay@gmail.com';
+const EMPFAENGER = 'deko.luxury@gmx.de';
 // Absender muss zur eigenen Domain gehören, sonst landen Mails im Spam.
 // Leer lassen = noreply@<aktuelle Domain>.
 const ABSENDER = '';
