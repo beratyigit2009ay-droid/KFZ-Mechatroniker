@@ -35,6 +35,19 @@ Unterordner und auch beim direkten Öffnen der `index.html` im Browser.
    **nichts übermittelt** wurde – mit direktem Anrufbutton.
 4. Danach neu bauen: `npm run build`.
 
+## Intro
+
+Beim ersten Besuch der Startseite läuft ein kurzes Intro (ca. 4 Sekunden): Ein
+Schlüssel fährt in den Profilzylinder, die Tür wird im Schnitt sichtbar, die Stifte
+richten sich an der Scherlinie aus – und die Seite öffnet sich genau dort.
+
+- läuft einmal pro Browser-Sitzung, nur auf der Startseite
+- jederzeit überspringbar (Button, Esc-Taste, Scrollen)
+- entfällt automatisch, wenn „Bewegung reduzieren“ im System aktiv ist
+- zum erneuten Ansehen `#intro` an die Adresse anhängen
+- Code: `src/components/KeyIntro.jsx`; zum Entfernen die Zeile mit `<KeyIntro />` in
+  `src/App.jsx` löschen
+
 ## Bilder
 
 Die Bilder sind eigens gezeichnete Illustrationen (goldene Linien auf Anthrazit) und

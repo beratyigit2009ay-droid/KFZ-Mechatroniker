@@ -51,6 +51,11 @@ function structuredData() {
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`
 }
 
+// Entscheidet vor dem ersten Bild, ob das Intro läuft: einmal pro Sitzung,
+// nie bei „Bewegung reduzieren“, erneut mit #intro in der Adresse.
+// Sicherheitsnetz: Nach 9 Sekunden wird das Intro in jedem Fall ausgeblendet.
+const introScript = `<script>(function(){var d=document.documentElement,p='skip';try{var r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=null;try{s=sessionStorage.getItem('fc-intro')}catch(e){}if(!r&&(s!=='1'||location.hash==='#intro'))p='play'}catch(e){}window.__fcIntro=p;if(p==='play'){d.classList.add('intro-playing','intro-hold');setTimeout(function(){d.classList.remove('intro-playing','intro-hold')},9000)}})()</script>`
+
 function head(page) {
   // Vorschaubild für geteilte Links (WhatsApp, Facebook …) braucht eine absolute URL.
   const image = baseUrl && `${baseUrl}og-image.png`
@@ -70,6 +75,7 @@ function head(page) {
     '<meta name="twitter:card" content="summary_large_image" />',
     ...fontPreloads,
     page.key === 'home' && structuredData(),
+    page.key === 'home' && introScript,
   ]
   return tags.filter(Boolean).join('\n    ')
 }

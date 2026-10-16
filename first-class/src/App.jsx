@@ -1,5 +1,6 @@
 import Footer from './components/Footer.jsx'
 import Header from './components/Header.jsx'
+import KeyIntro from './components/KeyIntro.jsx'
 import MobileCallBar from './components/MobileCallBar.jsx'
 import { serviceBySlug } from './content.js'
 import { PageContext } from './context.js'
@@ -18,6 +19,7 @@ export default function App({ page = 'home' }) {
   useReveal()
   return (
     <PageContext.Provider value={page}>
+      {page === 'home' && <KeyIntro />}
       <a
         href="#inhalt"
         className="sr-only z-[60] rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-ink-950 focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
