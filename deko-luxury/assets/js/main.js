@@ -668,10 +668,11 @@ var KONTAKT = {
       };
       if (val('telefon')) data.WhatsApp = 'https://wa.me/' + waNumber(val('telefon'));
       if (val('email')) data._replyto = val('email');
+      // Als einfaches Formular (kein JSON), damit der Browser keine Vorab-Anfrage braucht
       return fetch('https://formsubmit.co/ajax/' + (KONTAKT.anfrageAn || KONTAKT.email), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(data)
+        headers: { Accept: 'application/json' },
+        body: new URLSearchParams(data)
       })
         .then(function (res) { return res.json(); })
         .then(function (r) { return { ok: !!r && (r.success === true || r.success === 'true') }; });

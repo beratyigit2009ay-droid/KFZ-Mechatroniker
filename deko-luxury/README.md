@@ -192,7 +192,8 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
 - `formDienst: false`: Versand über `anfrage.php` auf eigenem Webhosting mit PHP (siehe unten).
 - Klappt der Versand nicht, erscheinen die Knöpfe „Per E-Mail senden“ und „Per WhatsApp senden“
   mit fertig ausgefülltem Text. So geht keine Anfrage verloren.
-- In der Vorschau (claude.ai) wird nichts verschickt.
+- Auch die Vorschau auf claude.ai versucht echt zu verschicken. Blockiert die Vorschau die Verbindung,
+  erscheinen dort die Knöpfe „Per E-Mail senden“ und „Per WhatsApp senden“.
 
 **Mit eigenem PHP-Webhosting:**
 
@@ -204,8 +205,7 @@ Social-Media-Entwürfe oder als Platzhalter in Entwürfen – nicht als „unser
   - Knöpfe **Per E-Mail antworten**, **Anrufen** und **WhatsApp schreiben**.
   Gibt jemand eine E-Mail an, geht „Antworten“ direkt an diese Person.
 - Pflicht sind nur Name und **E-Mail oder Telefon**. Nach dem Absenden erscheint die Bestätigung
-  „Danke! Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.“ In der Vorschau steht dort
-  „Anfrage gesendet (Vorschau)“, es wird nichts verschickt.
+  „Danke! Eure Anfrage ist bei uns angekommen. Wir melden uns schnell.“
 - Für gute Zustellbarkeit in `ABSENDER` eine Adresse der eigenen Domain eintragen.
 - Spamschutz: unsichtbares Honeypot-Feld und Mindestzeit, kein Captcha nötig.
 - Ist kein PHP verfügbar (z. B. GitHub Pages, Netlify), kann die Seite nicht selbst E-Mails senden.
