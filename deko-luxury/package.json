@@ -1,0 +1,13 @@
+{
+  "name": "deko-luxury-website",
+  "private": true,
+  "description": "Website LUXURY EVENTS by DEKO.LUXURY – statische Seiten, keine Build-Schritte nötig.",
+  "type": "module",
+  "scripts": {
+    "bilder": "node tools/bilder-optimieren.mjs",
+    "start": "npx --yes http-server . -p 8080 -c-1"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.0"
+  }
+}

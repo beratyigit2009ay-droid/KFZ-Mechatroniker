@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# PLATZHALTER: Domain eintragen, sobald sie feststeht
+# Sitemap: https://www.ihre-domain.de/sitemap.xml
