@@ -17,7 +17,6 @@ export default function Pricing() {
               <Photo
                 name="entranceNight"
                 className="absolute inset-0 h-full w-full"
-                sizes="(min-width: 1024px) 42vw, 100vw"
               />
               <div className="absolute inset-0 bg-linear-to-t from-ink-900 via-ink-900/30 to-transparent lg:bg-linear-to-r lg:from-transparent lg:via-ink-900/20 lg:to-ink-900" />
             </div>

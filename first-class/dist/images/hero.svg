@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d21"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".45" stop-color="#d5b475"/>
+      <stop offset="1" stop-color="#8a6a2c"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".5" stop-color="#c9a35c"/>
+      <stop offset="1" stop-color="#7d5f27"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25282d"/>
+      <stop offset=".6" stop-color="#191b1f"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#131518"/>
+      <stop offset=".5" stop-color="#1a1d21"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="warmV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe2ad"/>
+      <stop offset=".55" stop-color="#e9b766"/>
+      <stop offset="1" stop-color="#a8762e"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd38a" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f0c47a" stop-opacity=".42"/>
+      <stop offset=".45" stop-color="#d9a85a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d9a85a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx=".5" cy=".45" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c49e56" stroke-opacity=".065"/>
+    </pattern>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect width="800" height="1000" fill="url(#grid)"/>
+  
+  <rect x="0" y="0" width="800" height="880" fill="url(#wall)" opacity=".85"/>
+  <g stroke="#ffffff" stroke-opacity=".035">
+    <path d="M40 0V880"/><path d="M106 0V880"/><path d="M172 0V880"/><path d="M238 0V880"/><path d="M304 0V880"/><path d="M370 0V880"/><path d="M436 0V880"/><path d="M502 0V880"/><path d="M568 0V880"/><path d="M634 0V880"/><path d="M700 0V880"/><path d="M766 0V880"/>
+  </g>
+  <ellipse cx="400" cy="520" rx="330" ry="420" fill="url(#glow)" opacity=".55"/>
+
+  <!-- Wandleuchte mit Lichtkegel -->
+  <path d="M642 312L560 880H780L700 312Z" fill="url(#beam)" opacity=".75"/>
+  <rect x="654" y="262" width="44" height="54" rx="4" fill="#24272c" stroke="#c49e56" stroke-opacity=".7"/>
+  <rect x="660" y="310" width="32" height="5" rx="2" fill="#ffe3b0"/>
+  <ellipse cx="676" cy="318" rx="40" ry="12" fill="#ffd38a" opacity=".35" filter="url(#blur)"/>
+
+  <!-- Türrahmen und Seitenteil -->
+  <rect x="168" y="156" width="452" height="726" fill="#0d0e10"/>
+  <rect x="168" y="156" width="452" height="726" fill="none" stroke="url(#goldV)" stroke-width="3"/>
+  <rect x="190" y="178" width="96" height="704" fill="url(#warmV)" opacity=".92"/>
+  <rect x="190" y="178" width="96" height="704" fill="none" stroke="#8a6a2c" stroke-width="2"/>
+  <g stroke="#7a5420" stroke-opacity=".45">
+    <path d="M190 206H286"/><path d="M190 237H286"/><path d="M190 268H286"/><path d="M190 299H286"/><path d="M190 330H286"/><path d="M190 361H286"/><path d="M190 392H286"/><path d="M190 423H286"/><path d="M190 454H286"/><path d="M190 485H286"/><path d="M190 516H286"/><path d="M190 547H286"/><path d="M190 578H286"/><path d="M190 609H286"/><path d="M190 640H286"/><path d="M190 671H286"/><path d="M190 702H286"/><path d="M190 733H286"/><path d="M190 764H286"/><path d="M190 795H286"/><path d="M190 826H286"/><path d="M190 857H286"/>
+  </g>
+  <rect x="190" y="178" width="96" height="704" fill="#ffefcf" opacity=".18"/>
+
+  <!-- Türblatt -->
+  <rect x="300" y="178" width="300" height="704" fill="url(#leaf)"/>
+  <g stroke="#c49e56" stroke-opacity=".18">
+    <path d="M330 210V850"/><path d="M370 210V850"/><path d="M410 210V850"/><path d="M450 210V850"/><path d="M490 210V850"/><path d="M530 210V850"/>
+  </g>
+  <rect x="300" y="178" width="300" height="704" fill="none" stroke="#c49e56" stroke-opacity=".55" stroke-width="1.5"/>
+  <rect x="300" y="520" width="300" height="2" fill="#c49e56" opacity=".35"/>
+
+  <!-- Stoßgriff -->
+  <rect x="548" y="380" width="12" height="300" rx="6" fill="url(#gold)" filter="url(#shadow)"/>
+  <rect x="534" y="410" width="18" height="8" rx="3" fill="url(#gold)"/>
+  <rect x="534" y="642" width="18" height="8" rx="3" fill="url(#gold)"/>
+
+  <!-- Schutzbeschlag mit Zylinder und Schlüssel -->
+  <rect x="528" y="706" width="44" height="86" rx="10" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <g transform="translate(550 736) scale(0.62)">
+    <path d="M-10 13.75A17 17 0 1 1 10 13.75V49Q10 53 6 53H-6Q-10 53-10 49Z" fill="url(#gold)" stroke="#c49e56" stroke-width="1"/>
+    <circle r="11.5" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>
+    <path d="M0-8V9" stroke="#1a1408" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(550 805) rotate(-90) scale(0.42)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+
+  <!-- Boden, Fußabstreifer, Werkzeugkoffer -->
+  <rect x="0" y="880" width="800" height="120" fill="#0b0c0e"/>
+  <path d="M0 880H800" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="300" y="884" width="300" height="12" fill="#c49e56" opacity=".12"/>
+  <path d="M220 884L150 1000H650L580 884Z" fill="#ffd38a" opacity=".07"/>
+  <g filter="url(#shadow)">
+    <rect x="626" y="790" width="124" height="90" rx="10" fill="#1d2024" stroke="url(#gold)" stroke-width="2"/>
+    <path d="M664 790v-16a8 8 0 0 1 8-8h12a8 8 0 0 1 8 8v16" fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round"/>
+    <rect x="626" y="822" width="124" height="6" fill="#c49e56" opacity=".5"/>
+    <rect x="678" y="816" width="20" height="18" rx="3" fill="url(#gold)"/>
+  </g>
+
+  <!-- Bemaßung und Beschriftung -->
+  <g stroke="#c49e56" stroke-opacity=".55" fill="none">
+    <path d="M128 178L128 882"/><path d="M121 178h14M121 882h14"/>
+  </g><text transform="translate(116 530) rotate(-90)" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" letter-spacing="3" fill="#c49e56" fill-opacity=".75" text-anchor="middle">2 100</text>
+  <g>
+    <circle cx="550" cy="736" r="4" fill="none" stroke="#e5cc96" stroke-width="1.4"/>
+    <circle cx="550" cy="736" r="1.6" fill="#e5cc96"/>
+    <path d="M550 736L470 610H444" fill="none" stroke="#c49e56" stroke-opacity=".7"/>
+    <text x="434" y="614.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" letter-spacing="3.3600000000000003" fill="#e5cc96" fill-opacity="0.85" text-anchor="end">PROFILZYLINDER</text>
+  </g>
+  <g>
+    <circle cx="548" cy="440" r="4" fill="none" stroke="#e5cc96" stroke-width="1.4"/>
+    <circle cx="548" cy="440" r="1.6" fill="#e5cc96"/>
+    <path d="M548 440L500 440H474" fill="none" stroke="#c49e56" stroke-opacity=".7"/>
+    <text x="464" y="444.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" letter-spacing="3.3600000000000003" fill="#e5cc96" fill-opacity="0.85" text-anchor="end">STOSSGRIFF</text>
+  </g>
+  
+  <rect width="800" height="1000" fill="url(#vignette)"/>
+</svg>

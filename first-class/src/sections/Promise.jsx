@@ -14,9 +14,7 @@ export default function Promise() {
         <Photo
           name="keys"
           decorative
-          className="h-full w-full opacity-[0.13]"
-          imgClassName="grayscale"
-          sizes="100vw"
+          className="h-full w-full opacity-[0.16]"
         />
         <div className="absolute inset-0 bg-linear-to-b from-ink-900 via-ink-900/70 to-ink-900" />
       </div>

@@ -11,7 +11,7 @@ const dist = path.join(root, 'dist')
 const ssrDir = path.join(root, '.ssr')
 
 const ssrEntry = (await readdir(ssrDir)).find((file) => /^entry-server\.m?js$/.test(file))
-const { render, pages, site, isPlaceholder, telHref, images, imageSources } = await import(
+const { render, pages, site, isPlaceholder, telHref } = await import(
   pathToFileURL(path.join(ssrDir, ssrEntry)).href
 )
 
@@ -42,8 +42,8 @@ function structuredData() {
     name: `${site.name} Schlüsseldienst`,
     description:
       'Schlüsseldienst für Türöffnungen, Schlosswechsel, Einbruchschutz und Sicherheitstechnik.',
-    image: imageSources(images.hero, 1440).src,
   }
+  if (baseUrl) data.image = `${baseUrl}og-image.png`
   // Platzhalter gehören nicht in strukturierte Daten.
   if (!isPlaceholder(site.phone)) data.telephone = telHref().replace('tel:', '')
   if (!isPlaceholder(site.area)) data.areaServed = site.area
@@ -52,7 +52,8 @@ function structuredData() {
 }
 
 function head(page) {
-  const image = imageSources(images[page.image] ?? images.hero, 1440).src
+  // Vorschaubild für geteilte Links (WhatsApp, Facebook …) braucht eine absolute URL.
+  const image = baseUrl && `${baseUrl}og-image.png`
   const tags = [
     `<meta name="description" content="${escape(page.description)}" />`,
     page.noindex
@@ -64,7 +65,7 @@ function head(page) {
     `<meta property="og:site_name" content="${escape(site.name)} Schlüsseldienst" />`,
     `<meta property="og:title" content="${escape(page.title)}" />`,
     `<meta property="og:description" content="${escape(page.description)}" />`,
-    `<meta property="og:image" content="${escape(image)}" />`,
+    image && `<meta property="og:image" content="${image}" />`,
     baseUrl && `<meta property="og:url" content="${pageUrl(page)}" />`,
     '<meta name="twitter:card" content="summary_large_image" />',
     ...fontPreloads,

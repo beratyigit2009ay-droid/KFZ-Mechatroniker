@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d21"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".45" stop-color="#d5b475"/>
+      <stop offset="1" stop-color="#8a6a2c"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".5" stop-color="#c9a35c"/>
+      <stop offset="1" stop-color="#7d5f27"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25282d"/>
+      <stop offset=".6" stop-color="#191b1f"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#131518"/>
+      <stop offset=".5" stop-color="#1a1d21"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="warmV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe2ad"/>
+      <stop offset=".55" stop-color="#e9b766"/>
+      <stop offset="1" stop-color="#a8762e"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd38a" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f0c47a" stop-opacity=".42"/>
+      <stop offset=".45" stop-color="#d9a85a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d9a85a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx=".5" cy=".45" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c49e56" stroke-opacity=".065"/>
+    </pattern>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect width="800" height="1000" fill="url(#grid)"/>
+  
+  <rect width="800" height="1000" fill="url(#wall)" opacity=".8"/>
+  <!-- Vordach -->
+  <rect x="60" y="250" width="680" height="34" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <path d="M188 284L90 820H310L212 284Z" fill="url(#beam)" opacity=".6"/>
+  <ellipse cx="200" cy="286" rx="14" ry="4" fill="#ffe8c0"/>
+  <ellipse cx="200" cy="292" rx="40" ry="10" fill="#ffd38a" opacity=".35" filter="url(#blur)"/><path d="M388 284L290 820H510L412 284Z" fill="url(#beam)" opacity=".6"/>
+  <ellipse cx="400" cy="286" rx="14" ry="4" fill="#ffe8c0"/>
+  <ellipse cx="400" cy="292" rx="40" ry="10" fill="#ffd38a" opacity=".35" filter="url(#blur)"/><path d="M588 284L490 820H710L612 284Z" fill="url(#beam)" opacity=".6"/>
+  <ellipse cx="600" cy="286" rx="14" ry="4" fill="#ffe8c0"/>
+  <ellipse cx="600" cy="292" rx="40" ry="10" fill="#ffd38a" opacity=".35" filter="url(#blur)"/>
+  <!-- Fassade mit Fugen -->
+  <g stroke="#ffffff" stroke-opacity=".04">
+    <path d="M0 320H800"/><path d="M0 372H800"/><path d="M0 424H800"/><path d="M0 476H800"/><path d="M0 528H800"/><path d="M0 580H800"/><path d="M0 632H800"/><path d="M0 684H800"/><path d="M0 736H800"/><path d="M0 788H800"/>
+  </g>
+  <!-- Tür mit Glasseitenteil -->
+  <rect x="270" y="330" width="260" height="490" fill="#0d0e10" stroke="url(#goldV)" stroke-width="3"/>
+  <rect x="286" y="346" width="62" height="474" fill="url(#warmV)" opacity=".9"/>
+  <rect x="360" y="346" width="154" height="474" fill="url(#leaf)" stroke="#c49e56" stroke-opacity=".5"/>
+  <g stroke="#c49e56" stroke-opacity=".16">
+    <path d="M390 370V800M420 370V800M450 370V800M480 370V800"/>
+  </g>
+  <rect x="490" y="500" width="8" height="180" rx="4" fill="url(#gold)"/>
+  <!-- Hausnummer -->
+  <rect x="580" y="420" width="56" height="56" rx="6" fill="none" stroke="url(#gold)" stroke-width="2"/>
+  <text x="608" y="460" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#e5cc96" text-anchor="middle">1</text>
+  <!-- Stufen -->
+  <path d="M230 820H570V850H230Z" fill="#17191c" stroke="#c49e56" stroke-opacity=".6"/>
+  <path d="M190 850H610V880H190Z" fill="#141619" stroke="#c49e56" stroke-opacity=".5"/>
+  <path d="M150 880H650V910H150Z" fill="#111315" stroke="#c49e56" stroke-opacity=".4"/>
+  <rect y="910" width="800" height="90" fill="#0b0c0e"/>
+  <path d="M0 910H800" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Pflanzkübel -->
+  <rect x="118" y="740" width="90" height="140" rx="6" fill="#1b1e22" stroke="#c49e56" stroke-opacity=".6"/>
+  <g fill="none" stroke="#c49e56" stroke-opacity=".7" stroke-width="2">
+    <path d="M163 740C150 690 130 660 108 640M163 740C166 680 176 640 196 610M163 740C176 700 200 680 226 672M163 740C150 700 150 670 160 630"/>
+  </g>
+  
+  <rect width="800" height="1000" fill="url(#vignette)"/>
+</svg>

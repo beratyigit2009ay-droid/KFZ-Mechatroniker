@@ -11,8 +11,6 @@ export default function ServiceCard({ service, number }) {
           name={service.image}
           className="h-full w-full"
           imgClassName="transition-transform duration-[1400ms] ease-[var(--ease-soft)] group-hover:scale-[1.06]"
-          sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
-          maxWidth={1080}
         />
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink-950/55 via-ink-950/0 to-ink-950/15" />
         <span className="absolute top-5 left-5 flex h-12 w-12 items-center justify-center rounded-full bg-ink-950/70 text-gold-300 ring-1 ring-gold-400/40 backdrop-blur-md">

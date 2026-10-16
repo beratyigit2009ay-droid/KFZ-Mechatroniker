@@ -37,12 +37,17 @@ Unterordner und auch beim direkten Öffnen der `index.html` im Browser.
 
 ## Bilder
 
-Die Fotos stammen von [Pexels](https://www.pexels.com/license/) (kostenlos, auch
-kommerziell) und sind in `src/images.js` hinterlegt. Sie werden aktuell direkt von Pexels
-geladen. Für den Live-Betrieb empfehlen wir, die Bilder herunterzuladen und selbst zu
-hosten (schneller, unabhängig, datenschutzfreundlicher): Datei nach `public/images/`
-legen und beim Eintrag statt `pexels: …` z. B. `src: 'images/tuer.jpg'` setzen. Eigene
-Fotos vom Team und von echten Einsätzen wirken noch glaubwürdiger.
+Die Bilder sind eigens gezeichnete Illustrationen (goldene Linien auf Anthrazit) und
+liegen lokal in `public/images/`. Sie werden von `scripts/illustrations.mjs` erzeugt
+(`npm run illustrations`) und lassen sich dort in Farbe und Motiv anpassen. Es werden
+keine Bilder von fremden Servern geladen.
+
+Eigene Fotos (z. B. vom Team oder von echten Einsätzen) wirken noch persönlicher: Datei
+nach `public/images/` legen und in `src/images.js` beim jeweiligen Eintrag `src`
+anpassen, z. B. `src: 'images/team.jpg'`.
+
+`public/og-image.png` ist das Vorschaubild für geteilte Links. Es wird verwendet, sobald
+in `src/config.js` die `url` eingetragen ist.
 
 ## Entwicklung
 
@@ -50,6 +55,7 @@ Fotos vom Team und von echten Einsätzen wirken noch glaubwürdiger.
 npm install
 npm run dev      # Entwicklungsserver
 npm run build    # baut dist/ und rendert alle Seiten vor
+npm run illustrations  # Illustrationen neu erzeugen
 npm run preview  # fertige Website lokal ansehen
 ```
 

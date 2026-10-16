@@ -103,7 +103,6 @@ export default function Hero() {
                 name="hero"
                 priority
                 className="hero-photo aspect-[4/5]"
-                sizes="(min-width: 1024px) 34vw, (min-width: 640px) 29rem, 92vw"
               />
               <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink-950/70 via-ink-950/0 to-ink-950/10" />
             </div>

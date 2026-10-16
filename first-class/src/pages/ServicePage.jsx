@@ -41,7 +41,6 @@ export default function ServicePage({ slug }) {
               name={service.image}
               priority
               className="hero-photo relative aspect-[5/4] rounded-[2rem] shadow-[0_50px_100px_-40px_rgb(0_0_0/0.9)]"
-              sizes="(min-width: 1024px) 38vw, (min-width: 640px) 28rem, 92vw"
             />
           </div>
         }

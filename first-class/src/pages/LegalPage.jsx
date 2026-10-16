@@ -78,26 +78,19 @@ const documents = {
         ],
       },
       {
-        heading: '4. Bilder',
+        heading: '4. Schriftarten und Bilder',
         text: [
-          'Die Fotos auf dieser Website werden vom Bilddienst Pexels geladen. Dabei wird Ihre IP-Adresse an die Server dieses Dienstes übermittelt.',
-          '[ANBIETERANGABEN UND RECHTSGRUNDLAGE ERGÄNZEN – oder die Bilder lokal einbinden, dann entfällt dieser Abschnitt]',
+          'Schriftarten und Bilder sind lokal auf dem Server eingebunden. Beim Aufruf der Website wird keine Verbindung zu Servern von Google, Bilddiensten oder anderen Drittanbietern hergestellt.',
         ],
       },
       {
-        heading: '5. Schriftarten',
-        text: [
-          'Die verwendeten Schriftarten sind lokal auf dem Server eingebunden. Beim Aufruf der Website wird keine Verbindung zu Servern von Google oder anderen Schriftanbietern hergestellt.',
-        ],
-      },
-      {
-        heading: '6. Cookies und Analyse',
+        heading: '5. Cookies und Analyse',
         text: [
           'Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Dienste.',
         ],
       },
       {
-        heading: '7. Ihre Rechte',
+        heading: '6. Ihre Rechte',
         text: [
           'Sie haben nach Maßgabe der DSGVO das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten, auf Datenübertragbarkeit sowie auf Widerspruch gegen die Verarbeitung. Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren.',
         ],

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d21"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".45" stop-color="#d5b475"/>
+      <stop offset="1" stop-color="#8a6a2c"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".5" stop-color="#c9a35c"/>
+      <stop offset="1" stop-color="#7d5f27"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25282d"/>
+      <stop offset=".6" stop-color="#191b1f"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#131518"/>
+      <stop offset=".5" stop-color="#1a1d21"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="warmV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe2ad"/>
+      <stop offset=".55" stop-color="#e9b766"/>
+      <stop offset="1" stop-color="#a8762e"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd38a" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f0c47a" stop-opacity=".42"/>
+      <stop offset=".45" stop-color="#d9a85a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d9a85a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx=".5" cy=".45" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c49e56" stroke-opacity=".065"/>
+    </pattern>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  
+  <rect width="800" height="500" fill="url(#wall)" opacity=".9"/>
+  <ellipse cx="460" cy="300" rx="320" ry="260" fill="url(#glow)" opacity=".8"/>
+  <!-- Rahmen -->
+  <rect x="290" y="70" width="250" height="430" fill="#ffd9a0"/>
+  <rect x="290" y="70" width="250" height="430" fill="url(#warmV)" opacity=".75"/>
+  <rect x="284" y="64" width="262" height="436" fill="none" stroke="url(#goldV)" stroke-width="4"/>
+  <!-- Türblatt nach innen geöffnet -->
+  <path d="M290 70L452 98V472L290 500Z" fill="url(#leaf)" stroke="#c49e56" stroke-opacity=".6" stroke-width="1.5"/>
+  <g stroke="#c49e56" stroke-opacity=".16">
+    <path d="M330 84V486M370 90V480M410 96V476"/>
+  </g>
+  <rect x="428" y="270" width="7" height="46" rx="3.5" fill="url(#gold)"/>
+  <path d="M452 98L540 70V500L452 472Z" fill="#fff1d6" opacity=".35"/>
+  <!-- Lichtfall auf dem Boden -->
+  <path d="M452 500L540 500L800 600H230Z" fill="url(#beam)" opacity=".95"/>
+  <rect y="500" width="800" height="100" fill="#0b0c0e" opacity=".55"/>
+  <path d="M452 500L540 500L800 600H230Z" fill="#ffd38a" opacity=".16"/>
+  <path d="M0 500H800" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Schlüssel im Vordergrund -->
+  <g transform="translate(132 470) rotate(-18) scale(0.9)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <text x="60" y="70" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" letter-spacing="3.3600000000000003" fill="#e5cc96" fill-opacity="0.85" text-anchor="start">TÜRÖFFNUNG</text>
+  
+  <rect width="800" height="600" fill="url(#vignette)"/>
+</svg>

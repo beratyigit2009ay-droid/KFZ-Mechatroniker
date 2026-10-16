@@ -105,14 +105,12 @@ export default function Footer() {
           <p suppressHydrationWarning>
             © {year} {site.name} {site.descriptor}
           </p>
-          <p>
-            Fotos:{' '}
-            <a
-              href="https://www.pexels.com"
-              className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-gold-300"
-              rel="noopener"
-            >
-              Pexels
+          <p className="flex gap-5">
+            <a href={links.to('impressum')} className="transition-colors hover:text-gold-300">
+              Impressum
+            </a>
+            <a href={links.to('datenschutz')} className="transition-colors hover:text-gold-300">
+              Datenschutz
             </a>
           </p>
         </div>

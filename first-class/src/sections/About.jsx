@@ -25,7 +25,6 @@ export default function About() {
             <Photo
               name="about"
               className="relative aspect-[4/5] rounded-[2rem] shadow-[0_50px_90px_-50px_rgb(15_17_19/0.7)]"
-              sizes="(min-width: 1024px) 38vw, (min-width: 640px) 28rem, 92vw"
             />
             <div className="absolute -right-3 -bottom-10 max-w-[16.5rem] rounded-2xl bg-ink-900 p-6 text-white shadow-[0_30px_60px_-30px_rgb(15_17_19/0.8)] sm:-right-8">
               <Icon name="key" className="h-6 w-6 text-gold-300" />

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d21"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".45" stop-color="#d5b475"/>
+      <stop offset="1" stop-color="#8a6a2c"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".5" stop-color="#c9a35c"/>
+      <stop offset="1" stop-color="#7d5f27"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25282d"/>
+      <stop offset=".6" stop-color="#191b1f"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#131518"/>
+      <stop offset=".5" stop-color="#1a1d21"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="warmV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe2ad"/>
+      <stop offset=".55" stop-color="#e9b766"/>
+      <stop offset="1" stop-color="#a8762e"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd38a" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f0c47a" stop-opacity=".42"/>
+      <stop offset=".45" stop-color="#d9a85a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d9a85a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx=".5" cy=".45" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c49e56" stroke-opacity=".065"/>
+    </pattern>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  
+  <g transform="translate(180 220) rotate(24) scale(1.6)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(620 640) rotate(-32) scale(1.9)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(1040 180) rotate(160) scale(1.4)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(1360 620) rotate(-110) scale(1.7)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(860 420) scale(2.4)">
+    <path d="M-10 13.75A17 17 0 1 1 10 13.75V49Q10 53 6 53H-6Q-10 53-10 49Z" fill="url(#gold)" stroke="#c49e56" stroke-width="1"/>
+    <circle r="11.5" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>
+    <path d="M0-8V9" stroke="#1a1408" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(360 700) scale(1.6)">
+    <path d="M-10 13.75A17 17 0 1 1 10 13.75V49Q10 53 6 53H-6Q-10 53-10 49Z" fill="url(#gold)" stroke="#c49e56" stroke-width="1"/>
+    <circle r="11.5" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>
+    <path d="M0-8V9" stroke="#1a1408" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  
+  <rect width="1600" height="900" fill="url(#vignette)"/>
+</svg>
