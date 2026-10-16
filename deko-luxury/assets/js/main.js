@@ -6,6 +6,8 @@
    ========================================================================== */
 var KONTAKT = {
   email: 'deko.luxury@gmx.de',
+  // Empfänger der Anfragen, wenn kein PHP läuft (E-Mail-Programm). TEST: danach wieder auf '' stellen (= email).
+  anfrageAn: 'beratyigit.2009.ay@gmail.com',
   telefon: '+49 179 4310823',
   whatsapp: '491794310823',  // international, ohne + und Leerzeichen
   instagram: 'https://www.instagram.com/deko.luxury/',
@@ -639,7 +641,7 @@ var KONTAKT = {
       var actions = [];
       var mail = doc.createElement('a');
       mail.className = 'btn btn--foil';
-      mail.href = 'mailto:' + KONTAKT.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(cut(summary(false)));
+      mail.href = 'mailto:' + (KONTAKT.anfrageAn || KONTAKT.email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(cut(summary(false)));
       mail.textContent = 'Per E-Mail senden';
       actions.push(mail);
       if (KONTAKT.whatsapp) {

@@ -53,6 +53,7 @@ Alle offenen Stellen sind im Code mit **TODO** markiert und auf der Seite gestri
 
 | Wo | Was fehlt |
 | --- | --- |
+| **Formular-Test** | Anfragen gehen zum Testen an beratyigit.2009.ay@gmail.com. Vor dem Livegang zurückstellen: in `anfrage.php` `EMPFAENGER` wieder auf `deko.luxury@gmx.de`, in `assets/js/main.js` `anfrageAn` auf `''`. |
 | `index.html` → Info-Streifen | **Bewertungen** sind mit dem Google-Profil verlinkt. Optional die Zahl ergänzen (z. B. „4,9 ★ · 37 Bewertungen“) – nur wenn sie echt ist, und regelmäßig aktualisieren. |
 | `index.html` → `<head>` | Domain eintragen: `canonical`, `og:url`, `og:image`. Strukturierte Daten ergänzen: `url`, `image`, `logo`. Telefon und Instagram sind bereits eingetragen. |
 | `index.html` → Strukturierte Daten | `areaServed` enthält Burgau, Ulm und Augsburg. Bitte bestätigen oder anpassen. |
