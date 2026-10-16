@@ -330,5 +330,5 @@ Bewusst wurden **keine Fakten erfunden**. Vor der Veröffentlichung müssen vom 
 - Impressum (Anschrift, Telefon, USt-IdNr. o. Ä.), Datenschutzerklärung (Hoster, Mailanbieter), AGB, Widerrufsbelehrung, Versand & Zahlung
 - Alle Platzhalter in eckigen Klammern (`[GEWICHT]`, `[ZUTATEN]`, `[X] ml`, `[TELEFON]`, `[DATUM]` …)
 - Preise („bitte bestätigen“) und Allergenangaben je Produkt (`allergensConfirmed`)
-- Alle Produkt- und Eventfotos (`[FOTO-PLATZHALTER: …]` mit Foto-ID, Seitenverhältnis und Mindestgröße – Fotos erstellt der Inhaber selbst)
+- Alle Produkt- und Eventfotos: Bis dahin zeigen beide Websites gezeichnete Illustrationen (WebP, Dateiname = Foto-ID); C-12 und C-16 bleiben Platzhalter. Austausch siehe [docs/FOTO-SHOTLISTE.md](docs/FOTO-SHOTLISTE.md) – Fotos erstellt der Inhaber selbst
 - Messe-Termine (Festiculture Paris/Lyon) mit bestätigten Daten

@@ -109,6 +109,18 @@ describe('Corporate Hub – Seiten, Formulare, Sicherheit', () => {
     assert.doesNotMatch(res.text, /\son[a-z]+\s*=\s*["']/i, 'Inline-Event-Handler gefunden');
   });
 
+  it('Bilder: Illustrationen werden ausgeliefert, Porträt und Archivbild bleiben Platzhalter', async () => {
+    const c = client(app.baseUrl);
+    const img = await c.get('/static/fotos/C-01.webp');
+    assert.equal(img.status, 200);
+    assert.match(img.headers.get('content-type') || '', /image\/webp/);
+    const phil = await c.get('/philosophie');
+    assert.match(phil.text, /data-photo="C-12">[\s\S]*?\[FOTO-PLATZHALTER: [^\]]+Perspektive: [^\]]+\]/, 'Porträt bleibt Platzhalter');
+    assert.match(phil.text, /<img src="\/static\/fotos\/C-08\.webp"/);
+    const chronik = await c.get('/messe-chronik');
+    assert.match(chronik.text, /data-photo="C-16">[\s\S]*?\[FOTO-PLATZHALTER:/, 'Archivbild bleibt Platzhalter');
+  });
+
   it('Startseite: Slogan, Intro, drehendes Logo, Shop-Link aus der Konfiguration – keine Preise', async () => {
     const res = await client(app.baseUrl).get('/');
     assert.match(res.text, /Sehnsucht, die man <em>schmecken<\/em> kann\./);
@@ -116,8 +128,8 @@ describe('Corporate Hub – Seiten, Formulare, Sicherheit', () => {
     assert.match(res.text, /hn-intro--corporate/);
     assert.match(res.text, /class="hn-logo hn-logo--color"/, 'Kopfzeilen-Logo fehlt');
     assert.match(res.text, /\/assets\/motion\/logo-spin\.css/);
-    assert.match(res.text, /\[FOTO-PLATZHALTER: [^\]]+Perspektive: [^\]]+\]/, 'Foto-Platzhalter fehlen');
-    assert.match(res.text, /data-photo="C-01"/);
+    assert.match(res.text, /<figure class="photo photo--img ar-4x5 hero__main" data-photo="C-01">\s*<img src="\/static\/fotos\/C-01\.webp" alt="[^"]+" loading="eager" fetchpriority="high" decoding="async">/, 'Hero-Bild fehlt');
+    assert.match(res.text, /<img src="\/static\/fotos\/C-03\.webp" alt="[^"]+" loading="lazy"/);
     assert.ok(res.text.includes(`href="${app.config.apps.shop.baseUrl}/"`), 'Shop-Link fehlt');
     assert.match(res.text, /Für Endkunden: Zum Online-Shop/);
     assert.doesNotMatch(res.text, /€|EUR\b|In den Warenkorb/, 'Corporate Hub darf keine Preise zeigen');

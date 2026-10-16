@@ -84,10 +84,11 @@
       "cta": { "label": "Trio zusammenstellen", "href": "/produkt/sarma-lokum-messe-bundle" },
       "photo": {
         "id": "S-A01",
+        "src": "/static/img/produkte/S-A01.webp",
         "label": "Foto S-A01 · Angebots-Banner Messe-Bundle · 21:9 · min. 3200 × 1370 px",
         "ratio": "21:9",
         "minSize": "3200 × 1370 px",
-        "alt": "Drei Packungen Sarma Lokum mit angeschnittenen Rollen",
+        "alt": "Drei Packungen Sarma Lokum, davor angeschnittene Rollen",
         "text": "[FOTO-PLATZHALTER: Drei Sarma-Lokum-Packungen in verschiedenen Sorten rechts im Bild, davor angeschnittene Rollen auf einem Messingtablett; links ruhige, dunkle Fläche (Schokoladenbraun oder dunkles Holz) für Überschrift und Preis. Perspektive: 30° seitlich, warmes Lichtbündel von links, Hintergrund weich abfallend.]"
       }
     },
@@ -103,10 +104,11 @@
       "cta": { "label": "Spezialitäten entdecken", "href": "/kategorie/traditionelle-suesswaren" },
       "photo": {
         "id": "S-A02",
+        "src": "/static/img/produkte/S-A02.webp",
         "label": "Foto S-A02 · Angebots-Banner Willkommen · 4:3 · min. 2400 × 1800 px",
         "ratio": "4:3",
         "minSize": "2400 × 1800 px",
-        "alt": "Gedeckter Teetisch mit Sarma Lokum, Pistazien und Leblebi",
+        "alt": "Gedeckter Teetisch mit Tulpengläsern, Sarma Lokum und Pistazien",
         "text": "[FOTO-PLATZHALTER: Einladend gedeckter Teetisch – zwei Tulpengläser Tee, ein Teller Sarma Lokum, Schälchen mit Pistazien und Leblebi, eine Hand stellt ein Glas ab. Perspektive: 45° Tischperspektive, warmes Nachmittagslicht von links, Creme-Leinen.]"
       }
     },
@@ -122,10 +124,11 @@
       "cta": { "label": "Zum Sortiment", "href": "/" },
       "photo": {
         "id": "S-A03",
+        "src": "/static/img/produkte/S-A03.webp",
         "label": "Foto S-A03 · Angebots-Banner Messe-Gutschein · 4:3 · min. 2400 × 1800 px",
         "ratio": "4:3",
         "minSize": "2400 × 1800 px",
-        "alt": "Auslage des Hasret-Messestands mit Kostproben",
+        "alt": "Kostproben Sarma Lokum und Pistazien auf Tabletts am Messestand",
         "text": "[FOTO-PLATZHALTER: Auslage am Hasret-Messestand in der Nahaufnahme – Kostproben Sarma Lokum und Pistazien auf Tabletts, das Markenschild unscharf im Hintergrund, eine Hand reicht eine Kostprobe. Perspektive: Augenhöhe, 50 mm, f/2.8, ohne Blitz.]"
       }
     }

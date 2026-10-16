@@ -10,6 +10,10 @@ Alle Fotos fotografiert Inhaber Eyyüp Koca selbst. Auf beiden Websites steht an
 
 **Gesamt: 21 Corporate-Motive + 68 Shop-Motive = 89 Fotos.** Ein Mindestset für den Start (27 Fotos) steht am Ende.
 
+> **Vorläufige Illustrationen (Stand 16. Oktober 2026):** Bis die echten Fotos da sind, zeigen beide Websites an 87 der 89 Bildpositionen gezeichnete Illustrationen im Stil des jeweiligen Motivs (keine echten Fotos, keine Personen, keine fremden Marken). Sie liegen als WebP unter `shop/public/img/produkte/<Foto-ID>.webp` und `corporate/public/fotos/<Foto-ID>.webp`. Nur **C-12** (Porträt Eyyüp Koca) und **C-16** (Archivbild) bleiben Platzhalter – dafür braucht es echte Fotos.
+>
+> **Echtes Foto einsetzen:** Datei mit derselben Foto-ID ersetzen (z. B. `S-P07-A.webp`), fertig. Andere Formate (AVIF/JPG): im Shop den Pfad im Feld `src` in `shared/data/catalog.json` bzw. `offers.json` ändern (Seitenbilder S-01 bis S-03 stehen in den Shop-Templates), im Corporate Hub den Eintrag in `ILLUSTRATIONS` in `corporate/routes/content.js`. Entfernt man `src` bzw. den Eintrag, erscheint wieder der Platzhalter mit Motivbeschreibung. Den `alt`-Text dabei an das echte Foto anpassen.
+
 > Aktualisierung gegenüber Version 1.0: Die Shop-IDs wurden für das aktuelle Sortiment neu vergeben (S-01 bis S-12 aus dem Entwurf entfallen). Bei den Corporate-Motiven C-01, C-03, C-04, C-05, C-08 und C-09 wurde das Motiv an das tatsächliche Sortiment angepasst (gekennzeichnet mit „aktualisiert“) – Helva, Pişmaniye, Feigen, Datteln, Tahin und Cashews gehören derzeit nicht zum Sortiment.
 
 ---

@@ -30,12 +30,17 @@
 <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M4 12h16"/><path class="v" d="M12 4v16"/></svg>
 {%- endmacro %}
 
-{#- Foto-Platzhalter. p = Eintrag aus PHOTOS (routes/content.js), cls = Positionsklassen.
+{#- Foto bzw. Foto-Platzhalter. p = Eintrag aus PHOTOS (routes/content.js), cls = Positionsklassen.
+    Mit p.src (siehe ILLUSTRATIONS in content.js) wird das Bild gezeigt, sonst der Platzhalter.
     Foto tauschen: das komplette <figure> durch
       <img class="photo-img ar-4x5 …" src="/static/fotos/C-01.avif" alt="…" width="2000" height="2500" loading="lazy">
     ersetzen (Seitenverhältnis- und Positionsklassen beibehalten; Hero-Bild mit fetchpriority="high"). -#}
 {% macro photo(p, cls='') -%}
-{%- if p -%}
+{%- if p and p.src -%}
+<figure class="photo photo--img ar-{{ p.ratio }}{% if cls %} {{ cls }}{% endif %}" data-photo="{{ p.id }}">
+  <img src="{{ p.src }}" alt="{{ p.alt }}" loading="{{ 'eager' if cls.indexOf('hero') != -1 else 'lazy' }}"{% if cls.indexOf('hero__main') != -1 %} fetchpriority="high"{% endif %} decoding="async">
+</figure>
+{%- elif p -%}
 <figure class="photo{% if p.small %} photo--sm{% endif %} ar-{{ p.ratio }}{% if cls %} {{ cls }}{% endif %}" data-photo="{{ p.id }}">
   {%- if p.small %}
   <figcaption class="photo__cap"><span class="photo__label">{{ camera('photo__icon photo__icon--inline', 14, '1.6') }}{{ p.label }}</span><span class="photo__text">{{ p.text }}</span></figcaption>

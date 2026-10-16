@@ -475,15 +475,16 @@ describe('Shop', () => {
     assert.match(prodPage.text, /weder offizieller Partner noch Lizenznehmer/);
   });
 
-  it('zeigt Allergene, den Vorläufig-Hinweis und Foto-Platzhalter auf der Produktseite', async () => {
+  it('zeigt Allergene, den Vorläufig-Hinweis und die Produktbilder auf der Produktseite', async () => {
     const c = client(app.baseUrl);
     const r = await c.get('/produkt/labubu-schokolade');
     assert.match(r.text, /Enthält:<\/span> <strong>Milch \(einschließlich Laktose\), Sojabohnen<\/strong>/);
     assert.match(r.text, /Kann Spuren enthalten von:<\/span> Schalenfrüchte/);
     assert.match(r.text, /vorläufig – vom Inhaber anhand der Etiketten zu bestätigen/);
     assert.match(r.text, /href="\/allergene"/);
-    assert.match(r.text, /\[FOTO-PLATZHALTER:/);
-    assert.match(r.text, /Foto S-P09-A/);
+    assert.match(r.text, /<img src="\/static\/img\/produkte\/S-P09-A\.webp" alt="[^"]+" loading="(lazy|eager)" decoding="async">/);
+    const img = await c.get('/static/img/produkte/S-P09-A.webp');
+    assert.equal(img.status, 200);
   });
 
   it('Newsletter: Double-Opt-in mit Bestätigungsseite (GET verbraucht kein Token)', async () => {

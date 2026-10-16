@@ -45,7 +45,7 @@
         <div><dt>Lieferung</dt><dd>{{ 'Abholung in Memmingen' if order.delivery == 'abholung' else 'Versand an ' ~ order.street ~ ', ' ~ order.zip ~ ' ' ~ order.city }}</dd></div>
         {% if order.payment_pref %}<div><dt>Zahlungswunsch</dt><dd>{{ order.payment_pref }}</dd></div>{% endif %}
       </dl>
-      {{ shop.photo({ id: 'S-03', label: 'Foto S-03 · Danke-Seite · 4:3 · min. 2400 × 1800 px', ar: '4/3', alt: '', text: '[FOTO-PLATZHALTER: Liebevoll gepacktes Paket – geöffneter Versandkarton mit Seidenpapier, darin Sarma Lokum, Pistazien und ein sicher gepolstertes Turşu-Glas. Perspektive: 45° von oben, helles Holz, Tageslicht.]' }, 'thanks__photo', { decorative: true }) }}
+      {{ shop.photo({ id: 'S-03', src: '/static/img/produkte/S-03.webp', label: 'Foto S-03 · Danke-Seite · 4:3 · min. 2400 × 1800 px', ar: '4/3', alt: '', text: '[FOTO-PLATZHALTER: Liebevoll gepacktes Paket – geöffneter Versandkarton mit Seidenpapier, darin Sarma Lokum, Pistazien und ein sicher gepolstertes Turşu-Glas. Perspektive: 45° von oben, helles Holz, Tageslicht.]' }, 'thanks__photo', { decorative: true }) }}
     </aside>
   </div>
 </section>
