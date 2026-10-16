@@ -20,6 +20,8 @@ Funk.kaufen = neu("RemoteFunction", "Kaufen") :: RemoteFunction -- Spieler kauft
 Funk.angriff = neu("RemoteFunction", "Angriff") :: RemoteFunction -- Spieler schickt Raketen/Panzer/Jets
 local alarmEvent = neu("RemoteEvent", "Alarm") :: RemoteEvent
 local nachrichtEvent = neu("RemoteEvent", "Nachricht") :: RemoteEvent
+local einkommenEvent = neu("RemoteEvent", "Einkommen") :: RemoteEvent
+local stufeEvent = neu("RemoteEvent", "Stufe") :: RemoteEvent
 
 remotes.Parent = ReplicatedStorage
 
@@ -33,6 +35,21 @@ end
 -- Alarm an alle: Die angegriffene Stadt sieht "textZiel" (rot + Sirene), alle anderen "textAndere" (gelb)
 function Funk.alarm(zielIndex: number, textZiel: string, textAndere: string, dauer: number)
 	alarmEvent:FireAllClients(zielIndex, textZiel, textAndere, dauer)
+end
+
+-- Zeigt dem Spieler, wo sein Geld herkommt: "+20 $" über jedem Gebäude, das Geld bringt.
+-- liste: { { pos = Vector3, betrag = Zahl }, ... }
+function Funk.einkommen(spieler: Player?, liste: { any })
+	if spieler and spieler.Parent then
+		einkommenEvent:FireClient(spieler, liste)
+	end
+end
+
+-- Neue Stadt-Stufe erreicht: großes Banner beim Spieler
+function Funk.stufe(spieler: Player?, stufe: number, bonus: number)
+	if spieler and spieler.Parent then
+		stufeEvent:FireClient(spieler, stufe, bonus)
+	end
 end
 
 return Funk

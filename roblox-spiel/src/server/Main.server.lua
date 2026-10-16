@@ -37,12 +37,6 @@ end
 while true do
 	task.wait(Config.EINKOMMEN_INTERVALL)
 	for _, stadt in ipairs(StadtManager.alleStaedte()) do
-		local spieler = stadt.besitzer
-		local geld = spieler and spieler:FindFirstChild("leaderstats") and spieler.leaderstats:FindFirstChild("Geld")
-		if geld then
-			local w = StadtManager.werte(stadt)
-			geld.Value += w.einkommen
-			StadtManager.aktualisieren(stadt)
-		end
+		StadtManager.einkommenAuszahlen(stadt)
 	end
 end

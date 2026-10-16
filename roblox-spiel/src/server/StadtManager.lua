@@ -3,10 +3,14 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
 
 local Config = require(ReplicatedStorage.Shared.Config)
 local Sirene = require(ReplicatedStorage.Shared.Sirene)
 local Modelle = require(script.Parent.Modelle)
+local Effekte = require(script.Parent.Effekte)
+local Funk = require(script.Parent.Funk)
 
 local StadtManager = {}
 
@@ -66,6 +70,7 @@ function StadtManager.erstellen()
 			schild = teile.schild,
 			gebaeudeOrdner = teile.gebaeudeOrdner,
 			plaetze = plaetze,
+			besteStufe = 1, -- höchste Stufe, die diese Stadt schon erreicht hat (für den Bonus)
 		}
 		spielstand:SetAttribute("Besitzer" .. i, "")
 	end
@@ -193,6 +198,10 @@ function StadtManager.spielerBeitreten(spieler: Player)
 	geld.Name = "Geld"
 	geld.Value = Config.STARTGELD
 	geld.Parent = leaderstats
+	-- Rangliste: wie viele gegnerische Gebäude der Spieler schon zerstört hat
+	local zerstoert = Instance.new("IntValue")
+	zerstoert.Name = "Zerstört"
+	zerstoert.Parent = leaderstats
 	leaderstats.Parent = spieler
 
 	-- Waffen-Lager: z.B. Attribut "Lager_Kurzstrecke" = Anzahl
@@ -244,6 +253,7 @@ function StadtManager.spielerVerlassen(spieler: Player)
 		end
 	end
 	stadt.besitzer = nil
+	stadt.besteStufe = 1
 	spielstand:SetAttribute("Besitzer" .. stadt.index, "")
 	stadt.schild.Text = stadt.name .. " (frei)"
 end
@@ -287,7 +297,37 @@ function StadtManager.bauen(stadt, typ: string): boolean
 	gebaeude.Parent = stadt.gebaeudeOrdner
 	platz.gebaeude = gebaeude
 	StadtManager.aktualisieren(stadt)
+	task.spawn(StadtManager.ausDemBodenWachsen, gebaeude, platz.pos)
 	return true
+end
+
+-- Bau-Animation: Das Gebäude wächst mit einer Staubwolke aus dem Boden
+-- und federt oben kurz nach. Dazu gibt es ein Bau-Geräusch.
+function StadtManager.ausDemBodenWachsen(gebaeude: Model, pos: Vector3)
+	local ziel = gebaeude:GetPivot()
+	local hoehe = gebaeude:GetExtentsSize().Y + 1
+	gebaeude:PivotTo(ziel - Vector3.new(0, hoehe, 0))
+
+	Effekte.rauchwolke(pos, 25, 4, Color3.fromRGB(190, 170, 140))
+	local ton = Instance.new("Sound")
+	ton.SoundId = Config.Sounds.Bauen
+	ton.Volume = 0.8
+	ton.RollOffMaxDistance = 250
+	ton.Parent = gebaeude.PrimaryPart or gebaeude:FindFirstChildWhichIsA("BasePart", true)
+	ton:Play()
+	Debris:AddItem(ton, 3)
+
+	local DAUER = 0.9
+	local beginn = os.clock()
+	while gebaeude.Parent do
+		local a = math.min((os.clock() - beginn) / DAUER, 1)
+		local weich = TweenService:GetValue(a, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+		gebaeude:PivotTo(ziel - Vector3.new(0, hoehe * (1 - weich), 0))
+		if a >= 1 then
+			break
+		end
+		RunService.Heartbeat:Wait()
+	end
 end
 
 -- Alle Gebäude einer Stadt mit einer bestimmten Eigenschaft, z.B. "IstFlugabwehr"
@@ -361,6 +401,50 @@ function StadtManager.aktualisieren(stadt)
 	end
 	spieler:SetAttribute("BauplaetzeFrei", frei)
 	spieler:SetAttribute("Bauplaetze", #stadt.plaetze)
+
+	-- Stadt-Stufe: Dorf -> Kleinstadt -> ... Bei einer neuen Stufe gibt es einmal Bonus-Geld.
+	local stufe = Config.stufeFuer(w.bewohner)
+	spieler:SetAttribute("Stufe", stufe)
+	if stufe > stadt.besteStufe then
+		local bonus = 0
+		for s = stadt.besteStufe + 1, stufe do
+			bonus += Config.STUFEN[s].Bonus
+		end
+		stadt.besteStufe = stufe
+		local geld = spieler:FindFirstChild("leaderstats") and spieler.leaderstats:FindFirstChild("Geld")
+		if geld then
+			geld.Value += bonus
+		end
+		Funk.stufe(spieler, stufe, bonus)
+	end
+end
+
+-- Zahlt das Einkommen einer Stadt aus und zeigt dem Besitzer, woher das Geld kommt
+function StadtManager.einkommenAuszahlen(stadt)
+	local spieler = stadt.besitzer
+	local geld = spieler and spieler:FindFirstChild("leaderstats") and spieler.leaderstats:FindFirstChild("Geld")
+	if not geld then
+		return
+	end
+	local w = StadtManager.werte(stadt)
+	geld.Value += w.einkommen
+
+	-- Für jedes Geld-Gebäude ein "+X $" über dem Dach, die Steuern über der Stadtmitte
+	local teiler = if w.stromausfall then 2 else 1
+	local liste = {}
+	local gebaeudeGeld = 0
+	for _, platz in ipairs(stadt.plaetze) do
+		local g = platz.gebaeude
+		local info = g and Config.Gebaeude[g:GetAttribute("Typ")]
+		if g and info.Einkommen then
+			local betrag = math.floor(info.Einkommen / teiler)
+			gebaeudeGeld += betrag
+			table.insert(liste, { pos = platz.pos + Vector3.new(0, g:GetExtentsSize().Y + 2, 0), betrag = betrag })
+		end
+	end
+	table.insert(liste, { pos = stadt.mitte + Vector3.new(0, 8, -40), betrag = w.einkommen - gebaeudeGeld, steuern = true })
+	Funk.einkommen(spieler, liste)
+	StadtManager.aktualisieren(stadt)
 end
 
 -- Sucht ein Ziel in der Stadt: ein zufälliges Gebäude oder eine zufällige Stelle
@@ -448,6 +532,11 @@ function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angre
 						zerstoert += 1
 						if angreifer and angreifer ~= stadt.besitzer then
 							belohnung += math.floor(info.Preis * Config.BELOHNUNG_ANTEIL)
+							local rangliste = angreifer:FindFirstChild("leaderstats")
+							local punkte = rangliste and rangliste:FindFirstChild("Zerstört") :: IntValue?
+							if punkte then
+								punkte.Value += 1
+							end
 						end
 					else
 						g:SetAttribute("Leben", leben)

@@ -245,6 +245,56 @@ function Effekte.schuss(von: Vector3, nach: Vector3)
 	knall:Play()
 end
 
+-- Warnung am Boden: Ein roter, pulsierender Kreis zeigt, wo gleich eine Rakete einschlägt.
+-- Darüber schwebt ein Warnschild mit Countdown. Der Kreis ist so groß wie die Explosion.
+-- Gibt den Kreis zurück, damit man ihn beim Einschlag oder Abfangen wieder entfernen kann.
+function Effekte.zielMarker(pos: Vector3, radius: number, sekunden: number): BasePart
+	local kreis = Modelle.teil(ordner, {
+		Name = "ZielMarker",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(0.3, radius * 2, radius * 2),
+		CFrame = CFrame.new(pos + Vector3.new(0, 0.25, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+		Color = Color3.fromRGB(255, 40, 30),
+		Material = Enum.Material.Neon,
+		Transparency = 0.5,
+		CanCollide = false,
+		CanQuery = false,
+		CanTouch = false,
+	})
+	-- pulsieren (heller - dunkler - heller ...)
+	TweenService:Create(kreis, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
+		Transparency = 0.85,
+	}):Play()
+
+	local schild = Instance.new("BillboardGui")
+	schild.Size = UDim2.fromOffset(110, 46)
+	schild.StudsOffsetWorldSpace = Vector3.new(0, 14, 0)
+	schild.AlwaysOnTop = true
+	schild.MaxDistance = 600
+	schild.Parent = kreis
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.fromScale(1, 1)
+	text.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+	text.BackgroundTransparency = 0.15
+	text.TextColor3 = Color3.new(1, 1, 1)
+	text.Font = Enum.Font.GothamBlack
+	text.TextScaled = true
+	text.Parent = schild
+	local ecke = Instance.new("UICorner")
+	ecke.CornerRadius = UDim.new(0, 10)
+	ecke.Parent = text
+
+	local ende = os.clock() + sekunden
+	task.spawn(function()
+		while kreis.Parent do
+			text.Text = string.format("⚠️ %.1f", math.max(ende - os.clock(), 0))
+			task.wait(0.1)
+		end
+	end)
+	Debris:AddItem(kreis, sekunden + 10) -- falls etwas schiefgeht
+	return kreis
+end
+
 -- Setzt die Sounds einer Rakete aus der Config
 function Effekte.toeneSetzen(rakete: Model): (Sound, Sound)
 	local koerper = rakete:FindFirstChild("Koerper")

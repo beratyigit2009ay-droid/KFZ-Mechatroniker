@@ -27,6 +27,19 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
 - **Raketen** ziehen einen weißen Kondensstreifen hinter sich her.
 - Beschädigte Gebäude zeigen einen **Lebensbalken** (grün, gelb, rot).
 
+## Spielgefühl
+
+- **Bauen**: Neue Gebäude wachsen mit einer Staubwolke und einem Geräusch aus dem Boden und federn oben nach.
+- **Geld fliegt**: Bei jeder Auszahlung steigt über Fabrik, Büro, Einkaufszentrum und Bank ein goldenes **"+20 $"** auf,
+  über der Stadt grün die **Steuern**. Oben links zählt das Geld sichtbar hoch und hüpft kurz.
+- **Stadt-Stufen**: Dorf → Kleinstadt → Stadt → Großstadt → Metropole → Mega-City.
+  Oben links steht deine Stufe und wie viele Bewohner bis zur nächsten fehlen (z. B. ⭐ Dorf 👥 20/30).
+  Bei einer neuen Stufe gibt es ein **Banner mit Konfetti**, einen Jubel-Ton und **Bonus-Geld**.
+- **Einschlag-Warnung**: Wo eine Rakete gleich einschlägt, pulsiert ein **roter Kreis** am Boden
+  (so groß wie die Explosion) mit einem Countdown darüber. So kannst du noch weglaufen.
+- **Rangliste**: In der Spielerliste steht neben dem Geld, wie viele gegnerische Gebäude du **zerstört** hast.
+- Alle Knöpfe **klicken** beim Antippen, ein erfolgreicher Kauf macht "Pling".
+
 ## Was schon drin ist
 
 - **4 Städte pro Server** (rot, blau, grün, gelb). Wer als 5. Spieler kommt, schaut nur zu.
@@ -76,6 +89,7 @@ roblox-spiel/
     Hud.client.lua       -> Bedienoberfläche fürs Handy (Knöpfe, Fenster, Karten, Geld)
     Alarm.client.lua     -> Luftalarm-Anzeige, roter Bildschirmrand und Sirene im Kopfhörer
     Kamera.client.lua    -> Kamera-Wackeln bei Explosionen und die Kartenansicht
+    Feedback.client.lua  -> "+X $" über den Gebäuden und das Banner für neue Stadt-Stufen
 ```
 
 ## So bekommst du das Spiel in Roblox Studio
@@ -109,8 +123,9 @@ Dann die Datei `RaketenKrieg.rbxlx` per Doppelklick in Roblox Studio öffnen.
 
 **Allein testen (Bauen, Strom, Angreifen):**
 1. **Play** drücken. Du landest in deiner Stadt. Neben **BAUEN** wippt ein gelber Hinweis.
-2. **BAUEN** antippen und ein paar **Häuser** kaufen. Vor jedem Haus stehen 2 Bewohner,
-   oben links steigt die Zahl bei 👥.
+2. **BAUEN** antippen und ein paar **Häuser** kaufen. Jedes Haus wächst aus dem Boden, davor stehen 2 Bewohner,
+   oben links steigt die Zahl bei 👥. Beim 3. Haus (30 Bewohner) kommt das Banner **KLEINSTADT** mit Konfetti.
+   Eine **Fabrik** bauen und ein paar Sekunden warten: Darüber steigt "+8 $" auf.
 3. Weiter Häuser bauen, bis oben bei ⚡ **AUSFALL!** steht. Dann ein **Kraftwerk** bauen: der Strom reicht wieder.
 4. **WAFFEN** antippen: 2 Panzer und eine Kurzstrecken-Rakete kaufen.
    Am **ANGRIFF**-Knopf zeigt jetzt eine gelbe Zahl, wie viele Waffen du hast.
@@ -118,6 +133,7 @@ Dann die Datei `RaketenKrieg.rbxlx` per Doppelklick in Roblox Studio öffnen.
    Die Panzer fahren über die Straße los, schießen und kommen zurück.
 6. Dasselbe mit der Rakete: auf der Startrampe zündet sie mit Feuer, Rauch, Kondensstreifen und Geräusch.
    Dann **KARTE** drücken: Die Kamera fliegt hoch und du siehst die Rakete über die Karte fliegen.
+   In Stadt 2 pulsiert ein roter Kreis mit Countdown genau da, wo sie einschlägt.
 7. Warte auf die Nacht (nach gut 3 Minuten): Fenster und Laternen gehen an.
 
 **Auf deinem echten Handy spielen:**

@@ -94,9 +94,19 @@ local function schrift(eltern: Instance, eigenschaften: { [string]: any }): Text
 	return neu("TextLabel", alle, eltern)
 end
 
--- Knöpfe werden beim Antippen kurz kleiner, so fühlt es sich wie ein echter Knopf an
+-- Kleine Töne für die Knöpfe (Sounds in der PlayerGui hört nur dieser Spieler)
+local function ton(id: string, lautstaerke: number): Sound
+	return neu("Sound", { SoundId = id, Volume = lautstaerke }, spieler:WaitForChild("PlayerGui"))
+end
+local klickTon = ton(Config.Sounds.Klick, 0.35)
+local geldTon = ton(Config.Sounds.Geld, 0.5)
+
+-- Knöpfe werden beim Antippen kurz kleiner und klicken, so fühlt es sich wie ein echter Knopf an
 local function drueckGefuehl(knopf: GuiButton)
 	local skala = neu("UIScale", {}, knopf)
+	knopf.Activated:Connect(function()
+		klickTon:Play()
+	end)
 	local function loslassen()
 		TweenService:Create(skala, TweenInfo.new(0.25, Enum.EasingStyle.Back), { Scale = 1 }):Play()
 	end
@@ -545,6 +555,9 @@ local function kaufKarte(eltern: Instance, reihenfolge: number, art: string, typ
 	k.Activated:Connect(function()
 		local ok, antwort = kaufenRF:InvokeServer(art, typ)
 		zeigeNachricht(antwort, ok)
+		if ok then
+			geldTon:Play()
+		end
 	end)
 	table.insert(kaufkarten, { preis = info.Preis, preisFeld = preisFeld, zusatz = zusatz, typ = typ, art = art })
 end
@@ -798,13 +811,37 @@ local function zahl(n: number): string
 	return (mitPunkten:gsub("^%.", ""))
 end
 
+-- Das Geld oben links zählt sichtbar hoch (oder runter) und hüpft kurz, wenn Geld dazukommt
+local angezeigtesGeld = neu("NumberValue", { Value = geld.Value }, gui)
+local geldHuepfer = neu("UIScale", {}, geldChip)
+local letztesGeld = geld.Value
+local function geldTextSetzen()
+	local text = '💰 <font color="#FFD84A">' .. zahl(angezeigtesGeld.Value) .. " $</font>"
+	geldChip.Text = text
+	fensterGeld.Text = text
+end
+angezeigtesGeld.Changed:Connect(geldTextSetzen)
+geld.Changed:Connect(function(neuerWert)
+	TweenService:Create(angezeigtesGeld, TweenInfo.new(0.6, Enum.EasingStyle.Quad), { Value = neuerWert }):Play()
+	if neuerWert > letztesGeld then
+		geldHuepfer.Scale = 1.18
+		TweenService:Create(geldHuepfer, TweenInfo.new(0.35, Enum.EasingStyle.Back), { Scale = 1 }):Play()
+	end
+	letztesGeld = neuerWert
+end)
+
 function aktualisieren()
 	local meinGeld = geld.Value
 	local meineStadt = spieler:GetAttribute("Stadt") or 0
 
 	-- Chips oben links
-	geldChip.Text = '💰 <font color="#FFD84A">' .. zahl(meinGeld) .. " $</font>"
-	bewohnerChip.Text = "👥 " .. (spieler:GetAttribute("Bewohner") or 0)
+	geldTextSetzen()
+	-- Stadt-Stufe und wie viele Bewohner bis zur nächsten Stufe fehlen
+	local bewohner = spieler:GetAttribute("Bewohner") or 0
+	local stufe = spieler:GetAttribute("Stufe") or 1
+	local naechste = Config.STUFEN[stufe + 1]
+	bewohnerChip.Text = "⭐ " .. Config.STUFEN[stufe].Name .. "  👥 " .. bewohner
+		.. (if naechste then '<font color="#A5AFC8">/' .. naechste.Bewohner .. "</font>" else "")
 	local erzeugt = spieler:GetAttribute("StromErzeugt") or Config.GRUNDSTROM
 	local bedarf = spieler:GetAttribute("StromBedarf") or 0
 	if bedarf > erzeugt then
@@ -817,7 +854,6 @@ function aktualisieren()
 	if meineStadt == 0 then
 		bewohnerChip.Text = "👀 Zuschauer: alle 4 Städte sind voll"
 	end
-	fensterGeld.Text = '💰 <font color="#FFD84A">' .. zahl(meinGeld) .. " $</font>"
 	platzChip.Text = "🏗️ " .. (spieler:GetAttribute("BauplaetzeFrei") or 0) .. " Plätze frei"
 
 	-- Kaufkarten: grün, wenn du genug Geld hast

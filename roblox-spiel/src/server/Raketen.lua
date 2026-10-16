@@ -69,6 +69,9 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel)
 	local p2 = zielPos + Vector3.new(0, typ.Hoehe, 0)
 	local p3 = zielPos
 
+	-- roter Warnkreis am Einschlagsort, damit alle sehen, wo es gleich knallt
+	local marker = Effekte.zielMarker(zielPos, typ.Radius, typ.Flugzeit)
+
 	local abfangT: number? = nil -- Zeitpunkt, an dem die Rakete abgefangen wird
 	local abfangPunkt: Vector3? = nil
 	beginn = os.clock()
@@ -103,6 +106,7 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel)
 		-- Abgefangen? Dann explodiert die Rakete in der Luft
 		if abfangT and abfangPunkt and t >= abfangT then
 			Effekte.ausblenden(rakete)
+			marker:Destroy()
 			Effekte.explosion(abfangPunkt, typ.Radius * 0.7)
 			Funk.nachricht(spieler, "Deine " .. typ.Name .. " wurde über " .. ziel.name .. " abgefangen!")
 			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat eine " .. typ.Name .. " abgefangen!")
@@ -117,6 +121,7 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel)
 
 	-- 4) Einschlag
 	Effekte.ausblenden(rakete)
+	marker:Destroy()
 	Effekte.explosion(zielPos, typ.Radius)
 	Effekte.spielerSchaden(zielPos, typ.Radius)
 	local zerstoert, belohnung = StadtManager.schaden(zielPos, typ.Radius, typ.Schaden, spieler)

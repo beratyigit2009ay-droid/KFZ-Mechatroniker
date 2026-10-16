@@ -34,6 +34,28 @@ Config.TAG_UND_NACHT = true -- auf false stellen, dann ist immer Nachmittag
 Config.TAG_MINUTEN = 9
 Config.NACHT_MINUTEN = 3
 
+-- Stadt-Stufen: Je mehr Bewohner, desto höher die Stufe deiner Stadt.
+-- Bei jeder neuen Stufe gibt es einmal einen Geld-Bonus.
+Config.STUFEN = {
+	{ Name = "Dorf", Bewohner = 0, Bonus = 0 },
+	{ Name = "Kleinstadt", Bewohner = 30, Bonus = 150 },
+	{ Name = "Stadt", Bewohner = 80, Bonus = 300 },
+	{ Name = "Großstadt", Bewohner = 160, Bonus = 600 },
+	{ Name = "Metropole", Bewohner = 300, Bonus = 1200 },
+	{ Name = "Mega-City", Bewohner = 500, Bonus = 2500 },
+}
+
+-- Gibt die Stufe (1, 2, 3, ...) für eine Anzahl Bewohner zurück
+function Config.stufeFuer(bewohner: number): number
+	local stufe = 1
+	for i, s in ipairs(Config.STUFEN) do
+		if bewohner >= s.Bewohner then
+			stufe = i
+		end
+	end
+	return stufe
+end
+
 -- Angriffe
 Config.ANGRIFF_PAUSE = 2 -- Sekunden zwischen zwei Angriffen
 Config.MAX_ANZAHL = 10 -- so viele Raketen/Panzer/Jets kann man auf einmal schicken
@@ -212,6 +234,10 @@ Config.Sounds = {
 	-- Solange das leer ist, wird eine Ersatz-Sirene aus Pieptönen benutzt.
 	Sirene = "",
 	Piep = "rbxasset://sounds/electronicpingshort.wav",
+	Klick = "rbxasset://sounds/button.wav", -- Knopf antippen
+	Bauen = "rbxasset://sounds/swoosh.wav", -- Gebäude wächst aus dem Boden
+	Geld = "rbxasset://sounds/electronicpingshort.wav", -- Kauf hat geklappt
+	Stufe = "rbxasset://sounds/victory.wav", -- neue Stadt-Stufe erreicht
 }
 
 -- Hilfsfunktion: Infos zu einer Waffe (Rakete oder Fahrzeug) holen
