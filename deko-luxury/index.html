@@ -268,7 +268,10 @@
             <a class="btn btn--foil" href="#kontakt" data-cta>Beratung anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
             <a class="btn btn--ghost" href="https://wa.me/491794310823" target="_blank" rel="noopener" data-contact="whatsapp"><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
           </div>
-          <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>Jetzt geöffnet</strong> · 24/7 · Kapuzinerstr. 4, Burgau</span></p>
+          <div class="hero__badges">
+            <p class="status status--hero"><span class="status__dot" aria-hidden="true"></span><span><strong>Jetzt geöffnet</strong> · 24/7 · Kapuzinerstr. 4, Burgau</span></p>
+            <a class="rating-pill" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google" data-rating data-rating-label aria-label="5,0 von 5 Sternen, 3 Google-Bewertungen – auf Google ansehen"><span class="stars" style="--pct:100%" data-stars aria-hidden="true"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="stars__fill"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></span><span><strong data-rating-note>5,0</strong> · <span data-rating-count>3 Google-Bewertungen</span></span></a>
+          </div>
         </div>
 
         <figure class="hero__arch" data-slides>
@@ -313,10 +316,10 @@
           <span class="strip__live"><svg class="strip__icon" viewBox="0 0 24 24" aria-hidden="true"><circle pathLength="1" cx="12" cy="12" r="8.5"/><path pathLength="1" d="M12 7.5V12l3 2"/></svg><span class="status__dot" aria-hidden="true"></span></span>
           <span class="strip__text"><strong>24/7 geöffnet</strong><small>jetzt geöffnet</small></span>
         </li>
-        <!-- Bewertungen: Note und Anzahl kommen automatisch aus assets/data/bewertungen.json (täglich von Google aktualisiert, siehe README). Ohne Daten steht hier „auf Google ansehen“. -->
+        <!-- Bewertungen: Note und Anzahl stehen oben in assets/js/main.js unter KONTAKT.bewertung. -->
         <li class="strip__item strip__item--link" data-reveal style="--d:.32s">
           <svg class="strip__icon" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M12 3.6l2.6 5.2 5.7.8-4.1 4 1 5.7-5.2-2.7-5.2 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <span class="strip__text"><strong data-rating-title>Bewertungen</strong><small><a class="strip__a" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google"><span data-rating-count>auf Google ansehen</span> <span aria-hidden="true">→</span></a></small></span>
+          <span class="strip__text"><strong class="strip__rating"><span data-rating-note>5,0</span><span class="sr-only"> von 5 Sternen</span> <span class="stars stars--sm" style="--pct:100%" data-stars aria-hidden="true"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="stars__fill"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></span></strong><small><a class="strip__a" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google"><span data-rating-count>3 Google-Bewertungen</span> <span aria-hidden="true">→</span></a></small></span>
         </li>
       </ul>
       </div>
@@ -475,6 +478,24 @@
             </button>
           </li>
         </ul>
+        <!-- Google-Bewertung (Werte in assets/js/main.js unter KONTAKT.bewertung) -->
+        <div class="reviews" data-reveal data-rating>
+          <a class="reviews__score" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google" data-rating-label aria-label="5,0 von 5 Sternen, 3 Google-Bewertungen – auf Google ansehen">
+            <span class="reviews__note"><span data-rating-note>5,0</span><small>/ 5</small></span>
+            <span class="stars stars--lg" style="--pct:100%" data-stars aria-hidden="true"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="stars__fill"><span class="stars__row"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></span>
+            <span class="reviews__count"><span data-rating-count>3 Google-Bewertungen</span></span>
+            <span class="reviews__google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-google"/></svg>Google</span>
+          </a>
+          <div class="reviews__body">
+            <p class="eyebrow eyebrow--light">Bewertungen</p>
+            <h3 class="reviews__title">Danke für euer <em class="foil">Vertrauen.</em></h3>
+            <p class="reviews__text">Lest auf Google, was unsere Kundinnen und Kunden schreiben – und wenn ihr mit uns gefeiert habt, freuen wir uns sehr über eure Bewertung.</p>
+            <div class="reviews__actions">
+              <a class="btn btn--foil" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google">Bewertungen lesen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
+              <a class="link link--light" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google">Bewertung schreiben</a>
+            </div>
+          </div>
+        </div>
         <div class="gallery__cta" data-reveal>
           <p>Eure Idee ist nicht dabei? <em>Genau dafür sind wir da.</em></p>
           <a class="btn btn--foil" href="#kontakt" data-cta>Beratung anfragen <svg class="btn__arrow" viewBox="0 0 34 10" aria-hidden="true"><path d="M0 5h32M28 1l4 4-4 4"/></svg></a>
@@ -743,7 +764,7 @@
           </ul>
           <div class="footer__socials">
             <a class="footer__social" href="https://www.instagram.com/deko.luxury/" target="_blank" rel="noopener" data-contact="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg><span data-contact-label>@deko.luxury</span></a>
-            <a class="footer__social" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-google"/></svg><span data-rating-short>Google-Bewertungen</span></a>
+            <a class="footer__social" href="https://share.google/pVcuqKsvUcemlnJwG" target="_blank" rel="noopener" data-contact="google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-google"/></svg><span data-rating-short>5,0 ★ · 3 Google-Bewertungen</span></a>
           </div>
         </div>
       </div>
@@ -824,6 +845,7 @@
     <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6h17v12h-17z"/><path d="M3.5 6l8.5 6.6L20.5 6"/></symbol>
     <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.8h3l1.4 4-2 1.3a11 11 0 0 0 5.9 5.9l1.3-2 4 1.4v3a1.8 1.8 0 0 1-1.9 1.8A16.6 16.6 0 0 1 4.8 5.7a1.8 1.8 0 0 1 1.8-1.9z"/></symbol>
     <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.2h1.3l.6 1.7-.9.6a4.8 4.8 0 0 0 2.6 2.6l.6-.9 1.7.6v1.3a.8.8 0 0 1-.8.8 6.9 6.9 0 0 1-5.9-5.9.8.8 0 0 1 .8-.8z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.6l2.9 5.86 6.47.94-4.68 4.56 1.1 6.44L12 17.36l-5.79 3.04 1.1-6.44-4.68-4.56 6.47-.94z"/></symbol>
     <symbol id="i-google" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18.6 7.4A7.8 7.8 0 1 0 19.8 12h-7.2"/></symbol>
     <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor" stroke="none"/></symbol>
     <symbol id="monogram" viewBox="533.88 174.63 136.62 141.12"><path fill="url(#foil)" fill-rule="evenodd" d="M543.4 176.8c-1.2 0-2 .1-2.4.2c-.2.1-.8.2-1 .2c-1.2.3-2.2 1-2.5 1.9c0 .3-.1.7-.3 1c-.1.4-.1.5.2 1.4c.5 1.9 1 2.1 4.4 3c.4.1 1.3.5 1.8.7c.5.2 1.5.7 2.2.9c.6.1 1.3.5 1.6.7c1.1.4 2.1 2 2.6 3.7c0 .4.2 1.1.4 1.4c0 .2.2 1.2.4 2c0 .7.2 2 .3 2.9c.5 2.1.7 3.7.8 16c.2 22.7.2 30.1.1 53.1c-.1 20.3-.2 21.3-.8 22.5c-.3.8-.3.8-.2 3.5c.1 2.7.1 3.1-.2 4c-.2.1-.3.9-.3 1.6c-.1 1.7-1.6 5.5-2.4 5.9c-.2.1-.6.4-.9.7c-1 .9-3.6 2.1-5.2 2.4c-3 .4-4.8 1.4-5.6 3.3c-.4.7-.4.8 0 2c.7 2-.5 1.8 20.2 1.7c6.6 0 21.8 0 33.6 0c37.6 0 36 0 36.9-1c.5-.4 1.9-3.6 2.4-5c.1-.6.5-1.6.7-2.4c.3-.6.6-1.5.7-1.9c.1-1 1-2.7 1.3-2.4c.3.1.2.7-.1 1.3c-1.1 2.1 1 2.9 3.7 1.3c.3-.2 1-.5 1.3-.6c.3-.2.9-.6 1.3-.8c.5-.2.8-.5 1-.5c0 0 .4-.3.7-.6c.4-.3 1.1-.9 1.8-1.3c.7-.4 1.3-.8 2.5-1.8c.7-.9 1.7-1.8 2.2-2.3c.5-.4 1.3-1 1.5-1.4c.5-.5 1.9-1.7 2.8-2.5c.2-.1.5-.6.7-.8c1-1.4 1.8-2.4 2.3-2.8c.2-.1.9-.9 1.3-1.8c.6-.7 1.2-1.7 1.6-2.1c.2-.5.7-1.3 1.1-2c.3-.6.9-1.6 1.2-2.1c1.8-2.8 3.5-5.8 3.8-6.5c.1-.4.2-1 .5-1.4c.4-1 .8-2.2 1-3.1c.1-.5.4-1.2.6-1.8c.6-1.2 1.5-3.4 1.5-4.3c.1-.7.7-4.1 1.3-6.9c0-.6.1-1.4.1-1.9c0-.3.1-1.3.1-2.2c.5-3.3.5-4 .5-9.1c0-4 0-5.7-.1-6.2c-.2-.6-.4-3-.6-5.7c0-.7-.3-1.5-.4-2c-.2-.5-.4-1.4-.5-2.1c-.1-.8-.5-1.9-.8-2.6c-.1-.6-.3-1.2-.3-1.4c0-.6-.3-1.6-.8-2.7c-.4-.6-.6-1.6-.9-2.5c-.2-1.6-.9-2.8-2.3-5.5c-.3-.5-.8-1.3-1-2.1c-.4-.6-.9-1.6-1.2-2c-.4-.5-.7-1.1-.8-1.5c-.9-1.4-1.8-2.6-2.4-3.4c-.4-.5-1-1.2-1.4-1.6c-.4-.5-.9-1.1-1.1-1.4c-.3-.3-1-1.2-1.7-2.1c-.8-1.1-1.3-1.6-2-2.1c-.4-.4-1.2-1.1-1.8-1.8c-.8-.7-1.4-1.3-1.9-1.6c-.4-.3-1.1-.9-1.6-1.4c-1.9-1.7-3.1-2.6-4.3-3.1c-.6-.2-1.2-.5-1.5-.8c-.2-.1-.9-.3-1.2-.6c-.5-.1-1.1-.6-1.7-1c-.8-.7-2.3-1.5-3.2-1.7c-.4-.1-1-.4-1.5-.7c-.4-.2-1-.6-1.5-.7c-.4-.3-1.2-.5-1.9-.7c-1-.4-3.7-1.2-4.1-1.2c-.1 0-.9-.2-1.6-.5c-.9-.2-2-.5-2.9-.6c-1.5-.1-2.1-.3-2.9-.5c-.7-.4-3-.8-4.4-.9c-.7 0-1.7-.1-2.2-.2c-.5-.1-1.4-.3-1.8-.3c-.4 0-1.3-.1-2.1-.1c-.7-.1-1.9-.4-2.5-.4c-1.5-.2-11.1-.2-12.1 0c-.9.1-5.5.1-10.7-.1c-4.6-.1-6.8-.1-9.9 0c-1.8.1-2.3 0-2.9-.1c-.6-.1-1.1-.1-3.4 0c-2.4.1-10.1 0-17.4-.1c-1.1-.2-2.8 0-3.8 0zm39.7 8.7c-.2 0-1 .1-1.7.4c-.8.1-2.2.3-3.3.3c-1.1.2-2.1.3-2.2.4c-.3 0-.7.2-.9.2c-1.8 0-3.2 1.7-3.4 3.7c-.1.6-.2 1.6-.6 2.4c-.5 1.6-.5.6-.6 21.1c0 6.5 0 13.9-.2 16.1c0 2.3 0 6.4 0 9.1c-.1 2.7-.1 8.4 0 12.8c.2 6.4.3 23.1.4 35.8c.2 1.7.2 2.2.4 3.4c.2.8.5 2 .6 2.8c.2 1.4.3 1.5.8 2.6c.4.5.8 1.3 1 1.6c.4.7.8 1.4 1.5 1.8c.2.1.7.6 1 1c.2.4.7.9 1 1c.1.1.7.5 1.1.9c.5.5.9.6 1.4.7c.4.2 1 .3 1.5.5c.9.3.9.3 13.1.4c17.4 0 16.9.1 21.1-2c3.1-1.6 6-4.4 7-6.7c.1-.7.7-1.3.9-1.7c.2-.3.5-.7.6-1.3c.2-.6.5-1.3 1-1.9c.4-.7.9-1.5 1-1.9c0-.4.3-.9.5-1.1c.1-.4.4-1 .5-1.5c.3-1.2 1.9-4.5 2.3-4.9c1.2-1.1 3.3-1.7 4.2-1.1c.3.1.8.5 1.3.6c.4.2.8.5 1.1.8c.3.3.4.4.5.3c.4 0 1.2-1.3 1.4-2c.1-.6.6-1.3 1.4-1.9c.6-.6.8-1 1.6-3.4c.4-1.2.8-2.4 1.1-2.7c.1-.3.4-1.1.6-1.7c.3-.6.7-1.8.9-2.4c.8-2 1.2-3.8 1.8-6.2c.1-1.3.4-2.7.4-2.9c.4-.8.8-3.1.9-4.4c0-.6.1-1.9.3-2.9c.5-3.2.5-10.6.1-11.5c-.4-.6-.4-.6-.5-4.2c-.1-3.9-.1-3.7-1.1-8.1c-.7-3-.8-3.4-.9-3.8c-.1-.2-.4-.9-.5-1.5c-.1-.6-.3-1.3-.4-1.5c-.1-.1-.3-.8-.6-1.4c-.4-1.2-.7-2-1.4-3c-.2-.2-.6-1.1-.9-1.7c-.4-1.5-.7-2-1.4-2.9c-.3-.4-.9-1.2-1.2-1.9c-.4-.6-.8-1.5-1.2-1.9c-.3-.3-.8-1.1-1-1.6c-.4-.6-1-1.2-1.5-1.7c-.9-.8-1.4-1.3-2-2.1c-.5-.7-2.1-2.2-2.7-2.4c-.2-.2-.8-.8-1.4-1.5c-.9-.9-1.4-1.3-2-1.7c-.7-.2-1-.6-1.4-1c-.6-.7-.8-.8-1.6-1.1c-.4-.1-1-.5-1.4-.7c-.4-.3-1-.6-1.4-.9c-.4-.1-.9-.4-1-.5c-.9-.6-5.1-2.8-6.2-3.1c-.8-.3-1.7-.5-2-.8c-.4-.1-1-.2-1.6-.3c-.4 0-1-.3-1.4-.6c-1.2-.6-1.7-.7-3.4-.8c-1-.2-1.6-.3-2.5-.5c-1-.4-1.3-.4-3.1-.5c-3-.2-5.4-.5-6.7-.9c-.6-.1-8-.1-9 0z"/></symbol>

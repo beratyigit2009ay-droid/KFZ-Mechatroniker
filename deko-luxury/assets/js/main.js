@@ -15,6 +15,9 @@ var KONTAKT = {
   whatsapp: '491794310823',  // international, ohne + und Leerzeichen
   instagram: 'https://www.instagram.com/deko.luxury/',
   google: 'https://share.google/pVcuqKsvUcemlnJwG',  // Google-Profil mit Bewertungen
+  // Google-Bewertung: hier selbst anpassen, wenn sich etwas ändert, z. B. { note: 4.9, anzahl: 12 }
+  // (Punkt statt Komma). null = Bewertung ausblenden.
+  bewertung: { note: 5.0, anzahl: 3 },
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 
@@ -504,22 +507,26 @@ var KONTAKT = {
     }, 4200);
   }
 
-  /* ---------- Google-Bewertung: Note und Anzahl aus assets/data/bewertungen.json ----------
-     Die Datei aktualisiert sich täglich automatisch (GitHub Actions, tools/bewertungen.mjs).
-     Fehlt sie oder ist sie leer, bleibt der Text „auf Google ansehen“ stehen. */
-  if (window.fetch) {
-    fetch('assets/data/bewertungen.json', { cache: 'no-cache' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!d || typeof d.rating !== 'number' || !d.count) return;
-        var note = d.rating.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-        var anzahl = d.count === 1 ? '1 Google-Bewertung' : d.count.toLocaleString('de-DE') + ' Google-Bewertungen';
-        $$('[data-rating-title]').forEach(function (el) { el.textContent = note + ' von 5 Sternen'; });
-        $$('[data-rating-count]').forEach(function (el) { el.textContent = anzahl; });
-        $$('[data-rating-short]').forEach(function (el) { el.textContent = note + ' ★ · ' + anzahl; });
-      })
-      .catch(function () { /* Anzeige bleibt „auf Google ansehen“ */ });
-  }
+  /* ---------- Google-Bewertung: Werte aus KONTAKT.bewertung ---------- */
+  (function () {
+    var b = KONTAKT.bewertung;
+    if (!b || typeof b.note !== 'number' || !b.anzahl) {
+      $$('[data-rating]').forEach(function (el) { el.hidden = true; });
+      $$('[data-rating-note]').forEach(function (el) { el.textContent = 'Bewertungen'; });
+      $$('[data-rating-count]').forEach(function (el) { el.textContent = 'auf Google ansehen'; });
+      $$('[data-rating-short]').forEach(function (el) { el.textContent = 'Google-Bewertungen'; });
+      $$('[data-stars]').forEach(function (el) { el.hidden = true; });
+      return;
+    }
+    var note = b.note.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    var anzahl = b.anzahl === 1 ? '1 Google-Bewertung' : b.anzahl.toLocaleString('de-DE') + ' Google-Bewertungen';
+    var pct = (Math.max(0, Math.min(5, b.note)) / 5 * 100).toFixed(1) + '%';
+    $$('[data-rating-note]').forEach(function (el) { el.textContent = note; });
+    $$('[data-rating-count]').forEach(function (el) { el.textContent = anzahl; });
+    $$('[data-rating-short]').forEach(function (el) { el.textContent = note + ' ★ · ' + anzahl; });
+    $$('[data-stars]').forEach(function (el) { el.style.setProperty('--pct', pct); });
+    $$('[data-rating-label]').forEach(function (el) { el.setAttribute('aria-label', note + ' von 5 Sternen, ' + anzahl + ' – auf Google ansehen'); });
+  })();
 
   /* ---------- Kontakt-Buttons aus KONTAKT verknüpfen ---------- */
   var onlyDigits = function (s) { return String(s || '').replace(/[^\d+]/g, ''); };
