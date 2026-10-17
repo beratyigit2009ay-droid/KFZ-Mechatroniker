@@ -17,7 +17,7 @@ var KONTAKT = {
   google: 'https://share.google/pVcuqKsvUcemlnJwG',  // Google-Profil mit Bewertungen
   // Google-Bewertung: hier selbst anpassen, wenn sich etwas ändert, z. B. { note: 4.9, anzahl: 12 }
   // (Punkt statt Komma). null = Bewertung ausblenden.
-  bewertung: { note: 5.0, anzahl: 3 },
+  bewertung: { note: 5.0, anzahl: 6 },
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 
