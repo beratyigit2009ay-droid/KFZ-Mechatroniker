@@ -658,7 +658,6 @@ var KONTAKT = {
         _subject: subjectLine('Neue Anfrage: '),
         _template: 'table',
         _captcha: 'false',
-        _honey: val('website'),
         'Event-Art': val('eventart') || 'nicht angegeben',
         'Datum / Zeitraum': val('datum') || 'nicht angegeben',
         'Nachricht': val('nachricht') || '–',
@@ -718,9 +717,10 @@ var KONTAKT = {
       if (firstBad) { firstBad.focus(); return; }
 
       if (form.getAttribute('data-demo') === 'true') { done(true); return; }
-      // Spamschutz: Bots füllen das versteckte Feld aus oder senden sofort ab
-      var hp = form.elements.website;
-      if ((hp && hp.value) || (ts && Date.now() - Number(ts.value) < 3000)) { done(false); return; }
+      // Spamschutz: nur Bots füllen das versteckte Feld aus (neutraler Name, damit
+      // AutoFill am Handy es nicht befüllt und echte Anfragen nie verschluckt werden)
+      var hp = form.elements.hp_x7;
+      if (hp && hp.value) { done(false); return; }
 
       submitBtn.disabled = true;
       submitLabel.textContent = 'Wird gesendet …';

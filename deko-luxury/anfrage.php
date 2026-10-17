@@ -76,7 +76,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 }
 
 // Spamschutz: Honeypot und Mindestzeit
-if (feld('website') !== '') {
+if (feld('hp_x7') !== '') {
     antwort(200, ['ok' => true]);
 }
 $ts = (int) feld('ts', 20);
