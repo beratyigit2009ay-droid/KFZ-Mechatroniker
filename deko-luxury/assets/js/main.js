@@ -14,7 +14,7 @@ var KONTAKT = {
   telefon: '+49 179 4310823',
   whatsapp: '491794310823',  // international, ohne + und Leerzeichen
   instagram: 'https://www.instagram.com/deko.luxury/',
-  google: 'https://share.google/bSpoMTGI2UBNDgjTF',  // Google-Profil (Bewertungen, Route)
+  google: 'https://share.google/pVcuqKsvUcemlnJwG',  // Google-Profil mit Bewertungen
   whatsappText: 'Hallo DEKO.LUXURY, wir interessieren uns für eine Dekoration.'
 };
 
@@ -502,6 +502,23 @@ var KONTAKT = {
       toastEl.classList.remove('is-on');
       window.setTimeout(function () { if (!toastEl.classList.contains('is-on')) toastEl.hidden = true; }, 500);
     }, 4200);
+  }
+
+  /* ---------- Google-Bewertung: Note und Anzahl aus assets/data/bewertungen.json ----------
+     Die Datei aktualisiert sich täglich automatisch (GitHub Actions, tools/bewertungen.mjs).
+     Fehlt sie oder ist sie leer, bleibt der Text „auf Google ansehen“ stehen. */
+  if (window.fetch) {
+    fetch('assets/data/bewertungen.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || typeof d.rating !== 'number' || !d.count) return;
+        var note = d.rating.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        var anzahl = d.count === 1 ? '1 Google-Bewertung' : d.count.toLocaleString('de-DE') + ' Google-Bewertungen';
+        $$('[data-rating-title]').forEach(function (el) { el.textContent = note + ' von 5 Sternen'; });
+        $$('[data-rating-count]').forEach(function (el) { el.textContent = anzahl; });
+        $$('[data-rating-short]').forEach(function (el) { el.textContent = note + ' ★ · ' + anzahl; });
+      })
+      .catch(function () { /* Anzeige bleibt „auf Google ansehen“ */ });
   }
 
   /* ---------- Kontakt-Buttons aus KONTAKT verknüpfen ---------- */
