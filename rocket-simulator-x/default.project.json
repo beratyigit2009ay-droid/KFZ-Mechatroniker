@@ -1,0 +1,115 @@
+{
+  "name": "RocketSimulatorX",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "$properties": {
+        "CameraMaxZoomDistance": 180,
+        "CameraMinZoomDistance": 0.5
+      },
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "StarterGui": {
+      "$properties": {
+        "ScreenOrientation": "LandscapeSensor"
+      }
+    },
+    "Workspace": {
+      "$properties": {
+        "Gravity": 196.2,
+        "StreamingEnabled": false
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Technology": "Future",
+        "Brightness": 2.6,
+        "ClockTime": 14.5,
+        "GeographicLatitude": 30,
+        "GlobalShadows": true,
+        "Ambient": [
+          0.25,
+          0.27,
+          0.35
+        ],
+        "OutdoorAmbient": [
+          0.45,
+          0.48,
+          0.58
+        ],
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
+        "ExposureCompensation": 0.1,
+        "ShadowSoftness": 0.2
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.28,
+          "Offset": 0.2,
+          "Color": [
+            0.72,
+            0.8,
+            0.95
+          ],
+          "Decay": [
+            0.38,
+            0.45,
+            0.65
+          ],
+          "Glare": 0.3,
+          "Haze": 1.2
+        }
+      },
+      "Sky": {
+        "$className": "Sky",
+        "$properties": {
+          "StarCount": 3000,
+          "CelestialBodiesShown": true
+        }
+      },
+      "Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Intensity": 0.7,
+          "Size": 26,
+          "Threshold": 1.6
+        }
+      },
+      "ColorCorrection": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.02,
+          "Contrast": 0.1,
+          "Saturation": 0.15,
+          "TintColor": [
+            0.98,
+            0.98,
+            1
+          ]
+        }
+      },
+      "SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Intensity": 0.05,
+          "Spread": 0.8
+        }
+      }
+    }
+  }
+}
