@@ -193,6 +193,32 @@ Config.Raketen = {
 		Groesse = 1.6,
 		Abfangbar = 0.7,
 	},
+	Streu = {
+		Name = "Streu-Rakete",
+		Icon = "🎇",
+		Preis = 600,
+		Schaden = 70, -- pro Streubombe
+		Radius = 14, -- pro Streubombe
+		Streu = 7, -- über dem Ziel platzt sie in 7 Streubomben
+		StreuRadius = 32, -- so weit verteilen sich die Streubomben
+		Flugzeit = 8,
+		Hoehe = 160,
+		Groesse = 1.4,
+		Abfangbar = 0.8,
+		Farbe = Color3.fromRGB(90, 110, 70),
+	},
+	Hyperschall = {
+		Name = "Hyperschall-Rakete",
+		Icon = "🌠",
+		Preis = 1500,
+		Schaden = 220,
+		Radius = 36,
+		Flugzeit = 3.5, -- super schnell: kaum Zeit zum Weglaufen
+		Hoehe = 120,
+		Groesse = 1.5,
+		Abfangbar = 0.15, -- fast nicht abzufangen
+		Farbe = Color3.fromRGB(45, 45, 55),
+	},
 	Mega = {
 		Name = "Mega-Rakete",
 		Icon = "☢️",
@@ -205,22 +231,56 @@ Config.Raketen = {
 		Abfangbar = 0.4,
 	},
 }
-Config.RaketenReihenfolge = { "Kurzstrecke", "Mittelstrecke", "Schwer", "Mega" }
+Config.RaketenReihenfolge = { "Kurzstrecke", "Mittelstrecke", "Schwer", "Streu", "Hyperschall", "Mega" }
 
 -- Fahrzeuge: Panzer fahren über den Boden, Jets fliegen über die Stadt und werfen Bomben.
+-- Je teurer, desto stärker.
 -- Was den Angriff überlebt, kommt zurück in dein Lager.
+-- Art: "Panzer" fährt, "Jet" fliegt. Groesse: wie groß das Modell ist (1 = normal).
 Config.Einheiten = {
 	Panzer = {
-		Name = "Panzer",
+		Art = "Panzer",
+		Name = "Leichter Panzer",
 		Icon = "💥",
 		Preis = 200,
 		Leben = 120,
 		Tempo = 22, -- Studs pro Sekunde
 		Schaden = 30, -- pro Schuss
+		Radius = 8, -- Explosionsradius eines Schusses
 		Schuesse = 6,
 		Schussabstand = 1.5, -- Sekunden zwischen zwei Schüssen
+		Groesse = 1,
+	},
+	Kampfpanzer = {
+		Art = "Panzer",
+		Name = "Kampfpanzer",
+		Icon = "⚔️",
+		Preis = 450,
+		Leben = 260,
+		Tempo = 18,
+		Schaden = 55,
+		Radius = 11,
+		Schuesse = 7,
+		Schussabstand = 1.4,
+		Groesse = 1.3,
+		Farbe = Color3.fromRGB(110, 100, 70), -- Wüstenfarbe
+	},
+	Mammut = {
+		Art = "Panzer",
+		Name = "Mammut-Panzer",
+		Icon = "🦣",
+		Preis = 900,
+		Leben = 520,
+		Tempo = 13,
+		Schaden = 90,
+		Radius = 15,
+		Schuesse = 8,
+		Schussabstand = 1.3,
+		Groesse = 1.7,
+		Farbe = Color3.fromRGB(60, 65, 60),
 	},
 	Jet = {
+		Art = "Jet",
 		Name = "Kampfjet",
 		Icon = "✈️",
 		Preis = 400,
@@ -229,9 +289,39 @@ Config.Einheiten = {
 		Bomben = 3,
 		BombenSchaden = 70,
 		BombenRadius = 18,
+		Tarnung = 1, -- 1 = normal, kleiner = schwerer abzuschießen
+		Groesse = 1,
+	},
+	Bomber = {
+		Art = "Jet",
+		Name = "Bomber",
+		Icon = "🛩️",
+		Preis = 900,
+		Tempo = 85,
+		Hoehe = 110,
+		Bomben = 8,
+		BombenSchaden = 80,
+		BombenRadius = 20,
+		Tarnung = 1.2, -- groß und langsam: leichter zu treffen
+		Groesse = 1.9,
+		Farbe = Color3.fromRGB(85, 95, 80),
+	},
+	Tarnkappenjet = {
+		Art = "Jet",
+		Name = "Tarnkappenjet",
+		Icon = "🦇",
+		Preis = 1400,
+		Tempo = 180,
+		Hoehe = 120,
+		Bomben = 4,
+		BombenSchaden = 110,
+		BombenRadius = 22,
+		Tarnung = 0.25, -- die Flugabwehr sieht ihn kaum
+		Groesse = 1.1,
+		Farbe = Color3.fromRGB(35, 37, 42),
 	},
 }
-Config.EinheitenReihenfolge = { "Panzer", "Jet" }
+Config.EinheitenReihenfolge = { "Panzer", "Kampfpanzer", "Mammut", "Jet", "Bomber", "Tarnkappenjet" }
 
 -- Sounds
 -- Die "rbxasset://"-Sounds sind in Roblox eingebaut und funktionieren immer.

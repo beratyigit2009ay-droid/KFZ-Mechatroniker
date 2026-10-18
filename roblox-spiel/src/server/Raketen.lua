@@ -41,7 +41,7 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel, startPunkt: Vector3?
 	local abschuss = startPunkt or start.startPunkt
 	local zielPos = StadtManager.zufallsZiel(ziel)
 
-	local rakete = Modelle.rakete(typ.Groesse)
+	local rakete = Modelle.rakete(typ.Groesse, typ.Farbe)
 	local startTon, flugTon = Effekte.toeneSetzen(rakete)
 	local startPos = abschuss + Vector3.new(0, rakete:GetAttribute("Laenge") / 2, 0)
 	rakete:PivotTo(Effekte.ausrichten(startPos, Vector3.yAxis))
@@ -125,14 +125,38 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel, startPunkt: Vector3?
 	-- 4) Einschlag
 	Effekte.ausblenden(rakete)
 	marker:Destroy()
-	Effekte.explosion(zielPos, typ.Radius)
-	Effekte.spielerSchaden(zielPos, typ.Radius)
-	local zerstoert, belohnung = StadtManager.schaden(zielPos, typ.Radius, typ.Schaden, spieler)
+	local zerstoert, belohnung
+	if typ.Streu then
+		zerstoert, belohnung = Raketen.streubomben(spieler, typ, zielPos)
+	else
+		Effekte.explosion(zielPos, typ.Radius)
+		Effekte.spielerSchaden(zielPos, typ.Radius)
+		zerstoert, belohnung = StadtManager.schaden(zielPos, typ.Radius, typ.Schaden, spieler)
+	end
 	if zerstoert > 0 then
 		Funk.nachricht(spieler, "Treffer! " .. zerstoert .. " Gebäude zerstört. +" .. belohnung .. " $")
 	else
 		Funk.nachricht(spieler, "Einschlag in " .. ziel.name .. "!")
 	end
+end
+
+-- Streu-Rakete: platzt kurz über dem Ziel und verteilt viele kleine Bomben,
+-- die nacheinander rund um das Ziel einschlagen.
+function Raketen.streubomben(spieler: Player, typ, zielPos: Vector3): (number, number)
+	Effekte.explosion(zielPos + Vector3.new(0, 25, 0), 6) -- die Rakete platzt in der Luft
+	local zerstoert, belohnung = 0, 0
+	for i = 1, typ.Streu do
+		local winkel = math.random() * math.pi * 2
+		local weite = math.sqrt(math.random()) * typ.StreuRadius
+		local pos = zielPos + Vector3.new(math.cos(winkel) * weite, 0, math.sin(winkel) * weite)
+		task.wait(0.08 + math.random() * 0.12)
+		Effekte.explosion(pos, typ.Radius)
+		Effekte.spielerSchaden(pos, typ.Radius)
+		local z, b = StadtManager.schaden(pos, typ.Radius, typ.Schaden, spieler)
+		zerstoert += z
+		belohnung += b
+	end
+	return zerstoert, belohnung
 end
 
 -- Wie lange der Alarm für eine Rakete dauern soll

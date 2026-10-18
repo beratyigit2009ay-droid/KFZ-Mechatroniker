@@ -615,13 +615,26 @@ end
 
 for i, typ in ipairs(Config.RaketenReihenfolge) do
 	local info = Config.Raketen[typ]
-	-- Sterne zeigen die Stärke: ★ schwach ... ★★★★ sehr stark
+	-- Sterne zeigen die Stärke: ★ schwach ... ★★★★★★ sehr stark
 	local text = string.rep("★", i) .. '  <font color="#FF8A7A">Schaden ' .. info.Schaden .. "</font>"
+	if info.Streu then
+		text = '<font color="#FF8A7A">' .. info.Streu .. " Streubomben</font>, große Fläche"
+	elseif info.Abfangbar < 0.3 then
+		text = '<font color="#FF8A7A">Schaden ' .. info.Schaden .. "</font>, super schnell, kaum abzufangen"
+	end
 	kaufKarte(seiteWaffen, i, "Waffe", typ, info, text, FARBE.rot)
 end
 for i, typ in ipairs(Config.EinheitenReihenfolge) do
 	local info = Config.Einheiten[typ]
-	local text = if typ == "Panzer" then "fährt hin, schießt " .. info.Schuesse .. "x" else "wirft " .. info.Bomben .. " Bomben ab"
+	local text
+	if info.Art == "Panzer" then
+		text = "fährt hin, schießt " .. info.Schuesse .. "x" .. '  <font color="#7CDCFF">♥' .. info.Leben .. "</font>"
+	else
+		text = "wirft " .. info.Bomben .. " Bomben ab"
+		if (info.Tarnung or 1) < 0.5 then
+			text ..= ", fast unsichtbar"
+		end
+	end
 	kaufKarte(seiteWaffen, 10 + i, "Waffe", typ, info, text, FARBE.orange)
 end
 

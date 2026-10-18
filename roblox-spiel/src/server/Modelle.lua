@@ -676,10 +676,11 @@ end
 -- FAHRZEUGE (zeigen nach vorne = -Z, Mittelpunkt unten auf dem Boden)
 ------------------------------------------------------------------------
 
-function Modelle.panzer(farbe: Color3): Model
+-- farbe = Streifen in Stadtfarbe, koerperFarbe = Farbe der Wanne (sonst oliv)
+function Modelle.panzer(farbe: Color3, koerperFarbe: Color3?): Model
 	local m = Instance.new("Model")
 	m.Name = "Panzer"
-	local oliv = Color3.fromRGB(85, 95, 55)
+	local oliv = koerperFarbe or Color3.fromRGB(85, 95, 55)
 	local function neu(eigenschaften)
 		eigenschaften.CanCollide = false
 		eigenschaften.CanQuery = false
@@ -739,10 +740,11 @@ function Modelle.panzer(farbe: Color3): Model
 	return m
 end
 
-function Modelle.jet(farbe: Color3): Model
+-- farbe = Flügelspitzen und Leitwerk in Stadtfarbe, koerperFarbe = Rumpf (sonst grau)
+function Modelle.jet(farbe: Color3, koerperFarbe: Color3?): Model
 	local m = Instance.new("Model")
 	m.Name = "Jet"
-	local grau = Color3.fromRGB(140, 145, 155)
+	local grau = koerperFarbe or Color3.fromRGB(140, 145, 155)
 	local function neu(eigenschaften)
 		eigenschaften.CanCollide = false
 		eigenschaften.CanQuery = false

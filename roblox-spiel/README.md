@@ -55,8 +55,12 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
   - **Bürogebäude** (+20 $), **Einkaufszentrum** (+35 $) und **Bank** (+60 $) bringen viel Geld, brauchen aber Strom.
   - Häuser und Hochhäuser bringen **Bewohner**. Die stehen als kleine Figuren vor ihrem Haus und zahlen Steuern.
   - **Kraftwerke** machen Strom. Ohne genug Strom gibt es **Stromausfall** und nur das halbe Einkommen.
-- **Waffen** (Knopf "WAFFEN"): 4 Raketen, je stärker desto teurer
-  (Kurzstrecke 100 $, Mittelstrecke 200 $, Schwer 400 $, Mega 1000 $), dazu **Panzer** und **Kampfjets**.
+- **Waffen** (Knopf "WAFFEN"), je stärker desto teurer:
+  - **6 Raketen**: Kurzstrecke 100 $, Mittelstrecke 200 $, Schwer 400 $,
+    **Streu-Rakete** 600 $ (platzt über dem Ziel in 7 Streubomben), **Hyperschall** 1500 $ (super schnell, fast nicht abzufangen),
+    Mega 1000 $.
+  - **3 Panzer**: Leichter Panzer 200 $, **Kampfpanzer** 450 $ (größer, mehr Leben), **Mammut-Panzer** 900 $ (riesig, sehr stark).
+  - **3 Jets**: Kampfjet 400 $, **Bomber** 900 $ (8 Bomben, aber langsam), **Tarnkappenjet** 1400 $ (schnell, die Flugabwehr sieht ihn kaum).
 - **Angriff** (Knopf "ANGRIFF"): Waffe wählen, mit **− / +** einstellen **wie viele**, Ziel-Stadt wählen,
   dann z. B. **"3x LOSSCHICKEN!"** drücken.
   - **Raketen** zünden mit Feuer, Licht, Rauch und Sound, starten senkrecht und fliegen im Bogen.

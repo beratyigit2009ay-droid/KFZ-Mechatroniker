@@ -42,16 +42,27 @@ end
 -- PANZER
 ------------------------------------------------------------------------
 
+-- Baut das Modell einer Einheit in der richtigen Größe
+local function modellBauen(bauen, typ, stadtFarbe: Color3): Model
+	local modell = bauen(stadtFarbe, typ.Farbe)
+	if (typ.Groesse or 1) ~= 1 then
+		modell:ScaleTo(typ.Groesse)
+	end
+	return modell
+end
+
+-- typName: z. B. "Panzer", "Kampfpanzer" oder "Mammut"
 -- nummer/anzahl: der wievielte Panzer in der Gruppe (damit sie nebeneinander fahren)
-function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: number)
-	local typ = Config.Einheiten.Panzer
+function Einheiten.panzer(spieler: Player, typName: string, start, ziel, nummer: number, anzahl: number)
+	local typ = Config.Einheiten[typName]
+	local groesse = typ.Groesse or 1
 	local richtung, seite = richtungen(start, ziel)
-	local versatz = seite * ((nummer - (anzahl + 1) / 2) * 9)
+	local versatz = seite * ((nummer - (anzahl + 1) / 2) * 9 * groesse)
 	local flach = Vector3.new(1, 0, 1)
 	local startPos = start.mitte * flach + richtung * RAND_ABSTAND + versatz
 	local haltePos = ziel.mitte * flach - richtung * RAND_ABSTAND + versatz
 
-	local panzer = Modelle.panzer(start.farbe)
+	local panzer = modellBauen(Modelle.panzer, typ, start.farbe)
 	panzer:PivotTo(CFrame.lookAt(startPos, startPos + richtung))
 	panzer.Parent = Effekte.ordner
 	local staub = panzer:FindFirstChild("Staub", true) :: ParticleEmitter
@@ -70,8 +81,8 @@ function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: 
 				abwehr:SetAttribute("BereitAb", os.clock() + info.Nachladezeit)
 				local rohr = abwehr:FindFirstChild("Rohr") :: BasePart?
 				local von = if rohr then rohr.Position else abwehr:GetPivot().Position
-				Effekte.schuss(von, pos + Vector3.new(0, 3, 0))
-				Effekte.explosion(pos + Vector3.new(0, 3, 0), 4)
+				Effekte.schuss(von, pos + Vector3.new(0, 3 * groesse, 0))
+				Effekte.explosion(pos + Vector3.new(0, 3 * groesse, 0), 4)
 				leben -= info.Schaden
 			end
 		end
@@ -82,11 +93,11 @@ function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: 
 			return false
 		end
 		local pos = panzer:GetPivot().Position
-		Effekte.explosion(pos + Vector3.new(0, 3, 0), 12)
+		Effekte.explosion(pos + Vector3.new(0, 3 * groesse, 0), 12 * groesse)
 		Effekte.ausblenden(panzer)
-		Funk.nachricht(spieler, "Einer deiner Panzer wurde vor " .. ziel.name .. " zerstört!")
+		Funk.nachricht(spieler, "Dein " .. typ.Name .. " wurde vor " .. ziel.name .. " zerstört!")
 		local betrag = StadtManager.abschussBelohnung(ziel, typ.Preis, pos)
-		Funk.nachricht(ziel.besitzer, "Deine Panzerabwehr hat einen Panzer zerstört! +" .. betrag .. " $")
+		Funk.nachricht(ziel.besitzer, "Deine Panzerabwehr hat einen " .. typ.Name .. " zerstört! +" .. betrag .. " $")
 		return true
 	end
 
@@ -127,8 +138,8 @@ function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: 
 	for _ = 1, typ.Schuesse do
 		local zielPunkt = StadtManager.zufallsZiel(ziel)
 		Effekte.schuss(muendung.WorldPosition, zielPunkt + Vector3.new(0, 3, 0))
-		Effekte.explosion(zielPunkt + Vector3.new(0, 2, 0), 8)
-		local z, b = StadtManager.schaden(zielPunkt, 8, typ.Schaden, spieler)
+		Effekte.explosion(zielPunkt + Vector3.new(0, 2, 0), typ.Radius)
+		local z, b = StadtManager.schaden(zielPunkt, typ.Radius, typ.Schaden, spieler)
 		zerstoertGesamt += z
 		belohnungGesamt += b
 
@@ -151,7 +162,7 @@ function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: 
 		return
 	end
 	Effekte.ausblenden(panzer)
-	zurueckInsLager(spieler, "Panzer")
+	zurueckInsLager(spieler, typName)
 end
 
 ------------------------------------------------------------------------
@@ -159,8 +170,7 @@ end
 ------------------------------------------------------------------------
 
 -- Eine Bombe fällt vom Jet nach unten und explodiert am Boden
-local function bombeFallen(spieler: Player, pos: Vector3, geschwindigkeit: Vector3, bodenHoehe: number)
-	local typ = Config.Einheiten.Jet
+local function bombeFallen(spieler: Player, typ, pos: Vector3, geschwindigkeit: Vector3, bodenHoehe: number)
 	local bombe = Modelle.bombe()
 	bombe.CFrame = CFrame.lookAt(pos, pos + geschwindigkeit) * CFrame.Angles(0, math.rad(90), 0)
 	bombe.Parent = Effekte.ordner
@@ -178,10 +188,11 @@ local function bombeFallen(spieler: Player, pos: Vector3, geschwindigkeit: Vecto
 	return StadtManager.schaden(pos, typ.BombenRadius, typ.BombenSchaden, spieler)
 end
 
-function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: number)
-	local typ = Config.Einheiten.Jet
+-- typName: z. B. "Jet", "Bomber" oder "Tarnkappenjet"
+function Einheiten.jet(spieler: Player, typName: string, start, ziel, nummer: number, anzahl: number)
+	local typ = Config.Einheiten[typName]
 	local richtung, seite = richtungen(start, ziel)
-	local versatz = seite * ((nummer - (anzahl + 1) / 2) * 14)
+	local versatz = seite * ((nummer - (anzahl + 1) / 2) * 14 * (typ.Groesse or 1))
 	local hoehe = Vector3.new(0, typ.Hoehe + nummer * 3, 0)
 	local startPos = start.mitte + hoehe + versatz
 	local mitte = ziel.mitte + hoehe + versatz
@@ -190,7 +201,7 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 	local dauer = strecke / typ.Tempo
 	local geschwindigkeit = richtung * typ.Tempo
 
-	local jet = Modelle.jet(start.farbe)
+	local jet = modellBauen(Modelle.jet, typ, start.farbe)
 	jet:PivotTo(CFrame.lookAt(startPos, endPos))
 	jet.Parent = Effekte.ordner
 	local ton = jet.Wurzel.Flug :: Sound
@@ -223,7 +234,7 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 		if not abgeschossenUm and naechsteBombe <= #abwurf and t >= abwurf[naechsteBombe] then
 			naechsteBombe += 1
 			task.spawn(function()
-				local z, b = bombeFallen(spieler, pos - Vector3.new(0, 2, 0), geschwindigkeit * 0.6, ziel.mitte.Y)
+				local z, b = bombeFallen(spieler, typ, pos - Vector3.new(0, 2, 0), geschwindigkeit * 0.6, ziel.mitte.Y)
 				zerstoertGesamt += z
 				belohnungGesamt += b
 			end)
@@ -238,7 +249,8 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 					abwehr:SetAttribute("BereitAb", os.clock() + info.Nachladezeit)
 					local spaeter = math.min(t + ABFANG_FLUGZEIT / dauer, 1)
 					local trefferPunkt = startPos:Lerp(endPos, spaeter)
-					local trifft = math.random() < info.Trefferchance
+					-- Tarnkappenjets sind schwer zu treffen, große Bomber leichter
+					local trifft = math.random() < math.min(info.Trefferchance * (typ.Tarnung or 1), 0.95)
 					task.spawn(Effekte.abfangrakete, abwehr, trefferPunkt, trifft, ABFANG_FLUGZEIT)
 					if trifft then
 						abgeschossenUm = os.clock() + ABFANG_FLUGZEIT
@@ -250,10 +262,10 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 
 		-- Abgeschossen: Explosion in der Luft, Wrack stürzt ab
 		if abgeschossenUm and os.clock() >= abgeschossenUm then
-			Effekte.explosion(pos, 14)
-			Funk.nachricht(spieler, "Einer deiner Jets wurde über " .. ziel.name .. " abgeschossen!")
+			Effekte.explosion(pos, 14 * (typ.Groesse or 1))
+			Funk.nachricht(spieler, "Dein " .. typ.Name .. " wurde über " .. ziel.name .. " abgeschossen!")
 			local betrag = StadtManager.abschussBelohnung(ziel, typ.Preis, pos)
-			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat einen Jet abgeschossen! +" .. betrag .. " $")
+			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat einen " .. typ.Name .. " abgeschossen! +" .. betrag .. " $")
 			for _, teil in ipairs(jet:GetDescendants()) do
 				if teil:IsA("BasePart") then
 					teil.Anchored = false
@@ -280,17 +292,17 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 	if zerstoertGesamt > 0 then
 		Funk.nachricht(spieler, "Bomben-Treffer! " .. zerstoertGesamt .. " Gebäude zerstört. +" .. belohnungGesamt .. " $")
 	end
-	zurueckInsLager(spieler, "Jet")
+	zurueckInsLager(spieler, typName)
 end
 
 -- Ungefähre Dauer eines Angriffs (für die Sirene)
 function Einheiten.alarmDauer(typName: string, start, ziel): number
 	local abstand = ((ziel.mitte - start.mitte) * Vector3.new(1, 0, 1)).Magnitude
-	if typName == "Panzer" then
-		local typ = Config.Einheiten.Panzer
+	local typ = Config.Einheiten[typName]
+	if typ.Art == "Panzer" then
 		return (abstand - 2 * RAND_ABSTAND) / typ.Tempo + typ.Schuesse * typ.Schussabstand
 	end
-	return abstand / Config.Einheiten.Jet.Tempo + 2
+	return abstand / typ.Tempo + 2
 end
 
 return Einheiten

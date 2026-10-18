@@ -60,7 +60,7 @@ function Angriff.starten(spieler: Player, typName: any, zielIndex: any, anzahl: 
 	spieler:SetAttribute(attribut, imLager - anzahl)
 
 	-- Welche Art von Waffe ist es?
-	local art = if Config.Raketen[typName] then "Rakete" elseif typName == "Panzer" then "Panzer" else "Jet"
+	local art = if Config.Raketen[typName] then "Rakete" else Config.Einheiten[typName].Art
 	local abstand = ABSTAND[art]
 
 	-- Alarm und Sirene in der Zielstadt
@@ -95,9 +95,9 @@ function Angriff.starten(spieler: Player, typName: any, zielIndex: any, anzahl: 
 			if art == "Rakete" then
 				Raketen.fliegen(spieler, typ, start, ziel, startPunkt)
 			elseif art == "Panzer" then
-				Einheiten.panzer(spieler, start, ziel, nummer, anzahl)
+				Einheiten.panzer(spieler, typName, start, ziel, nummer, anzahl)
 			else
-				Einheiten.jet(spieler, start, ziel, nummer, anzahl)
+				Einheiten.jet(spieler, typName, start, ziel, nummer, anzahl)
 			end
 		end)
 	end
