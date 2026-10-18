@@ -58,7 +58,7 @@ end
 
 -- Angriffe
 Config.ANGRIFF_PAUSE = 1 -- Sekunden zwischen zwei Angriffen
-Config.MAX_ANZAHL = 10 -- so viele Raketen/Panzer/Jets kann man auf einmal schicken
+Config.MAX_ANZAHL = 20 -- so viele Raketen/Panzer/Jets kann man auf einmal schicken
 Config.BELOHNUNG_ANTEIL = 1 -- für ein zerstörtes Gebäude bekommst du seinen ganzen Preis
 Config.ABSCHUSS_ANTEIL = 0.5 -- schießt deine Abwehr eine Rakete, einen Jet oder Panzer ab, bekommst du 50 % ihres Preises
 
@@ -133,6 +133,15 @@ Config.Gebaeude = {
 		Trefferchance = 0.6, -- 60 % Chance zu treffen
 		Nachladezeit = 4, -- Sekunden bis zum nächsten Schuss
 	},
+	Raketenwerfer = {
+		Name = "Raketenwerfer",
+		Icon = "🎆",
+		Preis = 600,
+		Strom = -4,
+		Leben = 220,
+		IstWerfer = true, -- jeder Raketenwerfer startet 4 Raketen GLEICHZEITIG
+		Rohre = 4,
+	},
 	Panzerabwehr = {
 		Name = "Panzerabwehr",
 		Icon = "🎯",
@@ -146,7 +155,7 @@ Config.Gebaeude = {
 	},
 }
 Config.GebaeudeReihenfolge =
-	{ "Haus", "Hochhaus", "Fabrik", "Buero", "Einkaufszentrum", "Bank", "Kraftwerk", "Abwehr", "Panzerabwehr" }
+	{ "Haus", "Hochhaus", "Fabrik", "Buero", "Einkaufszentrum", "Bank", "Kraftwerk", "Abwehr", "Panzerabwehr", "Raketenwerfer" }
 
 -- Raketen: je stärker, desto teurer
 -- Abfangbar: 1 = die Flugabwehr trifft normal, 0.4 = nur noch 40 % so oft

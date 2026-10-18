@@ -36,19 +36,21 @@ local function bezierRichtung(p0: Vector3, p1: Vector3, p2: Vector3, p3: Vector3
 end
 
 -- Startet eine Rakete von Stadt "start" auf Stadt "ziel". Läuft, bis die Rakete eingeschlagen ist.
-function Raketen.fliegen(spieler: Player, typ, start, ziel)
+-- startPunkt: wo sie abhebt (Startrampe der Stadt oder ein Rohr eines Raketenwerfers)
+function Raketen.fliegen(spieler: Player, typ, start, ziel, startPunkt: Vector3?)
+	local abschuss = startPunkt or start.startPunkt
 	local zielPos = StadtManager.zufallsZiel(ziel)
 
 	local rakete = Modelle.rakete(typ.Groesse)
 	local startTon, flugTon = Effekte.toeneSetzen(rakete)
-	local startPos = start.startPunkt + Vector3.new(0, rakete:GetAttribute("Laenge") / 2, 0)
+	local startPos = abschuss + Vector3.new(0, rakete:GetAttribute("Laenge") / 2, 0)
 	rakete:PivotTo(Effekte.ausrichten(startPos, Vector3.yAxis))
 	rakete.Parent = Effekte.ordner
 
 	-- 1) Zündung
 	Modelle.zuenden(rakete, true)
 	startTon:Play()
-	Effekte.rauchwolke(start.startPunkt, 30, 5, Color3.fromRGB(220, 220, 220))
+	Effekte.rauchwolke(abschuss, 30, 5, Color3.fromRGB(220, 220, 220))
 	task.wait(Raketen.ZUENDUNG_ZEIT)
 
 	-- 2) Senkrechter Start (wird immer schneller)

@@ -342,6 +342,20 @@ function StadtManager.gebaeudeMit(stadt, eigenschaft: string): { Model }
 	return liste
 end
 
+-- Alle Stellen, von denen Raketen starten können: die Startrampe der Stadt
+-- und oben jedes Rohr von jedem Raketenwerfer.
+function StadtManager.startPunkte(stadt): { Vector3 }
+	local punkte = { stadt.startPunkt }
+	for _, werfer in ipairs(StadtManager.gebaeudeMit(stadt, "IstWerfer")) do
+		for _, punkt in ipairs(werfer:GetDescendants()) do
+			if punkt:IsA("Attachment") and punkt.Name == "Startpunkt" then
+				table.insert(punkte, punkt.WorldPosition)
+			end
+		end
+	end
+	return punkte
+end
+
 -- Rechnet Bewohner, Strom und Einkommen einer Stadt aus
 function StadtManager.werte(stadt)
 	local bewohner, fabrikGeld = 0, 0

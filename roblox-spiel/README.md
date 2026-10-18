@@ -65,6 +65,9 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
   - **Jets** fliegen über die Stadt und werfen Bomben ab.
   - Was überlebt, kommt zurück in dein Lager.
 - **Abwehr**: Die Flugabwehr schießt auf Raketen und Jets, die Panzerabwehr auf Panzer.
+- **Raketenwerfer** (600 $): ein Gestell mit 4 Rohren. Jeder Raketenwerfer lässt **4 Raketen gleichzeitig** starten,
+  zusätzlich zur Startrampe der Stadt. Mit 2 Werfern fliegen also 9 Raketen auf einmal los.
+  Auf dem roten Knopf steht, wie viele gleichzeitig starten. Man kann bis zu 20 Waffen auf einmal schicken.
 - **Sirenen**: Wird deine Stadt angegriffen, heult der Sirenenmast (mit rotem Blinklicht),
   du hörst die Sirene und oben steht **LUFTALARM** oder **PANZER-ALARM**.
 - **Einschlag**: Explosion, Feuerball, Rauchwolke. Gebäude brennen und fallen auseinander.
@@ -139,7 +142,9 @@ Dann die Datei `RaketenKrieg.rbxlx` per Doppelklick in Roblox Studio öffnen.
 6. Dasselbe mit der Rakete: auf der Startrampe zündet sie mit Feuer, Rauch, Kondensstreifen und Geräusch.
    Dann **KARTE** drücken: Die Kamera fliegt hoch und du siehst die Rakete über die Karte fliegen.
    In Stadt 2 pulsiert ein roter Kreis mit Countdown genau da, wo sie einschlägt.
-7. Warte auf die Nacht (nach gut 3 Minuten): Fenster und Laternen gehen an.
+7. Einen **Raketenwerfer** bauen und 5 Kurzstrecken-Raketen kaufen. Unter ANGRIFF mit **Alle** auf 5 stellen:
+   Auf dem Knopf steht "(5 gleichzeitig)". Nach dem Abfeuern starten alle 5 Raketen auf einmal.
+8. Warte auf die Nacht (nach gut 3 Minuten): Fenster und Laternen gehen an.
 
 **Auf deinem echten Handy spielen:**
 1. In Studio **Datei -> Auf Roblox veröffentlichen** (Publish to Roblox).

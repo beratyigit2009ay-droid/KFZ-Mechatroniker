@@ -571,6 +571,78 @@ function Modelle.Panzerabwehr(pos: Vector3): Model
 	return m
 end
 
+-- Raketenwerfer: ein Startgestell mit 4 senkrechten Rohren.
+-- Oben in jedem Rohr sitzt ein Attachment "Startpunkt", dort starten die Raketen.
+function Modelle.Raketenwerfer(pos: Vector3): Model
+	local m = Instance.new("Model")
+	m.Name = "Raketenwerfer"
+	local oliv = Color3.fromRGB(80, 90, 55)
+	local platte = teil(m, {
+		Name = "Platte",
+		Size = Vector3.new(13, 0.8, 13),
+		CFrame = CFrame.new(pos + Vector3.new(0, 0.4, 0)),
+		Color = Color3.fromRGB(55, 55, 60),
+		Material = Enum.Material.DiamondPlate,
+	})
+	-- gelb-schwarze Warnecken
+	for _, ecke in ipairs({ { -5.5, -5.5 }, { 5.5, -5.5 }, { -5.5, 5.5 }, { 5.5, 5.5 } }) do
+		teil(m, {
+			Name = "Warnecke",
+			Size = Vector3.new(2, 0.9, 2),
+			CFrame = CFrame.new(pos + Vector3.new(ecke[1], 0.45, ecke[2])),
+			Color = Color3.fromRGB(240, 200, 0),
+			Material = Enum.Material.SmoothPlastic,
+		})
+	end
+	teil(m, {
+		Name = "Gestell",
+		Size = Vector3.new(8, 2, 8),
+		CFrame = CFrame.new(pos + Vector3.new(0, 1.8, 0)),
+		Color = oliv,
+		Material = Enum.Material.Metal,
+	})
+	for i, ecke in ipairs({ { -2, -2 }, { 2, -2 }, { -2, 2 }, { 2, 2 } }) do
+		local rohr = teil(m, {
+			Name = "Rohr" .. i,
+			Shape = Enum.PartType.Cylinder,
+			Size = Vector3.new(6, 2.6, 2.6),
+			CFrame = CFrame.new(pos + Vector3.new(ecke[1], 5.8, ecke[2])) * STEHEND,
+			Color = Color3.fromRGB(60, 65, 45),
+			Material = Enum.Material.Metal,
+		})
+		-- dunkle Öffnung oben
+		teil(m, {
+			Name = "Oeffnung",
+			Shape = Enum.PartType.Cylinder,
+			Size = Vector3.new(0.2, 2, 2),
+			CFrame = CFrame.new(pos + Vector3.new(ecke[1], 8.8, ecke[2])) * STEHEND,
+			Color = Color3.fromRGB(15, 15, 15),
+			Material = Enum.Material.SmoothPlastic,
+		})
+		local punkt = Instance.new("Attachment")
+		punkt.Name = "Startpunkt"
+		punkt.Position = Vector3.new(3, 0, 0) -- das senkrechte Rohr zeigt mit +X nach oben
+		punkt.Parent = rohr
+	end
+	-- Antenne mit rotem Licht
+	teil(m, {
+		Name = "Antenne",
+		Size = Vector3.new(0.3, 6, 0.3),
+		CFrame = CFrame.new(pos + Vector3.new(5, 3.8, -5)),
+		Color = Color3.fromRGB(180, 180, 180),
+		Material = Enum.Material.Metal,
+	})
+	teil(m, {
+		Name = "Lampe",
+		Size = Vector3.new(0.7, 0.7, 0.7),
+		CFrame = CFrame.new(pos + Vector3.new(5, 7, -5)),
+		Color = Color3.fromRGB(255, 40, 40),
+		Material = Enum.Material.Neon,
+	})
+	m.PrimaryPart = platte
+	return m
+end
+
 -- Ein kleiner Bewohner, der vor seinem Haus steht
 function Modelle.bewohner(eltern: Instance, pos: Vector3, drehung: number)
 	local cf = CFrame.new(pos) * CFrame.Angles(0, drehung, 0)

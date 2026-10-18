@@ -19,7 +19,7 @@ Players.PlayerRemoving:Connect(function(spieler)
 end)
 
 -- Abstand in Sekunden zwischen zwei Raketen/Panzern/Jets derselben Welle
-local ABSTAND = { Rakete = 0.7, Panzer = 0.4, Jet = 0.5 }
+local ABSTAND = { Rakete = 0.9, Panzer = 0.4, Jet = 0.5 }
 
 function Angriff.starten(spieler: Player, typName: any, zielIndex: any, anzahl: any): (boolean, string)
 	local typ = if typeof(typName) == "string" then Config.waffe(typName) else nil
@@ -70,7 +70,11 @@ function Angriff.starten(spieler: Player, typName: any, zielIndex: any, anzahl: 
 	else
 		dauer = Einheiten.alarmDauer(typName, start, ziel)
 	end
-	dauer += (anzahl - 1) * abstand
+	-- Raketen starten gleichzeitig von allen Startplätzen (Startrampe + Rohre der Raketenwerfer).
+	-- Sind es mehr Raketen als Plätze, startet die nächste Gruppe kurz danach.
+	local startPunkte = if art == "Rakete" then StadtManager.startPunkte(start) else {}
+	local gruppen = if art == "Rakete" then math.ceil(anzahl / #startPunkte) else anzahl
+	dauer += (gruppen - 1) * abstand
 
 	local wer = anzahl .. "x " .. typ.Name .. " von " .. spieler.Name
 	local textZiel = if art == "Panzer" then "PANZER-ALARM! " .. wer .. "!" else "LUFTALARM! " .. wer .. "!"
@@ -79,9 +83,17 @@ function Angriff.starten(spieler: Player, typName: any, zielIndex: any, anzahl: 
 
 	-- Losschicken, eins nach dem anderen
 	for nummer = 1, anzahl do
-		task.delay((nummer - 1) * abstand, function()
+		local warten = (nummer - 1) * abstand
+		local startPunkt = nil
+		if art == "Rakete" then
+			local platz = (nummer - 1) % #startPunkte + 1
+			local gruppe = math.floor((nummer - 1) / #startPunkte)
+			startPunkt = startPunkte[platz]
+			warten = gruppe * abstand + (platz - 1) * 0.06 -- ganz leicht versetzt, wie eine echte Salve
+		end
+		task.delay(warten, function()
 			if art == "Rakete" then
-				Raketen.fliegen(spieler, typ, start, ziel)
+				Raketen.fliegen(spieler, typ, start, ziel, startPunkt)
 			elseif art == "Panzer" then
 				Einheiten.panzer(spieler, start, ziel, nummer, anzahl)
 			else

@@ -591,6 +591,8 @@ local function gebaeudeText(info): string
 		table.insert(teile, "fängt Raketen + Jets ab")
 	elseif info.IstPanzerabwehr then
 		table.insert(teile, "schießt auf Panzer")
+	elseif info.IstWerfer then
+		table.insert(teile, info.Rohre .. " Raketen gleichzeitig")
 	end
 	if info.Bewohner then
 		table.insert(teile, '<font color="#7CDCFF">+' .. info.Bewohner .. " Bewohner</font>")
@@ -989,6 +991,11 @@ function aktualisieren()
 	else
 		local wort = if Config.Raketen[gewaehlteWaffe] then "ABFEUERN" else "LOSSCHICKEN"
 		feuerKnopf.Text = "🚀 " .. anzahl .. "x " .. wort .. "!"
+		if Config.Raketen[gewaehlteWaffe] and anzahl > 1 then
+			-- Startrampe + 4 Rohre pro Raketenwerfer: so viele Raketen starten auf einmal
+			local plaetze = 1 + (spieler:GetAttribute("Gebaut_Raketenwerfer") or 0) * Config.Gebaeude.Raketenwerfer.Rohre
+			feuerKnopf.Text ..= "  (" .. math.min(plaetze, anzahl) .. " gleichzeitig)"
+		end
 		feuerKnopf.BackgroundColor3 = FARBE.rot
 	end
 end
