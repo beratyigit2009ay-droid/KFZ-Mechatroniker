@@ -6,6 +6,7 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 
 local spieler = Players.LocalPlayer
 
@@ -15,13 +16,40 @@ local spieler = Players.LocalPlayer
 
 local wackeln = 0 -- wie stark die Kamera gerade wackelt
 
+-- Weißer Blitz über den ganzen Bildschirm (bei riesigen Explosionen in der Nähe)
+local blitzGui = Instance.new("ScreenGui")
+blitzGui.Name = "Blitz"
+blitzGui.IgnoreGuiInset = true
+blitzGui.ScreenInsets = Enum.ScreenInsets.None
+blitzGui.DisplayOrder = 30
+blitzGui.ResetOnSpawn = false
+blitzGui.Parent = spieler:WaitForChild("PlayerGui")
+local blitzFlaeche = Instance.new("Frame")
+blitzFlaeche.Size = UDim2.fromScale(1, 1)
+blitzFlaeche.BackgroundColor3 = Color3.fromRGB(255, 250, 235)
+blitzFlaeche.BackgroundTransparency = 1
+blitzFlaeche.BorderSizePixel = 0
+blitzFlaeche.Parent = blitzGui
+
+local function erschuettern(pos: Vector3, staerkeRoh: number)
+	local kamera = workspace.CurrentCamera
+	local abstand = (kamera.Focus.Position - pos).Magnitude
+	local staerke = staerkeRoh / math.max(abstand, 12)
+	if staerke > 0.05 then
+		wackeln = math.min(math.max(wackeln, staerke), 2.5)
+	end
+	return abstand
+end
+
 workspace.DescendantAdded:Connect(function(objekt)
 	if objekt:IsA("Explosion") then
-		local kamera = workspace.CurrentCamera
-		local abstand = (kamera.Focus.Position - objekt.Position).Magnitude
-		local staerke = objekt.BlastRadius * 2.5 / math.max(abstand, 12)
-		if staerke > 0.05 then
-			wackeln = math.min(math.max(wackeln, staerke), 2.5)
+		erschuettern(objekt.Position, objekt.BlastRadius * 2.5)
+	elseif objekt:IsA("BasePart") and objekt.Name == "Erschuetterung" then
+		-- Signal vom Server: Raketenstart oder riesige Explosion
+		local abstand = erschuettern(objekt.Position, (objekt:GetAttribute("Staerke") or 1) * 25)
+		if objekt:GetAttribute("Blitz") and abstand < 700 then
+			blitzFlaeche.BackgroundTransparency = math.clamp(abstand / 700, 0, 0.6)
+			TweenService:Create(blitzFlaeche, TweenInfo.new(0.9, Enum.EasingStyle.Quad), { BackgroundTransparency = 1 }):Play()
 		end
 	end
 end)

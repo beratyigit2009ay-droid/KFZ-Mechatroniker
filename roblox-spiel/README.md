@@ -24,7 +24,12 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
 - **Licht**: "Future"-Beleuchtung mit Schatten, Dunst, Leuchten (Bloom), Sonnenstrahlen und kräftigeren Farben.
 - **Explosionen**: Lichtblitz, Feuerball, Druckwelle, Funken, wegfliegende Trümmer, Rauch und ein Brandfleck am Boden.
   Die Kamera **wackelt**, wenn es in deiner Nähe knallt.
-- **Raketen** ziehen einen weißen Kondensstreifen hinter sich her.
+- **Raketen** wie echt: Beim Zünden breitet sich eine Rauchwolke am Boden aus und die Kamera bebt,
+  die Flamme flackert, die Rakete regelt beim Fliegen leicht nach und hinterlässt eine Rauchsäule,
+  die lange in der Luft stehen bleibt. Große Raketen werfen ihre **Startstufe** ab.
+  Im **Sturzflug** glüht die Spitze und die Rakete pfeift immer höher.
+- **Krasse Einschläge**: Große Explosionen wummern tief und lassen eine Rauchsäule zurück.
+  Die **Mega-Rakete** macht eine **Pilzwolke** mit Staubring, und wer in der Nähe ist, sieht einen weißen Blitz.
 - Beschädigte Gebäude zeigen einen **Lebensbalken** (grün, gelb, rot).
 
 ## Spielgefühl

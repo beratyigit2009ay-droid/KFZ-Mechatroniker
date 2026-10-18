@@ -925,6 +925,26 @@ function Modelle.rakete(s: number, farbe: Color3?): Model
 	rauch.Enabled = false
 	rauch.Parent = ausstoss
 
+	-- Rauchsäule: bleibt lange in der Luft stehen und zeigt die ganze Flugbahn
+	local saeule = Instance.new("ParticleEmitter")
+	saeule.Name = "Rauchsaeule"
+	saeule.Texture = "rbxasset://textures/particles/smoke_main.dds"
+	saeule.Color = ColorSequence.new(Color3.fromRGB(235, 235, 235), Color3.fromRGB(170, 170, 175))
+	saeule.Size = NumberSequence.new(2.5 * s, 14 * s)
+	saeule.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.55),
+		NumberSequenceKeypoint.new(0.6, 0.8),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	saeule.Lifetime = NumberRange.new(8, 12)
+	saeule.Rate = 25
+	saeule.Speed = NumberRange.new(0.5, 1.5)
+	saeule.Drag = 0.5
+	saeule.Rotation = NumberRange.new(0, 360)
+	saeule.RotSpeed = NumberRange.new(-10, 10)
+	saeule.Enabled = false
+	saeule.Parent = ausstoss
+
 	-- Kondensstreifen: eine lange weiße Spur, die langsam verblasst
 	local a0 = Instance.new("Attachment")
 	a0.Position = Vector3.new(-0.5 * dicke, 0, 0)

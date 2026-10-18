@@ -184,6 +184,167 @@ function Effekte.explosion(pos: Vector3, radius: number)
 	-- dicker Rauch: erst schwarz, dann grau
 	Effekte.rauchwolke(pos, math.floor(radius * 1.5), radius / 4, Color3.fromRGB(45, 40, 38))
 	Effekte.rauchwolke(pos + Vector3.new(0, radius / 3, 0), math.floor(radius), radius / 3, Color3.fromRGB(110, 105, 100))
+
+	-- großer Knall: tiefes Wummern, das man weit hört
+	if radius >= 15 then
+		local wumm = Instance.new("Sound")
+		wumm.SoundId = Config.Sounds.Start
+		wumm.PlaybackSpeed = math.clamp(0.9 - radius / 80, 0.3, 0.7)
+		wumm.Volume = math.min(radius / 20, 2)
+		wumm.RollOffMinDistance = 40
+		wumm.RollOffMaxDistance = 1500
+		wumm.Parent = funkenHalter
+		wumm:Play()
+	end
+	-- sehr große Explosionen: Pilzwolke, Staubring und weißer Blitz
+	if radius >= 45 then
+		Effekte.pilzwolke(pos, radius)
+		Effekte.erschuettern(pos, radius / 10, true)
+	elseif radius >= 25 then
+		Effekte.rauchsaeule(pos, radius)
+	end
+end
+
+-- Lässt die Kamera der Spieler in der Nähe wackeln (siehe Kamera.client.lua).
+-- blitz = true: Spieler in der Nähe sehen außerdem einen weißen Blitz.
+function Effekte.erschuettern(pos: Vector3, staerke: number, blitz: boolean?)
+	local signal = Instance.new("Part")
+	signal.Name = "Erschuetterung"
+	signal.Anchored = true
+	signal.Size = Vector3.one
+	signal.Transparency = 1
+	signal.CanCollide = false
+	signal.CanQuery = false
+	signal.CanTouch = false
+	signal.Position = pos
+	-- erst die Werte setzen, dann in die Welt legen, damit die Spieler sie sofort mitbekommen
+	signal:SetAttribute("Staerke", staerke)
+	signal:SetAttribute("Blitz", blitz == true)
+	signal.Parent = ordner
+	Debris:AddItem(signal, 1)
+end
+
+-- Eine dunkle Rauchsäule, die lange über dem Einschlag stehen bleibt
+function Effekte.rauchsaeule(pos: Vector3, radius: number)
+	local halter = Modelle.teil(ordner, {
+		Name = "Rauchsaeule",
+		Size = Vector3.new(radius * 0.6, 1, radius * 0.6),
+		Transparency = 1,
+		CanCollide = false,
+		CanQuery = false,
+		CanTouch = false,
+		CFrame = CFrame.new(pos),
+	})
+	local rauch = Instance.new("ParticleEmitter")
+	rauch.Texture = "rbxasset://textures/particles/smoke_main.dds"
+	rauch.Color = ColorSequence.new(Color3.fromRGB(40, 36, 34), Color3.fromRGB(120, 115, 110))
+	rauch.Size = NumberSequence.new(radius / 4, radius / 1.5)
+	rauch.Transparency = NumberSequence.new(0.2, 1)
+	rauch.Lifetime = NumberRange.new(6, 9)
+	rauch.Rate = 12
+	rauch.Speed = NumberRange.new(radius / 3, radius / 2)
+	rauch.SpreadAngle = Vector2.new(12, 12)
+	rauch.Rotation = NumberRange.new(0, 360)
+	rauch.RotSpeed = NumberRange.new(-15, 15)
+	rauch.Parent = halter
+	task.delay(6, function()
+		rauch.Enabled = false
+	end)
+	Debris:AddItem(halter, 16)
+end
+
+-- Pilzwolke für die ganz großen Raketen: Feuersäule, Pilzkappe und Staubring am Boden
+function Effekte.pilzwolke(pos: Vector3, radius: number)
+	local hoehe = radius * 2.6
+	local function teil(eigenschaften)
+		eigenschaften.CanCollide = false
+		eigenschaften.CanQuery = false
+		eigenschaften.CanTouch = false
+		eigenschaften.CastShadow = false
+		return Modelle.teil(ordner, eigenschaften)
+	end
+	-- Säule: wächst nach oben und wird von Feuer-Orange zu Rauch-Grau
+	local saeule = teil({
+		Name = "Pilzsaeule",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(4, radius * 0.35, radius * 0.35),
+		CFrame = CFrame.new(pos + Vector3.new(0, 2, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+		Color = Color3.fromRGB(255, 150, 50),
+		Material = Enum.Material.Neon,
+		Transparency = 0.1,
+	})
+	TweenService:Create(saeule, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = Vector3.new(hoehe, radius * 0.45, radius * 0.45),
+		CFrame = CFrame.new(pos + Vector3.new(0, hoehe / 2, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+		Color = Color3.fromRGB(110, 100, 95),
+	}):Play()
+	-- Kappe: eine platte Kugel, die mit nach oben steigt und breiter wird
+	local kappe = teil({
+		Name = "Pilzkappe",
+		Shape = Enum.PartType.Ball,
+		Size = Vector3.one * radius * 0.6,
+		CFrame = CFrame.new(pos + Vector3.new(0, 4, 0)),
+		Color = Color3.fromRGB(255, 120, 40),
+		Material = Enum.Material.Neon,
+		Transparency = 0.05,
+	})
+	local platt = Instance.new("SpecialMesh")
+	platt.MeshType = Enum.MeshType.Sphere
+	platt.Scale = Vector3.new(1, 0.55, 1)
+	platt.Parent = kappe
+	local leuchten = Instance.new("PointLight")
+	leuchten.Color = Color3.fromRGB(255, 150, 60)
+	leuchten.Brightness = 10
+	leuchten.Range = 60
+	leuchten.Parent = kappe
+	TweenService:Create(kappe, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = Vector3.one * radius * 2,
+		CFrame = CFrame.new(pos + Vector3.new(0, hoehe, 0)),
+		Color = Color3.fromRGB(125, 110, 100),
+	}):Play()
+	TweenService:Create(leuchten, TweenInfo.new(4), { Brightness = 0 }):Play()
+	-- danach langsam auflösen
+	task.delay(3, function()
+		local info = TweenInfo.new(7, Enum.EasingStyle.Linear)
+		TweenService:Create(saeule, info, { Transparency = 1 }):Play()
+		TweenService:Create(kappe, info, { Transparency = 1 }):Play()
+	end)
+	Debris:AddItem(saeule, 11)
+	Debris:AddItem(kappe, 11)
+	-- Rauch um die Kappe, damit sie weich aussieht
+	task.delay(1.5, function()
+		Effekte.rauchwolke(pos + Vector3.new(0, hoehe, 0), 40, radius / 3, Color3.fromRGB(130, 120, 110))
+	end)
+	-- Staubring: rundherum am Boden schießt Staub nach außen
+	for i = 1, 12 do
+		local winkel = i / 12 * math.pi * 2
+		local stelle = pos + Vector3.new(math.cos(winkel), 0, math.sin(winkel)) * radius * 0.8
+		Effekte.rauchwolke(stelle, 10, radius / 6, Color3.fromRGB(170, 150, 120))
+	end
+end
+
+-- Stufentrennung: Die leere Startstufe fällt von der Rakete ab und trudelt nach unten
+function Effekte.stufentrennung(rakete: Model, s: number)
+	local ausstoss = rakete:FindFirstChild("Ausstoss") :: BasePart?
+	if not ausstoss then
+		return
+	end
+	local stufe = Modelle.teil(ordner, {
+		Name = "Startstufe",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(3 * s, 1.5 * s, 1.5 * s),
+		CFrame = ausstoss.CFrame * CFrame.Angles(0, math.rad(90), 0),
+		Color = Color3.fromRGB(200, 200, 200),
+		Material = Enum.Material.Metal,
+		CanCollide = false,
+		CanQuery = false,
+		CanTouch = false,
+	})
+	stufe.Anchored = false
+	stufe.AssemblyLinearVelocity = Vector3.new(math.random(-12, 12), -8, math.random(-12, 12))
+	stufe.AssemblyAngularVelocity = Vector3.new(math.random(-4, 4), math.random(-4, 4), math.random(-4, 4))
+	Effekte.rauchwolke(ausstoss.Position, 12, 2 * s, Color3.fromRGB(235, 235, 235))
+	Debris:AddItem(stufe, 6)
 end
 
 -- Spieler in der Nähe einer Explosion bekommen Schaden

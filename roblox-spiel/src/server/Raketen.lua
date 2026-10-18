@@ -47,22 +47,55 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel, startPunkt: Vector3?
 	rakete:PivotTo(Effekte.ausrichten(startPos, Vector3.yAxis))
 	rakete.Parent = Effekte.ordner
 
-	-- 1) Zündung
+	local s = typ.Groesse
+	local licht = rakete.Ausstoss:FindFirstChild("Licht") :: PointLight?
+	local spitze = rakete:FindFirstChild("Spitze") :: BasePart?
+
+	-- kleine Wackler, wie wenn die Steuerung der Rakete ständig nachregelt
+	local zufall = math.random() * 100
+	local function wackeln(staerke: number): CFrame
+		local t = os.clock() * 6 + zufall
+		return CFrame.Angles(math.noise(t, 1) * staerke, math.noise(t, 2) * staerke, 0)
+	end
+	-- Flamme und Licht flackern
+	local function flackern()
+		if licht then
+			licht.Brightness = 5 + math.random() * 4
+		end
+	end
+
+	-- 1) Zündung: Feuer, eine Rauchwolke, die sich am Boden ausbreitet, und der Boden bebt
 	Modelle.zuenden(rakete, true)
 	startTon:Play()
-	Effekte.rauchwolke(abschuss, 30, 5, Color3.fromRGB(220, 220, 220))
-	task.wait(Raketen.ZUENDUNG_ZEIT)
+	Effekte.rauchwolke(abschuss, 30, 5 * s, Color3.fromRGB(220, 220, 220))
+	for i = 1, 6 do
+		local winkel = i / 6 * math.pi * 2
+		Effekte.rauchwolke(abschuss + Vector3.new(math.cos(winkel), 0, math.sin(winkel)) * 6 * s, 8, 3 * s, Color3.fromRGB(205, 205, 205))
+	end
+	Effekte.erschuettern(abschuss, 0.8 * s)
+	local zuendEnde = os.clock() + Raketen.ZUENDUNG_ZEIT
+	while os.clock() < zuendEnde do
+		flackern()
+		rakete:PivotTo(Effekte.ausrichten(startPos, Vector3.yAxis) * CFrame.new(math.random() * 0.1 - 0.05, 0, math.random() * 0.1 - 0.05))
+		RunService.Heartbeat:Wait()
+	end
 
 	-- 2) Senkrechter Start (wird immer schneller)
 	flugTon:Play()
 	local beginn = os.clock()
 	while true do
 		local a = math.min((os.clock() - beginn) / Raketen.BOOST_ZEIT, 1)
-		rakete:PivotTo(Effekte.ausrichten(startPos + Vector3.new(0, BOOST_HOEHE * a * a, 0), Vector3.yAxis))
+		rakete:PivotTo(Effekte.ausrichten(startPos + Vector3.new(0, BOOST_HOEHE * a * a, 0), Vector3.yAxis) * wackeln(0.015))
+		flackern()
 		if a >= 1 then
 			break
 		end
 		RunService.Heartbeat:Wait()
+	end
+
+	-- Große Raketen werfen nach dem Start ihre leere Startstufe ab
+	if s >= 1.4 then
+		Effekte.stufentrennung(rakete, s)
 	end
 
 	-- 3) Bogenflug: startet senkrecht nach oben und stürzt am Ende senkrecht nach unten
@@ -81,7 +114,17 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel, startPunkt: Vector3?
 	while true do
 		local t = math.min((os.clock() - beginn) / typ.Flugzeit, 1)
 		local pos = bezier(p0, p1, p2, p3, t)
-		rakete:PivotTo(Effekte.ausrichten(pos, bezierRichtung(p0, p1, p2, p3, t)))
+		rakete:PivotTo(Effekte.ausrichten(pos, bezierRichtung(p0, p1, p2, p3, t)) * wackeln(0.025))
+		flackern()
+
+		-- Sturzflug: die Spitze glüht und die Rakete pfeift immer höher
+		if t > 0.82 then
+			if spitze and spitze.Material ~= Enum.Material.Neon then
+				spitze.Material = Enum.Material.Neon
+				spitze.Color = Color3.fromRGB(255, 140, 50)
+			end
+			flugTon.PlaybackSpeed = 1 + (t - 0.82) * 4
+		end
 
 		-- Flugabwehr der Zielstadt: schießt, wenn die Rakete im Sinkflug in Reichweite ist
 		if not abfangT and t > 0.4 then
