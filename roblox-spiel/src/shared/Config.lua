@@ -8,8 +8,8 @@ local Config = {}
 Config.MAX_STAEDTE = 4
 
 -- Geld
-Config.STARTGELD = 600
-Config.GRUNDEINKOMMEN = 10 -- so viel Geld gibt es immer, auch ohne Gebäude
+Config.STARTGELD = 1500
+Config.GRUNDEINKOMMEN = 25 -- so viel Geld gibt es immer, auch ohne Gebäude
 Config.EINKOMMEN_INTERVALL = 5 -- alle 5 Sekunden gibt es Geld
 Config.STEUER_PRO_BEWOHNER = 0.3 -- jeder Bewohner zahlt 0,3 $ Steuern pro Runde
 
@@ -57,9 +57,10 @@ function Config.stufeFuer(bewohner: number): number
 end
 
 -- Angriffe
-Config.ANGRIFF_PAUSE = 2 -- Sekunden zwischen zwei Angriffen
+Config.ANGRIFF_PAUSE = 1 -- Sekunden zwischen zwei Angriffen
 Config.MAX_ANZAHL = 10 -- so viele Raketen/Panzer/Jets kann man auf einmal schicken
-Config.BELOHNUNG_ANTEIL = 0.5 -- für ein zerstörtes Gebäude bekommst du 50 % seines Preises
+Config.BELOHNUNG_ANTEIL = 1 -- für ein zerstörtes Gebäude bekommst du seinen ganzen Preis
+Config.ABSCHUSS_ANTEIL = 0.5 -- schießt deine Abwehr eine Rakete, einen Jet oder Panzer ab, bekommst du 50 % ihres Preises
 
 -- Gebäude, die man in seiner Stadt bauen kann
 -- Bewohner: wie viele Leute darin wohnen (zahlen Steuern)

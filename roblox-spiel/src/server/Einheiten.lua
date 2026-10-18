@@ -85,7 +85,8 @@ function Einheiten.panzer(spieler: Player, start, ziel, nummer: number, anzahl: 
 		Effekte.explosion(pos + Vector3.new(0, 3, 0), 12)
 		Effekte.ausblenden(panzer)
 		Funk.nachricht(spieler, "Einer deiner Panzer wurde vor " .. ziel.name .. " zerstört!")
-		Funk.nachricht(ziel.besitzer, "Deine Panzerabwehr hat einen Panzer zerstört!")
+		local betrag = StadtManager.abschussBelohnung(ziel, typ.Preis, pos)
+		Funk.nachricht(ziel.besitzer, "Deine Panzerabwehr hat einen Panzer zerstört! +" .. betrag .. " $")
 		return true
 	end
 
@@ -251,7 +252,8 @@ function Einheiten.jet(spieler: Player, start, ziel, nummer: number, anzahl: num
 		if abgeschossenUm and os.clock() >= abgeschossenUm then
 			Effekte.explosion(pos, 14)
 			Funk.nachricht(spieler, "Einer deiner Jets wurde über " .. ziel.name .. " abgeschossen!")
-			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat einen Jet abgeschossen!")
+			local betrag = StadtManager.abschussBelohnung(ziel, typ.Preis, pos)
+			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat einen Jet abgeschossen! +" .. betrag .. " $")
 			for _, teil in ipairs(jet:GetDescendants()) do
 				if teil:IsA("BasePart") then
 					teil.Anchored = false

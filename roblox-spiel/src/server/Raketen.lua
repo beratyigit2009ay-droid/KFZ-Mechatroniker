@@ -109,7 +109,8 @@ function Raketen.fliegen(spieler: Player, typ, start, ziel)
 			marker:Destroy()
 			Effekte.explosion(abfangPunkt, typ.Radius * 0.7)
 			Funk.nachricht(spieler, "Deine " .. typ.Name .. " wurde über " .. ziel.name .. " abgefangen!")
-			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat eine " .. typ.Name .. " abgefangen!")
+			local betrag = StadtManager.abschussBelohnung(ziel, typ.Preis, abfangPunkt)
+			Funk.nachricht(ziel.besitzer, "Deine Flugabwehr hat eine " .. typ.Name .. " abgefangen! +" .. betrag .. " $")
 			return
 		end
 

@@ -414,7 +414,13 @@ local function fensterSchliessen()
 	fenster.Visible = false
 end
 
+-- Was beim Öffnen einer Seite passieren soll (wird weiter unten für "Angriff" gesetzt)
+local beimOeffnen: { [string]: () -> () } = {}
+
 local function seiteZeigen(name: string)
+	if beimOeffnen[name] then
+		beimOeffnen[name]()
+	end
 	if hinweis.Parent then
 		hinweis:Destroy() -- der Spieler hat verstanden, wie es geht
 	end
@@ -482,7 +488,7 @@ end)
 -- Karten zum Kaufen (Seiten "Bauen" und "Waffen")
 ------------------------------------------------------------------------
 
-type Kaufkarte = { preis: number, preisFeld: TextLabel, zusatz: TextLabel, typ: string, art: string }
+type Kaufkarte = { preis: number, preisFeld: TextLabel, zusatz: TextLabel, typ: string, art: string, tipp: TextLabel }
 local kaufkarten: { Kaufkarte } = {}
 
 local function lager(typ: string): number
@@ -552,6 +558,22 @@ local function kaufKarte(eltern: Instance, reihenfolge: number, art: string, typ
 	ecken(preisFeld, 10)
 	verlauf(preisFeld)
 
+	-- "TIPP"-Schild rechts über dem Preis: zeigt Anfängern, was sie als Nächstes bauen sollten
+	local tipp = schrift(k, {
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -10, 0, 54),
+		Size = UDim2.fromOffset(62, 22),
+		BackgroundColor3 = FARBE.gelb,
+		TextColor3 = Color3.new(0, 0, 0),
+		Font = Enum.Font.GothamBlack,
+		TextSize = 13,
+		TextXAlignment = Enum.TextXAlignment.Center,
+		Text = "👍 TIPP",
+		ZIndex = 3,
+		Visible = false,
+	})
+	ecken(tipp, 11)
+
 	k.Activated:Connect(function()
 		local ok, antwort = kaufenRF:InvokeServer(art, typ)
 		zeigeNachricht(antwort, ok)
@@ -559,7 +581,7 @@ local function kaufKarte(eltern: Instance, reihenfolge: number, art: string, typ
 			geldTon:Play()
 		end
 	end)
-	table.insert(kaufkarten, { preis = info.Preis, preisFeld = preisFeld, zusatz = zusatz, typ = typ, art = art })
+	table.insert(kaufkarten, { preis = info.Preis, preisFeld = preisFeld, zusatz = zusatz, typ = typ, art = art, tipp = tipp })
 end
 
 -- Was bringt ein Gebäude? (kurz, damit es auf eine Karte passt)
@@ -800,6 +822,58 @@ feuerKnopf.Activated:Connect(function()
 	end
 end)
 
+-- Einfacher am Handy: Beim Öffnen der Angriff-Seite ist schon eine Waffe gewählt, die du hast,
+-- und eine gegnerische Stadt als Ziel. Dann reicht oft ein Tipp auf den roten Knopf.
+beimOeffnen.Angriff = function()
+	if lager(gewaehlteWaffe) <= 0 then
+		for _, typ in ipairs(alleWaffen) do
+			if lager(typ) > 0 then
+				gewaehlteWaffe = typ
+				break
+			end
+		end
+	end
+	anzahl = math.clamp(anzahl, 1, math.max(1, math.min(Config.MAX_ANZAHL, lager(gewaehlteWaffe))))
+	local meine = spieler:GetAttribute("Stadt") or 0
+	if not gewaehltesZiel or gewaehltesZiel == meine then
+		gewaehltesZiel = nil
+		-- zuerst eine Stadt mit einem Spieler, sonst irgendeine andere
+		for index = 1, Config.MAX_STAEDTE do
+			if index ~= meine and (spielstand:GetAttribute("Besitzer" .. index) or "") ~= "" then
+				gewaehltesZiel = index
+				break
+			end
+		end
+		if not gewaehltesZiel then
+			gewaehltesZiel = if meine == 1 then 2 else 1
+		end
+	end
+	aktualisieren()
+end
+
+-- Was sollte ein Anfänger als Nächstes bauen? (bekommt das "TIPP"-Schild)
+local function tippGebaeude(meinGeld: number): string
+	local erzeugt = spieler:GetAttribute("StromErzeugt") or Config.GRUNDSTROM
+	local bedarf = spieler:GetAttribute("StromBedarf") or 0
+	if bedarf + 6 > erzeugt then
+		return "Kraftwerk" -- Strom wird knapp
+	end
+	if (spieler:GetAttribute("Bewohner") or 0) < 30 then
+		return "Haus"
+	end
+	if (spieler:GetAttribute("Gebaut_Abwehr") or 0) == 0 then
+		return "Abwehr" -- Schutz gegen Raketen
+	end
+	-- sonst das teuerste Geld-Gebäude, das du dir leisten kannst
+	local bestes = "Haus"
+	for _, typ in ipairs({ "Fabrik", "Buero", "Einkaufszentrum", "Bank" }) do
+		if meinGeld >= Config.Gebaeude[typ].Preis then
+			bestes = typ
+		end
+	end
+	return bestes
+end
+
 ------------------------------------------------------------------------
 -- Anzeige aktuell halten
 ------------------------------------------------------------------------
@@ -857,7 +931,9 @@ function aktualisieren()
 	platzChip.Text = "🏗️ " .. (spieler:GetAttribute("BauplaetzeFrei") or 0) .. " Plätze frei"
 
 	-- Kaufkarten: grün, wenn du genug Geld hast
+	local tipp = tippGebaeude(meinGeld)
 	for _, karte in ipairs(kaufkarten) do
+		karte.tipp.Visible = karte.art == "Gebaeude" and karte.typ == tipp
 		local genug = meinGeld >= karte.preis
 		karte.preisFeld.BackgroundColor3 = if genug then FARBE.gruen else FARBE.grau
 		karte.preisFeld.Text = if genug then "KAUFEN · " .. zahl(karte.preis) .. " $" else zahl(karte.preis) .. " $"

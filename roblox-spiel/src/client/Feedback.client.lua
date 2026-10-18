@@ -1,6 +1,7 @@
 -- Feedback.client.lua
 -- Kleine Belohnungen, damit sich das Spiel gut anfühlt:
 -- 1) Geld fliegt: Über jedem Gebäude, das Geld bringt, steigt "+20 $" in Gold auf.
+--    Zerstörst du etwas, steigt dort ein großes "💥 +250 $" auf.
 -- 2) Neue Stadt-Stufe: großes Banner mit Konfetti, Jubel-Ton und Bonus-Geld.
 
 local Players = game:GetService("Players")
@@ -23,7 +24,10 @@ local ordner = Instance.new("Folder")
 ordner.Name = "GeldAnzeigen"
 ordner.Parent = workspace
 
-local function geldSteigtAuf(pos: Vector3, betrag: number, steuern: boolean)
+-- stil: "steuern" (grün), "gebaeude" (gold) oder "beute" (groß, orange, auch von weit weg sichtbar)
+local function geldSteigtAuf(pos: Vector3, betrag: number, stil: string)
+	local beute = stil == "beute"
+	local steuern = stil == "steuern"
 	local halter = Instance.new("Part")
 	halter.Anchored = true
 	halter.CanCollide = false
@@ -35,35 +39,51 @@ local function geldSteigtAuf(pos: Vector3, betrag: number, steuern: boolean)
 	halter.Parent = ordner
 
 	local schild = Instance.new("BillboardGui")
-	schild.Size = UDim2.fromOffset(140, 34)
+	schild.Size = if beute then UDim2.fromOffset(210, 52) else UDim2.fromOffset(140, 34)
 	schild.AlwaysOnTop = true
-	schild.MaxDistance = 260
+	schild.MaxDistance = if beute then 3000 else 260
 	schild.Parent = halter
 	local text = Instance.new("TextLabel")
 	text.Size = UDim2.fromScale(1, 1)
 	text.BackgroundTransparency = 1
 	text.Font = Enum.Font.GothamBlack
 	text.TextScaled = true
-	text.TextColor3 = if steuern then Color3.fromRGB(140, 255, 160) else Color3.fromRGB(255, 216, 74)
+	text.TextColor3 = if steuern
+		then Color3.fromRGB(140, 255, 160)
+		elseif beute then Color3.fromRGB(255, 170, 40)
+		else Color3.fromRGB(255, 216, 74)
 	text.TextStrokeTransparency = 0.2
-	text.Text = "+" .. betrag .. " $" .. (if steuern then " Steuern" else "")
+	text.Text = (if beute then "💥 +" else "+") .. betrag .. " $" .. (if steuern then " Steuern" else "")
 	text.Parent = schild
 
-	local info = TweenInfo.new(1.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	TweenService:Create(schild, info, { StudsOffsetWorldSpace = Vector3.new(0, 7, 0) }):Play()
-	TweenService:Create(text, TweenInfo.new(1.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+	local dauer = if beute then 2.4 else 1.6
+	local info = TweenInfo.new(dauer, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	TweenService:Create(schild, info, { StudsOffsetWorldSpace = Vector3.new(0, if beute then 14 else 7, 0) }):Play()
+	TweenService:Create(text, TweenInfo.new(dauer, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
 		TextTransparency = 1,
 		TextStrokeTransparency = 1,
 	}):Play()
-	Debris:AddItem(halter, 1.7)
+	Debris:AddItem(halter, dauer + 0.1)
 end
 
 Remotes:WaitForChild("Einkommen").OnClientEvent:Connect(function(liste)
 	for i, eintrag in ipairs(liste) do
 		if eintrag.betrag > 0 then
 			-- leicht versetzt, damit es wie ein kleiner Geldregen aussieht
-			task.delay((i - 1) * 0.06, geldSteigtAuf, eintrag.pos, eintrag.betrag, eintrag.steuern == true)
+			task.delay((i - 1) * 0.06, geldSteigtAuf, eintrag.pos, eintrag.betrag, if eintrag.steuern then "steuern" else "gebaeude")
 		end
+	end
+end)
+
+-- Geld fürs Zerstören (oder Abschießen): großes "💥 +X $" am Ziel, dazu ein Kassen-Ton
+local kasse = Instance.new("Sound")
+kasse.SoundId = Config.Sounds.Geld
+kasse.Volume = 0.6
+kasse.Parent = spielerGui
+Remotes:WaitForChild("Beute").OnClientEvent:Connect(function(liste)
+	kasse:Play()
+	for i, eintrag in ipairs(liste) do
+		task.delay((i - 1) * 0.12, geldSteigtAuf, eintrag.pos, eintrag.betrag, "beute")
 	end
 end)
 

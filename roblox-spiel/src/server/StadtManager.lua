@@ -513,10 +513,28 @@ local function zerstoeren(platz)
 	Debris:AddItem(gebaeude, 6)
 end
 
+-- Gibt einem Spieler Geld und zeigt "+X $" an der Stelle pos (z. B. für einen Abschuss)
+function StadtManager.geldGeben(spieler: Player?, betrag: number, pos: Vector3)
+	local geld = spieler and spieler:FindFirstChild("leaderstats") and spieler.leaderstats:FindFirstChild("Geld")
+	if not geld or betrag <= 0 then
+		return
+	end
+	geld.Value += betrag
+	Funk.beute(spieler, { { pos = pos, betrag = betrag } })
+end
+
+-- Belohnung für die Abwehr, wenn sie eine Waffe (Rakete, Jet, Panzer) abschießt
+function StadtManager.abschussBelohnung(stadt, preis: number, pos: Vector3): number
+	local betrag = math.floor(preis * Config.ABSCHUSS_ANTEIL)
+	StadtManager.geldGeben(stadt.besitzer, betrag, pos)
+	return betrag
+end
+
 -- Macht Schaden an allen Gebäuden im Radius um pos.
 -- Gibt zurück: wie viele Gebäude zerstört wurden und wie viel Belohnung es gab.
 function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angreifer: Player?)
 	local zerstoert, belohnung = 0, 0
+	local beute = {} -- wo der Angreifer Geld bekommt (für die "+X $"-Anzeige)
 	for _, stadt in ipairs(staedte) do
 		for _, platz in ipairs(stadt.plaetze) do
 			local g = platz.gebaeude
@@ -531,7 +549,9 @@ function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angre
 						zerstoeren(platz)
 						zerstoert += 1
 						if angreifer and angreifer ~= stadt.besitzer then
-							belohnung += math.floor(info.Preis * Config.BELOHNUNG_ANTEIL)
+							local betrag = math.floor(info.Preis * Config.BELOHNUNG_ANTEIL)
+							belohnung += betrag
+							table.insert(beute, { pos = platz.pos + Vector3.new(0, 6, 0), betrag = betrag })
 							local rangliste = angreifer:FindFirstChild("leaderstats")
 							local punkte = rangliste and rangliste:FindFirstChild("Zerstört") :: IntValue?
 							if punkte then
@@ -563,6 +583,7 @@ function StadtManager.schaden(pos: Vector3, radius: number, menge: number, angre
 		local geld = angreifer:FindFirstChild("leaderstats") and angreifer.leaderstats:FindFirstChild("Geld")
 		if geld then
 			geld.Value += belohnung
+			Funk.beute(angreifer, beute)
 		end
 	end
 	return zerstoert, belohnung

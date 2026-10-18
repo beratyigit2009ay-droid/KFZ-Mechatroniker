@@ -22,6 +22,7 @@ local alarmEvent = neu("RemoteEvent", "Alarm") :: RemoteEvent
 local nachrichtEvent = neu("RemoteEvent", "Nachricht") :: RemoteEvent
 local einkommenEvent = neu("RemoteEvent", "Einkommen") :: RemoteEvent
 local stufeEvent = neu("RemoteEvent", "Stufe") :: RemoteEvent
+local beuteEvent = neu("RemoteEvent", "Beute") :: RemoteEvent
 
 remotes.Parent = ReplicatedStorage
 
@@ -42,6 +43,14 @@ end
 function Funk.einkommen(spieler: Player?, liste: { any })
 	if spieler and spieler.Parent then
 		einkommenEvent:FireClient(spieler, liste)
+	end
+end
+
+-- Geld fürs Zerstören: großes "+X $" genau da, wo etwas kaputtgegangen ist
+-- liste: { { pos = Vector3, betrag = Zahl }, ... }
+function Funk.beute(spieler: Player?, liste: { any })
+	if spieler and spieler.Parent and #liste > 0 then
+		beuteEvent:FireClient(spieler, liste)
 	end
 end
 

@@ -39,6 +39,10 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
   (so groß wie die Explosion) mit einem Countdown darüber. So kannst du noch weglaufen.
 - **Rangliste**: In der Spielerliste steht neben dem Geld, wie viele gegnerische Gebäude du **zerstört** hast.
 - Alle Knöpfe **klicken** beim Antippen, ein erfolgreicher Kauf macht "Pling".
+- **Leicht für Anfänger**: 1500 $ Startgeld und mehr Grundeinkommen. Beim Bauen zeigt ein gelbes **"👍 TIPP"**,
+  was du als Nächstes bauen solltest (z. B. Kraftwerk, wenn der Strom knapp wird).
+  Beim Öffnen von **ANGRIFF** sind schon eine Waffe, die du hast, und eine gegnerische Stadt gewählt:
+  oft reicht ein Tipp auf den roten Knopf.
 
 ## Was schon drin ist
 
@@ -64,7 +68,8 @@ Man verdient Geld, baut Häuser, Fabriken und Flugabwehr und schießt Raketen au
 - **Sirenen**: Wird deine Stadt angegriffen, heult der Sirenenmast (mit rotem Blinklicht),
   du hörst die Sirene und oben steht **LUFTALARM** oder **PANZER-ALARM**.
 - **Einschlag**: Explosion, Feuerball, Rauchwolke. Gebäude brennen und fallen auseinander.
-  Der Angreifer bekommt Geld für jedes zerstörte Gebäude.
+  Der Angreifer bekommt den **ganzen Preis** jedes zerstörten Gebäudes, am Ziel steigt groß **"💥 +250 $"** auf.
+  Schießt deine Abwehr eine Rakete, einen Jet oder Panzer ab, bekommst du die Hälfte von deren Preis.
 
 ## Ordner
 
