@@ -620,7 +620,7 @@ for i, typ in ipairs(Config.RaketenReihenfolge) do
 	if info.Streu then
 		text = '<font color="#FF8A7A">' .. info.Streu .. " Streubomben</font>, große Fläche"
 	elseif info.Abfangbar < 0.3 then
-		text = '<font color="#FF8A7A">Schaden ' .. info.Schaden .. "</font>, super schnell, kaum abzufangen"
+		text = '<font color="#FF8A7A">Schaden ' .. info.Schaden .. "</font>, kaum abzufangen"
 	end
 	kaufKarte(seiteWaffen, i, "Waffe", typ, info, text, FARBE.rot)
 end
