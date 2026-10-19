@@ -10,9 +10,9 @@ Roblox Studio selbst konnte bei der Entwicklung nicht gestartet werden. Das Spie
 |---|---|---|
 | Typprüfung aller 50 Dateien gegen die echte Roblox-API (Eigenschaften, Methoden, Enums, Typen) | `luau-lsp analyze` (strict) mit den offiziellen Roblox-Typdefinitionen + Rojo-Sourcemap | 0 Fehler |
 | Projekt baut zu einer Studio-Datei | `rojo build` | `RocketSimulatorX.rbxlx` erzeugt, 1 Script, 1 LocalScript, 48 ModuleScripts an den richtigen Orten |
-| 35 automatische Tests | `lune run tests/run.luau` | 35 bestanden, 0 fehlgeschlagen |
+| 36 automatische Tests | `lune run tests/run.luau` | 36 bestanden, 0 fehlgeschlagen |
 
-Die 35 Tests prüfen:
+Die 36 Tests prüfen:
 
 - **Konfiguration**: 20 Raketen, eindeutige IDs, alle 7 Typen, jede Rakete teurer, besser belohnt und höher als die vorige,
   gültige Aussehen-Werte, Spielfeldgrenze wird auch voll ausgebaut nicht überschritten; 4 Upgrades; 10 Welten.
@@ -24,6 +24,7 @@ Die 35 Tests prüfen:
 - **Datenschema**: Standardwerte, Reparatur kaputter Daten (Text statt Zahl, negative Werte, NaN, unbekannte Raketen,
   Upgrades über Maximum, nicht gekaufte ausgerüstete Rakete), Migration von Version 0, Erkennung neuerer Daten,
   `deepCopy`, Client-Kopie ohne Meta-Daten.
+- **Spieler-Grenze**: höchstens 8 Spieler pro Server, der 9. wird mit Meldung hinausgeschickt.
 - **Rate-Limit**: Puffer, Sperre, Nachfüllen; 100 Spam-Anfragen pro Sekunde → höchstens 10 kommen durch.
 - **Raketenmodelle**: alle 20 Raketen und Kapseln werden mit echten Roblox-Instanzen (Lune) gebaut; jedes Teil ist an Root
   geschweißt, verankert, ohne Kollision; Motor-Effekte starten ausgeschaltet; höchstens 47 Parts pro Rakete.
@@ -66,6 +67,7 @@ Vorbereitung: Spiel veröffentlichen und **Game Settings › Security › Enable
 | 24 | Sounds | überall | Klick, Kauf, Countdown, Start, Motor, Gipfel, Landung, Level-Up hörbar? Stumme Sounds in `Config/Sounds.luau` austauschen. |
 | 25 | Weniger Effekte | Optionen › Weniger Effekte AN | deutlich weniger Rauch und Funken beim nächsten Flug, kein Dampfkegel/Plasma. |
 | 26 | Leistung | Top-Rakete mit Boostern, 3 Spieler gleichzeitig | Keine Ruckler, Ausgabe ohne Fehler. Abgeworfene Booster verschwinden nach ca. 7 s. |
+| 27 | Server voll | Test › Clients and Servers, **9** Spieler › Start | 8 Fenster spielen normal, das 9. zeigt „Dieser Server ist voll (8/8 Spieler) …“. Schließt einer, kann ein neuer wieder rein. |
 
 ### Was noch nicht drin ist (folgt in eigenen PRs)
 

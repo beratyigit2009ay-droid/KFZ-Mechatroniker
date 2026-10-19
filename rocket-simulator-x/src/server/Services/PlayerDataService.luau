@@ -19,6 +19,7 @@ local Signal = require(Shared:WaitForChild("Signal"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Types = require(Shared:WaitForChild("Types"))
 local DataSchema = require(script.Parent:WaitForChild("DataSchema"))
+local ServerLimitService = require(script.Parent:WaitForChild("ServerLimitService"))
 
 local PlayerDataService = {}
 
@@ -328,10 +329,15 @@ function PlayerDataService.init()
 	end
 
 	Players.PlayerAdded:Connect(function(player)
-		loadPlayer(player)
+		-- Server voll? Dann gar nicht erst laden (Spieler wird hinausgeschickt)
+		if ServerLimitService.admit(player) then
+			loadPlayer(player)
+		end
 	end)
 	for _, player in Players:GetPlayers() do
-		task.defer(loadPlayer, player) -- erst nachdem alle Services gestartet sind
+		if ServerLimitService.admit(player) then
+			task.defer(loadPlayer, player) -- erst nachdem alle Services gestartet sind
+		end
 	end
 	Players.PlayerRemoving:Connect(onPlayerRemoving)
 

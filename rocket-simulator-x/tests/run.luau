@@ -571,6 +571,39 @@ describe("Booster-Trennung und Kapsel", function()
 	end)
 end)
 
+describe("Spieler-Grenze pro Server", function()
+	it("höchstens 8 Spieler, der 9. wird mit Meldung gekickt, nach dem Gehen ist wieder Platz", function()
+		local playersService = newFake("Players", "Players", game)
+		local removing = {}
+		playersService.PlayerRemoving = { Connect = function(_, fn) table.insert(removing, fn) end }
+		local ServerLimitService = fakeRequire(Services.ServerLimitService)
+		ServerLimitService.init()
+		expectEqual(ServerLimitService.MaxPlayers, 8, "Grenze")
+		local function newPlayer(name)
+			local p = { Name = name, Parent = playersService, Kicked = nil }
+			function p.Kick(self, message)
+				self.Kicked = message
+				self.Parent = nil
+			end
+			return p
+		end
+		local list = {}
+		for i = 1, 8 do
+			local p = newPlayer("P" .. i)
+			table.insert(list, p)
+			expectTrue(ServerLimitService.admit(p), "Spieler " .. i .. " muss rein dürfen")
+		end
+		expectTrue(ServerLimitService.admit(list[1]), "zweimal fragen ändert nichts")
+		local ninth = newPlayer("P9")
+		expectTrue(not ServerLimitService.admit(ninth), "9. Spieler darf nicht rein")
+		expectTrue(type(ninth.Kicked) == "string" and string.find(ninth.Kicked, "voll") ~= nil, "Kick-Meldung fehlt")
+		for _, fn in removing do
+			fn(list[1])
+		end
+		expectTrue(ServerLimitService.admit(newPlayer("P10")), "nach dem Gehen wieder Platz")
+	end)
+end)
+
 describe("Signal", function()
 	it("Handler bekommen Werte und lassen sich trennen", function()
 		local signal = Signal.new()

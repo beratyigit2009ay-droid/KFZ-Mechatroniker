@@ -11,6 +11,7 @@ local Services = script.Parent:WaitForChild("Services")
 -- 1. Alle RemoteEvents/RemoteFunctions anlegen (bevor ein Client sie sucht)
 Remotes.createAll()
 
+local ServerLimitService = require(Services:WaitForChild("ServerLimitService"))
 local PlayerDataService = require(Services:WaitForChild("PlayerDataService"))
 local RemoteGuard = require(Services:WaitForChild("RemoteGuard"))
 local MapService = require(Services:WaitForChild("MapService"))
@@ -23,7 +24,8 @@ local SettingsService = require(Services:WaitForChild("SettingsService"))
 local LeaderboardService = require(Services:WaitForChild("LeaderboardService"))
 local Notifier = require(Services:WaitForChild("Notifier"))
 
--- 2. Services starten
+-- 2. Services starten (zuerst die Spieler-Grenze: max. 8 pro Server)
+ServerLimitService.init()
 PlayerDataService.init()
 RemoteGuard.init()
 MapService.init()

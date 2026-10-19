@@ -48,7 +48,7 @@ Welten, Pets, Quests, Rebirth und Monetarisierung folgen als eigene Pull Request
 |---|---|---|
 | Spiel veröffentlichen | **Datei › Publish to Roblox** | DataStores (Speichern, globale Rangliste) gibt es nur für veröffentlichte Spiele. |
 | **Enable Studio Access to API Services** | **Home › Game Settings › Security** | Ohne das wird in Studio nicht gespeichert. Das Spiel läuft trotzdem und zeigt eine Meldung „Speichern ist aus“. |
-| Max. Spieler: **8** | Creator Dashboard › dein Spiel › Places › Server Size | Es gibt 8 Startrampen. Mehr Spieler warten auf eine freie Rampe. |
+| Max. Spieler: **8** | Creator Dashboard › dein Spiel › Places › Server Size | Es gibt 8 Startrampen. Das Spiel lässt sowieso nie mehr als 8 Spieler rein (`ServerLimitService`: der 9. bekommt „Dieser Server ist voll“). Mit Server Size 8 schickt Roblox ihn aber gleich auf einen anderen Server. |
 
 **Du musst keine Parts, Ordner, RemoteEvents oder GUIs von Hand anlegen.** Die Scripts bauen beim Start
 automatisch: die Karte (`Workspace.Map`), die Startrampen (`Workspace.LaunchPads`), die Ordner
@@ -62,7 +62,7 @@ automatisch: die Karte (`Workspace.Map`), die Startrampen (`Workspace.LaunchPads
 | Datei in `src/` | Typ in Studio | Ort in Studio |
 |---|---|---|
 | `server/Main.server.luau` | **Script** `Main` | ServerScriptService › Server |
-| `server/Services/*.luau` (15 Stück) | **ModuleScript** | ServerScriptService › Server › Services |
+| `server/Services/*.luau` (16 Stück) | **ModuleScript** | ServerScriptService › Server › Services |
 | `shared/*.luau` (Formulas, RocketBuilder, Remotes, Format, Signal, Types) | **ModuleScript** | ReplicatedStorage › Shared |
 | `shared/Config/*.luau` (Rockets, Upgrades, Economy, Flight, Worlds, Sounds) | **ModuleScript** | ReplicatedStorage › Shared › Config |
 | `client/Main.client.luau` | **LocalScript** `Main` | StarterPlayer › StarterPlayerScripts › Client |
