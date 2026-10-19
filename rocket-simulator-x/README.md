@@ -21,7 +21,7 @@ Welten, Pets, Quests, Rebirth und Monetarisierung folgen als eigene Pull Request
 | **Wirtschaft** | Coins pro Meter × Raketen-Bonus, XP und Level (Gems bei Level-Up), Rekord-Gems, seltener Fund (3 %). Alles rechnet der Server. |
 | **Speichern** | DataStore mit `UpdateAsync`, Session-Sperre, Wiederholungen, Autosave (90 s), Speichern beim Verlassen und Herunterfahren, Versionen + Migration, Reparatur kaputter Daten. Schlägt das Laden fehl, wird **nicht** gespeichert (alte Daten bleiben heil). |
 | **Sicherheit** | Jede Anfrage geht durch `RemoteGuard`: Rate-Limit, Typprüfung, Daten geladen?, Fehlerfang. Der Client schickt nie Beträge, Preise oder Höhen. |
-| **Multiplayer** | 12 Startrampen, jeder Spieler bekommt eine eigene mit Namensschild. Alle sehen alle Raketen. Server-Rangliste (leaderstats) und globale Top 10 (OrderedDataStore, Tafel im Spiel + Menü). |
+| **Multiplayer** | 8 Startrampen (8 Spieler pro Server), jeder Spieler bekommt eine eigene mit Namensschild. Alle sehen alle Raketen. Server-Rangliste (leaderstats) und globale Top 10 (OrderedDataStore, Tafel im Spiel + Menü). |
 | **Oberfläche** | Ladebildschirm, Coins/Gems, Level-Leiste, STARTEN/BOOST-Knopf, Flug-Anzeige, Raketen-Shop mit 3D-Vorschau, Upgrade-Menü, Rangliste, Optionen, Belohnungsfenster, Meldungen, Tutorial. Skaliert automatisch für PC, Tablet und Handy. Gamepad: R2 = Start/Boost, B = Fenster schließen. |
 
 ---
@@ -48,7 +48,7 @@ Welten, Pets, Quests, Rebirth und Monetarisierung folgen als eigene Pull Request
 |---|---|---|
 | Spiel veröffentlichen | **Datei › Publish to Roblox** | DataStores (Speichern, globale Rangliste) gibt es nur für veröffentlichte Spiele. |
 | **Enable Studio Access to API Services** | **Home › Game Settings › Security** | Ohne das wird in Studio nicht gespeichert. Das Spiel läuft trotzdem und zeigt eine Meldung „Speichern ist aus“. |
-| Max. Spieler: **12** | Creator Dashboard › dein Spiel › Places › Server Size | Es gibt 12 Startrampen. Mehr Spieler warten auf eine freie Rampe. |
+| Max. Spieler: **8** | Creator Dashboard › dein Spiel › Places › Server Size | Es gibt 8 Startrampen. Mehr Spieler warten auf eine freie Rampe. |
 
 **Du musst keine Parts, Ordner, RemoteEvents oder GUIs von Hand anlegen.** Die Scripts bauen beim Start
 automatisch: die Karte (`Workspace.Map`), die Startrampen (`Workspace.LaunchPads`), die Ordner

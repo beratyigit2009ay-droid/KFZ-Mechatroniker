@@ -57,7 +57,7 @@ Vorbereitung: Spiel veröffentlichen und **Game Settings › Security › Enable
 | 15 | DataStore aus | API-Zugriff ausschalten, Play | Spiel läuft, Meldung „Speichern ist aus …“, Optionen zeigen „⚠️ Speichern ist gerade AUS“. Nach erneutem Einschalten sind die alten Daten unverändert. |
 | 16 | Respawn | im Flug und danach: Figur zurücksetzen (Esc › Reset) | Flug läuft weiter, HUD bleibt, Knöpfe funktionieren, Kamera kommt danach zur neuen Figur. |
 | 17 | Verlassen im Flug | Test › Clients and Servers, Spieler im Flug schließen | Server: keine Fehler, Rakete und Kapsel verschwinden, Rampe wird „frei“. |
-| 18 | Mehrspieler | Test › Clients and Servers, 2–3 Spieler | Jeder hat eine eigene Rampe, sieht die Raketen der anderen. Prompt „Rakete starten“ nur an der eigenen Rampe. Startet ein anderer in der Nähe, wackelt deine Kamera leicht (Boden-Beben). |
+| 18 | Mehrspieler | Test › Clients and Servers, 2–3 Spieler (max. 8) | Jeder hat eine eigene Rampe, sieht die Raketen der anderen. Prompt „Rakete starten“ nur an der eigenen Rampe. Startet ein anderer in der Nähe, wackelt deine Kamera leicht (Boden-Beben). |
 | 19 | Rangliste | Spielerliste oben rechts / Menü Rangliste | „Rekord (m)“ und „Level“ stimmen. Tafel am Platz zeigt die Top 10 (in Studio oft leer). |
 | 20 | Handy | Test › Device › z. B. iPhone 14 | Alle Texte lesbar, nichts abgeschnitten, STARTEN-Knopf gut erreichbar, Fenster passen auf den Bildschirm. |
 | 21 | Gamepad | Xbox-Controller | R2 = Start/Boost, Menüs per Steuerkreuz bedienbar, B schließt Fenster. |

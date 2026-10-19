@@ -41,7 +41,7 @@ local Flight = {
 	CapsuleTimeout = 30, -- spätestens dann gilt sie als gelandet
 	CapsuleSideOffset = 26, -- landet so weit neben der Rampe
 
-	PadCount = 12, -- Anzahl Startrampen = maximale Spieler pro Server
+	PadCount = 8, -- Anzahl Startrampen = maximale Spieler pro Server
 }
 
 return Flight
