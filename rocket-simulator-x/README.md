@@ -13,8 +13,10 @@ Welten, Pets, Quests, Rebirth und Monetarisierung folgen als eigene Pull Request
 | Bereich | Inhalt |
 |---|---|
 | **Raketen** | 20 Raketen in 7 Typen (Anfänger, Feuer, Eis, Plasma, Alien, Gold, Kosmisch). Jede sieht anders aus (Form, Nase, Flossen, Booster, Ringe, Material, Flammenfarbe) und fliegt anders. |
-| **Echter Flug** | Server-Physik mit `VectorForce` (Schub − Luftwiderstand) und `AlignOrientation`. Countdown, Halte-Arme klappen weg, Rauch, Flammen, Funken, Licht, Schweif. Boost-Knopf im Flug. Am höchsten Punkt ein Lichtblitz, dann landet die Kapsel am Fallschirm neben deiner Rampe. |
-| **Kamera & Himmel** | Flugkamera folgt der Rakete, wackelt beim Start, Sichtfeld wird mit dem Tempo weiter. Der Himmel wird beim Steigen dunkel, ab 80 km Sterne (nur auf deinem Bildschirm). |
+| **Echter Flug** | Server-Physik mit `VectorForce` und `AlignOrientation`, wie bei echten Raketen: Die Luft wird nach oben dünner (Skalenhöhe 8,5 km), die Rakete wird leichter, je mehr Treibstoff verbrennt, und die Schwerkraft wird oben schwächer. Schub beim Start nur 1,3–1,6 × Gewicht: Die Rakete hebt langsam ab und wird immer schneller. |
+| **Startablauf** | Countdown, Halte-Arme klappen weg, Zündung 1,2 s vor dem Abheben (Rakete noch festgehalten), riesige Rauchwolke über dem Boden, Flamme mit heißem Kern und Schockdiamanten. Booster-Raketen sprengen ihre Booster ab, die trudelnd zurückfallen. Im Vakuum wird der Abgasstrahl breit und der Rauch verschwindet. Am Gipfel ein Lichtblitz, dann der Wiedereintritt: Die Kapsel kommt glühend herunter, kurz über dem Boden geht mit Ruck der Fallschirm auf. |
+| **Kamera & Himmel** | Flugkamera folgt der Rakete, wackelt beim Start und durch den Luftwiderstand (Max-Q), Sichtfeld wird mit dem Tempo weiter. Dampfkegel und Hitze-Plasma an der Spitze. Der Himmel wird nach der Luftdichte dunkel (in 30 km fast schwarz, Sterne). Zuschauer in der Nähe spüren den Start als Boden-Beben. |
+| **Flug-Anzeige** | Höhe, Tempo, Mach, G-Kraft, Luftschicht (Troposphäre … Weltall) und Luftdichte, Belastung, Treibstoff, Boost, Ansagen: Zündung, Max-Q, Booster-Trennung, Brennschluss, Kármán-Linie (100 km), Wiedereintritt, Fallschirm. |
 | **Upgrades** | Motor, Treibstofftank, Aerodynamik (Coins), Boost (Gems). Jedes Upgrade zeigt, wie viel höher du danach fliegst. |
 | **Wirtschaft** | Coins pro Meter × Raketen-Bonus, XP und Level (Gems bei Level-Up), Rekord-Gems, seltener Fund (3 %). Alles rechnet der Server. |
 | **Speichern** | DataStore mit `UpdateAsync`, Session-Sperre, Wiederholungen, Autosave (90 s), Speichern beim Verlassen und Herunterfahren, Versionen + Migration, Reparatur kaputter Daten. Schlägt das Laden fehl, wird **nicht** gespeichert (alte Daten bleiben heil). |
@@ -78,7 +80,7 @@ Alle Zahlen stehen an **einem** Ort: `src/shared/Config/`.
 - **`Rockets.luau`**: Preis, Schub, Brenndauer, Höchstgeschwindigkeit, Belohnung und Aussehen jeder Rakete.
 - **`Upgrades.luau`**: Grundpreis, Preis-Steigerung, Maximalstufe und Wirkung pro Stufe.
 - **`Economy.luau`**: Coins/XP pro Meter, Level-Kurve, Gems, Startgeld.
-- **`Flight.luau`**: Countdown, Boost, Kapsel, Anzahl Rampen, Spielfeldgrenze.
+- **`Flight.luau`**: Countdown, Zündung, Boost, Booster-Trennung, Luft (Skalenhöhe), Treibstoffmasse, Kapsel und Fallschirm, Anzahl Rampen, Spielfeldgrenze.
 - **`Sounds.luau`**: alle Sounds. Eingetragen sind Sounds, die mit Roblox mitgeliefert werden (`rbxasset://sounds/...`).
   Sie wurden **nicht** in Studio angehört. Ist einer stumm: in der Toolbox einen Sound wählen und dessen
   `rbxassetid://ZAHL` eintragen. Leeres `Id = ""` = Sound wird übersprungen.

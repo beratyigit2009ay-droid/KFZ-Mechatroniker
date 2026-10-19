@@ -198,26 +198,36 @@ Spieler drückt STARTEN (Knopf, Taste F, Gamepad R2 oder ProximityPrompt an der 
 Server: FlightService.tryLaunch(player)
    ├─ Zustand muss "Idle" sein  → sonst ignorieren (verhindert Doppelstarts)
    ├─ Werte berechnen: Formulas.getFlightStats(Rakete, Upgrades)
-   ├─ Zustand = "Countdown" (3 s): Halte-Arme fahren weg, Rauch am Boden,  FlightEvent{Countdown}
+   ├─ Zustand = "Countdown" (3 s): Halte-Arme fahren weg,                  FlightEvent{Countdown}
+   │     • 1,2 s vor dem Abheben: Zündung, Rakete noch festgehalten,       FlightEvent{Ignition}
+   │       riesige Rauchwolke wälzt sich über den Boden
    ├─ Flugmodell bauen, Physik einschalten:
    │     • Anker lösen, alle Parts verschweißt, CanCollide aus
    │     • SetNetworkOwner(nil)  → der SERVER rechnet die Physik, kein Client kann schummeln
    │     • VectorForce = Schub − Luftwiderstand (jede Physik-Runde neu berechnet)
+   │     • echte Physik: Luftdichte e^(−Höhe/8,5 km), Rakete wird leichter (Treibstoff),
+   │       Schwerkraft wird mit der Höhe schwächer
    │     • AlignOrientation hält die Rakete senkrecht
    ├─ Zustand = "Burn": Treibstoff wird verbraucht, Flammen, Funken, Licht   FlightEvent{Liftoff}
    │     (Boost-Knopf: kurzzeitig mehr Schub, solange Boost übrig ist)
+   │     • nach 45 % der Brenndauer: Booster werden abgesprengt und fallen   FlightEvent{Staging}
+   │     • Abgasstrahl wird in dünner Luft breiter, Rauch verschwindet im Vakuum
    ├─ Zustand = "Coast": Treibstoff leer, Rakete steigt weiter und wird langsamer
    ├─ Zustand = "Apex": höchster Punkt (Geschwindigkeit nach oben ≤ 0)
    │     • Server misst die Höhe selbst und berechnet die Belohnung
    │     • EconomyService gibt Coins, XP, evtl. Gems (genau einmal pro Flug-ID)
    │     • Rakete zerfällt in einem Lichtblitz, die Kapsel kehrt zurück   FlightEvent{Apex}
-   ├─ Zustand = "Descent": Kapsel fällt mit Fallschirm neben der Rampe
+   ├─ Zustand = "Descent": Wiedereintritt: Kapsel fällt glühend und schnell,
+   │     in 170 Studs Höhe geht der Fallschirm auf                         FlightEvent{Parachute}
    ├─ Zustand = "Landed": Staubring, Belohnungsfenster                    FlightEvent{Landed, Ergebnis}
    └─ Zustand = "Cooldown" (2 s) → "Idle": Rakete steht wieder auf der Rampe
 ```
 
-Der Client macht in dieser Zeit nur Anzeige: Countdown, Flugkamera, Höhe/Tempo/Treibstoff,
-dunkler werdender Himmel, Motorengeräusch, am Ende das Belohnungsfenster.
+Der Client macht in dieser Zeit nur Anzeige: Countdown, Flugkamera, Höhe/Tempo/Mach/G-Kraft/Luftschicht,
+Missions-Ansagen (Zündung, Max-Q, Booster-Trennung, Kármán-Linie, Wiedereintritt, Fallschirm),
+Rütteln durch Luftwiderstand, Dampfkegel und Hitze-Plasma an der Spitze, dunkler werdender Himmel
+(nach Luftdichte), Motorengeräusch, am Ende das Belohnungsfenster. Zuschauer in der Nähe spüren den
+Start als Boden-Beben.
 
 **Warum hört der Flug am höchsten Punkt auf?** Eine Rakete, die aus 15 km Höhe zurückfällt,
 würde minutenlang fallen. Deshalb kehrt nach dem Gipfel nur die Kapsel mit Fallschirm zur Rampe zurück.

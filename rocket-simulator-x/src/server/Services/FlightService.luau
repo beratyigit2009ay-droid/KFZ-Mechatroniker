@@ -3,13 +3,17 @@
 -- Steuert jeden Raketenflug mit einer Zustandsmaschine und echter Roblox-Physik:
 --
 --   Idle ─► Countdown ─► Burn ─► Coast ─► Apex ─► Descent ─► Landed ─► Cooldown ─► Idle
+--             (Zündung)   (Booster-Trennung)        (Wiedereintritt, Fallschirm)
 --
 --   • Pro Spieler gibt es höchstens EINEN Flug. Ein zweiter Start wird abgelehnt (keine Doppelstarts).
 --   • Die Rakete gehört physikalisch dem Server (SetNetworkOwner(nil)). Kein Client kann sie bewegen.
 --   • Schub und Luftwiderstand wirken über eine VectorForce, die jede Physik-Runde neu berechnet wird.
+--     Echte Physik: Die Luft wird nach oben dünner, die Rakete wird leichter, je mehr Treibstoff verbrennt,
+--     und die Schwerkraft wird mit der Höhe schwächer (alles in Formulas, gleiche Rechnung wie die Vorschau).
 --   • Eine AlignOrientation hält die Rakete senkrecht.
 --   • Der Server misst die Höhe selbst und vergibt die Belohnung genau einmal pro Flug.
 
+local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 local PhysicsService = game:GetService("PhysicsService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -70,6 +74,8 @@ type FlightRecord = {
 	FuelLeft: number,
 	BoostLeft: number,
 	Boosting: boolean,
+	Staged: boolean,
+	PlumeLevel: number,
 	TelemetryTimer: number,
 	MaxPlausible: number,
 	Rewarded: boolean,
@@ -79,6 +85,7 @@ type FlightRecord = {
 	CapsuleForce: VectorForce?,
 	CapsuleMass: number,
 	DescentTime: number,
+	ChuteOpen: boolean,
 }
 
 local flights: { [Player]: FlightRecord } = {}
@@ -230,6 +237,9 @@ local function startDescent(flight: FlightRecord)
 	capsule.ModelStreamingMode = Enum.ModelStreamingMode.PersistentPerPlayer
 	local drop = flight.Pad.TopCFrame * CFrame.new(FlightConfig.CapsuleSideOffset, FlightConfig.CapsuleDropHeight, 0)
 	RocketBuilder.place(capsule, drop)
+	-- Wiedereintritt: Kapsel kommt glühend und schnell herunter, Fallschirm noch zu
+	RocketBuilder.setParachute(capsule, false)
+	RocketBuilder.setReentry(capsule, true)
 	setCollisionGroup(capsule, CAPSULE_GROUP)
 	capsule.Parent = Workspace:WaitForChild("Flights")
 	pcall(capsule.AddPersistentPlayer, capsule, flight.Player) -- nur wichtig, falls StreamingEnabled an ist
@@ -241,9 +251,11 @@ local function startDescent(flight: FlightRecord)
 	pcall(function()
 		root:SetNetworkOwner(nil)
 	end)
+	root.AssemblyLinearVelocity = Vector3.new(0, -FlightConfig.CapsuleReentrySpeed, 0)
 	flight.Capsule = capsule
 	flight.CapsuleRoot = root
 	flight.DescentTime = 0
+	flight.ChuteOpen = false
 	flight.State = "Descent"
 	flight.Player.ReplicationFocus = root
 end
@@ -265,6 +277,7 @@ local function reachApex(flight: FlightRecord)
 	end
 	fire(flight.Player, {
 		Type = "Apex",
+		Reentry = true,
 		FlightId = flight.Id,
 		AltitudeMeters = if result then result.AltitudeMeters else 0,
 		Position = apexPosition,
@@ -287,6 +300,8 @@ local function land(flight: FlightRecord)
 	local root = flight.CapsuleRoot
 	if capsule and root then
 		RocketBuilder.setAnchored(capsule, true)
+		RocketBuilder.setReentry(capsule, false)
+		RocketBuilder.setParachute(capsule, true)
 		EffectsService.landingDust(root.Position - Vector3.new(0, root.Size.Y / 2, 0))
 	end
 	fire(flight.Player, { Type = "Landed", FlightId = flight.Id, Result = flight.Result })
@@ -299,6 +314,57 @@ local function land(flight: FlightRecord)
 			task.delay(FlightConfig.CooldownSeconds, finish, flight)
 		end
 	end)
+end
+
+-- Zündung kurz vor dem Abheben: Die Motoren laufen schon, die Rakete wird noch festgehalten.
+local function ignite(flight: FlightRecord)
+	if not isCurrent(flight) or flight.State ~= "Countdown" then
+		return
+	end
+	local model = flight.Model
+	if model == nil or model.Parent == nil then
+		return
+	end
+	RocketBuilder.setEngine(model, true)
+	model:SetAttribute("State", "Ignition")
+	EffectsService.launchSmoke(flight.Pad.TopCFrame.Position, flight.Rocket.Style.Radius)
+	fire(flight.Player, { Type = "Ignition", FlightId = flight.Id })
+end
+
+-- Booster-Trennung: Die leeren Booster werden abgesprengt und fallen trudelnd zurück.
+local function separateBoosters(flight: FlightRecord)
+	flight.Staged = true
+	local model = flight.Model
+	local root = flight.Root
+	if model == nil or root == nil then
+		return
+	end
+	local velocity = root.AssemblyLinearVelocity
+	local boosters = RocketBuilder.detachBoosters(model)
+	if #boosters == 0 then
+		return
+	end
+	local folder = Workspace:FindFirstChild("Effects") or Workspace
+	for _, booster in boosters do
+		local main = booster.PrimaryPart
+		if main then
+			booster.Parent = folder
+			local outward = Vector3.new(main.Position.X - root.Position.X, 0, main.Position.Z - root.Position.Z)
+			local push = if outward.Magnitude > 0.01 then outward.Unit * 30 else Vector3.zero
+			pcall(function()
+				main:SetNetworkOwner(nil)
+			end)
+			-- Booster sind leer und bremsen in der Luft stark: deutlich langsamer als die Rakete
+			main.AssemblyLinearVelocity = velocity * 0.55 + push
+			main.AssemblyAngularVelocity = Vector3.new(random:NextNumber(-2, 2), random:NextNumber(-1, 1), random:NextNumber(-2, 2))
+			EffectsService.boosterTrail(main, flight.Rocket.Style.FlameColor)
+			Debris:AddItem(booster, FlightConfig.BoosterDebrisLifetime)
+		end
+	end
+	-- Ohne Booster ist die Rakete leichter: Kraft muss zur echten Masse passen
+	flight.Mass = modelMass(model)
+	EffectsService.separationPuff(root.Position, flight.Rocket.Style.Accent)
+	fire(flight.Player, { Type = "Staging", FlightId = flight.Id })
 end
 
 local function liftoff(flight: FlightRecord)
@@ -372,12 +438,23 @@ local function stepAscent(flight: FlightRecord, dt: number)
 
 	local velocity = root.AssemblyLinearVelocity
 	local speed = velocity.Magnitude
-	local thrust = Formulas.thrustAcceleration(stats, burning, boosting)
-	local drag = Formulas.dragAcceleration(stats, speed)
+	local altitude = math.max(root.Position.Y - flight.StartY, 0)
+	local mass = Formulas.massFactor(stats, stats.BurnTime - flight.FuelLeft)
+	local thrust = Formulas.thrustAcceleration(stats, burning, boosting, mass)
+	local drag = Formulas.dragAcceleration(stats, speed, altitude, mass)
 	local dragVector = if speed > 0.01 then -velocity.Unit * drag else Vector3.zero
-	-- Workspace.Gravity zieht schon nach unten. Andere Welten: Unterschied ausgleichen.
-	local gravityCompensation = Workspace.Gravity - stats.Gravity
+	-- Workspace.Gravity zieht schon nach unten. Echte Schwerkraft in dieser Höhe (und andere Welten): Unterschied ausgleichen.
+	local gravityCompensation = Workspace.Gravity - Formulas.gravityAt(stats, altitude)
 	force.Force = (Vector3.yAxis * (thrust + gravityCompensation) + dragVector) * flight.Mass
+
+	-- Booster-Trennung, wenn ihr Treibstoff verbraucht ist
+	if not flight.Staged and burning and (stats.BurnTime - flight.FuelLeft) >= stats.BurnTime * FlightConfig.BoosterSeparation then
+		if flight.Rocket.Style.Boosters > 0 then
+			separateBoosters(flight)
+		else
+			flight.Staged = true
+		end
+	end
 
 	-- Leichtes Wackeln (nur Optik)
 	local align = flight.Align
@@ -409,10 +486,16 @@ local function stepAscent(flight: FlightRecord, dt: number)
 		model:SetAttribute("Boost", flight.BoostLeft / math.max(stats.BoostTime, 0.01))
 		model:SetAttribute("Boosting", flight.Boosting)
 		model:SetAttribute("State", flight.State)
+		-- Abgasstrahl wird in dünner Luft breiter (nur bei spürbarer Änderung, spart Netzwerk)
+		local vacuum = 1 - Formulas.airDensity(altitude)
+		if math.abs(vacuum - flight.PlumeLevel) > 0.05 then
+			flight.PlumeLevel = vacuum
+			RocketBuilder.setPlume(model, vacuum)
+		end
 	end
 
-	local altitude = y - flight.StartY
 	local apexReached = flight.State == "Coast" and not flight.Boosting and velocity.Y <= 0
+	altitude = y - flight.StartY
 	if apexReached or altitude >= FlightConfig.CeilingStuds or flight.Elapsed >= FlightConfig.MaxFlightSeconds then
 		reachApex(flight)
 	end
@@ -428,13 +511,28 @@ local function stepDescent(flight: FlightRecord, dt: number)
 	flight.DescentTime += dt
 	local velocity = root.AssemblyLinearVelocity
 	local gravity = Workspace.Gravity
-	-- Fallschirm: Widerstand wächst mit der Sinkgeschwindigkeit (Endgeschwindigkeit = CapsuleTerminalSpeed)
+	local bottom = root.Position.Y - root.Size.Y / 2
+
+	-- Fallschirm öffnet in ParachuteHeight über dem Boden
+	if not flight.ChuteOpen and bottom - MapService.GroundY <= FlightConfig.ParachuteHeight then
+		flight.ChuteOpen = true
+		local capsule = flight.Capsule
+		if capsule then
+			RocketBuilder.setReentry(capsule, false)
+			RocketBuilder.setParachute(capsule, true)
+		end
+		EffectsService.parachutePuff(root.Position + Vector3.new(0, 10, 0))
+		fire(flight.Player, { Type = "Parachute", FlightId = flight.Id })
+	end
+
+	-- Luftwiderstand wächst mit der Sinkgeschwindigkeit². Ohne Schirm: schneller Fall (Wiedereintritt),
+	-- mit Schirm: sanftes Sinken (CapsuleTerminalSpeed). Beim Aufgehen gibt es einen kräftigen Ruck.
+	local terminal = if flight.ChuteOpen then FlightConfig.CapsuleTerminalSpeed else FlightConfig.CapsuleReentrySpeed
 	local down = math.max(-velocity.Y, 0)
-	local lift = math.min(gravity * (down / FlightConfig.CapsuleTerminalSpeed) ^ 2, gravity * 2.5)
+	local lift = math.min(gravity * (down / terminal) ^ 2, gravity * (if flight.ChuteOpen then 4 else 2.5))
 	local horizontal = Vector3.new(velocity.X, 0, velocity.Z) * -2
 	force.Force = (Vector3.yAxis * lift + horizontal) * flight.CapsuleMass
 
-	local bottom = root.Position.Y - root.Size.Y / 2
 	local onGround = bottom - MapService.GroundY < 0.8 and math.abs(velocity.Y) < 6
 	if onGround or flight.DescentTime >= FlightConfig.CapsuleTimeout then
 		land(flight)
@@ -495,6 +593,8 @@ function FlightService.tryLaunch(player: Player): (boolean, string?)
 		FuelLeft = stats.BurnTime,
 		BoostLeft = stats.BoostTime,
 		Boosting = false,
+		Staged = false,
+		PlumeLevel = 0,
 		TelemetryTimer = 0,
 		MaxPlausible = Formulas.maxPlausibleAltitude(stats),
 		Rewarded = false,
@@ -504,6 +604,7 @@ function FlightService.tryLaunch(player: Player): (boolean, string?)
 		CapsuleForce = nil,
 		CapsuleMass = 1,
 		DescentTime = 0,
+		ChuteOpen = false,
 	}
 	flights[player] = flight
 
@@ -524,7 +625,6 @@ function FlightService.tryLaunch(player: Player): (boolean, string?)
 	flight.Mass = modelMass(model)
 
 	PadService.setArmsOpen(pad, true)
-	EffectsService.launchSmoke(pad.TopCFrame.Position, rocket.Style.Radius)
 
 	local estimate = Formulas.simulateFlight(stats, false)
 	fire(player, {
@@ -537,6 +637,7 @@ function FlightService.tryLaunch(player: Player): (boolean, string?)
 		EstimateMeters = estimate.MaxAltitudeMeters,
 		BestAltitude = data.BestAltitude,
 	})
+	task.delay(math.max(FlightConfig.CountdownSeconds - FlightConfig.IgnitionLead, 0), ignite, flight)
 	task.delay(FlightConfig.CountdownSeconds, liftoff, flight)
 	return true, nil
 end

@@ -1,17 +1,21 @@
 --!strict
 -- SkyController.luau  (ModuleScript in StarterPlayerScripts.Client.Controllers)
 -- Je höher deine Rakete fliegt, desto dunkler wird der Himmel: Der Dunst verschwindet,
--- es wird Nacht und die Sterne kommen heraus. Ab 80 km bist du im Weltall.
+-- es wird Nacht und die Sterne kommen heraus. Wie in echt hängt das an der Luftdichte:
+-- schon in 30 km ist der Himmel fast schwarz, ab der Kármán-Linie (100 km) bist du im Weltall.
 -- Das passiert NUR auf deinem Bildschirm (lokale Lighting-Änderung), andere Spieler sehen ihren eigenen Himmel.
 
 local Lighting = game:GetService("Lighting")
 local TweenService = game:GetService("TweenService")
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local FlightController = require(script.Parent:WaitForChild("FlightController"))
+local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Formulas = require(Shared:WaitForChild("Formulas"))
+local FlightConfig = require(Shared:WaitForChild("Config"):WaitForChild("Flight"))
 
 local SkyController = {}
-
-local SPACE_ALTITUDE = 80000 -- Meter
 
 type Snapshot = {
 	ClockTime: number,
@@ -89,7 +93,9 @@ function SkyController.init()
 		if original == nil then
 			return
 		end
-		local target = math.clamp(telemetry.AltitudeMeters / SPACE_ALTITUDE, 0, 1)
+		-- Wenig Luft = wenig Streulicht = dunkler Himmel (Wurzel, damit es schon früh dunkler wird)
+		local density = Formulas.airDensity(telemetry.AltitudeMeters / FlightConfig.MetersPerStud)
+		local target = math.clamp(1 - math.sqrt(density), 0, 1)
 		-- weich nachziehen, damit nichts springt
 		spaceness += (target - spaceness) * 0.08
 		apply(spaceness)

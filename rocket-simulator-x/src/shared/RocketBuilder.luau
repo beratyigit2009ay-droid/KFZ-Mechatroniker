@@ -20,6 +20,8 @@ local SPARKLE_TEXTURE = "rbxasset://textures/particles/sparkles_main.dds"
 -- Namen der Effekte, die beim Zünden an- und ausgeschaltet werden
 local ENGINE_EFFECTS = {
 	EngineFlame = true,
+	EngineCore = true,
+	ShockDiamonds = true,
 	EngineSmoke = true,
 	EngineSparks = true,
 	EngineLight = true,
@@ -129,6 +131,57 @@ local function addEngineEffects(ctx: BuildContext, style: Rockets.RocketStyle, h
 	local nozzle = attachment(ctx, "FlameAttachment", Vector3.new(0, -0.2, 0))
 	flameEmitter(nozzle, "EngineFlame", style, 1, style.FlameColor, style.FlameTip)
 	flameEmitter(nozzle, "BoostFlame", style, 1.6, Color3.fromRGB(220, 245, 255), Color3.fromRGB(80, 160, 255))
+
+	-- Heißer, fast weißer Kern in der Mitte der Flamme
+	local core = Instance.new("ParticleEmitter")
+	core.Name = "EngineCore"
+	core.Texture = FIRE_TEXTURE
+	core.Color = ColorSequence.new(Color3.fromRGB(255, 255, 245), style.FlameColor)
+	core.LightEmission = 1
+	core.LightInfluence = 0
+	core.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, style.Radius * 0.6),
+		NumberSequenceKeypoint.new(1, style.Radius * 0.1),
+	})
+	core.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	core.Lifetime = NumberRange.new(0.12, 0.2)
+	core.Rate = 120
+	core.Speed = NumberRange.new(60, 80)
+	core.SpreadAngle = Vector2.new(2, 2)
+	core.EmissionDirection = Enum.NormalId.Bottom
+	core.ZOffset = 1
+	core.Enabled = false
+	core.Parent = nozzle
+
+	-- Schockdiamanten: helle Knoten im Abgasstrahl, wie bei echten Triebwerken in dichter Luft.
+	-- LockedToPart hält sie als Kette hinter der Düse fest.
+	local diamonds = Instance.new("ParticleEmitter")
+	diamonds.Name = "ShockDiamonds"
+	diamonds.Texture = SPARKLE_TEXTURE
+	diamonds.Color = ColorSequence.new(Color3.fromRGB(255, 250, 230), style.FlameTip)
+	diamonds.LightEmission = 1
+	diamonds.LightInfluence = 0
+	diamonds.LockedToPart = true
+	diamonds.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, style.Radius * 0.9),
+		NumberSequenceKeypoint.new(0.5, style.Radius * 0.6),
+		NumberSequenceKeypoint.new(1, style.Radius * 0.2),
+	})
+	diamonds.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.2),
+		NumberSequenceKeypoint.new(1, 0.9),
+	})
+	diamonds.Lifetime = NumberRange.new(0.25)
+	diamonds.Rate = 16
+	diamonds.Speed = NumberRange.new(style.Height * 0.9)
+	diamonds.SpreadAngle = Vector2.new(0, 0)
+	diamonds.EmissionDirection = Enum.NormalId.Bottom
+	diamonds.ZOffset = 2
+	diamonds.Enabled = false
+	diamonds.Parent = nozzle
 
 	local smoke = Instance.new("ParticleEmitter")
 	smoke.Name = "EngineSmoke"
@@ -262,19 +315,25 @@ local function buildBoosters(ctx: BuildContext, style: Rockets.RocketStyle, heig
 		local angle = ((i - 1) / style.Boosters + 0.5 / math.max(style.Fins, 1)) * math.pi * 2
 		local offset = Vector3.new(math.cos(angle), 0, math.sin(angle)) * (r + boosterRadius * 0.85)
 		local bottom = height * 0.05
-		cylinder(ctx, "Booster" .. i, boosterRadius, boosterLength, bottom + boosterLength / 2, style.Body, style.BodyMaterial, offset)
-		cylinder(ctx, "BoosterBand" .. i, boosterRadius * 1.08, 0.4, bottom + boosterLength * 0.7, style.Trim, style.AccentMaterial, offset)
-		ellipsoid(
+		local parts: { BasePart } = {}
+		table.insert(parts, cylinder(ctx, "Booster" .. i, boosterRadius, boosterLength, bottom + boosterLength / 2, style.Body, style.BodyMaterial, offset))
+		table.insert(parts, cylinder(ctx, "BoosterBand" .. i, boosterRadius * 1.08, 0.4, bottom + boosterLength * 0.7, style.Trim, style.AccentMaterial, offset))
+		table.insert(parts, ellipsoid(
 			ctx,
 			"BoosterCap" .. i,
 			Vector3.new(boosterRadius * 2, boosterRadius * 2.6, boosterRadius * 2),
 			CFrame.new(offset + Vector3.new(0, bottom + boosterLength, 0)),
 			style.Accent,
 			style.BodyMaterial
-		)
-		cylinder(ctx, "BoosterNozzle" .. i, boosterRadius * 0.7, 0.8, bottom - 0.3, style.Trim, Enum.Material.Metal, offset)
+		))
+		table.insert(parts, cylinder(ctx, "BoosterNozzle" .. i, boosterRadius * 0.7, 0.8, bottom - 0.3, style.Trim, Enum.Material.Metal, offset))
 		local flameAttachment = attachment(ctx, "BoosterFlame" .. i, offset + Vector3.new(0, bottom - 0.8, 0))
 		flameEmitter(flameAttachment, "EngineFlame", style, 0.5, style.FlameColor, style.FlameTip)
+		-- Markierung, damit detachBoosters weiß, was zu Booster i gehört
+		for _, part in parts do
+			part:SetAttribute("Booster", i)
+		end
+		flameAttachment:SetAttribute("Booster", i)
 	end
 end
 
@@ -391,6 +450,73 @@ function RocketBuilder.setBoost(model: Model, enabled: boolean)
 	end
 end
 
+-- Abgasstrahl an die Luftdichte anpassen (vacuum: 0 = Boden, 1 = Weltall).
+-- Echte Physik: Im Vakuum drückt keine Luft dagegen, der Strahl wird breit und durchsichtig,
+-- Rauch und Schockdiamanten verschwinden.
+function RocketBuilder.setPlume(model: Model, vacuum: number)
+	local v = math.clamp(vacuum, 0, 1)
+	for _, item in model:GetDescendants() do
+		if item:IsA("ParticleEmitter") then
+			if item.Name == "EngineFlame" or item.Name == "BoostFlame" then
+				local spread = 6 + 55 * v
+				item.SpreadAngle = Vector2.new(spread, spread)
+				item.Lifetime = NumberRange.new(0.18 + 0.25 * v, 0.32 + 0.4 * v)
+			elseif item.Name == "EngineSmoke" or item.Name == "ShockDiamonds" then
+				if item.Enabled and v > 0.85 then
+					item.Enabled = false
+				end
+			end
+		end
+	end
+end
+
+-- Trennt die Booster von der Rakete. Jeder Booster wird ein eigenes Modell (zusammengeschweißt),
+-- das danach frei fällt. Gibt die Booster-Modelle zurück (leer, wenn die Rakete keine hat).
+function RocketBuilder.detachBoosters(model: Model): { Model }
+	local groups: { [number]: { BasePart } } = {}
+	local flames: { Instance } = {}
+	for _, item in model:GetDescendants() do
+		local index = item:GetAttribute("Booster")
+		if type(index) == "number" then
+			if item:IsA("BasePart") then
+				groups[index] = groups[index] or {}
+				table.insert(groups[index], item)
+			elseif item:IsA("Attachment") then
+				table.insert(flames, item)
+			end
+		end
+	end
+	for _, flame in flames do
+		flame:Destroy() -- Booster-Flamme hängt am Root und geht mit aus
+	end
+	local result: { Model } = {}
+	for index, parts in groups do
+		local main: BasePart? = nil
+		for _, part in parts do
+			if part.Name == "Booster" .. index then
+				main = part
+			end
+		end
+		if main then
+			local debris = Instance.new("Model")
+			debris.Name = "Booster" .. index
+			for _, part in parts do
+				local old = part:FindFirstChildOfClass("WeldConstraint")
+				if old then
+					old:Destroy()
+				end
+				if part ~= main then
+					weld(part, main)
+				end
+				part.Parent = debris
+			end
+			debris.PrimaryPart = main
+			table.insert(result, debris)
+		end
+	end
+	return result
+end
+
 -- Löst alle Anker, damit die Physik übernehmen kann
 function RocketBuilder.setAnchored(model: Model, anchored: boolean)
 	for _, item in model:GetDescendants() do
@@ -460,8 +586,90 @@ function RocketBuilder.buildCapsule(rocket: Rockets.RocketDef): Model
 	forceAttachment.Name = "ForceAttachment"
 	forceAttachment.Parent = root
 
+	-- Hitzeschild unten + Wiedereintritts-Feuer (glühende Luft vor der Kapsel)
+	local shield = ellipsoid(ctx, "HeatShield", Vector3.new(size * 1.04, size * 0.5, size * 1.04), CFrame.new(0, size * 0.3, 0), Color3.fromRGB(70, 45, 30), Enum.Material.Slate)
+	shield.CanCollide = false
+	local heat = Instance.new("Attachment")
+	heat.Name = "HeatAttachment"
+	heat.Position = Vector3.new(0, -size * 0.45, 0)
+	heat.Parent = root
+
+	local fire = Instance.new("ParticleEmitter")
+	fire.Name = "ReentryFire"
+	fire.Texture = FIRE_TEXTURE
+	fire.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 250, 220)),
+		ColorSequenceKeypoint.new(0.3, Color3.fromRGB(255, 150, 60)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 60, 120)),
+	})
+	fire.LightEmission = 1
+	fire.LightInfluence = 0
+	fire.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, size * 1.3),
+		NumberSequenceKeypoint.new(1, size * 0.4),
+	})
+	fire.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.05),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	fire.Lifetime = NumberRange.new(0.25, 0.45)
+	fire.Rate = 110
+	fire.Speed = NumberRange.new(5, 12)
+	fire.SpreadAngle = Vector2.new(35, 35)
+	fire.EmissionDirection = Enum.NormalId.Top
+	fire.Enabled = false
+	fire.Parent = heat
+
+	local smoke = Instance.new("ParticleEmitter")
+	smoke.Name = "ReentrySmoke"
+	smoke.Texture = SMOKE_TEXTURE
+	smoke.Color = ColorSequence.new(Color3.fromRGB(120, 110, 105), Color3.fromRGB(60, 60, 65))
+	smoke.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, size),
+		NumberSequenceKeypoint.new(1, size * 4),
+	})
+	smoke.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.4),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	smoke.Lifetime = NumberRange.new(1.5, 2.5)
+	smoke.Rate = 25
+	smoke.Speed = NumberRange.new(2, 6)
+	smoke.EmissionDirection = Enum.NormalId.Top
+	smoke.Enabled = false
+	smoke.Parent = heat
+
+	local glow = Instance.new("PointLight")
+	glow.Name = "ReentryLight"
+	glow.Color = Color3.fromRGB(255, 140, 60)
+	glow.Range = 30
+	glow.Brightness = 5
+	glow.Shadows = false
+	glow.Enabled = false
+	glow.Parent = heat
+
 	model:SetAttribute("RootOffset", size / 2)
 	return model
+end
+
+-- Wiedereintritts-Glühen an/aus
+function RocketBuilder.setReentry(model: Model, enabled: boolean)
+	for _, item in model:GetDescendants() do
+		if item.Name == "ReentryFire" or item.Name == "ReentrySmoke" or item.Name == "ReentryLight" then
+			(item :: any).Enabled = enabled
+		end
+	end
+end
+
+-- Fallschirm zeigen oder verstecken (er geht erst kurz vor dem Boden auf)
+function RocketBuilder.setParachute(model: Model, open: boolean)
+	for _, item in model:GetDescendants() do
+		if item.Name == "Parachute" or item.Name == "ParachuteStripe" then
+			(item :: BasePart).Transparency = if open then 0.05 else 1
+		elseif item:IsA("RopeConstraint") then
+			item.Visible = open
+		end
+	end
 end
 
 return RocketBuilder

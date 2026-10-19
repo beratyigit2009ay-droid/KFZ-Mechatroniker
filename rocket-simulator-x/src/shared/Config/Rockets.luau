@@ -3,9 +3,11 @@
 -- Alle 20 Raketen des Spiels. Hier änderst du Preise, Flugwerte und Aussehen.
 --
 -- Flugwerte (echte Physik, Einheit "Studs"):
---   Thrust           = Schub als Beschleunigung in Studs/s². Muss größer als die Schwerkraft (196.2) sein.
+--   Thrust           = Schub beim Start als Beschleunigung in Studs/s². Wie bei echten Raketen nur 1,3–1,6 × die
+--                      Schwerkraft (196.2): Die Rakete hebt langsam ab und wird schneller, je leichter sie wird.
 --   BurnTime         = wie viele Sekunden der Treibstoff reicht.
---   MaxSpeed         = Höchstgeschwindigkeit (Studs/s), bei der Luftwiderstand und Schub gleich stark sind.
+--   MaxSpeed         = Endgeschwindigkeit in Bodennähe (Studs/s): dort sind Luftwiderstand und Schub gleich stark.
+--                      Weiter oben ist die Luft dünner, dann fliegt die Rakete viel schneller.
 --   RewardMultiplier = Faktor für die Coins pro Meter.
 -- Price/Currency = was die Rakete im Shop kostet ("Coins" oder "Gems").
 --
@@ -69,7 +71,7 @@ local list: { RocketDef } = {
 		Id = "funke", Order = 0, Name = "Funke", Type = "Starter",
 		Description = "Deine erste Rakete. Klein, aber sie fliegt!",
 		Price = 0, Currency = "Coins",
-		Thrust = 320, BurnTime = 3.5, MaxSpeed = 220, RewardMultiplier = 1,
+		Thrust = 272, BurnTime = 3.5, MaxSpeed = 172, RewardMultiplier = 1,
 		Style = {
 			Height = 14, Radius = 1.6, Body = rgb(235, 238, 245), Accent = rgb(230, 60, 60), Trim = rgb(60, 70, 90),
 			BodyMaterial = M.SmoothPlastic, AccentMaterial = M.SmoothPlastic,
@@ -81,7 +83,7 @@ local list: { RocketDef } = {
 		Id = "pionier", Order = 0, Name = "Pionier", Type = "Starter",
 		Description = "Stabiler Rumpf und ein bisschen mehr Schub.",
 		Price = 300, Currency = "Coins",
-		Thrust = 339, BurnTime = 3.8, MaxSpeed = 239, RewardMultiplier = 1.6,
+		Thrust = 282, BurnTime = 3.8, MaxSpeed = 185, RewardMultiplier = 1.6,
 		Style = {
 			Height = 15, Radius = 1.7, Body = rgb(245, 245, 250), Accent = rgb(40, 110, 230), Trim = rgb(50, 55, 70),
 			BodyMaterial = M.SmoothPlastic, AccentMaterial = M.SmoothPlastic,
@@ -93,7 +95,7 @@ local list: { RocketDef } = {
 		Id = "kometenjaeger", Order = 0, Name = "Kometenjäger", Type = "Starter",
 		Description = "Schlank und schnell, mit spitzer Nase.",
 		Price = 640, Currency = "Coins",
-		Thrust = 360, BurnTime = 4.1, MaxSpeed = 259, RewardMultiplier = 2.6,
+		Thrust = 291, BurnTime = 4.1, MaxSpeed = 197, RewardMultiplier = 2.6,
 		Style = {
 			Height = 16, Radius = 1.6, Body = rgb(60, 70, 95), Accent = rgb(90, 220, 255), Trim = rgb(230, 235, 245),
 			BodyMaterial = M.Metal, AccentMaterial = M.SmoothPlastic,
@@ -105,7 +107,7 @@ local list: { RocketDef } = {
 		Id = "glutstern", Order = 0, Name = "Glutstern", Type = "Fire",
 		Description = "Glühende Streifen und eine heiße Flamme.",
 		Price = 1400, Currency = "Coins",
-		Thrust = 381, BurnTime = 4.5, MaxSpeed = 281, RewardMultiplier = 4.1,
+		Thrust = 296, BurnTime = 4.5, MaxSpeed = 207, RewardMultiplier = 4.1,
 		Style = {
 			Height = 17, Radius = 1.8, Body = rgb(60, 25, 20), Accent = rgb(255, 110, 30), Trim = rgb(255, 200, 80),
 			BodyMaterial = M.Slate, AccentMaterial = M.Neon,
@@ -117,7 +119,7 @@ local list: { RocketDef } = {
 		Id = "inferno", Order = 0, Name = "Inferno", Type = "Fire",
 		Description = "Zwei Booster voller Feuer.",
 		Price = 3000, Currency = "Coins",
-		Thrust = 404, BurnTime = 4.9, MaxSpeed = 305, RewardMultiplier = 6.6,
+		Thrust = 300, BurnTime = 4.9, MaxSpeed = 216, RewardMultiplier = 6.6,
 		Style = {
 			Height = 18, Radius = 1.9, Body = rgb(170, 30, 25), Accent = rgb(255, 150, 40), Trim = rgb(40, 20, 20),
 			BodyMaterial = M.SmoothPlastic, AccentMaterial = M.Neon,
@@ -129,7 +131,7 @@ local list: { RocketDef } = {
 		Id = "phoenix", Order = 0, Name = "Phönix", Type = "Fire",
 		Description = "Flügel wie ein Feuervogel.",
 		Price = 6400, Currency = "Coins",
-		Thrust = 428, BurnTime = 5.3, MaxSpeed = 331, RewardMultiplier = 10.5,
+		Thrust = 303, BurnTime = 5.3, MaxSpeed = 225, RewardMultiplier = 10.5,
 		Style = {
 			Height = 19, Radius = 1.9, Body = rgb(255, 170, 40), Accent = rgb(230, 40, 20), Trim = rgb(255, 230, 120),
 			BodyMaterial = M.SmoothPlastic, AccentMaterial = M.Neon,
@@ -141,7 +143,7 @@ local list: { RocketDef } = {
 		Id = "frostpfeil", Order = 0, Name = "Frostpfeil", Type = "Ice",
 		Description = "Eiskalt und windschnittig.",
 		Price = 14000, Currency = "Coins",
-		Thrust = 454, BurnTime = 5.7, MaxSpeed = 359, RewardMultiplier = 16.8,
+		Thrust = 304, BurnTime = 5.7, MaxSpeed = 232, RewardMultiplier = 16.8,
 		Style = {
 			Height = 20, Radius = 1.9, Body = rgb(200, 235, 255), Accent = rgb(80, 190, 255), Trim = rgb(255, 255, 255),
 			BodyMaterial = M.Ice, AccentMaterial = M.Glass,
@@ -153,7 +155,7 @@ local list: { RocketDef } = {
 		Id = "gletscher", Order = 0, Name = "Gletscher", Type = "Ice",
 		Description = "Schwer gepanzert mit vier Eis-Boostern.",
 		Price = 30000, Currency = "Coins",
-		Thrust = 481, BurnTime = 6.2, MaxSpeed = 389, RewardMultiplier = 26.8,
+		Thrust = 302, BurnTime = 6.2, MaxSpeed = 237, RewardMultiplier = 26.8,
 		Style = {
 			Height = 21, Radius = 2.3, Body = rgb(160, 210, 240), Accent = rgb(230, 250, 255), Trim = rgb(60, 110, 160),
 			BodyMaterial = M.Glacier, AccentMaterial = M.Ice,
@@ -165,7 +167,7 @@ local list: { RocketDef } = {
 		Id = "polarlicht", Order = 0, Name = "Polarlicht", Type = "Ice",
 		Description = "Leuchtet grün und blau wie Nordlichter.",
 		Price = 64000, Currency = "Coins",
-		Thrust = 510, BurnTime = 6.7, MaxSpeed = 423, RewardMultiplier = 43,
+		Thrust = 299, BurnTime = 6.7, MaxSpeed = 242, RewardMultiplier = 43,
 		Style = {
 			Height = 22, Radius = 2.0, Body = rgb(30, 50, 80), Accent = rgb(80, 255, 200), Trim = rgb(120, 160, 255),
 			BodyMaterial = M.Glass, AccentMaterial = M.Neon,
@@ -177,7 +179,7 @@ local list: { RocketDef } = {
 		Id = "ionenblitz", Order = 0, Name = "Ionenblitz", Type = "Plasma",
 		Description = "Ein Plasma-Antrieb mit pinker Flamme.",
 		Price = 140000, Currency = "Coins",
-		Thrust = 541, BurnTime = 7.3, MaxSpeed = 458, RewardMultiplier = 69,
+		Thrust = 295, BurnTime = 7.3, MaxSpeed = 245, RewardMultiplier = 69,
 		Style = {
 			Height = 22, Radius = 2.0, Body = rgb(40, 30, 60), Accent = rgb(255, 70, 220), Trim = rgb(200, 200, 230),
 			BodyMaterial = M.Metal, AccentMaterial = M.Neon,
@@ -189,7 +191,7 @@ local list: { RocketDef } = {
 		Id = "plasmasturm", Order = 0, Name = "Plasmasturm", Type = "Plasma",
 		Description = "Sechs Flossen und knisternde Energie.",
 		Price = 290000, Currency = "Coins",
-		Thrust = 573, BurnTime = 7.9, MaxSpeed = 497, RewardMultiplier = 110,
+		Thrust = 290, BurnTime = 7.9, MaxSpeed = 248, RewardMultiplier = 110,
 		Style = {
 			Height = 24, Radius = 2.2, Body = rgb(20, 20, 35), Accent = rgb(0, 230, 255), Trim = rgb(255, 60, 200),
 			BodyMaterial = M.DiamondPlate, AccentMaterial = M.Neon,
@@ -201,7 +203,7 @@ local list: { RocketDef } = {
 		Id = "quasar", Order = 0, Name = "Quasar", Type = "Plasma",
 		Description = "So hell wie ein Quasar am Nachthimmel.",
 		Price = 630000, Currency = "Coins",
-		Thrust = 607, BurnTime = 8.6, MaxSpeed = 540, RewardMultiplier = 180,
+		Thrust = 285, BurnTime = 8.6, MaxSpeed = 251, RewardMultiplier = 180,
 		Style = {
 			Height = 25, Radius = 2.3, Body = rgb(245, 240, 255), Accent = rgb(180, 60, 255), Trim = rgb(60, 220, 255),
 			BodyMaterial = M.Marble, AccentMaterial = M.Neon,
@@ -213,7 +215,7 @@ local list: { RocketDef } = {
 		Id = "xenospaeher", Order = 0, Name = "Xeno-Späher", Type = "Alien",
 		Description = "Eine Alien-Sonde mit grünem Auge.",
 		Price = 1400000, Currency = "Coins",
-		Thrust = 644, BurnTime = 9.3, MaxSpeed = 586, RewardMultiplier = 280,
+		Thrust = 280, BurnTime = 9.3, MaxSpeed = 253, RewardMultiplier = 280,
 		Style = {
 			Height = 24, Radius = 2.4, Body = rgb(70, 90, 70), Accent = rgb(120, 255, 90), Trim = rgb(30, 40, 30),
 			BodyMaterial = M.Foil, AccentMaterial = M.Neon,
@@ -225,7 +227,7 @@ local list: { RocketDef } = {
 		Id = "ufobrecher", Order = 0, Name = "Ufo-Brecher", Type = "Alien",
 		Description = "Breiter Rumpf, vier Booster, Alien-Technik.",
 		Price = 2900000, Currency = "Coins",
-		Thrust = 683, BurnTime = 10.1, MaxSpeed = 635, RewardMultiplier = 450,
+		Thrust = 276, BurnTime = 10.1, MaxSpeed = 257, RewardMultiplier = 450,
 		Style = {
 			Height = 25, Radius = 2.7, Body = rgb(130, 140, 150), Accent = rgb(90, 255, 160), Trim = rgb(200, 255, 80),
 			BodyMaterial = M.DiamondPlate, AccentMaterial = M.Neon,
@@ -237,7 +239,7 @@ local list: { RocketDef } = {
 		Id = "schwarmkoenigin", Order = 0, Name = "Schwarm-Königin", Type = "Alien",
 		Description = "Lila Panzer, giftgrüne Flammen.",
 		Price = 6300000, Currency = "Coins",
-		Thrust = 723, BurnTime = 11.0, MaxSpeed = 689, RewardMultiplier = 720,
+		Thrust = 271, BurnTime = 11.0, MaxSpeed = 260, RewardMultiplier = 720,
 		Style = {
 			Height = 27, Radius = 2.6, Body = rgb(70, 30, 90), Accent = rgb(170, 255, 60), Trim = rgb(220, 120, 255),
 			BodyMaterial = M.Granite, AccentMaterial = M.Neon,
@@ -249,7 +251,7 @@ local list: { RocketDef } = {
 		Id = "goldfalke", Order = 0, Name = "Goldfalke", Type = "Gold",
 		Description = "Echtes Gold glänzt bis ins All.",
 		Price = 14000000, Currency = "Coins",
-		Thrust = 767, BurnTime = 11.9, MaxSpeed = 748, RewardMultiplier = 1200,
+		Thrust = 267, BurnTime = 11.9, MaxSpeed = 263, RewardMultiplier = 1200,
 		Style = {
 			Height = 27, Radius = 2.5, Body = rgb(255, 200, 60), Accent = rgb(255, 245, 200), Trim = rgb(150, 100, 20),
 			BodyMaterial = M.Foil, AccentMaterial = M.Neon,
@@ -261,7 +263,7 @@ local list: { RocketDef } = {
 		Id = "midas", Order = 0, Name = "Midas", Type = "Gold",
 		Description = "Alles, was sie berührt, wird zu Gold.",
 		Price = 29000000, Currency = "Coins",
-		Thrust = 813, BurnTime = 12.9, MaxSpeed = 812, RewardMultiplier = 1800,
+		Thrust = 264, BurnTime = 12.9, MaxSpeed = 269, RewardMultiplier = 1800,
 		Style = {
 			Height = 28, Radius = 2.8, Body = rgb(230, 170, 30), Accent = rgb(40, 30, 20), Trim = rgb(255, 230, 140),
 			BodyMaterial = M.Foil, AccentMaterial = M.Metal,
@@ -273,7 +275,7 @@ local list: { RocketDef } = {
 		Id = "sternenstaub", Order = 0, Name = "Sternenstaub", Type = "Cosmic",
 		Description = "Aus Sternenstaub gebaut. Sie funkelt.",
 		Price = 63000000, Currency = "Coins",
-		Thrust = 862, BurnTime = 14.0, MaxSpeed = 880, RewardMultiplier = 3000,
+		Thrust = 261, BurnTime = 14.0, MaxSpeed = 275, RewardMultiplier = 3000,
 		Style = {
 			Height = 29, Radius = 2.5, Body = rgb(25, 20, 60), Accent = rgb(140, 90, 255), Trim = rgb(255, 220, 120),
 			BodyMaterial = M.Glass, AccentMaterial = M.Neon,
@@ -285,7 +287,7 @@ local list: { RocketDef } = {
 		Id = "nebulatitan", Order = 0, Name = "Nebula-Titan", Type = "Cosmic",
 		Description = "Ein Riese, der ganze Nebel durchquert.",
 		Price = 130000000, Currency = "Coins",
-		Thrust = 913, BurnTime = 15.2, MaxSpeed = 955, RewardMultiplier = 4700,
+		Thrust = 258, BurnTime = 15.2, MaxSpeed = 280, RewardMultiplier = 4700,
 		Style = {
 			Height = 32, Radius = 3.0, Body = rgb(40, 20, 80), Accent = rgb(60, 220, 255), Trim = rgb(255, 120, 230),
 			BodyMaterial = M.Granite, AccentMaterial = M.Neon,
@@ -297,7 +299,7 @@ local list: { RocketDef } = {
 		Id = "singularitaet", Order = 0, Name = "Singularität", Type = "Cosmic",
 		Description = "Die stärkste Rakete. Schwarz wie ein schwarzes Loch.",
 		Price = 290000000, Currency = "Coins",
-		Thrust = 968, BurnTime = 16.5, MaxSpeed = 1037, RewardMultiplier = 7600,
+		Thrust = 256, BurnTime = 16.5, MaxSpeed = 289, RewardMultiplier = 7600,
 		Style = {
 			Height = 34, Radius = 3.0, Body = rgb(10, 10, 15), Accent = rgb(255, 200, 80), Trim = rgb(150, 80, 255),
 			BodyMaterial = M.Glass, AccentMaterial = M.Neon,

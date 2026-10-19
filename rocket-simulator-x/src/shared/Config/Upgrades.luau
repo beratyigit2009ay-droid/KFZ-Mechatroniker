@@ -22,16 +22,16 @@ local Upgrades = {}
 
 local list: { UpgradeDef } = {
 	{
-		-- Schub × (1 + 0.03 × Stufe)
+		-- Schub × (1 + 0.01 × Stufe). Klingt wenig, aber außerhalb der Luft zählt jedes Prozent doppelt.
 		Id = "Engine", Order = 1, Name = "Motor", Icon = "🔥",
 		Description = "Mehr Schub: die Rakete beschleunigt stärker.",
-		Currency = "Coins", BaseCost = 40, Growth = 1.62, MaxLevel = 25, EffectPerLevel = 0.03,
+		Currency = "Coins", BaseCost = 40, Growth = 1.62, MaxLevel = 25, EffectPerLevel = 0.01,
 	},
 	{
-		-- Brenndauer × (1 + 0.04 × Stufe)
+		-- Brenndauer × (1 + 0.015 × Stufe)
 		Id = "Fuel", Order = 2, Name = "Treibstofftank", Icon = "⛽",
 		Description = "Größerer Tank: der Motor brennt länger.",
-		Currency = "Coins", BaseCost = 50, Growth = 1.62, MaxLevel = 25, EffectPerLevel = 0.04,
+		Currency = "Coins", BaseCost = 50, Growth = 1.62, MaxLevel = 25, EffectPerLevel = 0.015,
 	},
 	{
 		-- Luftwiderstand × (1 − 0.025) ^ Stufe

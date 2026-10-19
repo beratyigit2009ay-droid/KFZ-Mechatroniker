@@ -54,7 +54,8 @@ function Formulas.upgradeCost(upgradeId: string, currentLevel: number): number?
 	return math.floor(def.BaseCost * def.Growth ^ currentLevel)
 end
 
--- Luftwiderstand so wählen, dass die Basis-Rakete genau ihre MaxSpeed erreicht.
+-- Luftwiderstand so wählen, dass die Basis-Rakete in Bodennähe (volle Luftdichte, volle Tanks)
+-- genau ihre MaxSpeed als Endgeschwindigkeit hätte. Weiter oben ist die Luft dünner: dort wird sie schneller.
 function Formulas.dragFor(rocket: Rockets.RocketDef, gravity: number): number
 	local netThrust = math.max(rocket.Thrust - gravity, 1)
 	return netThrust / (rocket.MaxSpeed * rocket.MaxSpeed)
@@ -80,19 +81,70 @@ function Formulas.getFlightStats(rocket: Rockets.RocketDef, levels: UpgradeLevel
 	}
 end
 
+-- ===== Echte Physik =====
+
+-- Luftdichte relativ zum Boden (1 = Boden, 0.37 in 8,5 km, fast 0 im Weltall).
+function Formulas.airDensity(altitudeStuds: number): number
+	return math.exp(-math.max(altitudeStuds, 0) / Flight.ScaleHeightStuds)
+end
+
+-- Schwerkraft in dieser Höhe (wird mit dem Abstand zum Planeten schwächer).
+function Formulas.gravityAt(stats: FlightStats, altitudeStuds: number): number
+	local radius = Flight.PlanetRadiusStuds
+	local ratio = radius / (radius + math.max(altitudeStuds, 0))
+	return stats.Gravity * ratio * ratio
+end
+
+-- Masse relativ zur Startmasse. Je mehr Treibstoff verbrannt ist, desto leichter die Rakete.
+function Formulas.massFactor(stats: FlightStats, burnedSeconds: number): number
+	local burned = math.clamp(burnedSeconds / math.max(stats.BurnTime, 0.01), 0, 1)
+	return 1 - Flight.FuelMassFraction * burned
+end
+
 -- Schub als Beschleunigung (Studs/s²) für den aktuellen Flugzustand.
-function Formulas.thrustAcceleration(stats: FlightStats, burning: boolean, boosting: boolean): number
+-- mass = massFactor(): eine leichtere Rakete beschleunigt mit gleichem Schub stärker (Raketengleichung).
+function Formulas.thrustAcceleration(stats: FlightStats, burning: boolean, boosting: boolean, mass: number?): number
+	local m = mass or 1
 	if burning then
-		return stats.Thrust * (if boosting then stats.BoostMultiplier else 1)
+		return stats.Thrust * (if boosting then stats.BoostMultiplier else 1) / m
 	elseif boosting then
-		return stats.Thrust * Flight.CoastBoostThrust
+		return stats.Thrust * Flight.CoastBoostThrust / m
 	end
 	return 0
 end
 
 -- Luftwiderstand als Beschleunigung (wirkt immer gegen die Flugrichtung).
-function Formulas.dragAcceleration(stats: FlightStats, speed: number): number
-	return stats.Drag * speed * speed
+-- Wächst mit dem Tempo², schrumpft mit der Luftdichte.
+function Formulas.dragAcceleration(stats: FlightStats, speed: number, altitudeStuds: number?, mass: number?): number
+	local density = Formulas.airDensity(altitudeStuds or 0)
+	return stats.Drag * density * speed * speed / (mass or 1)
+end
+
+-- Aerodynamische Belastung ("Q") relativ: 1 = Höchstgeschwindigkeit am Boden.
+-- Am höchsten kurz nach dem Start ("Max-Q"): schnell genug, aber die Luft ist noch dicht.
+function Formulas.dynamicPressure(rocket: Rockets.RocketDef, speed: number, altitudeStuds: number): number
+	return Formulas.airDensity(altitudeStuds) * (speed / rocket.MaxSpeed) ^ 2
+end
+
+-- Machzahl: Tempo geteilt durch die Schallgeschwindigkeit
+function Formulas.mach(speedStuds: number): number
+	return speedStuds * Flight.MetersPerStud / Flight.SpeedOfSound
+end
+
+-- Name der Luftschicht für die Anzeige (echte Grenzen der Erdatmosphäre)
+function Formulas.atmosphereLayer(altitudeMeters: number): string
+	if altitudeMeters < 12000 then
+		return "Troposphäre"
+	elseif altitudeMeters < 50000 then
+		return "Stratosphäre"
+	elseif altitudeMeters < 80000 then
+		return "Mesosphäre"
+	elseif altitudeMeters < Flight.KarmanLineMeters then
+		return "Thermosphäre"
+	elseif altitudeMeters < 700000 then
+		return "Weltall (Thermosphäre)"
+	end
+	return "Weltall (Exosphäre)"
 end
 
 -- Rechnet einen Flug ohne Roblox-Physik nach (gleiches Modell wie der Server).
@@ -104,9 +156,10 @@ function Formulas.simulateFlight(stats: FlightStats, boostAtStart: boolean?, dt:
 	while time < Flight.MaxFlightSeconds do
 		local burning = time < stats.BurnTime
 		local boosting = boostLeft > 0
-		local acceleration = Formulas.thrustAcceleration(stats, burning, boosting)
-			- stats.Gravity
-			- Formulas.dragAcceleration(stats, velocity) * (if velocity >= 0 then 1 else -1)
+		local mass = Formulas.massFactor(stats, time)
+		local acceleration = Formulas.thrustAcceleration(stats, burning, boosting, mass)
+			- Formulas.gravityAt(stats, height)
+			- Formulas.dragAcceleration(stats, velocity, height, mass) * (if velocity >= 0 then 1 else -1)
 		velocity += acceleration * step
 		height += velocity * step
 		time += step

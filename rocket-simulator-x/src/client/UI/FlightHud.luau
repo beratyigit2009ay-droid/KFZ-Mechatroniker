@@ -1,6 +1,7 @@
 --!strict
 -- FlightHud.luau  (ModuleScript in StarterPlayerScripts.Client.UI)
--- Anzeige während des Flugs: Countdown, Höhe, Tempo, Treibstoff, Boost, geschätzte Belohnung, Rekord.
+-- Anzeige während des Flugs: Countdown, Höhe, Tempo, Mach, G-Kraft, Luftschicht und Luftdichte,
+-- Treibstoff, Boost, geschätzte Belohnung, Rekord und Missions-Ansagen (Zündung, Max-Q, Weltall …).
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
@@ -25,7 +26,7 @@ function FlightHud.mount(ctx: Context.Context)
 
 	local panel = Components.panel({
 		Name = "FlightHud",
-		Size = UDim2.fromOffset(270, 318),
+		Size = UDim2.fromOffset(280, 386),
 		Position = UDim2.new(1, -16, 0.5, 0),
 		AnchorPoint = Vector2.new(1, 0.5),
 		Visible = false,
@@ -65,10 +66,30 @@ function FlightHud.mount(ctx: Context.Context)
 		LayoutOrder = 3,
 		Parent = panel,
 	})
-	small("TREIBSTOFF", 4)
-	local fuel = Components.progressBar({ Size = UDim2.new(1, 0, 0, 16), LayoutOrder = 5, Parent = panel }, Theme.Colors.Gold, Color3.fromRGB(255, 110, 40))
-	small("BOOST", 6)
-	local boost = Components.progressBar({ Size = UDim2.new(1, 0, 0, 16), LayoutOrder = 7, Parent = panel }, Theme.Colors.Cyan, Theme.Colors.Violet)
+	local physics = Components.label({
+		Text = "Mach 0.0  ·  1.0 G",
+		Size = UDim2.new(1, 0, 0, 22),
+		TextSize = Theme.TextSize.Small,
+		TextColor3 = Theme.Colors.Gold,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		LayoutOrder = 4,
+		Parent = panel,
+	})
+	local layer = Components.label({
+		Text = "Troposphäre  ·  Luft 100 %",
+		Size = UDim2.new(1, 0, 0, 20),
+		TextSize = Theme.TextSize.Small - 2,
+		TextColor3 = Theme.Colors.TextDim,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		LayoutOrder = 5,
+		Parent = panel,
+	})
+	small("BELASTUNG (LUFTDRUCK)", 6)
+	local load = Components.progressBar({ Size = UDim2.new(1, 0, 0, 10), LayoutOrder = 7, Parent = panel }, Theme.Colors.Success, Theme.Colors.Danger)
+	small("TREIBSTOFF", 8)
+	local fuel = Components.progressBar({ Size = UDim2.new(1, 0, 0, 16), LayoutOrder = 9, Parent = panel }, Theme.Colors.Gold, Color3.fromRGB(255, 110, 40))
+	small("BOOST", 10)
+	local boost = Components.progressBar({ Size = UDim2.new(1, 0, 0, 16), LayoutOrder = 11, Parent = panel }, Theme.Colors.Cyan, Theme.Colors.Violet)
 	local reward = Components.label({
 		Text = "≈ +0 💰",
 		Size = UDim2.new(1, 0, 0, 30),
@@ -76,7 +97,7 @@ function FlightHud.mount(ctx: Context.Context)
 		TextSize = Theme.TextSize.Large,
 		TextColor3 = Theme.Colors.Coins,
 		TextXAlignment = Enum.TextXAlignment.Left,
-		LayoutOrder = 8,
+		LayoutOrder = 12,
 		Parent = panel,
 	})
 	local record = Components.label({
@@ -85,7 +106,7 @@ function FlightHud.mount(ctx: Context.Context)
 		TextSize = Theme.TextSize.Small,
 		TextColor3 = Theme.Colors.TextDim,
 		TextXAlignment = Enum.TextXAlignment.Left,
-		LayoutOrder = 9,
+		LayoutOrder = 13,
 		Parent = panel,
 	})
 
@@ -120,6 +141,29 @@ function FlightHud.mount(ctx: Context.Context)
 	})
 	local bannerScale = Components.new("UIScale", { Parent = banner }) :: UIScale
 
+	-- Missions-Ansage (wie der Sprecher bei einem echten Start)
+	local calloutLabel = Components.label({
+		Name = "Callout",
+		Text = "",
+		Size = UDim2.fromOffset(680, 46),
+		Position = UDim2.fromScale(0.5, 0.62),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Font = Theme.Fonts.Title,
+		TextSize = 32,
+		TextColor3 = Theme.Colors.Text,
+		TextStrokeTransparency = 0.25,
+		Visible = false,
+		Parent = root,
+	})
+	local calloutScale = Components.new("UIScale", { Parent = calloutLabel }) :: UIScale
+	local calloutColors: { [string]: Color3 } = {
+		Info = Theme.Colors.Cyan,
+		Warn = Theme.Colors.Gold,
+		Space = Theme.Colors.Violet,
+		Danger = Color3.fromRGB(255, 140, 70),
+	}
+	local calloutId = 0
+
 	local function pop(label: TextLabel, scale: UIScale, text: string)
 		label.Text = text
 		label.Visible = true
@@ -130,6 +174,18 @@ function FlightHud.mount(ctx: Context.Context)
 	local currentFlight: FlightController.ActiveFlight? = nil
 	local recordShown = false
 
+	FlightController.Callout:Connect(function(text: string, kind: string)
+		calloutId += 1
+		local id = calloutId
+		calloutLabel.TextColor3 = calloutColors[kind] or Theme.Colors.Text
+		pop(calloutLabel, calloutScale, text)
+		task.delay(2.6, function()
+			if calloutId == id then
+				calloutLabel.Visible = false
+			end
+		end)
+	end)
+
 	FlightController.Started:Connect(function(flight: FlightController.ActiveFlight)
 		currentFlight = flight
 		recordShown = false
@@ -137,6 +193,9 @@ function FlightHud.mount(ctx: Context.Context)
 		record.Text = if flight.BestAltitude > 0 then "Rekord: " .. Format.altitude(flight.BestAltitude) else "Erster Flug!"
 		altitude.Text = "0 m"
 		speed.Text = "0 km/h"
+		physics.Text = "Mach 0.0  ·  1.0 G"
+		layer.Text = "Troposphäre  ·  Luft 100 %"
+		load.Set(0)
 		fuel.Set(1)
 		boost.Set(1)
 		reward.Text = "≈ +0 💰"
@@ -170,6 +229,10 @@ function FlightHud.mount(ctx: Context.Context)
 		end
 		altitude.Text = Format.altitude(t.MaxAltitudeMeters)
 		speed.Text = "🚀 " .. Format.speed(t.Speed, FlightConfig.MetersPerStud)
+		physics.Text = string.format("Mach %.1f  ·  %.1f G", t.Mach, math.max(t.GForce, 0))
+		local percent = t.AirDensity * 100
+		layer.Text = t.Layer .. "  ·  Luft " .. (if percent >= 1 then string.format("%d %%", math.floor(percent + 0.5)) else "< 1 %")
+		load.Set(math.clamp(t.Load / 1.2, 0, 1))
 		fuel.Set(t.Fuel)
 		boost.Set(t.Boost)
 		if flight.Rocket then
@@ -192,6 +255,7 @@ function FlightHud.mount(ctx: Context.Context)
 		panel.Visible = false
 		countdown.Visible = false
 		banner.Visible = false
+		calloutLabel.Visible = false
 	end)
 end
 

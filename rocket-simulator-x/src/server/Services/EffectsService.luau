@@ -1,6 +1,6 @@
 --!strict
 -- EffectsService.luau  (ModuleScript in ServerScriptService.Server.Services)
--- Kurzlebige Effekte, die alle Spieler sehen: Startrauch, Gipfel-Blitz, Lande-Staub.
+-- Kurzlebige Effekte, die alle Spieler sehen: Startrauch, Booster-Trennung, Gipfel-Blitz, Fallschirm, Lande-Staub.
 -- Regeln gegen Lag: höchstens MAX_ACTIVE Effekte gleichzeitig, jeder räumt sich nach kurzer Zeit selbst weg,
 -- Partikel werden mit :Emit() einmalig ausgestoßen statt dauerhaft zu laufen.
 
@@ -13,6 +13,7 @@ local EffectsService = {}
 local MAX_ACTIVE = 24
 local SMOKE_TEXTURE = "rbxasset://textures/particles/smoke_main.dds"
 local SPARKLE_TEXTURE = "rbxasset://textures/particles/sparkles_main.dds"
+local FIRE_TEXTURE = "rbxasset://textures/particles/fire_main.dds"
 
 local active = 0
 
@@ -65,16 +66,96 @@ local function smokeEmitter(parent: Instance, color: Color3, size: number, speed
 	return emitter
 end
 
--- Rauchwolke, die sich beim Start am Boden ausbreitet
+-- Zündung: riesige Rauchwolke, die aus der Rampe quillt und sich flach über den Boden wälzt,
+-- dazu ein greller Lichtblitz. Wie bei einem echten Start (Flammengraben unter der Rampe).
 function EffectsService.launchSmoke(position: Vector3, radius: number)
-	local p = carrier(position, 6)
+	local p = carrier(position, 9)
 	if p == nil then
 		return
 	end
-	local emitter = smokeEmitter(p, Color3.fromRGB(225, 225, 230), radius * 4, 45, 3.5)
-	emitter.SpreadAngle = Vector2.new(85, 85)
-	emitter.EmissionDirection = Enum.NormalId.Top
-	emitter:Emit(45)
+	-- 1) Bodenwolke: fast waagerecht nach außen, wird langsam und groß
+	local ground = smokeEmitter(p, Color3.fromRGB(235, 232, 228), radius * 9, 120, 6)
+	ground.SpreadAngle = Vector2.new(88, 88)
+	ground.EmissionDirection = Enum.NormalId.Top
+	ground.Acceleration = Vector3.new(0, -18, 0)
+	ground.Drag = 1.6
+	ground:Emit(70)
+	-- 2) Pilz nach oben
+	local column = smokeEmitter(p, Color3.fromRGB(215, 212, 210), radius * 6, 60, 4.5)
+	column.SpreadAngle = Vector2.new(30, 30)
+	column.EmissionDirection = Enum.NormalId.Top
+	column:Emit(35)
+	-- 3) Feuerschein am Boden
+	local light = Instance.new("PointLight")
+	light.Color = Color3.fromRGB(255, 170, 80)
+	light.Range = 60
+	light.Brightness = 8
+	light.Shadows = false
+	light.Parent = p
+	TweenService:Create(light, TweenInfo.new(4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Brightness = 0 }):Play()
+end
+
+-- Kleiner Knall, wenn Booster abgesprengt werden
+function EffectsService.separationPuff(position: Vector3, color: Color3)
+	local p = carrier(position, 3)
+	if p == nil then
+		return
+	end
+	local puff = smokeEmitter(p, Color3.fromRGB(240, 240, 245), 10, 40, 1.4)
+	puff.SpreadAngle = Vector2.new(180, 180)
+	puff:Emit(24)
+	local sparks = Instance.new("ParticleEmitter")
+	sparks.Texture = SPARKLE_TEXTURE
+	sparks.Color = ColorSequence.new(color, Color3.new(1, 1, 1))
+	sparks.LightEmission = 1
+	sparks.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.8),
+		NumberSequenceKeypoint.new(1, 0),
+	})
+	sparks.Lifetime = NumberRange.new(0.4, 0.8)
+	sparks.Speed = NumberRange.new(50, 100)
+	sparks.SpreadAngle = Vector2.new(180, 180)
+	sparks.Rate = 0
+	sparks.Parent = p
+	sparks:Emit(40)
+end
+
+-- Abgeworfener Booster: brennt noch kurz nach und zieht eine Rauchfahne hinter sich her
+function EffectsService.boosterTrail(part: BasePart, flameColor: Color3)
+	local attachment = Instance.new("Attachment")
+	attachment.Name = "DebrisTrail"
+	attachment.Parent = part
+	local smoke = smokeEmitter(attachment, Color3.fromRGB(110, 105, 100), part.Size.Y * 3, 4, 2.5)
+	smoke.Rate = 30
+	local fire = Instance.new("ParticleEmitter")
+	fire.Texture = FIRE_TEXTURE
+	fire.Color = ColorSequence.new(flameColor, Color3.fromRGB(255, 80, 30))
+	fire.LightEmission = 1
+	fire.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, part.Size.Y * 1.2),
+		NumberSequenceKeypoint.new(1, 0),
+	})
+	fire.Lifetime = NumberRange.new(0.2, 0.35)
+	fire.Speed = NumberRange.new(3, 8)
+	fire.Rate = 50
+	fire.Parent = attachment
+	-- Nachbrennen hört nach 1,5 s auf, der Rauch bleibt
+	task.delay(1.5, function()
+		if fire.Parent then
+			fire.Enabled = false
+		end
+	end)
+end
+
+-- Weißer Ruck, wenn der Fallschirm aufgeht
+function EffectsService.parachutePuff(position: Vector3)
+	local p = carrier(position, 3)
+	if p == nil then
+		return
+	end
+	local puff = smokeEmitter(p, Color3.fromRGB(250, 250, 255), 14, 30, 1.2)
+	puff.SpreadAngle = Vector2.new(180, 180)
+	puff:Emit(18)
 end
 
 -- Heller Blitz + Funkenregen am höchsten Punkt

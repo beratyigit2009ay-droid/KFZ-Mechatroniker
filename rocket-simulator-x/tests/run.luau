@@ -259,11 +259,47 @@ describe("Formeln", function()
 		expectEqual(Formulas.upgradeCost("Engine", -1), nil, "negative Stufe")
 		expectEqual(Formulas.upgradeCost("Gibtsnicht", 0), nil, "unbekannt")
 	end)
-	it("ohne Upgrades erreicht die Rakete ihre Höchstgeschwindigkeit", function()
+	it("am Boden ist MaxSpeed die Endgeschwindigkeit, oben wird die Rakete schneller", function()
 		local rocket = Rockets.List[1]
 		local stats = Formulas.getFlightStats(rocket, zeroUpgrades())
 		local terminal = math.sqrt((stats.Thrust - stats.Gravity) / stats.Drag)
 		expectTrue(math.abs(terminal - rocket.MaxSpeed) < 0.01, "Höchstgeschwindigkeit " .. terminal)
+		local estimate = Formulas.simulateFlight(stats, false)
+		expectTrue(estimate.TopSpeed > rocket.MaxSpeed, "in dünner Luft muss die Rakete schneller werden")
+	end)
+	it("echte Physik: Luft wird dünner, Schwerkraft schwächer, leere Rakete leichter", function()
+		expectEqual(Formulas.airDensity(0), 1, "Boden")
+		local scale = Formulas.airDensity(Flight.ScaleHeightStuds)
+		expectTrue(math.abs(scale - math.exp(-1)) < 1e-9, "Skalenhöhe")
+		expectTrue(Formulas.airDensity(10000) < 1e-4, "Weltall fast ohne Luft")
+		expectEqual(Formulas.airDensity(-50), 1, "unter dem Boden nicht dichter als 1")
+		local stats = Formulas.getFlightStats(Rockets.List[1], zeroUpgrades())
+		expectEqual(Formulas.gravityAt(stats, 0), stats.Gravity, "g am Boden")
+		expectTrue(Formulas.gravityAt(stats, 60000) < stats.Gravity * 0.9, "g oben schwächer")
+		expectEqual(Formulas.massFactor(stats, 0), 1, "volle Tanks")
+		expectTrue(math.abs(Formulas.massFactor(stats, stats.BurnTime) - (1 - Flight.FuelMassFraction)) < 1e-9, "leere Tanks")
+		expectEqual(Formulas.massFactor(stats, stats.BurnTime * 5), 1 - Flight.FuelMassFraction, "nicht leichter als leer")
+		local full = Formulas.thrustAcceleration(stats, true, false, 1)
+		local empty = Formulas.thrustAcceleration(stats, true, false, 0.7)
+		expectTrue(empty > full, "leichte Rakete beschleunigt stärker")
+		expectTrue(Formulas.dragAcceleration(stats, 100, 3000) < Formulas.dragAcceleration(stats, 100, 0), "dünne Luft bremst weniger")
+	end)
+	it("Startbeschleunigung ist realistisch (1,2–1,8 g) und jede Rakete hebt ab", function()
+		for _, rocket in Rockets.List do
+			local ratio = rocket.Thrust / Flight.DefaultGravity
+			expectTrue(ratio >= 1.2 and ratio <= 1.8, rocket.Name .. ": Schub/Gewicht " .. ratio)
+		end
+	end)
+	it("Mach, Luftschichten und Belastung", function()
+		expectTrue(math.abs(Formulas.mach(34.3) - 1) < 1e-9, "Mach 1")
+		expectEqual(Formulas.atmosphereLayer(5000), "Troposphäre")
+		expectEqual(Formulas.atmosphereLayer(30000), "Stratosphäre")
+		expectEqual(Formulas.atmosphereLayer(60000), "Mesosphäre")
+		expectEqual(Formulas.atmosphereLayer(90000), "Thermosphäre")
+		expectEqual(Formulas.atmosphereLayer(150000), "Weltall (Thermosphäre)")
+		local rocket = Rockets.List[1]
+		expectTrue(math.abs(Formulas.dynamicPressure(rocket, rocket.MaxSpeed, 0) - 1) < 1e-9, "Belastung 1 bei MaxSpeed am Boden")
+		expectTrue(Formulas.dynamicPressure(rocket, rocket.MaxSpeed, 5000) < 0.01, "oben fast keine Belastung")
 	end)
 	it("jedes Upgrade und der Boost machen den Flug höher", function()
 		local rocket = Rockets.List[3]
@@ -482,6 +518,59 @@ describe("Raketenmodelle (mit echten Roblox-Instanzen aus Lune gebaut)", functio
 	end)
 end)
 
+describe("Booster-Trennung und Kapsel", function()
+	it("Booster lösen sich als eigene Modelle, Rest bleibt an Root geschweißt", function()
+		for _, rocket in Rockets.List do
+			if rocket.Style.Boosters > 0 then
+				local model = RocketBuilder.build(rocket)
+				local before = #model:GetDescendants()
+				local boosters = RocketBuilder.detachBoosters(model)
+				expectEqual(#boosters, rocket.Style.Boosters, rocket.Name .. ": Anzahl Booster")
+				for _, booster in boosters do
+					local main = booster.PrimaryPart
+					expectTrue(main ~= nil, rocket.Name .. ": Booster ohne PrimaryPart")
+					for _, item in booster:GetDescendants() do
+						if item:IsA("WeldConstraint") then
+							expectTrue(item.Part0 == main, rocket.Name .. ": Booster-Teil nicht am Booster geschweißt")
+						end
+					end
+				end
+				for _, item in model:GetDescendants() do
+					expectTrue(item:GetAttribute("Booster") == nil, rocket.Name .. ": Booster-Rest an der Rakete: " .. item.Name)
+					if item:IsA("WeldConstraint") then
+						expectTrue(item.Part0 == model.PrimaryPart, rocket.Name .. ": Schweißnaht nicht an Root")
+					end
+				end
+				expectTrue(#model:GetDescendants() < before, rocket.Name .. ": nichts entfernt")
+			else
+				expectEqual(#RocketBuilder.detachBoosters(RocketBuilder.build(rocket)), 0, rocket.Name .. ": hat keine Booster")
+			end
+		end
+	end)
+	it("Kapsel: Fallschirm erst zu, Wiedereintritts-Feuer an und aus", function()
+		local capsule = RocketBuilder.buildCapsule(Rockets.List[1])
+		local chute = capsule:FindFirstChild("Parachute", true)
+		local fire = capsule:FindFirstChild("ReentryFire", true)
+		expectTrue(not fire.Enabled, "Feuer muss zuerst aus sein")
+		RocketBuilder.setParachute(capsule, false)
+		RocketBuilder.setReentry(capsule, true)
+		expectEqual(chute.Transparency, 1, "Schirm versteckt")
+		expectTrue(fire.Enabled, "Feuer an")
+		RocketBuilder.setReentry(capsule, false)
+		RocketBuilder.setParachute(capsule, true)
+		expectTrue(chute.Transparency < 0.1 and not fire.Enabled, "Schirm offen, Feuer aus")
+	end)
+	it("Abgasstrahl: im Weltall breiter, ohne Rauch", function()
+		local model = RocketBuilder.build(Rockets.List[5])
+		RocketBuilder.setEngine(model, true)
+		RocketBuilder.setPlume(model, 1)
+		local flame = model:FindFirstChild("EngineFlame", true)
+		local smoke = model:FindFirstChild("EngineSmoke", true)
+		expectTrue(flame.SpreadAngle.X > 50, "Strahl breiter")
+		expectTrue(not smoke.Enabled, "kein Rauch im Vakuum")
+	end)
+end)
+
 describe("Signal", function()
 	it("Handler bekommen Werte und lassen sich trennen", function()
 		local signal = Signal.new()
@@ -513,8 +602,8 @@ describe("Wirtschaft: Spielablauf-Simulation", function()
 			coins += Formulas.flightReward(estimate.MaxAltitudeMeters, rocket, 1).Coins
 			flights += 1
 			sinceLast += 1
-			-- Countdown + Flug + Kapsel + Pause ≈ Flugzeit + 16 s
-			seconds += estimate.Duration + Flight.CountdownSeconds + 9 + Flight.CooldownSeconds + 2
+			-- Countdown + Flug + Wiedereintritt/Fallschirm + Pause ≈ Flugzeit + 19 s
+			seconds += estimate.Duration + Flight.CountdownSeconds + 12 + Flight.CooldownSeconds + 2
 			local buying = true
 			while buying do
 				buying = false
