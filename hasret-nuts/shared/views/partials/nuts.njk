@@ -1,0 +1,59 @@
+{#-
+  Hasret Nuts – Nuss-Bewegung (Styles: /assets/motion/nuts.css, Parallaxe: /assets/motion/nuts.js)
+
+  1) Im Eröffnungs-Overlay (wird von partials/intro.njk eingebunden):
+       {% set nutsPart = 'burst' %}{% include "partials/nuts.njk" %}
+  2) Im Hero der Startseite, innerhalb eines Elements mit position:relative
+     (sonst Klasse "nut-host" ergänzen):
+       {% set nutsPart = 'field' %}{% set nutsLayout = 'corporate' %}{% include "partials/nuts.njk" %}
+     nutsLayout: 'corporate' (Nüsse in den freien Rändern um Foto C-01/C-02) | 'shop' (rund um das Hero-Foto)
+
+  Die Nüsse verweisen per <use href="#hnl-…"> auf die Symbole des Kopfzeilen-Logos
+  (partials/logo.njk mit logoId = 'hnl') – keine zusätzlichen Grafiken nötig.
+  Alles ist aria-hidden und nicht fokussierbar. Positionen stehen in Inline-Styles
+  (CSP: style-src-attr 'unsafe-inline' ist erlaubt, Skripte bleiben nonce-pflichtig).
+-#}
+{%- macro _use(kind) -%}
+{%- if kind == 'leaf' -%}<use href="#hnl-leaf" transform="translate(-31 2)"/>{%- else -%}<use href="#hnl-{{ kind }}"/>{%- endif -%}
+{%- endmacro -%}
+{%- if nutsPart == 'burst' -%}
+{#- Art, dx (vw), dy (vh), Drehung (deg), Skalierung, Start (s) -#}
+{%- set _hnBurst = [
+  ['almond', -38, -30, -220, 1.1, 0.90], ['pista', -18, -40, 160, 1.0, 0.88], ['hazel', 8, -44, -130, 1.15, 0.92],
+  ['cashew', 28, -34, 200, 1.05, 0.89], ['walnut', 42, -12, -180, 1.2, 0.91], ['almond', 40, 14, 140, 0.95, 0.87],
+  ['pista', 22, 30, -160, 1.1, 0.90], ['hazel', -4, 34, 120, 1.0, 0.92], ['cashew', -26, 26, -200, 1.1, 0.88],
+  ['walnut', -44, 6, 180, 1.05, 0.90], ['leaf', -32, -10, 95, 1.0, 0.86], ['leaf', 34, -22, -95, 0.95, 0.89]
+] -%}
+<span class="hn-intro__nuts" aria-hidden="true">
+{%- for n in _hnBurst %}
+    <span class="hn-intro__nut" style="--dx:{{ n[1] }}vw;--dy:{{ n[2] }}vh;--r:{{ n[3] }}deg;--s:{{ n[4] }};--bd:{{ n[5] }}s"><svg viewBox="-40 -40 80 80" focusable="false">{{ _use(n[0]) }}</svg></span>
+{%- endfor %}
+  </span>
+{%- elif nutsPart == 'field' -%}
+{%- set _hnLayout = 'shop' if nutsLayout == 'shop' else 'corporate' -%}
+{#- Art, Position, Größe (px), Parallaxe-Tiefe, Float-Dauer, Float-Versatz, Drehung von/bis, Schweben x/y -#}
+{%- if _hnLayout == 'shop' -%}
+{%- set _hnField = [
+  ['pista',  'left:24%;top:-9%',    80, 1.2, '7.5s', '-1s',   '-18deg', '10deg',  '5px',  '-16px'],
+  ['almond', 'left:-4%;top:42%',    64, 0.8, '8.5s', '-3s',   '24deg',  '-8deg',  '-6px', '-12px'],
+  ['leaf',   'left:9%;bottom:-10%', 76, 0.6, '9s',   '-2s',   '-30deg', '-12deg', '8px',  '-10px'],
+  ['hazel',  'right:-3%;top:8%',    78, 1.4, '6.8s', '-4s',   '8deg',   '-16deg', '-7px', '-18px'],
+  ['walnut', 'right:-4%;top:56%',   84, 1.0, '8s',   '-1.5s', '-10deg', '14deg',  '6px',  '-12px'],
+  ['cashew', 'right:16%;bottom:-8%',72, 1.1, '7.2s', '-2.5s', '30deg',  '12deg',  '-5px', '-14px']
+] -%}
+{%- else -%}
+{%- set _hnField = [
+  ['pista',  'left:1%;top:7%',      78, 1.2, '7.5s', '-1s',   '-18deg', '10deg',  '5px',  '-16px'],
+  ['almond', 'left:4%;top:33%',     62, 0.8, '8.5s', '-3s',   '24deg',  '-8deg',  '-6px', '-12px'],
+  ['leaf',   'left:1%;top:52%',     72, 0.6, '9s',   '-2s',   '-30deg', '-12deg', '8px',  '-10px'],
+  ['hazel',  'right:-3%;top:44%',   75, 1.4, '6.8s', '-4s',   '8deg',   '-16deg', '-7px', '-18px'],
+  ['walnut', 'left:52%;bottom:0',   80, 1.0, '8s',   '-1.5s', '-10deg', '14deg',  '6px',  '-12px'],
+  ['cashew', 'right:12%;top:-5%',   68, 1.1, '7.2s', '-2.5s', '30deg',  '12deg',  '-5px', '-14px']
+] -%}
+{%- endif -%}
+<div class="nut-field nut-field--{{ _hnLayout }}" data-nut-field aria-hidden="true">
+{%- for n in _hnField %}
+  <span class="nut" style="{{ n[1] }};--w:{{ n[2] }}px;--d:{{ n[3] }};--i:{{ loop.index0 }}"><span class="nut__in"><span class="nut__float" style="--t:{{ n[4] }};--fd:{{ n[5] }};--r0:{{ n[6] }};--r1:{{ n[7] }};--fx:{{ n[8] }};--fy:{{ n[9] }}"><svg viewBox="-40 -40 80 80" focusable="false">{{ _use(n[0]) }}</svg></span></span></span>
+{%- endfor %}
+</div>
+{%- endif -%}

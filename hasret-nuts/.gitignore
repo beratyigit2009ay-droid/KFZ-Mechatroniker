@@ -1,0 +1,16 @@
+# Abhängigkeiten
+node_modules/
+
+# Geheimnisse – niemals einchecken
+.env
+.env.*
+!.env.example
+
+# Datenbank (SQLite inkl. WAL-/SHM-Dateien) und Laufzeitdaten
+data/*.db*
+var/
+
+# Systemdateien / Logs
+.DS_Store
+npm-debug.log*
+*.log

@@ -1,0 +1,104 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-cart{% endblock %}
+{% block content %}
+<section class="wrap cart-page" aria-labelledby="h-cart">
+  {{ shop.steps(1) }}
+  <h1 id="h-cart" class="page-title">Ihr Warenkorb</h1>
+
+  {% for n in summary.notices %}
+  <div class="flash flash--{{ n.type }}" role="{{ 'alert' if n.type == 'error' else 'status' }}"><p class="flash__text">{{ n.message }}</p></div>
+  {% endfor %}
+
+  {% if summary.empty %}
+  <div class="cart-empty-page">
+    <h2>Ihr Warenkorb ist noch leer.</h2>
+    <p class="muted">Entdecken Sie unsere Spezialitäten:</p>
+    <ul class="cat-links">
+      {% for c in navCategories %}<li><a class="tab" href="/kategorie/{{ c.slug }}">{{ c.name }}</a></li>{% endfor %}
+      <li><a class="tab tab--quiet" href="/angebote">Angebote</a></li>
+    </ul>
+  </div>
+  {% else %}
+  <div class="cart-layout">
+    <div class="cart-lines">
+      <p class="sr-only">{{ summary.count }} Artikel im Warenkorb</p>
+      <ul class="cart-list" aria-label="Artikel im Warenkorb">
+        {% for l in summary.lines %}
+        <li class="ci" data-line="{{ l.key }}">
+          <a class="ci__thumb" href="{{ l.href }}" tabindex="-1" aria-hidden="true"><span>{{ l.photo.id }}</span></a>
+          <div class="ci__main">
+            <a class="ci__name" href="{{ l.href }}">{{ l.name }}</a>
+            {% if l.bundle.length %}
+            <span class="ci__meta">Ihre Auswahl: {{ l.bundleText }}</span>
+            {% elif l.variantLabel %}
+            <span class="ci__meta">{{ l.variantLabel }}{% if l.size and l.size != l.variantLabel %} · {{ l.size }}{% endif %}</span>
+            {% elif l.size %}
+            <span class="ci__meta">{{ l.size }}</span>
+            {% endif %}
+            <span class="ci__unit">Einzelpreis {{ l.unitCents | euro }}</span>
+            <div class="ci__row">
+              <form class="qty-form" method="post" action="/warenkorb/aendern" data-qty-form>
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <input type="hidden" name="key" value="{{ l.key }}">
+                {# Standard-Button für „Enter“ im Mengenfeld (übernimmt die eingegebene Menge) #}
+                <button type="submit" class="visually-hidden-btn" tabindex="-1" aria-hidden="true">Menge übernehmen</button>
+                <div class="stepper stepper--sm">
+                  <button type="submit" class="step" name="step" value="dec" aria-label="Menge von {{ l.name }} verringern"{% if l.qty <= 1 %} disabled{% endif %}>{{ shop.icon('minus', 16, 1.8) }}</button>
+                  <label class="sr-only" for="qty-{{ loop.index }}">Menge {{ l.name }}</label>
+                  <input class="stepper__val" id="qty-{{ loop.index }}" type="number" name="qty" min="0" max="99" value="{{ l.qty }}" inputmode="numeric" data-qty-input>
+                  <button type="submit" class="step" name="step" value="inc" aria-label="Menge von {{ l.name }} erhöhen"{% if l.qty >= 99 %} disabled{% endif %}>{{ shop.icon('plus', 16, 1.8) }}</button>
+                </div>
+                <button type="submit" class="link-btn qty-form__update" data-qty-update>Aktualisieren</button>
+              </form>
+              <form method="post" action="/warenkorb/entfernen">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <input type="hidden" name="key" value="{{ l.key }}">
+                <button type="submit" class="ci__remove" aria-label="{{ l.name }} entfernen">{{ shop.icon('trash', 18, 1.6) }}<span class="ci__remove-txt">Entfernen</span></button>
+              </form>
+            </div>
+          </div>
+          <strong class="ci__price">{{ l.lineCents | euro }}</strong>
+        </li>
+        {% endfor %}
+      </ul>
+      <a class="link-u back-link" href="/">{{ shop.icon('back', 16, 1.8) }} Weiter einkaufen</a>
+    </div>
+
+    <aside class="summary" aria-labelledby="h-summary">
+      <h2 id="h-summary" class="summary__h">Zusammenfassung</h2>
+      <div class="discount">
+        {% if summary.discount %}
+        <div class="discount__applied">
+          <span class="discount__chip">{{ shop.icon('tag', 16, 1.6) }}<strong>{{ summary.discount.code }}</strong> {{ summary.discount.label }}</span>
+          <form method="post" action="/warenkorb/rabatt/entfernen">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            <button type="submit" class="link-btn">Code entfernen</button>
+          </form>
+        </div>
+        {% else %}
+        <form class="discount__form" method="post" action="/warenkorb/rabatt" novalidate>
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+          <label class="field__label" for="f-code">Rabattcode</label>
+          <div class="discount__row">
+            <input class="field__input discount__input" id="f-code" name="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="32" value="{{ codeValue }}" placeholder="z. B. WILLKOMMEN10">
+            <button type="submit" class="btn btn-dark discount__btn">Einlösen</button>
+          </div>
+          <p class="discount__hint">Aktuelle Codes finden Sie unter <a href="/angebote">Angebote</a>. Ein Code pro Bestellung.</p>
+        </form>
+        {% endif %}
+      </div>
+      <dl class="totals">
+        <div class="totals__row"><dt>Zwischensumme</dt><dd>{{ summary.subtotalCents | euro }}</dd></div>
+        {% if summary.discount %}<div class="totals__row totals__row--discount"><dt>Rabatt ({{ summary.discount.code }})</dt><dd>{{ (0 - summary.discount.cents) | euro }}</dd></div>{% endif %}
+        <div class="totals__row"><dt>Versand</dt><dd class="muted">wird in der Bestätigung genannt</dd></div>
+        <div class="totals__row totals__row--total"><dt>Summe (vorläufig)</dt><dd>{{ summary.totalCents | euro }}</dd></div>
+      </dl>
+      <p class="totals__tax">inkl. MwSt. · Abholung in Memmingen: kostenlos</p>
+      <a class="btn btn--lg btn--block buy" href="/kasse">Zur Bestellanfrage {{ shop.icon('arrow', 18, 1.8) }}</a>
+      <p class="summary__note">{{ shop.icon('mail', 18, 1.6) }}<span>Versandkosten und Zahlungsdetails erhalten Sie mit der Bestellbestätigung per E-Mail. Sie bestellen unverbindlich.</span></p>
+    </aside>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

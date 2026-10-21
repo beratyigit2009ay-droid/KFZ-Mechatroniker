@@ -1,0 +1,31 @@
+{#- Owner: BUILD-AUTH · Rahmen der Verwaltung. Variablen: section, adminCounts { orders, inquiries, feedback }. Block: adminContent -#}
+{% extends "layout.njk" %}
+{% import "macros/forms.njk" as forms with context %}
+{% import "account/_ui.njk" as ui %}
+{% block bodyClass %}page-admin{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ asset('/static/css/account.css') }}">{% endblock %}
+{% block content %}
+<div class="admin-bar on-dark">
+  <div class="admin-bar__inner wrap">
+    <p class="admin-bar__title">{{ ui.icon('lock', 16, 1.8) }} Verwaltung · nur für Administratoren</p>
+    <p class="admin-bar__user">Angemeldet als {{ user.email }} · <a href="/konto">Mein Konto</a></p>
+  </div>
+</div>
+<div class="admin wrap">
+  <div class="admin__grid">
+    <nav class="admin__nav" aria-label="Verwaltung">
+      <a href="/admin"{% if section == 'dashboard' %} aria-current="page"{% endif %}>{{ ui.icon('grid', 20, 1.6) }}<span>Übersicht</span></a>
+      <a href="/admin/bestellungen"{% if section == 'orders' %} aria-current="page"{% endif %}>{{ ui.icon('bag', 20, 1.6) }}<span>Bestellanfragen</span>{% if adminCounts.orders %}<span class="admin__nav-n" aria-label="{{ adminCounts.orders }} neu">{{ adminCounts.orders }}</span>{% endif %}</a>
+      <a href="/admin/anfragen"{% if section == 'inquiries' %} aria-current="page"{% endif %}>{{ ui.icon('store', 20, 1.6) }}<span>Händleranfragen</span>{% if adminCounts.inquiries %}<span class="admin__nav-n" aria-label="{{ adminCounts.inquiries }} neu">{{ adminCounts.inquiries }}</span>{% endif %}</a>
+      <a href="/admin/feedback"{% if section == 'feedback' %} aria-current="page"{% endif %}>{{ ui.icon('chat', 20, 1.6) }}<span>Feedback &amp; Fehler</span>{% if adminCounts.feedback %}<span class="admin__nav-n" aria-label="{{ adminCounts.feedback }} neu">{{ adminCounts.feedback }}</span>{% endif %}</a>
+      <a href="/admin/rabattcodes"{% if section == 'discounts' %} aria-current="page"{% endif %}>{{ ui.icon('tag', 20, 1.6) }}<span>Rabattcodes</span></a>
+      <span class="admin__nav-sep" aria-hidden="true"></span>
+      <a href="{{ site.corporateUrl or '/' }}" rel="noopener">{{ ui.icon('external', 20, 1.6) }}<span>Corporate Hub</span></a>
+    </nav>
+    <div class="admin__main">
+      {% block adminContent %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ asset('/static/js/account.js') }}" defer></script>{% endblock %}

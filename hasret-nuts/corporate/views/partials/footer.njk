@@ -1,0 +1,39 @@
+{#- Owner: BUILD-CORPORATE · Footer mit Mono-Logo, Kontakt (Anker #kontakt), Links und dezentem Shop-Link. -#}
+{%- set c = contact or {} -%}
+<footer class="site-footer on-dark">
+  <div class="wrap footer__top">
+    <div class="footer__brand">
+      <div class="footer__mark">
+        {% set logoVariant = 'mono' %}{% set logoId = 'hnl-f' %}{% set logoDecorative = true %}{% set logoStatic = true %}
+        {% include "partials/logo.njk" %}
+        <span class="footer__word" aria-hidden="true">HASRET</span>
+      </div>
+      <p>Nüsse, Süßwaren und Feinkost mit Herkunft. Aus Memmingen für Süddeutschland und Europa.</p>
+    </div>
+    <address class="footer__col" id="kontakt" tabindex="-1">
+      <span class="footer__label">Kontakt</span>
+      <span>{{ c.company or 'Hasret Kuruyemiş' }}<br>Inhaber {{ c.owner or 'Eyyüp Koca' }}<br>{{ c.street or '[STRASSE NR.]' }}<br>{{ c.zipCity or '[PLZ] Memmingen' }}</span>
+      <span>{{ c.phone or '[TELEFON]' }}<br>{{ c.email or '[E-MAIL]' }}</span>
+    </address>
+    <nav class="footer__col footer__col--nav footer__col--links" aria-label="Footer-Navigation">
+      <span class="footer__label">Entdecken</span>
+      <a class="u-link" href="/philosophie"{% if currentPath == '/philosophie' %} aria-current="page"{% endif %}>Philosophie</a>
+      <a class="u-link" href="/messe-chronik"{% if currentPath == '/messe-chronik' %} aria-current="page"{% endif %}>Messe-Chronik</a>
+      <a class="u-link" href="/haendler"{% if currentPath == '/haendler' %} aria-current="page"{% endif %}>Für Händler</a>
+      <a class="u-link" href="/feedback{% if currentPath and currentPath != '/feedback' %}?von={{ currentPath | urlencode }}{% endif %}"{% if currentPath == '/feedback' %} aria-current="page"{% endif %}>Feedback &amp; Fehler melden</a>
+    </nav>
+    <div class="footer__col footer__col--links">
+      <span class="footer__label">Rechtliches</span>
+      <a class="u-link" href="/impressum"{% if currentPath == '/impressum' %} aria-current="page"{% endif %}>Impressum</a>
+      <a class="u-link" href="/datenschutz"{% if currentPath == '/datenschutz' %} aria-current="page"{% endif %}>Datenschutz</a>
+      <a class="u-link" href="/cookies"{% if currentPath == '/cookies' %} aria-current="page"{% endif %}>Cookie-Hinweise</a>
+      <a class="u-link footer__shop" href="{{ site.shopUrl }}/" target="_blank" rel="noopener">Für Endkunden: Zum Online-Shop&nbsp;↗<span class="sr-only"> (öffnet in neuem Tab)</span></a>
+    </div>
+  </div>
+  <div class="wrap footer__bottom-wrap">
+    <div class="footer__bottom">
+      <span>© {{ currentYear }} {{ c.company or 'Hasret Kuruyemiş' }} · Alle Fotografien: Hasret Nuts</span>
+      <span>Instagram {{ c.instagram or '[HANDLE]' }} · LinkedIn {{ c.linkedin or '[PROFIL]' }}</span>
+    </div>
+  </div>
+</footer>

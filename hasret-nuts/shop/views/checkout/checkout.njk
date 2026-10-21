@@ -1,0 +1,117 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% import "macros/forms.njk" as forms with context %}
+{% block bodyClass %}page-checkout{% endblock %}
+{% block content %}
+<section class="wrap checkout-page" aria-labelledby="h-checkout">
+  {{ shop.steps(2) }}
+  <h1 id="h-checkout" class="page-title">Ihre Bestellanfrage</h1>
+  <p class="page-intro">So einfach geht's: Sie senden uns Ihre Bestellung als unverbindliche Anfrage. Eyyüp Koca prüft Verfügbarkeit und Versandkosten und bestätigt Ihnen die Bestellung persönlich per E-Mail – erst dann wird sie verbindlich. Bezahlt wird erst nach dieser Bestätigung.</p>
+  {% if not user %}
+  <p class="guest-hint">{{ shop.icon('user', 18, 1.6) }}<span>Sie haben ein Kundenkonto? <a href="/konto/anmelden?next=%2Fkasse">Anmelden</a> – oder bestellen Sie einfach als Gast.</span></p>
+  {% endif %}
+
+  {% if formError %}
+  <div class="error-summary" role="alert" tabindex="-1" data-focus-on-load>
+    <h2 class="error-summary__title">{{ formError }}</h2>
+    {% if errors and (errors | length) %}
+    <ul class="error-summary__list">
+      {% for key, msg in errors %}<li>{% if key != '_form' %}<a href="#f-{{ key }}">{{ msg }}</a>{% else %}{{ msg }}{% endif %}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <form class="checkout" method="post" action="/kasse" novalidate data-checkout>
+    {{ forms.csrf() }}
+    {{ forms.honeypot() }}
+    <input type="hidden" name="totalSeen" value="{{ summary.totalCents }}">
+
+    <div class="checkout__fields">
+      <fieldset class="panel">
+        <legend class="panel__title"><span class="panel__n">1</span>Ihre Kontaktdaten</legend>
+        <div class="form-grid">
+          {{ forms.field('name', 'Vor- und Nachname', 'text', values.name, errors.name, { required: true, autocomplete: 'name', maxlength: 100, wrapperClass: 'span-2' }) }}
+          {{ forms.field('email', 'E-Mail-Adresse', 'email', values.email, errors.email, { required: true, autocomplete: 'email', maxlength: 254, hint: 'An diese Adresse senden wir die Bestätigung.' }) }}
+          {{ forms.field('phone', 'Telefon (optional)', 'tel', values.phone, errors.phone, { autocomplete: 'tel', maxlength: 30, hint: 'Für Rückfragen zu Ihrer Bestellung.' }) }}
+        </div>
+      </fieldset>
+
+      <fieldset class="panel" aria-describedby="{{ 'f-delivery-error' if errors.delivery else '' }}">
+        <legend class="panel__title"><span class="panel__n">2</span>Lieferung</legend>
+        <div class="choice-cards" id="f-delivery">
+          {% for d in delivery %}
+          <label class="choice" for="f-delivery-{{ d.value }}">
+            <input type="radio" id="f-delivery-{{ d.value }}" name="delivery" value="{{ d.value }}"{% if values.delivery == d.value %} checked{% endif %} data-delivery>
+            <span class="choice__box">
+              <span class="choice__icon" aria-hidden="true">{{ shop.icon('truck' if d.value == 'versand' else 'pin', 22, 1.5) }}</span>
+              <span class="choice__text"><strong>{{ d.label }}</strong><span>{{ d.hint }}</span></span>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+        {% if errors.delivery %}<p class="field__error" id="f-delivery-error">{{ errors.delivery }}</p>{% endif %}
+
+        <div class="address" data-address>
+          <p class="address__title">Lieferadresse <span class="muted">(nur bei Versand erforderlich)</span></p>
+          <div class="form-grid">
+            {{ forms.field('street', 'Straße und Hausnummer', 'text', values.street, errors.street, { autocomplete: 'street-address', maxlength: 150, wrapperClass: 'span-2' }) }}
+            {{ forms.field('zip', 'PLZ', 'text', values.zip, errors.zip, { autocomplete: 'postal-code', inputmode: 'numeric', maxlength: 5 }) }}
+            {{ forms.field('city', 'Ort', 'text', values.city, errors.city, { autocomplete: 'address-level2', maxlength: 100 }) }}
+            {{ forms.select('country', 'Land', countries, values.country or 'DE', errors.country, { autocomplete: 'country', wrapperClass: 'span-2' }) }}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend class="panel__title"><span class="panel__n">3</span>Bevorzugte Zahlungsart</legend>
+        <div class="choice-cards choice-cards--3" id="f-payment">
+          {% for pm in payment %}
+          <label class="choice" for="f-payment-{{ pm.value }}">
+            <input type="radio" id="f-payment-{{ pm.value }}" name="payment" value="{{ pm.value }}"{% if values.payment == pm.value %} checked{% endif %} data-payment>
+            <span class="choice__box"><span class="choice__text"><strong>{{ pm.label }}</strong><span>{{ pm.hint }}</span></span></span>
+          </label>
+          {% endfor %}
+        </div>
+        {% if errors.payment %}<p class="field__error" id="f-payment-error">{{ errors.payment }}</p>{% endif %}
+        <p class="panel__note">{{ shop.icon('shield', 18, 1.6) }} Sie zahlen erst, nachdem wir Ihre Bestellung bestätigt haben. Eine Online-Zahlung gibt es derzeit nicht.</p>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend class="panel__title"><span class="panel__n">4</span>Nachricht an uns</legend>
+        {{ forms.textarea('message', 'Ihre Nachricht (optional)', values.message, errors.message, { rows: 4, maxlength: 2000, hint: 'z. B. Wunschtermin für die Abholung oder Hinweise zur Lieferung' }) }}
+      </fieldset>
+
+      <fieldset class="panel panel--consent">
+        <legend class="sr-only">Einwilligungen</legend>
+        {{ forms.checkbox('privacy', 'Ich habe die <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> zur Kenntnis genommen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Bestellanfrage einverstanden.' | safe, values.privacy, errors.privacy, { required: true }) }}
+        {{ forms.checkbox('agb', 'Ich habe die <a href="/agb" target="_blank" rel="noopener">AGB</a> und die <a href="/widerruf" target="_blank" rel="noopener">Widerrufsbelehrung</a> zur Kenntnis genommen.' | safe, values.agb, errors.agb, { required: true }) }}
+      </fieldset>
+    </div>
+
+    <aside class="summary summary--checkout" aria-labelledby="h-order">
+      <h2 id="h-order" class="summary__h">Ihre Bestellung</h2>
+      <ul class="mini-lines">
+        {% for l in summary.lines %}
+        <li class="mini-line">
+          <span class="mini-line__qty">{{ l.qty }} ×</span>
+          <span class="mini-line__name">{{ l.name }}{% if l.bundle.length %}<small>{{ l.bundleText }}</small>{% elif l.variantLabel %}<small>{{ l.variantLabel }}</small>{% endif %}</span>
+          <span class="mini-line__price">{{ l.lineCents | euro }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <a class="link-btn summary__edit" href="/warenkorb">Warenkorb bearbeiten</a>
+      <dl class="totals">
+        <div class="totals__row"><dt>Zwischensumme</dt><dd>{{ summary.subtotalCents | euro }}</dd></div>
+        {% if summary.discount %}<div class="totals__row totals__row--discount"><dt>Rabatt ({{ summary.discount.code }})</dt><dd>{{ (0 - summary.discount.cents) | euro }}</dd></div>{% endif %}
+        <div class="totals__row"><dt>Versand</dt><dd class="muted">wird bestätigt</dd></div>
+        <div class="totals__row totals__row--total"><dt>Summe (vorläufig)</dt><dd>{{ summary.totalCents | euro }}</dd></div>
+      </dl>
+      <p class="totals__tax">inkl. MwSt.</p>
+      <p class="legal-copy">Mit dem Absenden übermitteln Sie uns eine unverbindliche Bestellanfrage. Ein Kaufvertrag kommt erst zustande, wenn wir Ihre Bestellung per E-Mail bestätigen. Es gelten unsere <a href="/agb">AGB</a>; Informationen zu Ihrem Widerrufsrecht finden Sie in der <a href="/widerruf">Widerrufsbelehrung</a>. Wie wir Ihre Daten verarbeiten, erklärt unsere <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+      <button type="submit" class="btn btn--lg btn--block buy checkout__submit">Bestellung unverbindlich anfragen</button>
+      <p class="summary__note">{{ shop.icon('mail', 18, 1.6) }}<span>Unverbindlich – Sie erhalten zuerst eine persönliche Bestätigung per E-Mail. Versandkosten und Zahlungsdetails erhalten Sie mit der Bestellbestätigung.</span></p>
+    </aside>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-allergens{% endblock %}
+{% macro cell(a, row) -%}
+{%- if a.id in row.contains -%}
+<td class="mx__cell mx__cell--yes"><span class="mx__mark">{{ shop.icon('contains', 20, 1.6) }}<span class="sr-only">enthält</span></span></td>
+{%- elif a.id in row.mayContain -%}
+<td class="mx__cell mx__cell--trace"><span class="mx__mark">{{ shop.icon('trace', 20, 1.4) }}<span class="sr-only">kann Spuren enthalten</span></span></td>
+{%- else -%}
+<td class="mx__cell mx__cell--no"><span aria-hidden="true">–</span><span class="sr-only">{{ 'nicht enthalten' if row.confirmed else 'keine Angabe' }}</span></td>
+{%- endif -%}
+{%- endmacro %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+
+<section class="wrap allergen-hero" aria-labelledby="h-allergene">
+  <p class="eyebrow">Gut zu wissen</p>
+  <h1 id="h-allergene" class="offers-hero__title">Allergene auf einen <em>Blick</em>.</h1>
+  <p class="offers-hero__lead">Genuss soll unbeschwert sein. Deshalb finden Sie hier für jedes Produkt die 14 Hauptallergene, die nach der EU-Lebensmittelinformationsverordnung (LMIV, Anhang II) gekennzeichnet werden müssen – übersichtlich in einer Tabelle und mit Filter.</p>
+  {% if not allConfirmed %}
+  <div class="note note--warn" role="note">
+    {{ shop.icon('warn', 22, 1.6) }}
+    <p><strong>Angaben vorläufig – vom Inhaber anhand der Etiketten zu bestätigen.</strong> Die Allergenangaben werden derzeit anhand der Produktetiketten geprüft. Maßgeblich sind immer die Angaben auf dem Etikett der gelieferten Ware. Bei einer schweren Allergie sprechen Sie uns bitte vor der Bestellung an: [E-MAIL] · [TELEFON] – oder schreiben Sie uns über das <a href="/feedback?seite=%2Fallergene">Kontaktformular</a>.</p>
+  </div>
+  {% endif %}
+</section>
+
+{# ---------------- Filter „Produkte ohne …“ ---------------- #}
+<section class="wrap allergen-filter" aria-labelledby="h-af">
+  <form class="af" method="get" action="/allergene#ergebnis" data-allergen-filter>
+    <h2 id="h-af" class="af__title">Produkte ohne …</h2>
+    <fieldset class="af__opts">
+      <legend class="sr-only">Allergene ausschließen</legend>
+      {% for a in allergens %}
+      <label class="af__opt" for="af-{{ a.id }}"><input type="checkbox" id="af-{{ a.id }}" name="ohne" value="{{ a.id }}"{% if a.id in ohne %} checked{% endif %}><span>{{ a.short or a.name }}</span></label>
+      {% endfor %}
+    </fieldset>
+    <div class="af__row">
+      <label class="af__opt af__opt--traces" for="af-spuren"><input type="checkbox" id="af-spuren" name="spuren" value="1"{% if spuren %} checked{% endif %}><span>Auch Spurenhinweise berücksichtigen</span></label>
+      <div class="af__actions">
+        {% if ohne.length %}<a class="link-btn" href="/allergene">Zurücksetzen</a>{% endif %}
+        <button type="submit" class="btn btn-dark">Produkte anzeigen</button>
+      </div>
+    </div>
+  </form>
+  {% if filtered %}
+  <div class="af__result" id="ergebnis" tabindex="-1">
+    <p class="af__count" role="status"><strong>{{ filtered.length }} {{ 'Produkt' if filtered.length == 1 else 'Produkte' }}</strong> ohne {{ ohneLabels | join(', ') }}{% if spuren %} (inkl. Spurenhinweise){% endif %}</p>
+    {% if filtered.length %}
+    <ul class="af__list">{% for c in filtered %}<li><a href="{{ c.href }}">{{ c.name }}</a><span>{{ c.subtitle }}</span></li>{% endfor %}</ul>
+    {% endif %}
+    <p class="muted small">Hinweis: Produkte ohne bestätigte Angaben erscheinen hier, solange keine Allergene eingetragen sind – bitte prüfen Sie stets das Etikett.</p>
+  </div>
+  {% endif %}
+</section>
+
+{# ---------------- Matrix ---------------- #}
+<section class="wrap allergen-matrix" aria-labelledby="h-mx">
+  <div class="sec-head">
+    <h2 class="h2" id="h-mx">Übersicht nach Produkt und Sorte</h2>
+    <ul class="legend" aria-label="Legende">
+      <li>{{ shop.icon('contains', 18, 1.6) }} enthält</li>
+      <li>{{ shop.icon('trace', 18, 1.4) }} kann Spuren enthalten</li>
+      <li><span class="legend__dash" aria-hidden="true">–</span> nicht angegeben</li>
+    </ul>
+  </div>
+
+  <div class="mx-wrap" role="region" aria-labelledby="mx-caption" tabindex="0">
+    <table class="mx">
+      <caption id="mx-caption">Allergene je Produkt und Sorte (14 Hauptallergene nach LMIV Anhang II) – Angaben vorläufig, maßgeblich ist das Etikett</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="mx__prod">Produkt / Sorte</th>
+          {% for a in allergens %}<th scope="col" class="mx__head"><span class="mx__vert">{{ a.short or a.name }}</span></th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr class="{{ 'mx__first' if row.first else '' }}">
+          <th scope="row" class="mx__prod"><a href="{{ row.href }}">{{ row.label }}</a>{% if row.sub %}<span class="mx__sub">{{ row.sub }}</span>{% endif %}{% if not row.confirmed %}<span class="mx__flag">vorläufig</span>{% endif %}</th>
+          {% for a in allergens %}{{ cell(a, row) }}{% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {# Mobile Darstellung: Liste je Produkt #}
+  <ul class="mx-list" aria-label="Allergene je Produkt">
+    {% for row in rows %}
+    <li class="mx-item">
+      <p class="mx-item__name"><a href="{{ row.href }}">{{ row.label }}</a>{% if row.sub %} <span>· {{ row.sub }}</span>{% endif %}</p>
+      <p><span class="mx-item__k">Enthält:</span> {% if row.contains.length %}<strong>{% for id in row.contains %}{% for a in allergens %}{% if a.id == id %}{{ a.short or a.name }}{% endif %}{% endfor %}{% if not loop.last %}, {% endif %}{% endfor %}</strong>{% else %}{{ 'keines der 14 Hauptallergene' if row.confirmed else 'noch keine Angaben' }}{% endif %}</p>
+      <p><span class="mx-item__k">Spuren:</span> {% if row.mayContain.length %}{% for id in row.mayContain %}{% for a in allergens %}{% if a.id == id %}{{ a.short or a.name }}{% endif %}{% endfor %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}[laut Etikett zu ergänzen]{% endif %}</p>
+      {% if row.extra %}<p class="mx-item__extra">{{ row.extra }}</p>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="muted small">Stand der Angaben: [DATUM] · Letzte Prüfung durch den Inhaber: [DATUM]</p>
+</section>
+
+{# ---------------- Die 14 Hauptallergene ---------------- #}
+<section class="band-foam" aria-labelledby="h-14">
+  <div class="wrap section">
+    <div class="sec-head"><div class="stack"><p class="eyebrow">LMIV Anhang II</p><h2 class="h2" id="h-14">Die 14 Hauptallergene</h2></div></div>
+    <ol class="allergen-cards">
+      {% for a in allergens %}
+      <li class="allergen-card">
+        <span class="allergen-card__n">{{ a.number }}</span>
+        <h3>{{ a.name }}</h3>
+        <p class="allergen-card__official">{{ a.official }}</p>
+        {% if a.examples %}<p class="allergen-card__ex"><span>Beispiele:</span> {{ a.examples }}</p>{% endif %}
+        {% if a.hint %}<p class="allergen-card__hint">{{ a.hint }}</p>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{# ---------------- Häufige Fragen ---------------- #}
+<section class="wrap wrap--narrow faq-sec" aria-labelledby="h-faq">
+  <h2 class="h2" id="h-faq">Häufige Fragen</h2>
+  <div class="faq">
+    {% call shop.acc('faq-1', 'Zählt Kokos zu den Schalenfrüchten?', true, 'pdp', 'h3') %}
+    <div class="acc__body"><p>Nein. Kokosnuss gehört nicht zu den 14 Hauptallergenen nach LMIV. Als Schalenfrüchte gelten Mandeln, Haselnüsse, Walnüsse, Cashewkerne, Pecannüsse, Paranüsse, Pistazien und Macadamianüsse. Erdnüsse sind ein eigenes Hauptallergen.</p></div>
+    {% endcall %}
+    {% call shop.acc('faq-2', 'Was bedeutet „Kann Spuren enthalten“?', false, 'pdp', 'h3') %}
+    <div class="acc__body"><p>Das Produkt enthält das Allergen nicht als Zutat. Es kann aber bei Herstellung oder Verpackung unbeabsichtigt in Spuren hineingelangen, etwa weil auf denselben Anlagen auch andere Produkte verarbeitet werden.</p></div>
+    {% endcall %}
+    {% call shop.acc('faq-3', 'Was ist mit Kichererbsen?', false, 'pdp', 'h3') %}
+    <div class="acc__body"><p>Kichererbsen gehören nicht zu den 14 kennzeichnungspflichtigen Hauptallergenen. Würzmischungen können jedoch Allergene enthalten – bitte beachten Sie die Angaben je Produkt und auf dem Etikett.</p></div>
+    {% endcall %}
+    {% call shop.acc('faq-4', 'Ich habe eine Frage zu einem bestimmten Produkt.', false, 'pdp', 'h3') %}
+    <div class="acc__body"><p>Schreiben Sie uns gern vor der Bestellung an [E-MAIL] oder über unser <a href="/feedback?seite=%2Fallergene">Kontaktformular</a>. Wir sehen auf dem Etikett nach und antworten Ihnen persönlich.</p></div>
+    {% endcall %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{#- Owner: BUILD-AUTH · Verwaltung – B2B-Händleranfragen (aus dem Corporate Hub). Variablen: inquiries, tabs, statuses, pager, backUrl -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<header class="admin__head">
+  <div class="stack"><p class="ac-eyebrow">Corporate Hub · Händlerbereich</p><h1>Händleranfragen</h1></div>
+  <p class="ac-meta">{{ pager.total }} {{ 'Anfrage' if pager.total == 1 else 'Anfragen' }}</p>
+</header>
+<nav class="tabs" aria-label="Nach Status filtern">
+  {% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="tabs__n">{{ t.count }}</span></a>{% endfor %}
+</nav>
+{% if inquiries.length %}
+<ul class="tickets">
+  {% for i in inquiries %}
+  <li class="ticket" id="anfrage-{{ i.id }}">
+    <div class="ticket__main">
+      <div class="ticket__top">
+        {{ ui.chip(i.statusLabel, i.tone) }}
+        <span class="ac-meta">#{{ i.id }} · {{ i.created_at | date('datetime') }} Uhr</span>
+      </div>
+      <h2 class="ticket__h">{{ i.company }}</h2>
+      <dl class="ticket__extra">
+        <div><dt>Ansprechpartner</dt><dd>{{ i.contact_name }}</dd></div>
+        <div><dt>E-Mail</dt><dd><a href="mailto:{{ i.email }}?subject={{ ('Ihre Anfrage bei Hasret Nuts – ' ~ i.company) | urlencode }}">{{ i.email }}</a></dd></div>
+        {% if i.phone %}<div><dt>Telefon</dt><dd>{{ i.phone }}</dd></div>{% endif %}
+        {% if i.zip_city %}<div><dt>PLZ / Ort</dt><dd>{{ i.zip_city }}</dd></div>{% endif %}
+        {% if i.business_type %}<div><dt>Art des Betriebs</dt><dd>{{ i.business_type }}</dd></div>{% endif %}
+      </dl>
+      {% if i.assortments.length %}
+      <div class="stack"><span class="ac-meta">Interesse an</span><div class="tagrow">{% for a in i.assortments %}<span>{{ a }}</span>{% endfor %}</div></div>
+      {% endif %}
+      {% if i.message %}<p class="ticket__msg">{{ i.message }}</p>{% endif %}
+    </div>
+    <div class="ticket__side">
+      <form class="status-form" method="post" action="/admin/anfragen/{{ i.id }}/status">
+        {{ forms.csrf() }}
+        <input type="hidden" name="back" value="{{ backUrl }}">
+        {{ forms.select('status', 'Status', statuses, i.status, null, { id: 'f-status-' ~ i.id }) }}
+        <button type="submit" class="btn btn-dark btn--sm">Speichern</button>
+      </form>
+      <a class="btn btn-quiet btn--sm" href="mailto:{{ i.email }}?subject={{ ('Ihre Anfrage bei Hasret Nuts – ' ~ i.company) | urlencode }}">{{ ui.icon('mail', 18, 1.6) }} Antworten</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{{ ui.pager(pager, 'Seiten der Händleranfragen') }}
+{% else %}
+<div class="empty empty--left"><h2 style="font-size:24px">Keine Händleranfragen</h2><p class="muted">Anfragen aus dem Händlerbereich des Corporate Hubs erscheinen hier.</p></div>
+{% endif %}
+{% endblock %}

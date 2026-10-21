@@ -1,0 +1,4 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>JSON-LD</title>
+<script type="application/ld+json" nonce="{{ nonce }}">{{ data | jsonld }}</script>
+</head><body><p>{{ data.name }}</p><p class="price">{{ 800 | euro }}</p><p class="big">{{ 123456 | euro }}</p><p class="date">{{ '2026-10-03T15:05:00.000Z' | date }}</p></body></html>

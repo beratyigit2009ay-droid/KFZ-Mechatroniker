@@ -1,0 +1,110 @@
+{#- Owner: BUILD-AUTH · Verwaltung – Übersicht. Variablen: stats, recentOrders, recentInquiries, recentFeedback -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<header class="admin__head">
+  <div class="stack">
+    <p class="ac-eyebrow">Verwaltung</p>
+    <h1>Guten Tag{% if user.name %}, <em>{{ user.name }}</em>{% endif %}</h1>
+  </div>
+  <p class="ac-meta">Stand: {{ now | date("datetime") }} Uhr</p>
+</header>
+
+<section aria-label="Kennzahlen" class="kpis">
+  <a class="kpi kpi--accent" href="/admin/bestellungen?status=neu">
+    <span class="kpi__label">{{ ui.icon('bag', 16, 1.8) }} Neue Bestellanfragen</span>
+    <span class="kpi__value">{{ stats.ordersNew }}</span>
+    <span class="kpi__sub">{{ stats.ordersOpen }} offen · {{ stats.ordersTotal }} insgesamt</span>
+  </a>
+  <a class="kpi" href="/admin/bestellungen">
+    <span class="kpi__label">{{ ui.icon('clock', 16, 1.8) }} Letzte 30 Tage</span>
+    <span class="kpi__value">{{ stats.volume30 | euro }}</span>
+    <span class="kpi__sub">{{ stats.orders30 }} {{ 'Anfrage' if stats.orders30 == 1 else 'Anfragen' }} · ohne stornierte</span>
+  </a>
+  <a class="kpi" href="/admin/anfragen?status=neu">
+    <span class="kpi__label">{{ ui.icon('store', 16, 1.8) }} Händleranfragen</span>
+    <span class="kpi__value">{{ stats.inquiriesNew }}</span>
+    <span class="kpi__sub">neu · {{ stats.inquiriesTotal }} insgesamt</span>
+  </a>
+  <a class="kpi" href="/admin/feedback?status=neu">
+    <span class="kpi__label">{{ ui.icon('chat', 16, 1.8) }} Feedback</span>
+    <span class="kpi__value">{{ stats.feedbackNew }}</span>
+    <span class="kpi__sub">neu · davon {{ stats.bugsNew }} {{ 'Fehlermeldung' if stats.bugsNew == 1 else 'Fehlermeldungen' }}</span>
+  </a>
+  <a class="kpi" href="/admin/rabattcodes">
+    <span class="kpi__label">{{ ui.icon('tag', 16, 1.8) }} Rabattcodes</span>
+    <span class="kpi__value">{{ stats.codesActive }}</span>
+    <span class="kpi__sub">aktiv · {{ stats.redemptions30 }} Einlösungen (30 Tage)</span>
+  </a>
+  <div class="kpi">
+    <span class="kpi__label">{{ ui.icon('users', 16, 1.8) }} Kundenkonten</span>
+    <span class="kpi__value">{{ stats.customers }}</span>
+    <span class="kpi__sub">{{ stats.customersVerified }} bestätigt</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi__label">{{ ui.icon('mail', 16, 1.8) }} Newsletter</span>
+    <span class="kpi__value">{{ stats.newsletter }}</span>
+    <span class="kpi__sub">bestätigte Abonnements</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi__label">{{ ui.icon('shield', 16, 1.8) }} Sicherheit · 24 h</span>
+    <span class="kpi__value">{{ stats.loginFailures24 }}</span>
+    <span class="kpi__sub">fehlgeschlagene Anmeldungen · {{ stats.locks24 }} {{ 'Sperre' if stats.locks24 == 1 else 'Sperren' }}</span>
+  </div>
+</section>
+
+<div class="ad-cols">
+  <section class="acard acard--white" aria-labelledby="h-ro">
+    <div class="acard__head">
+      <h2 id="h-ro" class="acard__title">{{ ui.icon('bag', 22, 1.5) }} Neueste Bestellanfragen</h2>
+      <a class="link-u" href="/admin/bestellungen">Alle ansehen</a>
+    </div>
+    {% if recentOrders.length %}
+    <ul class="ad-list">
+      {% for o in recentOrders %}
+      <li>
+        <div class="ad-list__top">
+          <a class="ad-list__title" href="/admin/bestellungen/{{ o.id }}">{{ o.public_id }} · {{ o.name }}</a>
+          {{ ui.chip(o.statusLabel, o.tone) }}
+        </div>
+        <p>{{ o.created_at | date('datetime') }} · {{ 'Versand' if o.delivery == 'versand' else 'Abholung' }} · <strong>{{ o.total_cents | euro }}</strong></p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}<p class="ad-empty">Noch keine Bestellanfragen eingegangen.</p>{% endif %}
+  </section>
+  <div class="stack" style="gap:20px">
+    <section class="acard acard--white" aria-labelledby="h-ri">
+      <div class="acard__head">
+        <h2 id="h-ri" class="acard__title">{{ ui.icon('store', 22, 1.5) }} Händleranfragen</h2>
+        <a class="link-u" href="/admin/anfragen">Alle</a>
+      </div>
+      {% if recentInquiries.length %}
+      <ul class="ad-list">
+        {% for i in recentInquiries %}
+        <li>
+          <div class="ad-list__top"><span class="ad-list__title">{{ i.company }}</span>{{ ui.chip(i.statusLabel, i.tone) }}</div>
+          <p>{{ i.contact_name }} · {{ i.created_at | date('date') }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<p class="ad-empty">Noch keine Händleranfragen.</p>{% endif %}
+    </section>
+    <section class="acard acard--white" aria-labelledby="h-rf">
+      <div class="acard__head">
+        <h2 id="h-rf" class="acard__title">{{ ui.icon('chat', 22, 1.5) }} Feedback</h2>
+        <a class="link-u" href="/admin/feedback">Alle</a>
+      </div>
+      {% if recentFeedback.length %}
+      <ul class="ad-list">
+        {% for f in recentFeedback %}
+        <li>
+          <div class="ad-list__top"><span class="ad-list__title">{{ f.kindLabel }} · {{ f.appLabel }}</span>{{ ui.chip(f.statusLabel, f.tone) }}</div>
+          <p>{{ f.excerpt }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<p class="ad-empty">Noch kein Feedback.</p>{% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}

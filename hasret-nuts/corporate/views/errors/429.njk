@@ -1,0 +1,15 @@
+{% extends "errors/base.njk" %}
+{#- Owner: BUILD-CORPORATE · 429 mit Hinweis auf den telefonischen Kontakt bei Formularen (KONZEPT.md 4.4). -#}
+{% block content %}
+{%- set isForm = currentPath and (currentPath.indexOf('/haendler') == 0 or currentPath.indexOf('/feedback') == 0) -%}
+<p class="err__eyebrow">Zu viele Anfragen · 429</p>
+<h1>{{ title }}</h1>
+{% if isForm %}
+<p class="err__text">Sie haben in kurzer Zeit mehrere Anfragen gesendet. Bitte versuchen Sie es in einer Stunde erneut oder rufen Sie uns an: {{ contact.phone if contact else '[TELEFON]' }}.</p>
+{% else %}
+<p class="err__text">{{ message }}{% if retryAfterMinutes %} Bitte versuchen Sie es in etwa {{ retryAfterMinutes }} {{ 'Minute' if retryAfterMinutes == 1 else 'Minuten' }} erneut.{% endif %}</p>
+{% endif %}
+<div class="err__actions">
+  <a class="err__btn" href="/">Zur Startseite</a>
+</div>
+{% endblock %}
