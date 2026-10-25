@@ -6,6 +6,7 @@
 <article class="wrap legal" aria-labelledby="h-legal">
   <h1 id="h-legal">{{ pageTitle }}</h1>
   {% block legalLead %}{% endblock %}
+  {% block legalBanner %}{{ shop.banner('S-B01') }}{% endblock %}
   {{ shop.legalNote() }}
   {% block legalBody %}{% endblock %}
 </article>

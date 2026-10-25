@@ -5,6 +5,7 @@
 <section class="wrap cart-page" aria-labelledby="h-cart">
   {{ shop.steps(1) }}
   <h1 id="h-cart" class="page-title">Ihr Warenkorb</h1>
+  {{ shop.banner('S-B05') }}
 
   {% for n in summary.notices %}
   <div class="flash flash--{{ n.type }}" role="{{ 'alert' if n.type == 'error' else 'status' }}"><p class="flash__text">{{ n.message }}</p></div>

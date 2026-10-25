@@ -35,6 +35,11 @@
     Foto tauschen: das komplette <figure> durch
       <img class="photo-img ar-4x5 …" src="/static/fotos/C-01.avif" alt="…" width="2000" height="2500" loading="lazy">
     ersetzen (Seitenverhältnis- und Positionsklassen beibehalten; Hero-Bild mit fetchpriority="high"). -#}
+{#- Seiten-Banner (Illustration unter der Überschrift). alt leer = dekorativ. -#}
+{% macro banner(id, alt='') -%}
+<figure class="photo photo--img page-banner" data-photo="{{ id }}"{% if not alt %} aria-hidden="true"{% endif %}><img src="/static/fotos/{{ id }}.webp" alt="{{ alt }}" loading="lazy" decoding="async"></figure>
+{%- endmacro %}
+
 {% macro photo(p, cls='') -%}
 {%- if p and p.src -%}
 <figure class="photo photo--img ar-{{ p.ratio }}{% if cls %} {{ cls }}{% endif %}" data-photo="{{ p.id }}">

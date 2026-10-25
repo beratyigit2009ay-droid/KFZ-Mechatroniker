@@ -148,7 +148,7 @@ const PHOTOS = Object.freeze({
  * Vorläufige Illustrationen (gezeichnet, keine echten Fotos) unter corporate/public/fotos/.
  * Echtes Foto einsetzen: Datei gleichen Namens ersetzen oder den Eintrag hier entfernen –
  * ohne Eintrag erscheint wieder der Platzhalter mit Motivbeschreibung. C-12 (Porträt) und
- * C-16 (Archivbild) bleiben bewusst Platzhalter: dafür braucht es echte Fotos.
+ * C-16 (Archivbild) zeigen vorerst Stillleben ohne Personen – hier gehören echte Fotos hin.
  */
 const ILLUSTRATIONS = Object.freeze({
   'C-01': 'Geröstete Pistazien und Sarma-Lokum-Scheiben in Messingschalen auf dunklem Marmor',
@@ -162,9 +162,11 @@ const ILLUSTRATIONS = Object.freeze({
   'C-09': 'Rohware im Jutesack, eine Schaufel voller Pistazien',
   'C-10': 'Pistazien auf einem flachen Messingtablett verlesen, aussortierte Kerne am Rand',
   'C-11': 'Gedeckter Tisch für Gäste mit Tee, gemischten Nüssen und Lokum',
+  'C-12': 'Handverlesene Pistazien auf einem Messingtablett, daneben ein Teeglas',
   'C-13': 'Nüsse in der Röstpfanne, leichter Dampf steigt auf',
   'C-14': 'Verpackungstisch von oben mit Hasret-Beuteln',
   'C-15': 'Lager mit gestapelten, etikettierten Kartons und Säcken',
+  'C-16': 'Illustration: gestapelte Kartons und ein Jutesack – die ersten Lieferungen',
   'C-17': 'Illustration eines Messestands mit Besucherbereich',
   'C-18': 'Kostproben Sarma Lokum auf Spießchen an der Messetheke',
   'C-19': 'Gepackte Messekisten mit Hasret-Logo, darauf die Auslage',

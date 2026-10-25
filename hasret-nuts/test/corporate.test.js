@@ -109,16 +109,22 @@ describe('Corporate Hub – Seiten, Formulare, Sicherheit', () => {
     assert.doesNotMatch(res.text, /\son[a-z]+\s*=\s*["']/i, 'Inline-Event-Handler gefunden');
   });
 
-  it('Bilder: Illustrationen werden ausgeliefert, Porträt und Archivbild bleiben Platzhalter', async () => {
+  it('Bilder: jede Seite zeigt Illustrationen, keine Platzhalter mehr', async () => {
     const c = client(app.baseUrl);
     const img = await c.get('/static/fotos/C-01.webp');
     assert.equal(img.status, 200);
     assert.match(img.headers.get('content-type') || '', /image\/webp/);
     const phil = await c.get('/philosophie');
-    assert.match(phil.text, /data-photo="C-12">[\s\S]*?\[FOTO-PLATZHALTER: [^\]]+Perspektive: [^\]]+\]/, 'Porträt bleibt Platzhalter');
+    assert.match(phil.text, /<img src="\/static\/fotos\/C-12\.webp"/);
     assert.match(phil.text, /<img src="\/static\/fotos\/C-08\.webp"/);
     const chronik = await c.get('/messe-chronik');
-    assert.match(chronik.text, /data-photo="C-16">[\s\S]*?\[FOTO-PLATZHALTER:/, 'Archivbild bleibt Platzhalter');
+    assert.match(chronik.text, /<img src="\/static\/fotos\/C-16\.webp"/);
+    for (const [path, id] of [['/impressum', 'C-B01'], ['/datenschutz', 'C-B01'], ['/cookies', 'C-B01'], ['/feedback', 'C-B02']]) {
+      const r = await c.get(path);
+      assert.match(r.text, new RegExp(`class="photo photo--img page-banner" data-photo="${id}"`), `Banner auf ${path}`);
+      assert.doesNotMatch(r.text, /\[FOTO-PLATZHALTER:/, `kein Platzhalter auf ${path}`);
+    }
+    assert.equal((await c.get('/static/fotos/C-B02.webp')).status, 200);
   });
 
   it('Startseite: Slogan, Intro, drehendes Logo, Shop-Link aus der Konfiguration – keine Preise', async () => {

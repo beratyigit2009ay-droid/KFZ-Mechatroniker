@@ -10,6 +10,7 @@
 <section class="auth wrap" aria-labelledby="auth-h">
   <div class="auth__grid{% if authSolo %} auth__grid--solo{% endif %}">
     <div class="auth__card">
+      <figure class="photo photo--img page-banner page-banner--card" aria-hidden="true"><img src="/static/img/produkte/S-B03.webp" alt="" loading="lazy" decoding="async"></figure>
       {% block authCard %}{% endblock %}
     </div>
     {% if not authSolo %}

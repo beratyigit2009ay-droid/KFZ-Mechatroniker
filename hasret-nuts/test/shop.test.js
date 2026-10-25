@@ -475,6 +475,16 @@ describe('Shop', () => {
     assert.match(prodPage.text, /weder offizieller Partner noch Lizenznehmer/);
   });
 
+  it('zeigt auf Rechts-, Konto-, Allergen-, Feedback- und Kassenseiten ein Seitenbild', async () => {
+    const c = client(app.baseUrl);
+    for (const [path, id] of [['/impressum', 'S-B01'], ['/datenschutz', 'S-B01'], ['/agb', 'S-B01'], ['/allergene', 'S-B02'], ['/feedback', 'S-B04'], ['/warenkorb', 'S-B05'], ['/konto/anmelden', 'S-B03'], ['/konto/registrieren', 'S-B03']]) {
+      const r = await c.get(path);
+      assert.equal(r.status, 200, path);
+      assert.ok(r.text.includes(`/static/img/produkte/${id}.webp`), `Seitenbild ${id} auf ${path}`);
+    }
+    assert.equal((await c.get('/static/img/produkte/S-B03.webp')).status, 200);
+  });
+
   it('zeigt Allergene, den Vorläufig-Hinweis und die Produktbilder auf der Produktseite', async () => {
     const c = client(app.baseUrl);
     const r = await c.get('/produkt/labubu-schokolade');

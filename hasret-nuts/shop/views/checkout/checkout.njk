@@ -7,6 +7,7 @@
   {{ shop.steps(2) }}
   <h1 id="h-checkout" class="page-title">Ihre Bestellanfrage</h1>
   <p class="page-intro">So einfach geht's: Sie senden uns Ihre Bestellung als unverbindliche Anfrage. Eyyüp Koca prüft Verfügbarkeit und Versandkosten und bestätigt Ihnen die Bestellung persönlich per E-Mail – erst dann wird sie verbindlich. Bezahlt wird erst nach dieser Bestätigung.</p>
+  {{ shop.banner('S-B05', 'Geöffnetes Paket mit Hasret-Produkten, bereit für den Versand') }}
   {% if not user %}
   <p class="guest-hint">{{ shop.icon('user', 18, 1.6) }}<span>Sie haben ein Kundenkonto? <a href="/konto/anmelden?next=%2Fkasse">Anmelden</a> – oder bestellen Sie einfach als Gast.</span></p>
   {% endif %}

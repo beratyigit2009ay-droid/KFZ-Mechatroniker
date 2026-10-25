@@ -48,6 +48,13 @@
 </svg>
 {%- endmacro %}
 
+{#- Seiten-Banner (Illustration unter der Überschrift). alt leer = dekorativ. -#}
+{% macro banner(id, alt='', cls='') -%}
+<figure class="photo photo--img page-banner{% if cls %} {{ cls }}{% endif %}" data-photo="{{ id }}"{% if not alt %} aria-hidden="true"{% endif %}>
+  <img src="/static/img/produkte/{{ id }}.webp" alt="{{ alt }}" loading="lazy" decoding="async">
+</figure>
+{%- endmacro %}
+
 {% macro photo(ph, cls='', opts={}) -%}
 {%- if ph.src -%}
 <figure class="photo photo--img{% if cls %} {{ cls }}{% endif %}" data-photo="{{ ph.id }}" style="--ar:{{ ph.ar }}"{% if opts.decorative or not ph.alt %} aria-hidden="true"{% endif %}{% if opts.attrs %} {{ opts.attrs | safe }}{% endif %}>
