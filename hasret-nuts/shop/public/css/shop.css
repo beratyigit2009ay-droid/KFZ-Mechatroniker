@@ -1086,3 +1086,9 @@ main:focus{outline:none}
 }
 .choice.is-off{opacity:.5}
 .choice.is-off .choice__box{cursor:not-allowed}
+
+/* Touch-Geräte: größere Tippfläche für Textlinks, ohne das Layout zu verschieben */
+@media (pointer:coarse){
+  main p a, main small a, main td a, main th a, footer p a, .crumbs a, .card__name a, .perk__link, .text-link, .u-link, .link-u, .auth-card__alt a{padding-block:9px;margin-block:-9px}
+  input[type="checkbox"], input[type="radio"]{min-width:20px;min-height:20px}
+}
