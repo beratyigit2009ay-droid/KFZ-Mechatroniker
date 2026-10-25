@@ -1,0 +1,11 @@
+{#- FOUNDATION-CORE · Flash-Meldungen (req.flash(type, message) → res.locals.flash).
+    Typen: success | error | info | warning. Gestaltung über .flash / .flash--<typ> im App-CSS. -#}
+{% if flash and flash.length %}
+<div class="flash-stack" aria-live="polite">
+  {% for f in flash %}
+  <div class="flash flash--{{ f.type }}" role="{{ 'alert' if f.type == 'error' else 'status' }}">
+    <p class="flash__text">{{ f.message }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

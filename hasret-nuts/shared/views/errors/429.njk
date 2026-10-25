@@ -1,0 +1,6 @@
+{% extends "errors/base.njk" %}
+{% block eyebrow %}Zu viele Anfragen · 429{% endblock %}
+{% block actions %}
+{% if retryAfterMinutes %}<p class="err__text">Bitte versuchen Sie es in etwa {{ retryAfterMinutes }} {{ 'Minute' if retryAfterMinutes == 1 else 'Minuten' }} erneut.</p>{% endif %}
+<a class="err__btn" href="/">Zur Startseite</a>
+{% endblock %}

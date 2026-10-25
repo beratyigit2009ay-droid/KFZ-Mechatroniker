@@ -1,0 +1,28 @@
+{#- Owner: BUILD-AUTH · Passwort zurücksetzen. state: form | invalid. Variablen: token, errors -#}
+{% extends "auth/_base.njk" %}
+{% import "auth/_pw.njk" as pw with context %}
+{% block authCard %}
+{% if state == 'form' %}
+<header class="auth__head">
+  <span class="auth__icon" aria-hidden="true">{{ ui.icon('lock', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Passwort zurücksetzen</p>
+  <h1 id="auth-h" class="ac-title">Ihr neues <em>Passwort</em></h1>
+  <p class="ac-lead">Wählen Sie ein neues Passwort. Aus Sicherheitsgründen werden danach alle bestehenden Anmeldungen beendet.</p>
+</header>
+{{ forms.errorSummary(errors) }}
+<form class="auth__form" method="post" action="/konto/passwort-zuruecksetzen" novalidate data-once>
+  {{ forms.csrf() }}
+  <input type="hidden" name="token" value="{{ token }}">
+  {{ pw.newPassword(errors, 'Neues Passwort', 'Neues Passwort wiederholen') }}
+  <button type="submit" class="btn btn-dark btn--lg">Passwort speichern</button>
+</form>
+{% else %}
+<header class="auth__head">
+  <span class="auth__icon auth__icon--warn" aria-hidden="true">{{ ui.icon('warn', 28, 1.5) }}</span>
+  <p class="ac-eyebrow">Passwort zurücksetzen</p>
+  <h1 id="auth-h" class="ac-title">Dieser Link ist <em>nicht mehr gültig</em></h1>
+  <p class="ac-lead">Links zum Zurücksetzen gelten 60 Minuten und lassen sich nur einmal verwenden. Fordern Sie einfach einen neuen Link an.</p>
+</header>
+<div class="ac-actions"><a class="btn btn-dark" href="/konto/passwort-vergessen">Neuen Link anfordern</a><a class="link-btn" href="/konto/anmelden">Zur Anmeldung</a></div>
+{% endif %}
+{% endblock %}

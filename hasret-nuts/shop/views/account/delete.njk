@@ -1,0 +1,29 @@
+{#- Owner: BUILD-AUTH · Konto löschen. Variablen: errors, orderTotal, isAdmin -#}
+{% extends "account/_layout.njk" %}
+{% block accountContent %}
+<div class="acct__section-head"><h1>Konto löschen</h1></div>
+<section class="acard danger-zone" aria-labelledby="h-conseq" style="max-width:720px">
+  <h2 id="h-conseq" class="acard__title">{{ ui.icon('warn', 22, 1.5) }} Was beim Löschen passiert</h2>
+  <ul class="danger-list">
+    <li>{{ ui.icon('trash', 20, 1.6) }}<span>Ihr Kundenkonto mit Name, E-Mail-Adresse und Passwort wird <strong>sofort und endgültig</strong> gelöscht. Das lässt sich nicht rückgängig machen.</span></li>
+    <li>{{ ui.icon('logout', 20, 1.6) }}<span>Sie werden auf allen Geräten abgemeldet.</span></li>
+    <li>{{ ui.icon('bag', 20, 1.6) }}<span>{% if orderTotal %}Ihre {{ orderTotal }} {{ 'Bestellanfrage bleibt' if orderTotal == 1 else 'Bestellanfragen bleiben' }}{% else %}Bereits gesendete Bestellanfragen bleiben{% endif %} bei uns erhalten, soweit gesetzliche Aufbewahrungspflichten (z.&nbsp;B. nach Handels- und Steuerrecht) das verlangen – jedoch nicht mehr mit einem Konto verknüpft.</span></li>
+    <li>{{ ui.icon('mail', 20, 1.6) }}<span>Zur Sicherheit senden wir Ihnen eine kurze Bestätigung per E-Mail.</span></li>
+  </ul>
+  {% if isAdmin %}
+  <p class="note note--warn">{{ ui.icon('lock', 20, 1.6) }}<span>Administratorkonten werden aus Sicherheitsgründen nur direkt auf dem Server verwaltet und können hier nicht gelöscht werden.</span></p>
+  {% else %}
+  {{ forms.errorSummary(errors) }}
+  <form class="auth__form" method="post" action="/konto/loeschen" novalidate data-confirm="Möchten Sie Ihr Kundenkonto wirklich endgültig löschen?" data-once>
+    {{ forms.csrf() }}
+    <input type="text" name="username" value="{{ user.email }}" autocomplete="username" hidden aria-hidden="true" tabindex="-1">
+    <div data-pw>{{ forms.field('currentPassword', 'Ihr Passwort zur Bestätigung', 'password', '', errors.currentPassword, { required: true, autocomplete: 'current-password', maxlength: 1024 }) }}</div>
+    {{ forms.checkbox('confirm', 'Ja, ich möchte mein Kundenkonto endgültig löschen.', false, errors.confirm, { required: true }) }}
+    <div class="ac-actions">
+      <button type="submit" class="btn btn-danger">{{ ui.icon('trash', 18, 1.8) }} Konto endgültig löschen</button>
+      <a class="link-btn" href="/konto">Abbrechen</a>
+    </div>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

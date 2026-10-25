@@ -1,0 +1,107 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{#- C2 · Über uns / Philosophie – Texte laut KONZEPT.md 4.2. -#}
+
+{% block content %}
+<section aria-labelledby="philo-title">
+
+  <div class="wrap intro-center">
+    <p class="eyebrow eyebrow--center reveal">Über uns · Philosophie</p>
+    <h1 id="philo-title" class="display-1 display-1--m reveal">Hasret – ein Wort für eine Sehnsucht, <em>die bleibt.</em></h1>
+    <p class="lead reveal">Wir verkaufen keine Nüsse. Wir teilen ein Gefühl – und das schmeckt man in jeder Schale.</p>
+    <span class="vline reveal" aria-hidden="true"></span>
+  </div>
+
+  <div class="wrap wrap--wide reveal">
+    {{ ui.photo(photos['C-08']) }}
+  </div>
+
+  <section class="wrap section define" aria-labelledby="define-title">
+    <div class="define__term reveal">
+      <h2 id="define-title" class="sr-only">Was Hasret bedeutet</h2>
+      <span class="define__word" lang="tr">Has·ret</span>
+      <span class="define__phon">[haˈsɾet] · türkisch · Substantiv</span>
+      <p class="define__meaning">Die Sehnsucht; das tiefe, warme Verlangen nach einem Ort, einem Menschen, einem Geschmack.</p>
+    </div>
+    <div class="define__body reveal">
+      <p>Im Türkischen beschreibt Hasret ein Gefühl, für das es im Deutschen kein ganzes Wort gibt: die tiefe Sehnsucht nach etwas, das man liebt und vermisst. Für uns ist es der Duft frisch gerösteter Pistazien, das Klirren der Teegläser, die Schale Nüsse, die bei jedem Besuch auf dem Tisch steht.</p>
+      <p>Genau dieses Gefühl steht im Zentrum von allem, was Eyyüp Koca mit Hasret Kuruyemiş in Memmingen aufgebaut hat. Jede Sorte, jede Rezeptur und jede Verpackung muss eine Frage beantworten: Weckt sie diese Sehnsucht – und stillt sie sie?</p>
+    </div>
+  </section>
+
+  <section class="band--pearl" aria-labelledby="werte-title">
+    <div class="wrap section values">
+      <div class="sec-head sec-head--center reveal">
+        <p class="eyebrow eyebrow--center">Unsere Werte</p>
+        <h2 id="werte-title" class="display-2">Drei Werte, ein <em>Anspruch</em>.</h2>
+      </div>
+      <div class="values__grid">
+        <article class="value reveal">
+          {{ ui.photo(photos['C-09']) }}
+          <span class="value__num" aria-hidden="true">I.</span>
+          <h3 class="value__title">Ehrliche Herkunft</h3>
+          <p>Wir wählen unsere Rohwaren nach Geschmack, Frische und Herkunft – nicht nach dem günstigsten Angebot. Wer weiß, woher eine Nuss kommt, schmeckt den Unterschied.</p>
+        </article>
+        <article class="value reveal">
+          {{ ui.photo(photos['C-10']) }}
+          <span class="value__num" aria-hidden="true">II.</span>
+          <h3 class="value__title">Geduldiges Handwerk</h3>
+          <p>Rösten ist für uns Erfahrungssache: kontrollierte Temperatur, genug Zeit – und am Ende entscheidet die Hand, was ins Sortiment kommt.</p>
+        </article>
+        <article class="value reveal">
+          {{ ui.photo(photos['C-11']) }}
+          <span class="value__num" aria-hidden="true">III.</span>
+          <h3 class="value__title">Gelebte Gastfreundschaft</h3>
+          <p>In unserer Kultur wird jeder Gast mit einer Schale Nüsse empfangen. Diese Haltung prägt auch, wie wir mit Kunden und Partnern umgehen: herzlich, verbindlich, auf Augenhöhe.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section split founder" aria-labelledby="founder-title">
+    <div class="split__media reveal">
+      {{ ui.photo(photos['C-12']) }}
+    </div>
+    <div class="split__text reveal">
+      <p class="eyebrow">Der Gründer</p>
+      <h2 id="founder-title" class="founder__name">Eyyüp Koca</h2>
+      <span class="founder__role">Inhaber · Hasret Kuruyemiş</span>
+      <p class="body-l">[2–3 Sätze zu Ihrem Werdegang: Woher kommt Ihre Leidenschaft für Nüsse und Spezialitäten? Was hat Sie nach Memmingen geführt? In welchem Moment ist die Idee zu Hasret entstanden?]</p>
+      <blockquote class="founder__quote"><p>„Qualität ist kein Versprechen auf der Verpackung. Sie ist das, was man schmeckt, wenn man die Augen schließt.“</p></blockquote>
+      <span class="founder__sign" aria-hidden="true">Eyyüp Koca</span>
+    </div>
+  </section>
+
+  <section class="band--lined" aria-label="Kennzahlen">
+    <dl class="wrap kpis">
+      <div class="reveal"><dt>Sitz</dt><dd>Memmingen</dd></div>
+      <div class="reveal"><dt>Gegründet</dt><dd>[JAHR]</dd></div>
+      <div class="reveal"><dt>Sortiment</dt><dd>[ANZAHL] Spezialitäten</dd></div>
+      <div class="reveal"><dt>Präsenz</dt><dd>Süddeutschland &amp; Europa</dd></div>
+    </dl>
+  </section>
+
+  <section class="wrap section gallery-sec" aria-labelledby="kulissen-title">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Hinter den Kulissen</p>
+      <h2 id="kulissen-title" class="display-2">Wo aus Rohware <em>Genuss</em> wird.</h2>
+    </div>
+    <div class="gallery">
+      {{ ui.photo(photos['C-13'], 'reveal') }}
+      {{ ui.photo(photos['C-14'], 'reveal') }}
+      {{ ui.photo(photos['C-15'], 'reveal') }}
+    </div>
+  </section>
+
+  <section class="band--emerald on-dark" aria-labelledby="kennen-title">
+    <div class="wrap cta-band__inner reveal">
+      <h2 id="kennen-title" class="display-2">Lernen Sie uns persönlich kennen.</h2>
+      <p class="body-l">Auf der nächsten Kulturmesse oder bei einem Termin in Memmingen – wir freuen uns auf Sie.</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="/messe-chronik">Zur Messe-Chronik</a>
+        <a class="btn btn--ghost" href="/haendler#anfrage">Händleranfrage</a>
+      </div>
+    </div>
+  </section>
+</section>
+{% endblock %}

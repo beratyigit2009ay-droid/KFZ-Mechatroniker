@@ -1,0 +1,62 @@
+{#- Owner: BUILD-AUTH · Verwaltung – Rabattcodes. Variablen: codes, values, errors, openForm -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<header class="admin__head">
+  <div class="stack"><p class="ac-eyebrow">Angebote</p><h1>Rabattcodes</h1></div>
+  <p class="ac-meta">{{ codes.length }} {{ 'Code' if codes.length == 1 else 'Codes' }}</p>
+</header>
+
+<details class="newcode"{% if openForm %} open{% endif %}>
+  <summary><span class="newcode__plus" aria-hidden="true">{{ ui.icon('plus', 18, 2) }}</span> Neuen Rabattcode anlegen</summary>
+  <div class="newcode__body">
+    {{ forms.errorSummary(errors) }}
+    <form method="post" action="/admin/rabattcodes" novalidate class="stack" style="gap:20px">
+      {{ forms.csrf() }}
+      <div class="form-grid">
+        {{ forms.field('code', 'Code', 'text', values.code, errors.code, { required: true, maxlength: 32, autocapitalize: 'characters', spellcheck: 'false', autocomplete: 'off', hint: 'Großbuchstaben, Ziffern und Bindestrich, z. B. HERBST10' }) }}
+        {{ forms.select('type', 'Art des Rabatts', [{ value: 'percent', label: 'Prozent (%)' }, { value: 'fixed', label: 'Fester Betrag (€)' }], values.type, errors.type, { required: true }) }}
+        {{ forms.field('value', 'Wert', 'text', values.value, errors.value, { required: true, maxlength: 12, inputmode: 'decimal', hint: 'Prozent: 1–100 · Betrag: z. B. 5,00' }) }}
+        {{ forms.field('minSubtotal', 'Mindestbestellwert (€)', 'text', values.minSubtotal, errors.minSubtotal, { maxlength: 12, inputmode: 'decimal', hint: 'Optional, z. B. 30,00' }) }}
+        {{ forms.field('startsOn', 'Gültig ab', 'date', values.startsOn, errors.startsOn, { hint: 'Optional · 0:00 Uhr' }) }}
+        {{ forms.field('endsOn', 'Gültig bis einschließlich', 'date', values.endsOn, errors.endsOn, { hint: 'Optional · bis 23:59 Uhr' }) }}
+        {{ forms.field('maxUses', 'Maximale Einlösungen', 'text', values.maxUses, errors.maxUses, { maxlength: 6, inputmode: 'numeric', hint: 'Optional · leer = unbegrenzt' }) }}
+        {{ forms.field('description', 'Interne Beschreibung', 'text', values.description, errors.description, { maxlength: 200, wrapperClass: 'span-2', hint: 'Optional, nur in der Verwaltung sichtbar' }) }}
+        <div class="span-3 stack" style="gap:12px">
+          {{ forms.checkbox('oncePerEmail', 'Nur einmal pro E-Mail-Adresse einlösbar', values.oncePerEmail, errors.oncePerEmail) }}
+          {{ forms.checkbox('active', 'Sofort aktiv', values.active, errors.active) }}
+        </div>
+      </div>
+      <div class="ac-actions"><button type="submit" class="btn btn-dark">{{ ui.icon('plus', 18, 2) }} Code anlegen</button></div>
+    </form>
+  </div>
+</details>
+
+<div class="table-wrap">
+  <table class="data-table ad-table">
+    <caption class="sr-only">Alle Rabattcodes</caption>
+    <thead><tr><th scope="col">Code</th><th scope="col">Rabatt</th><th scope="col">Bedingungen</th><th scope="col">Zeitraum</th><th scope="col" class="num">Einlösungen</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Aktion</span></th></tr></thead>
+    <tbody>
+      {% for c in codes %}
+      <tr>
+        <td><div class="code-cell"><b>{{ c.code }}</b>{% if c.description %}<span>{{ c.description }}</span>{% endif %}</div></td>
+        <td class="nowrap"><strong>{% if c.type == 'percent' %}{{ c.value }} %{% else %}{{ c.value | euro }}{% endif %}</strong></td>
+        <td>{% if c.min_subtotal_cents %}ab {{ c.min_subtotal_cents | euro }}{% else %}ohne Mindestwert{% endif %}{% if c.once_per_email %}<br><span class="ac-meta">einmal pro E-Mail</span>{% endif %}</td>
+        <td class="nowrap">{% if c.starts_at or c.ends_at %}{{ (c.starts_at | date('date')) if c.starts_at else 'sofort' }} – {{ (c.validUntil | date('date')) if c.validUntil else 'offen' }}{% else %}unbegrenzt{% endif %}</td>
+        <td class="num">{{ c.uses }}{% if c.max_uses %} / {{ c.max_uses }}{% endif %}</td>
+        <td>{{ ui.chip(c.state.label, c.state.tone) }}</td>
+        <td>
+          <form method="post" action="/admin/rabattcodes/{{ c.id }}/status">
+            {{ forms.csrf() }}
+            <input type="hidden" name="active" value="{{ '0' if c.active else '1' }}">
+            <button type="submit" class="btn btn-quiet btn--sm">{{ 'Deaktivieren' if c.active else 'Aktivieren' }}<span class="sr-only"> – {{ c.code }}</span></button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="ad-empty">Noch keine Rabattcodes. Mit <code>npm run seed</code> werden die vorbereiteten Codes angelegt.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="ac-meta">Rabattcodes werden im Warenkorb serverseitig geprüft (Zeitraum, Mindestwert, Einlösungen, einmal pro E-Mail). Codes lassen sich aus Gründen der Nachvollziehbarkeit nicht löschen – deaktivieren Sie sie stattdessen.</p>
+{% endblock %}

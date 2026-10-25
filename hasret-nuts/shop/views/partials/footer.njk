@@ -1,0 +1,114 @@
+{#- Owner: BUILD-SHOP · Footer, mobiles Menü (Drawer, ohne JavaScript per :target) und Overlay. -#}
+{% import "macros/shop.njk" as shop with context %}
+<footer class="site-footer on-dark" id="site-footer">
+  <div class="wrap footer__top">
+    <div class="footer__brand">
+      <a href="/" class="footer__logo" aria-label="Hasret Nuts Shop – zur Startseite">
+        {% set logoVariant = 'mono' %}{% set logoId = 'hnl-f' %}{% set logoDecorative = true %}{% set logoStatic = true %}
+        {% include "partials/logo.njk" %}
+        <span class="brand__mark">HASRET</span>
+      </a>
+      <p>Sarma Lokum, Feinkost, Nüsse und Knabberzeug – persönlich ausgewählt in Memmingen.</p>
+      <a class="footer__trade" href="{{ site.corporateUrl }}/haendler">Für Händler →</a>
+    </div>
+    <nav class="footer__col" aria-label="Shop">
+      <span class="footer__h">Shop</span>
+      {% for c in navCategories %}<a href="/kategorie/{{ c.slug }}">{{ c.name }}</a>{% endfor %}
+      <a href="/angebote">Angebote</a>
+      <a href="/allergene">Allergene</a>
+    </nav>
+    <nav class="footer__col" aria-label="Service">
+      <span class="footer__h">Service</span>
+      <a href="/versand-zahlung">Versand &amp; Zahlung</a>
+      <a href="/widerruf">Widerruf</a>
+      <a href="/feedback">Feedback &amp; Fehler melden</a>
+      <a href="/impressum#kontakt">Kontakt</a>
+    </nav>
+    <nav class="footer__col" aria-label="Konto und Rechtliches">
+      <span class="footer__h">Konto</span>
+      {% if user %}<a href="/konto">Mein Konto</a>{% else %}<a href="/konto/anmelden">Anmelden</a><a href="/konto/registrieren">Konto anlegen</a>{% endif %}
+      <span class="footer__h footer__h--gap">Rechtliches</span>
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
+      <a href="/agb">AGB</a>
+      <a href="/cookies">Cookie-Hinweise</a>
+    </nav>
+  </div>
+  <div class="wrap footer__bottom">
+    <span>© {{ currentYear }} Hasret Kuruyemiş · Inhaber Eyyüp Koca · Memmingen</span>
+    <span>Alle Preise inkl. MwSt., zzgl. Versandkosten · Alle Fotografien: Hasret Nuts</span>
+  </div>
+</footer>
+
+<div class="menu" id="menu-drawer" aria-label="Menü" data-menu>
+  <div class="menu__head">
+    <span class="brand__mark">HASRET</span>
+    <a href="#" class="ico" data-menu-close aria-label="Menü schließen">{{ shop.icon('close', 22, 1.6) }}</a>
+  </div>
+  <nav class="menu__nav" aria-label="Hauptmenü">
+    <a href="/"{% if currentPath == '/' %} aria-current="page"{% endif %}>Startseite</a>
+    {% for c in navCategories %}<a href="/kategorie/{{ c.slug }}"{% if currentPath == '/kategorie/' ~ c.slug %} aria-current="page"{% endif %}>{{ c.name }}</a>{% endfor %}
+    <a href="/angebote"{% if currentPath == '/angebote' %} aria-current="page"{% endif %}>Angebote</a>
+    <a href="/allergene"{% if currentPath == '/allergene' %} aria-current="page"{% endif %}>Allergene</a>
+  </nav>
+  <nav class="menu__sub" aria-label="Service und Rechtliches">
+    {% if user %}<a href="/konto">Mein Konto</a>{% else %}<a href="/konto/anmelden">Anmelden</a>{% endif %}
+    <a href="/warenkorb">Warenkorb</a>
+    <a href="/versand-zahlung">Versand &amp; Zahlung</a>
+    <a href="/feedback">Feedback &amp; Fehler melden</a>
+    <a href="/impressum">Impressum</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/agb">AGB</a>
+    <a href="{{ site.corporateUrl }}/haendler">Für Händler →</a>
+  </nav>
+</div>
+{#- Mini-Warenkorb (nur mit JavaScript; ohne JS führt das Warenkorb-Symbol zur Seite /warenkorb).
+    Zeilen werden per GET /api/warenkorb?details=1 geladen und aus <template> per textContent befüllt. -#}
+{% if currentPath != '/warenkorb' and currentPath != '/kasse' %}
+<aside class="drawer" id="cart-drawer" aria-labelledby="cart-drawer-title" data-drawer>
+  <div class="drawer__head">
+    <h2 id="cart-drawer-title">Ihr Warenkorb <small data-cart-count-label></small></h2>
+    <button type="button" class="ico" data-cart-close aria-label="Warenkorb schließen">{{ shop.icon('close', 22, 1.6) }}</button>
+  </div>
+  <div class="drawer__body">
+    <p class="drawer__notice" data-cart-notice role="status" hidden></p>
+    <ul class="cart-list" aria-label="Artikel im Warenkorb" data-cart-list></ul>
+    <div class="cart-empty" data-cart-empty hidden>
+      <h3>Ihr Warenkorb ist noch leer.</h3>
+      <p class="muted">Entdecken Sie unsere Spezialitäten:</p>
+      <ul>
+        {% for c in navCategories %}<li><a href="/kategorie/{{ c.slug }}" class="link-u">{{ c.name }}</a></li>{% endfor %}
+        <li><a href="/angebote" class="link-u">Angebote</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="drawer__foot" data-cart-foot hidden>
+    <div class="cart-row"><span>Zwischensumme</span><strong data-cart-subtotal></strong></div>
+    <div class="cart-row cart-row--discount" data-cart-discount-row hidden><span data-cart-discount-label></span><strong data-cart-discount></strong></div>
+    <p class="cart-note">{{ shop.icon('mail', 16, 1.6) }}<span>Versandkosten und Zahlungsdetails erhalten Sie mit der Bestellbestätigung per E-Mail.</span></p>
+    <a class="btn buy btn--block" href="/kasse">Zur Bestellanfrage {{ shop.icon('arrow', 18, 1.8) }}</a>
+    <a class="btn btn-o btn--block" href="/warenkorb">Warenkorb &amp; Rabattcode</a>
+    <p class="cart-legal">Alle Preise inkl. MwSt., zzgl. Versandkosten</p>
+  </div>
+  <template data-ci-tpl>
+    <li class="ci ci--mini">
+      <a class="ci__thumb" tabindex="-1" aria-hidden="true" data-ci-href><span data-ci-photo></span></a>
+      <div class="ci__main">
+        <a class="ci__name" data-ci-href data-ci-name></a>
+        <span class="ci__meta" data-ci-meta></span>
+        <span class="ci__unit" data-ci-unit></span>
+        <div class="ci__row">
+          <div class="stepper stepper--sm" role="group" data-ci-group>
+            <button type="button" class="step" data-ci="dec">{{ shop.icon('minus', 16, 1.8) }}</button>
+            <span class="stepper__val" data-ci-qty></span>
+            <button type="button" class="step" data-ci="inc">{{ shop.icon('plus', 16, 1.8) }}</button>
+          </div>
+          <button type="button" class="ci__remove" data-ci="remove">{{ shop.icon('trash', 18, 1.6) }}</button>
+        </div>
+      </div>
+      <strong class="ci__price" data-ci-line></strong>
+    </li>
+  </template>
+</aside>
+{% endif %}
+<div class="scrim" data-scrim></div>

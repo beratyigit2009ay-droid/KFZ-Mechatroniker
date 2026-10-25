@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+{% import "macros/ui.njk" as ui %}
+{#- Owner: BUILD-CORPORATE · 404 im Corporate-Layout (Texte laut KONZEPT.md 4.6).
+    Wird von shared/errors.js gerendert (renderError → errors/404.njk, App-Templates haben Vorrang). -#}
+{% block content %}
+<section class="wrap notfound" aria-labelledby="nf-title">
+  <p class="eyebrow eyebrow--center">Seite nicht gefunden · 404</p>
+  <span class="notfound__code" aria-hidden="true">404</span>
+  <h1 id="nf-title" class="display-2">Diese Seite haben wir leider <em>nicht gefunden.</em></h1>
+  <p class="body-l">Vielleicht hat sie sich versteckt wie die letzte Pistazie in der Schale. Prüfen Sie die Adresse oder starten Sie neu auf der Startseite.</p>
+  <div class="btn-row">
+    <a class="btn btn--primary" href="/">Zur Startseite {{ ui.arrow() }}</a>
+    <a class="btn btn--outline" href="/feedback">Fehler melden</a>
+  </div>
+</section>
+{% endblock %}

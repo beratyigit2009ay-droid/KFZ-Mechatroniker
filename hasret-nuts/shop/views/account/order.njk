@@ -1,0 +1,84 @@
+{#- Owner: BUILD-AUTH · Detail einer eigenen Bestellanfrage. Variablen: order (dekoriert), items, steps -#}
+{% extends "account/_layout.njk" %}
+{% block accountContent %}
+<div>
+  <a class="back-link link-u" href="/konto/bestellungen" style="margin-top:0">{{ ui.icon('back', 18, 1.8) }} Alle Bestellanfragen</a>
+</div>
+<div class="acct__section-head">
+  <div class="stack">
+    <p class="ac-eyebrow">Bestellanfrage</p>
+    <h1 class="ac-mono" style="font-family:var(--f-display);letter-spacing:0">{{ order.public_id }}</h1>
+    <p class="ac-meta">Gesendet am {{ order.created_at | date('datetime') }} Uhr</p>
+  </div>
+  {{ ui.chip(order.statusInfo.label, order.statusInfo.tone) }}
+</div>
+
+<section class="acard" aria-labelledby="h-state">
+  <h2 id="h-state" class="sr-only">Stand Ihrer Anfrage</h2>
+  {% if steps.length %}
+  <ol class="progress" aria-label="Bearbeitungsstand">
+    {% for s in steps %}
+    <li class="{% if s.done %}is-done{% endif %}{% if s.current %} is-current{% endif %}"{% if s.current %} aria-current="step"{% endif %}>
+      <span class="progress__dot" aria-hidden="true">{% if s.done %}{{ ui.icon('check', 16, 2.4) }}{% endif %}</span>
+      <span>{{ s.label }}{% if s.done and not s.current %}<span class="sr-only"> (erledigt)</span>{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+  <p class="muted">{{ order.statusInfo.hint }}</p>
+</section>
+
+<section class="acard acard--white" aria-labelledby="h-items">
+  <h2 id="h-items" class="acard__title">{{ ui.icon('bag', 22, 1.5) }} Ihre Auswahl</h2>
+  <table class="items">
+    <caption class="sr-only">Positionen der Bestellanfrage {{ order.public_id }}</caption>
+    <thead><tr><th scope="col">Artikel</th><th scope="col" class="num">Einzelpreis</th><th scope="col" class="num">Menge</th><th scope="col" class="num">Summe</th></tr></thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td class="items__cell-name"><span class="items__name">{{ it.name }}</span>{% if it.variant %}<span class="items__sub">{{ it.variant }}</span>{% endif %}
+          {% if it.bundle.length %}<ul class="items__bundle" aria-label="Zusammenstellung">{% for b in it.bundle %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}</td>
+        <td class="num items__cell-unit" data-label="Einzelpreis">{{ it.unit_price_cents | euro }}</td>
+        <td class="num" data-label="Menge">× {{ it.qty }}</td>
+        <td class="num"><strong>{{ it.line_total_cents | euro }}</strong></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="sum">
+    <div><span>Zwischensumme</span><span>{{ order.subtotal_cents | euro }}</span></div>
+    {% if order.discount_cents %}<div class="is-discount"><span>Rabatt{% if order.discount_code %} ({{ order.discount_code }}){% endif %}</span><span>− {{ order.discount_cents | euro }}</span></div>{% endif %}
+    <div class="is-total"><span>Summe</span><span>{{ order.total_cents | euro }}</span></div>
+    <p class="ac-meta">inkl. MwSt.{% if order.delivery == 'versand' %}, zzgl. Versandkosten – diese nennen wir Ihnen verbindlich in der Bestätigung{% endif %}.</p>
+  </div>
+</section>
+
+<div class="acard__grid">
+  <section class="acard" aria-labelledby="h-del">
+    <h2 id="h-del" class="acard__title">{{ ui.icon('truck' if order.delivery == 'versand' else 'pin', 22, 1.5) }} {{ order.deliveryLabel }}</h2>
+    <div class="contact-lines">
+      <span>{{ order.name }}</span>
+      {% if order.delivery == 'versand' %}
+      {% if order.street %}<span>{{ order.street }}</span>{% endif %}
+      <span>{{ order.zip }} {{ order.city }}{% if order.country and order.country != 'DE' %} · {{ order.country }}{% endif %}</span>
+      {% else %}
+      <span class="muted">Abholadresse und Termin stimmen wir per E-Mail mit Ihnen ab.</span>
+      {% endif %}
+    </div>
+  </section>
+  <section class="acard" aria-labelledby="h-contact">
+    <h2 id="h-contact" class="acard__title">{{ ui.icon('mail', 22, 1.5) }} Kontakt &amp; Zahlung</h2>
+    <div class="contact-lines">
+      <span>{{ order.email }}</span>
+      {% if order.phone %}<span>{{ order.phone }}</span>{% endif %}
+      {% if order.payment_pref %}<span class="muted">Zahlungswunsch: {{ order.payment_pref }}</span>{% endif %}
+    </div>
+  </section>
+</div>
+{% if order.message %}
+<section class="acard" aria-labelledby="h-msg">
+  <h2 id="h-msg" class="acard__title">{{ ui.icon('chat', 22, 1.5) }} Ihre Nachricht</h2>
+  <p class="ac-pre">{{ order.message }}</p>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{#- Owner: BUILD-AUTH · Verwaltung – Bestellanfragen. Variablen: orders, tabs, status, q, pager, backUrl -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<header class="admin__head">
+  <div class="stack"><p class="ac-eyebrow">Verwaltung</p><h1>Bestellanfragen</h1></div>
+  <p class="ac-meta">{{ pager.total }} {{ 'Eintrag' if pager.total == 1 else 'Einträge' }}{% if q %} für „{{ q }}“{% endif %}</p>
+</header>
+<div class="toolbar-ad">
+  <nav class="tabs" aria-label="Nach Status filtern">
+    {% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="tabs__n">{{ t.count }}</span></a>{% endfor %}
+  </nav>
+  <form class="searchbar" method="get" action="/admin/bestellungen" role="search">
+    {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+    <label for="f-q" class="sr-only">Suche nach Nummer, Name oder E-Mail</label>
+    <input class="field__input" id="f-q" type="search" name="q" value="{{ q }}" maxlength="80" placeholder="Nummer, Name oder E-Mail">
+    <button class="btn btn-dark btn--sm" type="submit">{{ ui.icon('search', 18, 1.8) }}<span class="sr-only">Suchen</span></button>
+  </form>
+</div>
+<div class="table-wrap">
+  <table class="data-table ad-table">
+    <caption class="sr-only">Bestellanfragen{% if status %} mit Status {{ status }}{% endif %}</caption>
+    <thead><tr><th scope="col">Nummer</th><th scope="col">Eingang</th><th scope="col">Kunde</th><th scope="col">Lieferung</th><th scope="col" class="num">Artikel</th><th scope="col" class="num">Summe</th><th scope="col">Status</th></tr></thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td><a href="/admin/bestellungen/{{ o.id }}" class="ac-mono">{{ o.public_id }}</a></td>
+        <td class="nowrap">{{ o.created_at | date('datetime') }}</td>
+        <td><span>{{ o.name }}</span><br><span class="ac-meta">{{ o.email }}{% if o.user_id %} · Konto{% endif %}</span></td>
+        <td>{{ o.deliveryLabel }}{% if o.discount_code %}<br><span class="ac-meta">Code {{ o.discount_code }}</span>{% endif %}</td>
+        <td class="num">{{ o.item_count }}</td>
+        <td class="num"><strong>{{ o.total_cents | euro }}</strong></td>
+        <td>{{ ui.chip(o.statusLabel, o.tone) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="ad-empty">{% if q or status %}Keine Bestellanfragen für diesen Filter.{% else %}Noch keine Bestellanfragen eingegangen.{% endif %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ ui.pager(pager, 'Seiten der Bestellanfragen') }}
+{% endblock %}

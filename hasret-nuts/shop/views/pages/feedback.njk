@@ -1,0 +1,53 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% import "macros/forms.njk" as forms with context %}
+{% block bodyClass %}page-feedback{% endblock %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+<section class="wrap wrap--narrow form-page" aria-labelledby="h-fb">
+  <p class="eyebrow">Ihre Meinung zählt</p>
+  <h1 id="h-fb" class="page-title">Feedback &amp; Fehler melden</h1>
+  {% if sent %}
+  <div class="success-panel" role="status" tabindex="-1" data-focus-on-load>
+    <span class="success-panel__icon" aria-hidden="true">{{ shop.icon('check', 26, 2) }}</span>
+    <h2>Vielen Dank für Ihre Nachricht!</h2>
+    <p>Wir kümmern uns darum. Wenn Sie uns Ihre E-Mail-Adresse genannt haben, melden wir uns bei Rückfragen.</p>
+    <div class="success-panel__actions"><a class="btn btn-dark" href="/">Zur Startseite</a><a class="btn btn-o" href="/feedback">Weitere Nachricht senden</a></div>
+  </div>
+  {% else %}
+  <p class="page-intro">Ihre Rückmeldung macht uns besser. Ob Lob, Kritik, eine Idee oder ein technischer Fehler: Wir lesen jede Nachricht persönlich.</p>
+  {{ forms.errorSummary(errors) }}
+  <form class="panel feedback-form" method="post" action="/feedback" novalidate data-feedback-form>
+    {{ forms.csrf() }}
+    {{ forms.honeypot() }}
+    <fieldset class="kinds" id="f-kind">
+      <legend class="field__label">Worum geht es? <span class="field__req" aria-hidden="true">*</span></legend>
+      <div class="choice-cards choice-cards--3">
+        {% for k in kinds %}
+        <label class="choice" for="f-kind-{{ k.value }}">
+          <input type="radio" id="f-kind-{{ k.value }}" name="kind" value="{{ k.value }}"{% if values.kind == k.value %} checked{% endif %} data-kind>
+          <span class="choice__box">
+            <span class="choice__icon" aria-hidden="true">{{ shop.icon('chat' if k.value == 'feedback' else ('bug' if k.value == 'bug' else 'idea'), 22, 1.5) }}</span>
+            <span class="choice__text"><strong>{{ k.label }}</strong><span>{{ k.hint }}</span></span>
+          </span>
+        </label>
+        {% endfor %}
+      </div>
+      {% if errors.kind %}<p class="field__error">{{ errors.kind }}</p>{% endif %}
+    </fieldset>
+    {{ forms.textarea('message', 'Ihre Nachricht', values.message, errors.message, { required: true, rows: 6, maxlength: 3000, hint: 'Was möchten Sie uns mitteilen? (max. 3.000 Zeichen)' }) }}
+    {{ forms.field('page_url', 'Auf welcher Seite? (optional)', 'text', values.page_url, errors.page_url, { maxlength: 300, hint: 'Wird automatisch mit der zuletzt besuchten Seite vorbelegt.', autocomplete: 'off' }) }}
+    <div class="bug-fields" data-bug-fields>
+      <p class="bug-fields__note">Nur bei „Fehler melden“:</p>
+      {{ forms.textarea('steps', 'Was haben Sie gemacht? (optional)', values.steps, errors.steps, { rows: 4, maxlength: 2000, hint: 'Beschreiben Sie die Schritte, die zum Fehler geführt haben – z. B. „Sorte gewählt, auf ‚In den Warenkorb‘ geklickt …“' }) }}
+      {{ forms.textarea('expected', 'Was hätten Sie erwartet? (optional)', values.expected, errors.expected, { rows: 3, maxlength: 2000, hint: 'Was sollte stattdessen passieren?' }) }}
+    </div>
+    {{ forms.checkbox('tech', 'Technische Angaben mitsenden', values.tech, errors.tech, { hint: 'Browser, Betriebssystem und Bildschirmgröße mitsenden – das hilft uns, den Fehler nachzustellen.' }) }}
+    <input type="hidden" name="screen" value="" data-screen>
+    {{ forms.field('email', 'E-Mail-Adresse (optional)', 'email', values.email, errors.email, { autocomplete: 'email', maxlength: 254, hint: 'Nur falls wir nachfragen dürfen.' }) }}
+    <p class="legal-copy">Ihre Angaben verwenden wir ausschließlich zur Bearbeitung Ihrer Rückmeldung. Mehr dazu in der <a href="/datenschutz#feedback">Datenschutzerklärung</a>.</p>
+    <button type="submit" class="btn btn--lg btn-dark">Nachricht senden</button>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

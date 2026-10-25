@@ -1,0 +1,49 @@
+{#- Owner: BUILD-CORPORATE · Kopfzeile (Sticky-Blur) + mobiles Menü. aria-current serverseitig. -#}
+{% import "macros/ui.njk" as ui %}
+{%- set navItems = [
+  { href: '/philosophie', label: 'Philosophie', num: '01' },
+  { href: '/messe-chronik', label: 'Messe-Chronik', num: '02' },
+  { href: '/haendler', label: 'Für Händler', num: '03' },
+  { href: '#kontakt', label: 'Kontakt', num: '04' }
+] -%}
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="/" aria-label="Hasret Nuts – zur Startseite"{% if currentPath == '/' %} aria-current="page"{% endif %}>
+      {% set logoVariant = 'color' %}{% set logoId = 'hnl' %}{% set logoDecorative = true %}{% set logoStatic = false %}
+      {% include "partials/logo.njk" %}
+      <span class="brand__word" aria-hidden="true"><span class="brand__name">HASRET</span><span class="brand__sub">NUTS · MEMMINGEN</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Hauptnavigation">
+      {% for item in navItems %}
+      <a href="{{ item.href }}"{% if currentPath == item.href %} aria-current="page"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+    <div class="site-header__actions">
+      <a class="btn btn--primary btn--sm site-header__cta" href="/haendler#anfrage">Händleranfrage</a>
+      <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-drawer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M3 8h18M3 16h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="site-drawer" role="dialog" aria-modal="true" aria-label="Menü" hidden>
+  <div class="wrap drawer__bar">
+    <a class="brand" href="/" aria-label="Hasret Nuts – zur Startseite">
+      <span class="hn-logo hn-logo--static"><img src="{{ asset('/assets/logo/hasret-logo.svg') }}" alt="" width="600" height="420" decoding="async" loading="lazy" class="hn-logo__img"></span>
+      <span class="brand__word" aria-hidden="true"><span class="brand__name">HASRET</span><span class="brand__sub">NUTS · MEMMINGEN</span></span>
+    </a>
+    <button class="drawer__close" type="button" aria-label="Menü schließen">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav class="wrap drawer__nav" aria-label="Mobile Navigation">
+    {% for item in navItems %}
+    <a href="{{ item.href }}" style="--i:{{ loop.index0 }}"{% if currentPath == item.href %} aria-current="page"{% endif %}><span class="drawer__num">{{ item.num }}</span>{{ item.label }}{{ ui.arrowThin() }}</a>
+    {% endfor %}
+  </nav>
+  <div class="wrap drawer__foot" style="--i:4">
+    <a class="btn btn--primary" href="/haendler#anfrage">Händleranfrage</a>
+    <p class="drawer__contact">{{ contact.company if contact else 'Hasret Kuruyemiş' }} · Inhaber Eyyüp Koca<br>{{ contact.street if contact else '[STRASSE NR.]' }} · {{ contact.zipCity if contact else '[PLZ] Memmingen' }}<br>{{ contact.phone if contact else '[TELEFON]' }} · {{ contact.email if contact else '[E-MAIL]' }}</p>
+  </div>
+</div>

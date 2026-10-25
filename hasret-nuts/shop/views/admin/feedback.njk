@@ -1,0 +1,58 @@
+{#- Owner: BUILD-AUTH · Verwaltung – Feedback, Ideen & Fehlermeldungen (beide Plattformen).
+    Variablen: items, tabs, statuses, kinds, apps, filter { status, kind, app }, pager, backUrl -#}
+{% extends "admin/_layout.njk" %}
+{% block adminContent %}
+<header class="admin__head">
+  <div class="stack"><p class="ac-eyebrow">Shop &amp; Corporate Hub</p><h1>Feedback &amp; Fehler</h1></div>
+  <p class="ac-meta">{{ pager.total }} {{ 'Meldung' if pager.total == 1 else 'Meldungen' }}</p>
+</header>
+<div class="toolbar-ad">
+  <nav class="tabs" aria-label="Nach Status filtern">
+    {% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="tabs__n">{{ t.count }}</span></a>{% endfor %}
+  </nav>
+  <form class="filterbar" method="get" action="/admin/feedback">
+    {% if filter.status %}<input type="hidden" name="status" value="{{ filter.status }}">{% endif %}
+    {% set kindOpts = [{ value: '', label: 'Alle Arten' }].concat(kinds) %}
+    {% set appOpts = [{ value: '', label: 'Beide Plattformen' }].concat(apps) %}
+    {{ forms.select('art', 'Art', kindOpts, filter.kind, null, { id: 'f-art' }) }}
+    {{ forms.select('app', 'Plattform', appOpts, filter.app, null, { id: 'f-app' }) }}
+    <button type="submit" class="btn btn-quiet btn--sm">Filtern</button>
+  </form>
+</div>
+{% if items.length %}
+<ul class="tickets">
+  {% for f in items %}
+  <li class="ticket" id="meldung-{{ f.id }}">
+    <div class="ticket__main">
+      <div class="ticket__top">
+        <span class="ticket__kind">{{ ui.icon('bug' if f.kind == 'bug' else ('idea' if f.kind == 'idee' else 'chat'), 20, 1.6) }} {{ f.kindLabel }}</span>
+        {{ ui.chip(f.statusLabel, f.tone) }}
+        <span class="ac-meta">#{{ f.id }} · {{ f.appLabel }} · {{ f.created_at | date('datetime') }} Uhr</span>
+      </div>
+      <p class="ticket__msg">{{ f.message }}</p>
+      {% if f.page_url or f.steps or f.expected or f.browser_info or f.email %}
+      <dl class="ticket__extra">
+        {% if f.page_url %}<div><dt>Seite</dt><dd class="ac-mono">{{ f.page_url }}</dd></div>{% endif %}
+        {% if f.steps %}<div><dt>Schritte</dt><dd>{{ f.steps }}</dd></div>{% endif %}
+        {% if f.expected %}<div><dt>Erwartet</dt><dd>{{ f.expected }}</dd></div>{% endif %}
+        {% if f.browser_info %}<div><dt>Technik</dt><dd class="ac-mono">{{ f.browser_info }}</dd></div>{% endif %}
+        {% if f.email %}<div><dt>Rückfragen an</dt><dd><a href="mailto:{{ f.email }}">{{ f.email }}</a></dd></div>{% endif %}
+      </dl>
+      {% endif %}
+    </div>
+    <div class="ticket__side">
+      <form class="status-form" method="post" action="/admin/feedback/{{ f.id }}/status">
+        {{ forms.csrf() }}
+        <input type="hidden" name="back" value="{{ backUrl }}">
+        {{ forms.select('status', 'Status', statuses, f.status, null, { id: 'f-status-' ~ f.id }) }}
+        <button type="submit" class="btn btn-dark btn--sm">Speichern</button>
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{{ ui.pager(pager, 'Seiten der Meldungen') }}
+{% else %}
+<div class="empty empty--left"><h2 style="font-size:24px">Keine Meldungen</h2><p class="muted">{% if filter.status or filter.kind or filter.app %}Für diesen Filter gibt es keine Einträge.{% else %}Feedback und Fehlermeldungen aus Shop und Corporate Hub erscheinen hier.{% endif %}</p></div>
+{% endif %}
+{% endblock %}

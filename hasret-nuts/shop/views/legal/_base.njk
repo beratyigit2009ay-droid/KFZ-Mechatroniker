@@ -1,0 +1,12 @@
+{% extends "layout.njk" %}
+{% import "macros/shop.njk" as shop with context %}
+{% block bodyClass %}page-legal{% endblock %}
+{% block content %}
+<div class="wrap">{{ shop.crumbs(breadcrumbs) }}</div>
+<article class="wrap legal" aria-labelledby="h-legal">
+  <h1 id="h-legal">{{ pageTitle }}</h1>
+  {% block legalLead %}{% endblock %}
+  {{ shop.legalNote() }}
+  {% block legalBody %}{% endblock %}
+</article>
+{% endblock %}

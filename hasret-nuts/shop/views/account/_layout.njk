@@ -1,0 +1,41 @@
+{#- Owner: BUILD-AUTH · Rahmen des Kundenkontos (Begrüßung + Navigation).
+    Variablen: section (overview | orders | password | delete), orderTotal (optional). Block: accountContent -#}
+{% extends "layout.njk" %}
+{% import "macros/forms.njk" as forms with context %}
+{% import "account/_ui.njk" as ui %}
+{% block bodyClass %}page-account{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ asset('/static/css/account.css') }}">{% endblock %}
+{% block content %}
+<div class="acct wrap">
+  <header class="acct__hero">
+    <div class="acct__hello">
+      <span class="acct__avatar" aria-hidden="true">{{ (user.name or user.email) | first }}</span>
+      <div>
+        <p class="ac-eyebrow">Mein Konto</p>
+        <p class="ac-title">Guten Tag{% if user.name %}, <em>{{ user.name }}</em>{% endif %}</p>
+        <p class="acct__email">{{ user.email }}</p>
+      </div>
+    </div>
+    <div class="ac-actions">
+      {% if user.role == 'admin' %}<a class="btn btn-quiet btn--sm" href="/admin">{{ ui.icon('grid', 18, 1.6) }} Zur Verwaltung</a>{% endif %}
+      <a class="btn btn-o btn--sm" href="/">Weiter einkaufen</a>
+    </div>
+  </header>
+  <div class="acct__grid">
+    <nav class="acct__nav" aria-label="Kontobereiche">
+      <a href="/konto"{% if section == 'overview' %} aria-current="page"{% endif %}>{{ ui.icon('user', 20, 1.6) }}<span>Übersicht</span></a>
+      <a href="/konto/bestellungen"{% if section == 'orders' %} aria-current="page"{% endif %}>{{ ui.icon('bag', 20, 1.6) }}<span>Bestellanfragen</span>{% if orderTotal %}<span class="acct__nav-n">{{ orderTotal }}</span>{% endif %}</a>
+      <a href="/konto/passwort"{% if section == 'password' %} aria-current="page"{% endif %}>{{ ui.icon('key', 20, 1.6) }}<span>Passwort ändern</span></a>
+      <a href="/konto/loeschen" class="is-danger"{% if section == 'delete' %} aria-current="page"{% endif %}>{{ ui.icon('trash', 20, 1.6) }}<span>Konto löschen</span></a>
+      <form method="post" action="/konto/abmelden">
+        {{ forms.csrf() }}
+        <button type="submit">{{ ui.icon('logout', 20, 1.6) }}<span>Abmelden</span></button>
+      </form>
+    </nav>
+    <div class="acct__main">
+      {% block accountContent %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ asset('/static/js/account.js') }}" defer></script>{% endblock %}

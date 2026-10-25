@@ -1,0 +1,13 @@
+{% import "macros/forms.njk" as forms with context %}
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>Formular</title>
+<script nonce="{{ nonce }}">window.__test = true;</script>
+</head><body>
+{% include "partials/flash.njk" %}
+<form method="post" action="/form">
+{{ forms.csrf() }}
+{{ forms.honeypot() }}
+{{ forms.field('value', 'Wert', 'text', '', null, { required: true }) }}
+<button type="submit">Senden</button>
+</form>
+</body></html>

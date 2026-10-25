@@ -1,0 +1,19 @@
+{#- Owner: BUILD-AUTH · Eigene Bestellanfragen. Variablen: orders, total, pager -#}
+{% extends "account/_layout.njk" %}
+{% block accountContent %}
+<div class="acct__section-head">
+  <h1>Meine Bestellanfragen</h1>
+  {% if total %}<p class="ac-meta">{{ total }} {{ 'Anfrage' if total == 1 else 'Anfragen' }} insgesamt</p>{% endif %}
+</div>
+<p class="note note--process">{{ ui.icon('info', 20, 1.6) }}<span>Ihre Bestellung ist zunächst eine <strong>unverbindliche Bestellanfrage</strong>. Verbindlich wird sie erst, wenn wir sie Ihnen per E-Mail bestätigen – den aktuellen Stand sehen Sie hier.</span></p>
+{% if orders.length %}
+{% include "account/_order-list.njk" %}
+{{ ui.pager(pager, 'Seiten der Bestellanfragen') }}
+{% else %}
+<div class="empty empty--left">
+  <h2 style="font-size:26px">Noch keine Bestellanfragen</h2>
+  <p class="muted">Bestellanfragen, die Sie angemeldet senden, erscheinen hier automatisch.</p>
+  <a class="btn btn-dark" href="/">Sortiment entdecken</a>
+</div>
+{% endif %}
+{% endblock %}

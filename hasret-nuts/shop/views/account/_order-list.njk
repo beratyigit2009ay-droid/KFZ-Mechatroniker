@@ -1,0 +1,17 @@
+{#- Owner: BUILD-AUTH · Liste eigener Bestellanfragen. Erwartet: orders oder recent (dekoriert mit statusInfo, deliveryLabel). -#}
+{% set _list = orders if orders else recent %}
+<ul class="olist">
+  {% for o in _list %}
+  <li class="orow">
+    <div class="orow__id">
+      <a href="/konto/bestellungen/{{ o.public_id }}">{{ o.public_id }}</a>
+      <span class="ac-meta">{{ o.created_at | date('date') }} · {{ o.item_count }} {{ 'Artikel' }}</span>
+    </div>
+    <span class="orow__total">{{ o.total_cents | euro }}</span>
+    <div class="orow__foot">
+      <span class="orow__meta ac-meta">{{ o.deliveryLabel }}</span>
+      {{ ui.chip(o.statusInfo.label, o.statusInfo.tone) }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
