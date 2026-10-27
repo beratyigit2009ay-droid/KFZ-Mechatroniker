@@ -2656,6 +2656,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
 
 
 
+
 <!-- Bereich: abholung -->
 <dialog class="ab" id="abholung" aria-labelledby="ab-title">
   <header class="ab-top">
@@ -4382,14 +4383,21 @@ const CONFIG = {
   $('.ab-form').addEventListener('submit', (e) => { e.preventDefault(); if (check()) go(3); });
 
   /* Schritt 3: Bestellzettel, Nachricht, Absenden */
+  /* Der Bestellschein, wie er bei euch in WhatsApp ankommt (*fett* ist WhatsApp-Formatierung) */
+  const plain = (t) => String(t || '').replace(/[*_~`]/g, '').trim();      // Eingaben dürfen die Formatierung nicht stören
   const message = () => {
-    const lines = ['Hallo Echte Bärliner Haunstetten! Ich möchte zum Abholen bestellen:', ''];
-    S.cart.forEach((it) => { lines.push(it.qty + '× ' + BASE[it.base]); lines.push('   ' + details(it)); });
-    lines.push('', 'Abholung: ' + timeLabel(), 'Name: ' + S.name);
-    if (S.note) lines.push('Anmerkung: ' + S.note);
-    lines.push('Bestell-Nr.: ' + S.code);
+    const line = '––––––––––––––––––';
     const sum = total();
-    lines.push('', sum != null ? 'Summe laut Speisekarte: ' + euro(sum) + ' – ich zahle beim Abholen.' : 'Ich zahle beim Abholen.');
+    const lines = ['*BESTELLSCHEIN · ZUM ABHOLEN*', 'Echte Bärliner Haunstetten · Nr. *' + S.code + '*', line];
+    S.cart.forEach((it, i) => {
+      if (i) lines.push('');
+      lines.push('*' + it.qty + '× ' + BASE[it.base] + '*' + (price(it.base) ? ' · ' + euro(price(it.base).n * it.qty) : ''));
+      lines.push(details(it));
+    });
+    lines.push(line, 'Abholung: *' + timeLabel() + '*', 'Name: *' + plain(S.name) + '*');
+    if (S.note) lines.push('Anmerkung: ' + plain(S.note));
+    if (sum != null) lines.push('Summe laut Speisekarte: *' + euro(sum) + '*');
+    lines.push('Bezahlt wird beim Abholen.');
     return lines.join('\n');
   };
   const renderReceipt = () => {
