@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Echte Bärliner Augsburg-Haunstetten | Döner heiß vom Spieß</title>
-<noscript><style>[data-needs]{display:none!important}</style></noscript>
+<noscript><style>[data-needs],.js-only{display:none!important}</style></noscript>
 <meta name="description" content="Echte Bärliner in Augsburg-Haunstetten: Berliner Döner frisch vom Spieß – im Brot, in der Box oder auf dem Teller. Albert-Leidl-Straße 6, 86179 Augsburg.">
 <meta name="theme-color" content="#0F0E0C">
 <meta name="color-scheme" content="dark">
@@ -1324,6 +1324,199 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
 @media (prefers-reduced-motion:reduce){.st-pulse{animation:none}}
 
 /* ===== /Bereich: standorte ===== */
+/* ===== Bereich: abholung ===== */
+/* Bestellen zum Abholen: eigene Seite (Dialog über der Website), 3 Schritte */
+html.ab-open{overflow:hidden}
+html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{animation-play-state:paused !important}
+.ab{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--ink);color:var(--paper);overflow:hidden}
+.ab[open]{display:flex;flex-direction:column;animation:ab-in .35s cubic-bezier(.2,.8,.2,1)}
+.ab::backdrop{background:var(--ink)}
+@keyframes ab-in{from{opacity:0;transform:translateY(18px)}}
+.ab :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.ab [hidden]{display:none !important}
+.ab[data-step="3"] .ab-next,.ab[data-step="3"] .ab-bar,.ab[data-step="4"] .ab-cart,.ab[data-step="4"] .ab-bar{display:none}
+
+.ab-top{flex:none;display:flex;align-items:center;gap:16px 24px;padding:14px max(16px,calc((100% - 1180px) / 2));border-bottom:1px solid var(--line);background:rgba(15,14,12,.96)}
+.ab-back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border:0;border-radius:999px;background:var(--ink-2);color:var(--paper);font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.ab-back:hover{background:var(--ink-3)}
+.ab-title{display:flex;flex-direction:column;gap:2px;flex:1 1 0;min-width:0;margin-right:auto}
+.ab-title .kicker{font-size:11.5px}
+.ab-title h2{margin:0;font-size:20px;font-weight:900;font-stretch:115%;line-height:1.1;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ab-steps{display:flex;gap:6px;margin:0;padding:0;list-style:none}
+.ab-steps li{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;font-size:14px;font-weight:700;color:var(--muted)}
+.ab-steps b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink-3);color:var(--muted-2);font-size:13px}
+.ab-steps li[aria-current="step"]{background:var(--ink-2);color:var(--paper);box-shadow:inset 0 0 0 1px rgba(217,169,58,.45)}
+.ab-steps li[aria-current="step"] b,.ab-steps li.is-done b{background:var(--gold);color:var(--ink)}
+
+.ab-scroll{flex:1;overflow:auto;overscroll-behavior:contain}
+.ab-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start;max-width:1180px;margin:0 auto;padding:36px 32px 48px}
+.ab-pane{min-width:0}
+.ab-pane:focus{outline:none}
+.ab-h{margin:0 0 6px;font-size:clamp(28px,3.4vw,44px);font-weight:900;font-stretch:125%;line-height:1;text-transform:uppercase}
+.ab-lead{margin:0 0 26px;max-width:560px;font-size:16.5px;line-height:1.5;color:var(--muted-2)}
+
+/* Schritt 1: Gerichte */
+.ab-prods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ab-prod{display:flex;flex-direction:column;overflow:hidden;padding:0;border:0;border-radius:24px;background:var(--ink-2);color:inherit;font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line);transition:transform .2s,box-shadow .2s}
+.ab-prod:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1.5px rgba(217,169,58,.5)}
+.ab-pm{position:relative;display:grid;place-items:center;height:190px;overflow:hidden}
+.ab-pm.dark{background:radial-gradient(circle at 50% 60%,#3A2414,#1A1210)}
+.ab-pm.gold{background:radial-gradient(circle at 50% 60%,#F2CF73,#C8932A)}
+.ab-pm.paper{background:radial-gradient(circle at 50% 60%,#FFF8EA,#E7DCC6)}
+.ab-pm img{width:auto;height:170px;max-width:none;filter:drop-shadow(0 14px 18px rgba(0,0,0,.35))}
+.ab-pb{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px;flex:1}
+.ab-pt{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ab-pt strong{font-size:19px;font-weight:900;line-height:1.2}
+.ab-price{font-weight:800;color:var(--gold-hi);white-space:nowrap}
+.ab-pd{font-size:14.5px;line-height:1.45;color:var(--muted)}
+.ab-pgo{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:10px;font-size:15px;font-weight:800;color:var(--gold-hi)}
+.ab-pgo svg{flex:none}
+.ab-alt{margin:22px 0 0;font-size:15px;color:var(--muted)}
+.ab-alt a{color:var(--gold-hi);font-weight:700}
+
+/* Zusammenstellen */
+.ab-cfg{display:flex;flex-direction:column;gap:22px}
+.ab-cfg[hidden]{display:none}
+.ab-link{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:none;color:var(--muted-2);font:inherit;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer}
+.ab-link:hover{color:var(--gold-hi)}
+.ab-cfg-head{display:flex;align-items:center;gap:18px}
+.ab-cfg-head .ab-pm{flex:none;width:112px;height:112px;border-radius:22px}
+.ab-cfg-head .ab-pm img{height:100px}
+.ab-cfg-head h3{margin:0;font-size:clamp(26px,3vw,38px);font-weight:900;font-stretch:125%;line-height:1;text-transform:uppercase}
+.ab-cfg-head p{margin:6px 0 0;font-size:15px;line-height:1.45;color:var(--muted-2)}
+.ab-fs{margin:0;padding:0;border:0;min-width:0}
+.ab-fs legend{margin-bottom:12px;padding:0;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.ab-heat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ab-heat label{position:relative}
+.ab-heat input{position:absolute;opacity:0;width:1px;height:1px}
+.ab-heat span{display:grid;place-items:center;min-height:52px;padding:6px 8px;border-radius:16px;background:var(--ink-2);box-shadow:inset 0 0 0 1.5px var(--line);font-size:14.5px;font-weight:700;text-align:center;color:var(--muted-2);cursor:pointer}
+.ab-heat input:checked+span{background:#2A2117;color:var(--paper);box-shadow:inset 0 0 0 2px var(--gold)}
+.ab-heat input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
+.ab-sentence{margin:0;padding:14px 18px;border-radius:16px;background:var(--ink-2);font-size:15.5px;line-height:1.5;color:var(--muted-2)}
+.ab-sentence b{color:var(--paper)}
+.ab-addrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.ab-qty{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.ab-qty button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--paper);font:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer}
+.ab-qty button:hover{background:var(--ink-3)}
+.ab-qty output{min-width:28px;text-align:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.ab-addrow .btn{flex:1 1 220px}
+
+/* Schritt 2: Abholzeit */
+.ab-times{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:12px}
+.ab-more{grid-column:1/-1;justify-self:start;min-height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--ink-2);color:var(--gold-hi);font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.ab-more:hover{background:var(--ink-3)}
+.ab-times label{position:relative}
+.ab-times input{position:absolute;opacity:0;width:1px;height:1px}
+.ab-times span{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 12px;border-radius:16px;background:var(--ink-2);box-shadow:inset 0 0 0 1.5px var(--line);font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer}
+.ab-times span small{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ab-times .ab-asap{grid-column:1/-1}
+.ab-times .ab-asap span{flex-direction:row;align-items:center;gap:10px;font-size:16px}
+.ab-times input:checked+span{background:#2A2117;box-shadow:inset 0 0 0 2px var(--gold)}
+.ab-times input:checked+span small{color:var(--gold-hi)}
+.ab-times input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
+.ab-day{grid-column:1/-1;margin:8px 0 0;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ab-own{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:4px}
+.ab-own[hidden]{display:none}
+.ab-field{display:flex;flex-direction:column;gap:8px}
+.ab-field>span{font-size:15px;font-weight:700}
+.ab-field small{font-weight:500;color:var(--muted)}
+.ab-input{width:100%;min-height:52px;padding:12px 16px;border:0;border-radius:14px;background:var(--ink-2);color:var(--paper);font:inherit;font-size:17px;box-shadow:inset 0 0 0 1.5px rgba(245,240,230,.18)}
+.ab-input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--gold)}
+.ab-input[type="time"]{width:auto;min-width:150px;color-scheme:dark}
+textarea.ab-input{min-height:88px;resize:vertical}
+.ab-form{display:flex;flex-direction:column;gap:26px;max-width:620px}
+.ab-hint{margin:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.ab-err{margin:0;min-height:1.4em;font-size:14.5px;font-weight:700;color:#FF8F70}
+
+/* Warenkorb */
+.ab-cart{position:sticky;top:0;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:24px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.ab-cart-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.ab-cart-h span{padding:1px 9px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);font-size:12px;letter-spacing:0;color:var(--muted)}
+.ab-empty{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+.ab-items{display:flex;flex-direction:column;margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.ab-items:empty{display:none}
+.ab-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ab-item strong{font-size:16px;font-weight:800}
+.ab-item p{grid-column:1/-1;margin:0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.ab-item .ab-qty{grid-row:1/3;grid-column:2;align-self:start;padding:2px}
+.ab-item .ab-qty button{width:44px;height:44px;font-size:18px}
+.ab-item .ab-qty output{min-width:20px;font-size:15px}
+.ab-item-acts{grid-column:1/-1;display:flex;gap:16px}
+.ab-item-acts button{min-height:44px;padding:0;border:0;background:none;color:var(--gold-hi);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.ab-sum{display:flex;justify-content:space-between;gap:10px;margin:0;font-size:16px;font-weight:800}
+.ab-sum small{display:block;font-size:12.5px;font-weight:500;color:var(--muted)}
+.ab-next{width:100%}
+.ab-next[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+
+/* Schritt 3: Bestellzettel */
+.ab-receipt{position:relative;max-width:520px;margin:6px 0 26px;padding:30px 28px 26px;background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;--zz:radial-gradient(circle at 8px 0,transparent 7px,var(--paper) 7.5px) 0 0/16px 10px repeat-x;filter:drop-shadow(0 22px 30px rgba(0,0,0,.4))}
+.ab-receipt::before,.ab-receipt::after{content:"";position:absolute;left:0;right:0;height:10px;background:var(--zz)}
+.ab-receipt::before{top:-9px;transform:scaleY(-1)}
+.ab-receipt::after{bottom:-9px}
+.ab-r-brand{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:2px dashed rgba(15,14,12,.25)}
+.ab-r-brand b{display:block;font-size:20px;font-weight:900;font-stretch:125%;letter-spacing:.02em}
+.ab-r-brand small{font-size:13px;color:var(--muted-ink)}
+.ab-r-no{text-align:right;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-ink)}
+.ab-r-no strong{display:block;font-size:22px;letter-spacing:.04em;color:var(--ink);white-space:nowrap}
+.ab-r-items{margin:0;padding:12px 0;list-style:none;border-bottom:2px dashed rgba(15,14,12,.25)}
+.ab-r-items li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 10px;padding:8px 0}
+.ab-r-items b{font-size:16px}
+.ab-r-items span{font-size:16px;font-weight:800}
+.ab-r-items em{font-style:normal;font-weight:700;white-space:nowrap}
+.ab-r-items p{grid-column:2/-1;margin:0;font-size:13.5px;line-height:1.45;color:var(--muted-ink)}
+.ab-r-meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:14px 0 0;font-size:15px}
+.ab-r-meta dt{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-ink);padding-top:2px}
+.ab-r-meta dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+.ab-r-foot{margin:16px 0 0;font-size:13.5px;color:var(--muted-ink)}
+.ab-send{display:flex;flex-direction:column;gap:12px;max-width:520px}
+.ab-send .btn{width:100%}
+.ab-wa{background:var(--gold);color:var(--ink)}
+.ab-send-more{display:flex;flex-wrap:wrap;gap:6px 22px}
+.ab-note{margin:0;padding:16px 18px;border-radius:18px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line);font-size:15px;line-height:1.5;color:var(--muted-2)}
+.ab-note b{display:block;margin-bottom:2px;color:var(--paper)}
+
+/* Fertig */
+.ab-done{display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:560px}
+.ab-done-ico{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--gold);color:var(--ink)}
+.ab-done .ab-r-no{text-align:left}
+.ab-done-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+
+.ab-toast{position:fixed;left:50%;bottom:96px;z-index:5;transform:translate(-50%,20px);padding:12px 18px;border-radius:999px;background:var(--paper);color:var(--ink);font-size:15px;font-weight:800;box-shadow:0 14px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
+.ab-toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1100px){.ab-prods{grid-template-columns:1fr}.ab-prod{flex-direction:row}.ab-prod .ab-pm{flex:none;width:120px;height:auto;min-height:124px}.ab-prod .ab-pm img{height:104px}}
+/* Handy: Warenkorb unter der Auswahl, Leiste unten */
+.ab-bar{display:none}
+@media (max-width:980px){
+  .ab-wrap{grid-template-columns:1fr;gap:28px;padding:26px 20px 120px}
+  .ab-cart{position:static}
+  .ab-pb{padding:14px 16px}
+  .ab-bar{display:flex;align-items:center;gap:12px;position:absolute;left:0;right:0;bottom:0;z-index:3;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--ink);border-top:1px solid var(--line)}
+  .ab-bar-n{display:flex;flex-direction:column;justify-content:center;min-height:44px;min-width:0;padding:0;border:0;background:none;color:var(--paper);font:inherit;text-align:left;cursor:pointer}
+  .ab-bar-n b{font-size:16px;font-weight:800}
+  .ab-bar-n small{font-size:12.5px;color:var(--muted)}
+  .ab-bar .btn{flex:1;min-height:52px;padding:0 16px;font-size:16px}
+  .ab-cart .ab-next{display:none}
+  .ab-toast{bottom:92px}
+}
+@media (max-width:700px){
+  .ab-top{flex-wrap:wrap;gap:10px 12px;padding:10px 16px}
+  .ab-back span{display:none}
+  .ab-back{padding:0 12px}
+  .ab-title h2{font-size:17px}
+  .ab-steps{order:3;width:100%;justify-content:space-between}
+  .ab-steps li{padding:4px 8px 4px 4px;font-size:13px}
+  .ab-steps b{width:24px;height:24px}
+  .ab-heat{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ab-receipt{padding:26px 20px 22px}
+  .ab-r-brand b{font-size:18px}
+  .ab-r-brand .ab-r-no{text-align:left}
+  .ab-cfg-head .ab-pm{width:88px;height:88px}
+  .ab-cfg-head .ab-pm img{height:80px}
+}
+@media (max-width:360px){.ab-title h2{font-size:15px}.ab-prod .ab-pm{width:92px}.ab-prod .ab-pm img{height:84px}.ab-pb{min-width:0;padding:12px 14px}.ab-bar-n small{display:none}.ab-bar .btn{padding:0 12px;font-size:15px}.ab-steps li{font-size:0;gap:0;padding:4px}.ab-steps li[aria-current="step"]{font-size:13px;gap:6px;padding:4px 10px 4px 4px}}
+@media (prefers-reduced-motion:reduce){.ab[open]{animation:none}.ab-prod,.ab-toast{transition:none}}
+/* ===== /Bereich: abholung ===== */
 </style>
 </head>
 <body>
@@ -1430,7 +1623,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
       <li><a href="#laden">Über uns</a></li>
       <li><a href="#standort">Anfahrt &amp; Zeiten</a></li>
       <li><a href="#standorte">Alle Standorte</a></li>
-      <li><a class="btn btn-gold" href="#bestellen">Jetzt bestellen</a></li>
+      <li><a class="btn btn-gold" href="#bestellen" data-ab-open>Jetzt bestellen</a></li>
     </ul>
   </nav>
 </header>
@@ -1522,7 +1715,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
           <div class="card-title"><h3>Döner im Brot</h3><span class="price" data-price="brot"></span></div>
           <p>Fleisch vom Spieß, Salat, Tomate, Rotkohl, Zwiebeln – auf Wunsch mit Pommes direkt im Brot.</p>
           <p class="al-codes">Allergene: siehe unten</p>
-          <a class="btn btn-ink js-order" href="#bestellen">Bestellen</a>
+          <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="brot">Bestellen</a>
         </div>
       </article>
       <article class="card" data-cat="box" data-reveal style="--d:.12s">
@@ -1535,7 +1728,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
           <div class="card-title"><h3>Döner Box</h3><span class="price" data-price="box"></span></div>
           <p>Fleisch, frischer Salat, Tomate, Rotkohl und Soße in der Box – perfekt zum Mitnehmen.</p>
           <p class="al-codes">Allergene: siehe unten</p>
-          <a class="btn btn-ink js-order" href="#bestellen">Bestellen</a>
+          <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="box">Bestellen</a>
         </div>
       </article>
       <article class="card" data-cat="teller" data-reveal style="--d:.24s">
@@ -1548,7 +1741,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
           <div class="card-title"><h3>Döner Teller</h3><span class="price" data-price="teller"></span></div>
           <p>Knuspriges Fleisch vom Spieß auf dem Teller – mit Salat, Tomate und zwei Soßen obendrauf.</p>
           <p class="al-codes">Allergene: siehe unten</p>
-          <a class="btn btn-ink js-order" href="#bestellen">Bestellen</a>
+          <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="teller">Bestellen</a>
         </div>
       </article>
     </div>
@@ -1614,7 +1807,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
         <h2 class="display" id="wd-title" data-reveal>Bau dir<br>deinen Döner.</h2>
         <svg class="squiggle" data-reveal viewBox="0 0 220 18" aria-hidden="true"><path pathLength="1" d="M3 9 Q 15 1 27 9 T 51 9 T 75 9 T 99 9 T 123 9 T 147 9 T 171 9 T 195 9 T 217 9"/></svg>
       </div>
-      <p class="wd-lead" data-reveal style="--d:.1s">Klick dir deinen Döner zusammen und zeig ihn an der Theke. So weiß jeder sofort, wie du ihn magst.</p>
+      <p class="wd-lead" data-reveal style="--d:.1s">Klick dir deinen Döner zusammen – dann bestell ihn zum Abholen oder zeig ihn einfach an der Theke.</p>
     </div>
 
     <div class="wd-grid">
@@ -1653,7 +1846,9 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
           <span class="kicker">Deine Bestellung</span>
           <p class="wd-sentence" id="wd-sentence" aria-live="polite">Döner im Brot mit Salat, Tomate, Rotkohl, Zwiebeln und Knoblauchsoße – mild.</p>
           <div class="wd-actions">
-            <button class="btn btn-ink wd-show" type="button" aria-haspopup="dialog" aria-controls="wd-dialog">
+            <a class="btn btn-ink wd-to-order js-only" href="#abholung"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+              Zum Abholen bestellen</a>
+            <button class="btn btn-line-ink wd-show" type="button" aria-haspopup="dialog" aria-controls="wd-dialog">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>
               An der Theke zeigen</button>
             <a class="btn btn-line-ink wd-online" href="#" target="_blank" rel="noopener" hidden>
@@ -2273,7 +2468,9 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
         <h2 class="display" id="bestellen-title">Hunger?<br>Wir sind bereit.</h2>
         <p id="order-text">Frisch vom Spieß, schnell auf die Hand. Komm vorbei – wir freuen uns auf dich.</p>
         <div class="actions">
-          <a class="btn btn-ink js-tel" href="#" data-needs="telefon">
+          <a class="btn btn-ink js-only" href="#abholung" data-ab-open><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            Zum Abholen bestellen</a>
+          <a class="btn btn-line-ink js-tel" href="#" data-needs="telefon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
             Zum Abholen anrufen</a>
           <a class="btn btn-line-ink js-delivery" href="#" data-needs="lieferdienstUrl" target="_blank" rel="noopener">Online bestellen</a>
@@ -2433,6 +2630,7 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
           <p>Diese Website setzt keine Cookies, verwendet kein Tracking und lädt keine Inhalte von Drittanbietern. Schrift und Bilder werden direkt mit der Seite ausgeliefert.</p>
           <p>Beim Aufruf der Seite verarbeitet unser Hosting-Anbieter [Name des Hosters] technisch notwendige Zugriffsdaten (z.&nbsp;B. IP-Adresse, Zeitpunkt, aufgerufene Seite), um die Website auszuliefern und abzusichern. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren Betrieb (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO). Die Daten werden nach [Anzahl] Tagen gelöscht.</p>
           <p>Links zu Google Maps, Lieferdiensten oder Instagram führen zu externen Angeboten. Erst wenn du sie anklickst, gelten deren Datenschutzbestimmungen.</p>
+          <p>Bestellen zum Abholen: Deine Auswahl, Abholzeit, dein Name und deine Anmerkung bleiben nur in deinem Browser (bis du den Tab schließt). Die Website speichert und überträgt davon nichts. Erst wenn du auf „Per WhatsApp senden“ oder „per SMS senden“ tippst, öffnet sich die App mit dem fertigen Text – und erst wenn du dort sendest, bekommen wir die Nachricht. Dann gelten die Datenschutzhinweise des jeweiligen Dienstes (bei WhatsApp: Meta). Wir nutzen die Angaben nur, um deine Bestellung zuzubereiten (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO).</p>
           <p>Verantwortlich: [Name des Betreibers], Albert-Leidl-Straße 6, 86179 Augsburg, [E-Mail-Adresse]. Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (Art.&nbsp;15–20 DSGVO), das Recht, der Verarbeitung zu widersprechen (Art.&nbsp;21 DSGVO), sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde, z.&nbsp;B. dem Bayerischen Landesamt für Datenschutzaufsicht (BayLDA).</p>
         </div>
       </details>
@@ -2452,6 +2650,179 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
   </div>
 </footer>
 
+
+
+
+
+
+
+<!-- Bereich: abholung -->
+<dialog class="ab" id="abholung" aria-labelledby="ab-title">
+  <header class="ab-top">
+    <button class="ab-back" type="button" data-ab-close aria-label="Zur Website"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Zur Website</span></button>
+    <div class="ab-title"><span class="kicker">Echte Bärliner Haunstetten</span><h2 id="ab-title">Bestellen &amp; abholen</h2></div>
+    <ol class="ab-steps">
+      <li data-step="1" aria-current="step"><b>1</b>Auswählen</li>
+      <li data-step="2"><b>2</b>Abholzeit</li>
+      <li data-step="3"><b>3</b>Absenden</li>
+    </ol>
+  </header>
+
+  <div class="ab-scroll">
+    <div class="ab-wrap">
+      <div class="ab-main">
+        <!-- Schritt 1: Gerichte -->
+        <section class="ab-pane" data-pane="1" tabindex="-1" aria-labelledby="ab-h1">
+          <div class="ab-pick">
+            <h3 class="ab-h" id="ab-h1" tabindex="-1">Was darf’s sein?</h3>
+            <p class="ab-lead">Tipp auf ein Gericht und stell es dir zusammen – so wie beim Wunsch-Döner.</p>
+            <div class="ab-prods">
+              <button class="ab-prod" type="button" data-base="brot">
+                <span class="ab-pm dark" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-brot" alt="" width="425" height="510" loading="lazy"></span>
+                <span class="ab-pb"><span class="ab-pt"><strong>Döner im Brot</strong><span class="ab-price" data-ab-price="brot"></span></span>
+                <span class="ab-pd">Fleisch vom Spieß, Salat, Tomate, Rotkohl, Zwiebeln – auf Wunsch mit Pommes.</span>
+                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+              </button>
+              <button class="ab-prod" type="button" data-base="box">
+                <span class="ab-pm gold" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-box" alt="" width="446" height="510" loading="lazy"></span>
+                <span class="ab-pb"><span class="ab-pt"><strong>Döner Box</strong><span class="ab-price" data-ab-price="box"></span></span>
+                <span class="ab-pd">Fleisch, frischer Salat, Tomate, Rotkohl und Soße in der Box.</span>
+                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+              </button>
+              <button class="ab-prod" type="button" data-base="teller">
+                <span class="ab-pm paper" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-teller" alt="" width="513" height="510" loading="lazy"></span>
+                <span class="ab-pb"><span class="ab-pt"><strong>Döner Teller</strong><span class="ab-price" data-ab-price="teller"></span></span>
+                <span class="ab-pd">Fleisch vom Spieß auf dem Teller – mit Salat, Tomate und zwei Soßen obendrauf.</span>
+                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+              </button>
+            </div>
+            <p class="ab-alt" data-ab-delivery hidden>Lieber liefern lassen? <a href="#" target="_blank" rel="noopener"></a></p>
+          </div>
+
+          <form class="ab-cfg" hidden aria-labelledby="ab-cfg-name">
+            <button class="ab-link" type="button" data-ab-pick><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Alle Gerichte</button>
+            <div class="ab-cfg-head">
+              <span class="ab-pm dark" aria-hidden="true"><img class="ab-cfg-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-brot" alt="" width="425" height="510" loading="lazy"></span>
+              <div><h3 id="ab-cfg-name" tabindex="-1">Döner im Brot</h3><p class="ab-cfg-price"></p></div>
+            </div>
+            <fieldset class="ab-fs">
+              <legend>Was soll drauf?</legend>
+              <div class="wd-chips">
+                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="salat" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p48"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Salat</span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="tomate" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p55"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Tomate</span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="rotkohl" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p64"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Rotkohl</span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="zwiebeln" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-onion"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Zwiebeln</span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="pommes"><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p69"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Pommes</span></span></label>
+              </div>
+            </fieldset>
+            <fieldset class="ab-fs">
+              <legend>Welche Soße?</legend>
+              <div class="wd-chips">
+                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="knoblauch" checked><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#F4EEE2" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Knoblauch<small>weiß</small></span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="cocktail"><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#E9823A" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Cocktail<small>orange</small></span></span></label>
+                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="scharf"><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#E0402A" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Scharf<small>rot</small></span></span></label>
+              </div>
+            </fieldset>
+            <fieldset class="ab-fs">
+              <legend>Wie scharf?</legend>
+              <div class="ab-heat">
+                <label><input type="radio" name="ab-heat" value="0" checked><span>mild</span></label>
+                <label><input type="radio" name="ab-heat" value="1"><span>etwas scharf</span></label>
+                <label><input type="radio" name="ab-heat" value="2"><span>scharf</span></label>
+                <label><input type="radio" name="ab-heat" value="3"><span>bärenscharf</span></label>
+              </div>
+            </fieldset>
+            <p class="ab-sentence" aria-live="polite"></p>
+            <div class="ab-addrow">
+              <div class="ab-qty" role="group" aria-label="Anzahl">
+                <button type="button" data-ab-q="-1" aria-label="Eins weniger">−</button>
+                <output class="ab-cfg-qty" aria-live="polite">1</output>
+                <button type="button" data-ab-q="1" aria-label="Eins mehr">+</button>
+              </div>
+              <button class="btn btn-gold ab-add" type="submit">In die Bestellung</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Schritt 2: Abholzeit und Name -->
+        <section class="ab-pane" data-pane="2" tabindex="-1" aria-labelledby="ab-h2" hidden>
+          <h3 class="ab-h" id="ab-h2">Wann holst du ab?</h3>
+          <p class="ab-lead">Such dir eine Zeit aus. Wir brauchen nur noch deinen Namen, damit wir dich beim Abholen aufrufen können.</p>
+          <form class="ab-form" novalidate>
+            <fieldset class="ab-fs">
+              <legend>Abholzeit</legend>
+              <div class="ab-times"></div>
+              <div class="ab-own" hidden>
+                <label class="ab-field"><span>Uhrzeit heute</span><input class="ab-input ab-time" type="time" step="300"></label>
+              </div>
+              <p class="ab-hint ab-time-hint"></p>
+            </fieldset>
+            <label class="ab-field"><span>Dein Name</span><input class="ab-input ab-name" type="text" name="name" autocomplete="given-name" maxlength="40" required></label>
+            <label class="ab-field"><span>Anmerkung <small>(optional)</small></span><textarea class="ab-input ab-notes" name="note" maxlength="160" rows="3" placeholder="z. B. Soße extra, Besteck dazu"></textarea></label>
+            <p class="ab-err" role="alert"></p>
+            <button class="ab-link" type="button" data-ab-go="1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurück zur Auswahl</button>
+          </form>
+        </section>
+
+        <!-- Schritt 3: Bestellzettel und Absenden -->
+        <section class="ab-pane" data-pane="3" tabindex="-1" aria-labelledby="ab-h3" hidden>
+          <h3 class="ab-h" id="ab-h3">Alles richtig?</h3>
+          <p class="ab-lead">So kommt deine Bestellung bei uns an.</p>
+          <div class="ab-receipt">
+            <div class="ab-r-brand"><div><b>ECHTE BÄRLINER</b><small>Albert-Leidl-Straße 6, Haunstetten</small></div><div class="ab-r-no">Bestell-Nr.<strong class="ab-code">EB-0000</strong></div></div>
+            <ul class="ab-r-items"></ul>
+            <dl class="ab-r-meta">
+              <dt>Abholung</dt><dd class="ab-r-time"></dd>
+              <dt>Name</dt><dd class="ab-r-name"></dd>
+              <dt class="ab-r-note-t">Anmerkung</dt><dd class="ab-r-note"></dd>
+            </dl>
+            <p class="ab-r-foot">Bezahlt wird beim Abholen im Laden.</p>
+          </div>
+          <div class="ab-send">
+            <a class="btn ab-wa" href="#" target="_blank" rel="noopener" data-ab-send hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 9.2c.3 2.4 2.4 4.6 4.9 5.2l1.3-1.3 2 1-.4 1.4c-3.8.5-8.3-3.6-8.1-7.6l1.5-.5 1 2z"/></svg>Per WhatsApp senden</a>
+            <div class="ab-send-more">
+              <a class="ab-link js-tel" href="#" data-ab-tel hidden>Oder anrufen und vorlesen</a>
+              <button class="ab-link" type="button" data-ab-copy>Text kopieren</button>
+            </div>
+            <p class="ab-note" data-ab-nosend hidden><b>Online absenden geht hier noch nicht.</b>Zeig den Bestellzettel einfach an der Theke – wir machen dir alles frisch.</p>
+            <button class="ab-link" type="button" data-ab-go="2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurück zur Abholzeit</button>
+          </div>
+        </section>
+
+        <!-- Nach dem Absenden -->
+        <section class="ab-pane" data-pane="4" tabindex="-1" aria-labelledby="ab-h4" hidden>
+          <div class="ab-done">
+            <span class="ab-done-ico" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <h3 class="ab-h" id="ab-h4">Fast geschafft!</h3>
+            <p class="ab-lead">Tipp in WhatsApp noch auf <b>Senden</b> – dann ist deine Bestellung bei uns.</p>
+            <div class="ab-r-no">Deine Bestell-Nr.<strong class="ab-code">EB-0000</strong></div>
+            <div class="ab-done-acts">
+              <button class="btn btn-gold" type="button" data-ab-close>Zurück zur Website</button>
+              <button class="btn btn-ghost" type="button" data-ab-new>Neue Bestellung</button>
+            </div>
+            <a class="ab-link" href="#" target="_blank" rel="noopener" data-ab-again>WhatsApp hat sich nicht geöffnet? Nochmal versuchen</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="ab-cart" aria-labelledby="ab-cart-h">
+        <h3 class="ab-cart-h" id="ab-cart-h" tabindex="-1">Deine Bestellung <span class="ab-count">0</span></h3>
+        <p class="ab-empty">Noch nichts drin. Such dir ein Gericht aus.</p>
+        <ul class="ab-items"></ul>
+        <p class="ab-sum" hidden></p>
+        <button class="btn btn-gold ab-next" type="button" disabled>Weiter zur Abholzeit</button>
+      </aside>
+    </div>
+  </div>
+
+  <div class="ab-bar">
+    <button class="ab-bar-n" type="button" data-ab-cart><b class="ab-bar-count">Noch leer</b><small>Deine Bestellung</small></button>
+    <button class="btn btn-gold ab-next" type="button" disabled>Weiter zur Abholzeit</button>
+  </div>
+  <div class="ab-toast" role="status" aria-live="polite"></div>
+</dialog>
+<!-- /Bereich: abholung -->
+
 <nav class="action-bar" aria-label="Schnellzugriff">
   <a class="js-tel" href="#" data-needs="telefon">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
@@ -2459,9 +2830,12 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
   <a class="js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Albert-Leidl-Stra%C3%9Fe+6,+86179+Augsburg" target="_blank" rel="noopener">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
     Route</a>
-  <a class="accent" href="#karte">
+  <a href="#karte">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
     Speisekarte</a>
+  <a class="accent" href="#bestellen" data-ab-open>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+    Bestellen</a>
 </nav>
 
 <script>
@@ -2470,6 +2844,10 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
    ===================================================================== */
 const CONFIG = {
   telefon: '',            // z. B. '+49 821 1234567'
+  // Bestellen zum Abholen (Seite #abholung): die fertige Bestellung geht als WhatsApp-Nachricht an diese Nummer.
+  // Solange sie leer ist, zeigt die Seite am Ende den Bestellzettel zum Vorzeigen an der Theke.
+  whatsapp: '',           // z. B. '+49 170 1234567'
+  abholVorlauf: 20,       // frühestens so viele Minuten nach der Bestellung abholen
   lieferdienstUrl: '',    // z. B. Link zu Lieferando / Wolt / Uber Eats
   lieferdienstName: '',   // z. B. 'Lieferando' (Button heißt dann „Über Lieferando bestellen“)
   instagramUrl: '',       // z. B. 'https://www.instagram.com/...'
@@ -2501,11 +2879,12 @@ const CONFIG = {
       a.href = CONFIG.lieferdienstUrl;
       a.textContent = CONFIG.lieferdienstName ? 'Über ' + CONFIG.lieferdienstName + ' bestellen' : 'Online bestellen';
     });
-    $$('.js-order').forEach((a) => { a.href = CONFIG.lieferdienstUrl; a.target = '_blank'; a.rel = 'noopener'; const h = a.closest('.card') && a.closest('.card').querySelector('h3'); if (h) a.setAttribute('aria-label', 'Bestellen: ' + h.textContent + ' bei ' + (CONFIG.lieferdienstName || 'unserem Lieferdienst') + ' (öffnet neuen Tab)'); });
+    /* die „Bestellen“-Knöpfe der Karten öffnen die Abhol-Bestellung; der Lieferdienst steht dort als Alternative */
   }
   if (CONFIG.telefon || CONFIG.lieferdienstUrl) $$('.js-route-fallback').forEach((a) => { a.hidden = true; });
   const ways = ['Komm vorbei'];
   if (CONFIG.telefon) ways.push('ruf an');
+  if (CONFIG.whatsapp) ways.push('bestell hier zum Abholen');
   if (CONFIG.lieferdienstUrl) ways.push('bestell online');
   const orderText = $('#order-text');
   if (orderText && ways.length > 1) orderText.textContent = 'Frisch vom Spieß, schnell auf die Hand. ' + ways.slice(0, -1).join(', ') + ' oder ' + ways[ways.length - 1] + ' – wir freuen uns auf dich.';
@@ -2993,6 +3372,15 @@ const CONFIG = {
     online.hidden = false;
   }
 
+  /* Zum Abholen bestellen: genau diesen Döner in die Bestellung legen */
+  var toOrder = $('.wd-to-order');
+  if (toOrder) toOrder.addEventListener('click', function (e) {
+    if (!window.EBOrder) return;
+    e.preventDefault();
+    var s = st || read();
+    window.EBOrder.open({ add: { base: s.base, ing: s.ing, sauce: s.sauce, heat: s.heat, qty: 1 } });
+  });
+
   /* Theken-Ansicht: große Schrift zum Vorzeigen */
   var dlg = $('#wd-dialog'), opener = null;
   var fill = function () {
@@ -3415,12 +3803,16 @@ const CONFIG = {
   const orderBox = $('[data-fq-order]');
   const deliv = String(C.lieferdienstUrl || '').trim();
   const delivName = String(C.lieferdienstName || '').trim();
-  if (orderBox && (telHref || deliv)) {
+  if (orderBox && (telHref || deliv || C.whatsapp)) {
     const kids = [];
     const acts = make('div', { class: 'fq-acts' });
+    if (C.whatsapp) {
+      kids.push(make('p', { text: 'Ja – stell dir deine Bestellung hier auf der Seite zusammen und schick sie uns per WhatsApp. Dann holst du sie nur noch ab.' }));
+      acts.append(make('a', { class: 'btn btn-ink', href: '#abholung', 'data-ab-open': '', text: 'Zum Abholen bestellen' }));
+    }
     if (telHref) {
-      kids.push(make('p', {}, ['Ja – ruf uns an unter ', make('a', { href: telHref, text: tel }), ' und bestell vor. Dann holst du dein Essen einfach bei uns ab.']));
-      acts.append(make('a', { class: 'btn btn-ink', href: telHref, html: ICON_PHONE + 'Zum Abholen anrufen' }));
+      kids.push(C.whatsapp ? make('p', {}, ['Lieber telefonisch? Ruf uns an unter ', make('a', { href: telHref, text: tel }), '.']) : make('p', {}, ['Ja – ruf uns an unter ', make('a', { href: telHref, text: tel }), ' und bestell vor. Dann holst du dein Essen einfach bei uns ab.']));
+      acts.append(make('a', { class: 'btn ' + (C.whatsapp ? 'btn-line-ink' : 'btn-ink'), href: telHref, html: ICON_PHONE + 'Zum Abholen anrufen' }));
     }
     if (deliv) {
       kids.push(make('p', { text: delivName ? 'Liefern lassen kannst du über ' + delivName + '.' : 'Liefern lassen kannst du online über unseren Lieferdienst.' }));
@@ -3629,6 +4021,463 @@ const CONFIG = {
   })));
 })();
 
+</script>
+<script data-sec="abholung">
+/* --- Bestellen zum Abholen: Auswahl → Abholzeit → als fertige Nachricht per WhatsApp an den Laden --- */
+(() => {
+  const dlg = document.getElementById('abholung');
+  if (!dlg || typeof CONFIG === 'undefined') return;
+  const C = CONFIG;
+  const $ = (s, r = dlg) => r.querySelector(s);
+  const $$ = (s, r = dlg) => Array.from(r.querySelectorAll(s));
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  /* Gleiche Namen wie beim Wunsch-Döner */
+  const BASE = { brot: 'Döner im Brot', box: 'Döner Box', teller: 'Döner Teller' };
+  const PM = { brot: 'dark', box: 'gold', teller: 'paper' };
+  const ING = { salat: 'Salat', tomate: 'Tomate', rotkohl: 'Rotkohl', zwiebeln: 'Zwiebeln', pommes: 'Pommes' };
+  const ING_ORDER = ['salat', 'tomate', 'rotkohl', 'zwiebeln', 'pommes'];
+  const DEFAULT_ON = ['salat', 'tomate', 'rotkohl', 'zwiebeln'];
+  const SAUCE = { knoblauch: 'Knoblauch', cocktail: 'Cocktail', scharf: 'Scharf' };
+  const SAUCE_LONG = { knoblauch: 'Knoblauchsoße', cocktail: 'Cocktailsoße', scharf: 'scharfer Soße' };
+  const SAUCE_ORDER = ['knoblauch', 'cocktail', 'scharf'];
+  const HEAT = ['mild', 'etwas scharf', 'scharf', 'bärenscharf'];
+  const LEAD = Math.max(5, Math.round(+C.abholVorlauf) || 20);     // frühestens so viele Minuten nach der Bestellung
+  const list = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' und ' + a[a.length - 1] : a[0] || '');
+
+  /* WhatsApp-Nummer: nur Ziffern, deutsche 0 am Anfang wird zu 49 */
+  const waDigits = (() => {
+    let d = String(C.whatsapp || '').replace(/\(\s*0\s*\)/g, '').replace(/[^\d+]/g, '');
+    if (d.startsWith('+')) d = d.slice(1); else if (d.startsWith('00')) d = d.slice(2); else if (d.startsWith('0')) d = '49' + d.slice(1);
+    return d.length >= 8 ? d : '';
+  })();
+
+  /* Ohne Nummer: gleich ehrlich sagen, dass es ein Bestellzettel zum Vorzeigen wird */
+  if (!waDigits) {
+    $('.ab-steps li[data-step="3"]').lastChild.textContent = 'Bestellzettel';
+    $('#ab-h1 + .ab-lead').textContent = 'Online absenden geht hier noch nicht. Stell dir dein Essen zusammen – am Ende bekommst du einen Bestellzettel zum Vorzeigen an der Theke.';
+    $('#ab-h2 + .ab-lead').textContent = 'Wann kommst du vorbei? Dein Name kommt mit auf den Zettel.';
+    $('#ab-h3 + .ab-lead').textContent = 'Zeig diesen Zettel an der Theke – wir machen dir alles frisch.';
+    $$('.ab-r-no').forEach((e) => { e.hidden = true; });
+  }
+
+  /* Zustand: bleibt nur in diesem Tab (sessionStorage), damit beim Neuladen nichts verloren geht */
+  const fresh = () => ({ cart: [], time: '', own: '', name: '', note: '', code: '' });
+  let S = fresh();
+  try { const saved = JSON.parse(sessionStorage.getItem('eb-abholung') || 'null'); if (saved && Array.isArray(saved.cart)) S = Object.assign(S, saved); } catch (e) { /* kein Speicher: egal */ }
+  const save = () => { try { sessionStorage.setItem('eb-abholung', JSON.stringify(S)); } catch (e) { /* egal */ } };
+
+  const norm = (it) => ({
+    base: BASE[it && it.base] ? it.base : 'brot',
+    ing: Object.fromEntries(ING_ORDER.map((k) => [k, !!(it && it.ing && it.ing[k])])),
+    sauce: Object.fromEntries(SAUCE_ORDER.map((k) => [k, !!(it && it.sauce && it.sauce[k])])),
+    heat: Math.max(0, Math.min(3, Math.round(+(it && it.heat)) || 0)),
+    qty: Math.max(1, Math.min(20, Math.round(+(it && it.qty)) || 1)),
+  });
+  S.cart = S.cart.map(norm);
+  const key = (it) => [it.base, ING_ORDER.map((k) => +it.ing[k]).join(''), SAUCE_ORDER.map((k) => +it.sauce[k]).join(''), it.heat].join('|');
+  const standard = (base) => norm({ base, ing: { salat: 1, tomate: 1, rotkohl: 1, zwiebeln: 1 }, sauce: base === 'teller' ? { knoblauch: 1, cocktail: 1 } : { knoblauch: 1 }, heat: 0, qty: 1 });
+  const details = (it) => {
+    const mit = ING_ORDER.filter((k) => it.ing[k]).map((k) => ING[k]);
+    const ohne = DEFAULT_ON.filter((k) => !it.ing[k]).map((k) => ING[k]);
+    const so = SAUCE_ORDER.filter((k) => it.sauce[k]).map((k) => SAUCE[k]);
+    const p = [mit.length ? 'mit ' + list(mit) : 'nur Fleisch'];
+    if (ohne.length && mit.length) p.push('ohne ' + list(ohne));
+    p.push(so.length ? 'Soße: ' + so.join(' + ') : 'ohne Soße');
+    p.push(HEAT[it.heat]);
+    return p.join(' · ');
+  };
+
+  /* Preise nur, wenn sie in CONFIG.preise stehen */
+  const price = (base) => {
+    const v = String((C.preise || {})[base] || '').trim();
+    const n = parseFloat(v.replace(/[^\d,.]/g, '').replace(',', '.'));
+    return v && isFinite(n) ? { text: v, n } : null;
+  };
+  const euro = (n) => n.toFixed(2).replace('.', ',') + ' €';
+  const total = () => (S.cart.length && S.cart.every((it) => price(it.base)) ? S.cart.reduce((a, it) => a + price(it.base).n * it.qty, 0) : null);
+
+  /* Öffnungszeiten (deutsche Zeit) → Abholzeiten in 15-Minuten-Schritten */
+  const DAYKEYS = ['so', 'mo', 'di', 'mi', 'do', 'fr', 'sa'];
+  const DAYNAME = { so: 'So.', mo: 'Mo.', di: 'Di.', mi: 'Mi.', do: 'Do.', fr: 'Fr.', sa: 'Sa.' };
+  const hours = C.oeffnungszeiten || {};
+  const range = (v) => {
+    v = String(v || '').trim().toLowerCase();
+    if (!v) return null;
+    if (v === 'geschlossen') return false;
+    const m = v.match(/^(\d{1,2})[:.](\d{2})\s*[-–]\s*(\d{1,2})[:.](\d{2})$/);
+    if (!m) return null;
+    const a = +m[1] * 60 + +m[2];
+    let b = +m[3] * 60 + +m[4];
+    if (b <= a) b += 1440;
+    return [a, b];
+  };
+  const known = DAYKEYS.some((d) => range(hours[d]) !== null);
+  const berlin = () => {
+    const now = new Date();
+    try {
+      const p = {};
+      new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+        .formatToParts(now).forEach((x) => { p[x.type] = x.value; });
+      const day = DAYKEYS.indexOf(p.weekday.slice(0, 2).toLowerCase());
+      if (day >= 0) return { day, min: +p.hour * 60 + +p.minute, y: +p.year, m: +p.month, d: +p.day };
+    } catch (e) { /* alter Browser: Gerätezeit */ }
+    return { day: now.getDay(), min: now.getHours() * 60 + now.getMinutes(), y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
+  };
+  const hhmm = (t) => String(Math.floor(t / 60) % 24).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
+  const up15 = (t) => Math.ceil(t / 15) * 15;
+  const dayLabel = (now, i) => {
+    if (i === 0) return 'heute';
+    if (i === 1) return 'morgen';
+    const dt = new Date(Date.UTC(now.y, now.m - 1, now.d + i));
+    return DAYNAME[DAYKEYS[dt.getUTCDay()]] + ' ' + String(dt.getUTCDate()).padStart(2, '0') + '.' + String(dt.getUTCMonth() + 1).padStart(2, '0') + '.';
+  };
+  const slots = () => {
+    const now = berlin(), groups = [];
+    let open = false;
+    const today = [];
+    const yr = range(hours[DAYKEYS[(now.day + 6) % 7]]);              // gestern bis nach Mitternacht offen?
+    if (yr && yr[1] > 1440 && now.min < yr[1] - 1440) {
+      open = true;
+      for (let t = up15(now.min + LEAD); t <= yr[1] - 1440 - 15; t += 15) today.push(t);
+    }
+    for (let i = 0; i < 8; i++) {
+      const r = range(hours[DAYKEYS[(now.day + i) % 7]]);
+      if (!r) continue;
+      if (i === 0 && now.min >= r[0] && now.min < r[1]) open = true;
+      const from = up15(i === 0 ? Math.max(r[0] + 15, now.min + LEAD) : r[0] + 15), to = r[1] - 15;   // letzte Abholung 15 Min. vor Ladenschluss
+      const ts = i === 0 ? today : [];
+      for (let t = from; t <= to; t += 15) ts.push(t);
+      if (ts.length) groups.push({ i, label: dayLabel(now, i), ts });
+      if (groups.length && (i > 0 || groups[0].ts.length >= 4)) break;    // heute und, wenn heute kaum noch geht, der nächste offene Tag
+    }
+    if (!groups.length && today.length) groups.push({ i: 0, label: 'heute', ts: today });
+    // „so bald wie möglich“ nur, wenn gerade offen ist und es heute noch klappt
+    return { asap: open && !!groups.length && groups[0].i === 0, groups };
+  };
+  const timeLabel = () => {
+    if (S.time === 'asap') return 'so bald wie möglich';
+    if (S.time === 'own') return S.own ? 'heute, ' + S.own + ' Uhr' : '';
+    const m = /^(\d)\|(\d+)$/.exec(S.time || '');
+    if (!m) return '';
+    const i = +m[1], t = +m[2];
+    return dayLabel(berlin(), i) + ', ' + hhmm(t) + ' Uhr' + (t >= 1440 ? ' (nach Mitternacht)' : '');
+  };
+
+  /* ---------- Ansicht ---------- */
+  const scroller = $('.ab-scroll'), cfg = $('.ab-cfg'), pick = $('.ab-pick');
+  let step = 1, edit = -1, cur = standard('brot');
+  const toastEl = $('.ab-toast');
+  let toastT = 0;
+  const toast = (t) => { toastEl.textContent = t; toastEl.classList.add('is-on'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('is-on'), 2400); };
+
+  $$('[data-ab-price]').forEach((e) => { const p = price(e.dataset.abPrice); e.textContent = p ? p.text : ''; });
+  if (C.lieferdienstUrl) {
+    const box = $('[data-ab-delivery]'), a = $('a', box);
+    a.href = C.lieferdienstUrl;
+    a.textContent = C.lieferdienstName ? 'Über ' + C.lieferdienstName + ' bestellen' : 'Online bestellen';
+    box.hidden = false;
+  }
+
+  const renderCart = () => {
+    const n = S.cart.reduce((a, it) => a + it.qty, 0), sum = total();
+    const fa = document.activeElement, fq = fa && fa.closest && dlg.contains(fa) ? (fa.dataset.abItemQ ? '[data-ab-item-q="' + fa.dataset.abItemQ + '"]' : fa.dataset.abEdit != null ? '[data-ab-edit="' + fa.dataset.abEdit + '"]' : '') : '';
+    $('.ab-count').textContent = n;
+    $('.ab-empty').hidden = !!S.cart.length;
+    $('.ab-items').replaceChildren(...S.cart.map((it, idx) => {
+      const li = el('li', 'ab-item');
+      li.append(el('strong', '', BASE[it.base] + (price(it.base) ? ' · ' + euro(price(it.base).n * it.qty) : '')));
+      const q = el('div', 'ab-qty'); q.setAttribute('role', 'group'); q.setAttribute('aria-label', 'Anzahl ' + BASE[it.base]);
+      const minus = el('button', '', it.qty > 1 ? '−' : '×'); minus.type = 'button'; minus.dataset.abItemQ = idx + ':-1'; minus.setAttribute('aria-label', it.qty > 1 ? 'Eins weniger' : 'Entfernen');
+      const out = el('output', '', String(it.qty));
+      const plus = el('button', '', '+'); plus.type = 'button'; plus.dataset.abItemQ = idx + ':1'; plus.setAttribute('aria-label', 'Eins mehr');
+      q.append(minus, out, plus);
+      li.append(q, el('p', '', details(it)));
+      const acts = el('div', 'ab-item-acts');
+      const ed = el('button', '', 'Ändern'); ed.type = 'button'; ed.dataset.abEdit = idx;
+      acts.append(ed); li.append(acts);
+      return li;
+    }));
+    const sumEl = $('.ab-sum');
+    sumEl.hidden = sum == null;
+    if (sum != null) { const l = el('span', '', 'Summe'); l.append(el('small', '', 'laut Speisekarte, bezahlt wird im Laden')); sumEl.replaceChildren(l, el('span', '', euro(sum))); }
+    $('.ab-bar-count').textContent = n ? n + (n === 1 ? ' Gericht' : ' Gerichte') + (sum != null ? ' · ' + euro(sum) : '') : 'Noch leer';
+    if (fq) { const back = $('.ab-items ' + fq) || $('#ab-cart-h'); if (back && !$('.ab-pane[data-pane="' + step + '"]').hidden) back.focus({ preventScroll: true }); }
+    $$('.ab-next').forEach((b) => {
+      const short = !!b.closest('.ab-bar');                       // in der Handy-Leiste kürzer, damit es in eine Zeile passt
+      b.disabled = !S.cart.length;
+      b.textContent = step === 2 ? (short ? 'Zur Übersicht' : 'Weiter zur Übersicht') : (short ? 'Zur Abholzeit' : 'Weiter zur Abholzeit');
+    });
+  };
+
+  const go = (n, focus = true) => {
+    if (n > 1 && !S.cart.length) n = 1;
+    step = n;
+    dlg.dataset.step = n;
+    $$('.ab-pane').forEach((p) => { p.hidden = +p.dataset.pane !== n; });
+    $$('.ab-steps li').forEach((li) => {
+      const s = +li.dataset.step;
+      if (s === Math.min(n, 3)) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      li.classList.toggle('is-done', s < n || n === 4);
+    });
+    if (n === 1) { cfg.hidden = true; pick.hidden = false; }
+    if (n === 2) renderTimes();
+    if (n === 3) renderReceipt();
+    renderCart();
+    scroller.scrollTop = 0;
+    if (focus) $('.ab-pane[data-pane="' + n + '"]').focus({ preventScroll: true });
+    save();
+  };
+
+  /* Zusammenstellen */
+  const readCfg = () => {
+    $$('input[name="ab-zutat"]', cfg).forEach((i) => { cur.ing[i.value] = i.checked; });
+    $$('input[name="ab-sosse"]', cfg).forEach((i) => { cur.sauce[i.value] = i.checked; });
+    const h = $('input[name="ab-heat"]:checked', cfg);
+    cur.heat = h ? +h.value : 0;
+  };
+  const sentence = () => {
+    readCfg();
+    const all = ING_ORDER.filter((k) => cur.ing[k]).map((k) => ING[k]).concat(SAUCE_ORDER.filter((k) => cur.sauce[k]).map((k) => SAUCE_LONG[k]));
+    const p = $('.ab-sentence');
+    p.replaceChildren(el('b', '', (cur.qty > 1 ? cur.qty + '× ' : '') + BASE[cur.base]), (all.length ? ' mit ' + list(all) : ' – nur Fleisch') + ', ' + HEAT[cur.heat] + '.');
+  };
+  const openCfg = (base, idx = -1) => {
+    edit = idx;
+    cur = idx >= 0 ? norm(S.cart[idx]) : standard(base);
+    $$('input[name="ab-zutat"]', cfg).forEach((i) => { i.checked = cur.ing[i.value]; });
+    $$('input[name="ab-sosse"]', cfg).forEach((i) => { i.checked = cur.sauce[i.value]; });
+    $$('input[name="ab-heat"]', cfg).forEach((i) => { i.checked = +i.value === cur.heat; });
+    $('.ab-cfg-qty').textContent = cur.qty;
+    $('#ab-cfg-name').textContent = BASE[cur.base];
+    const src = $('.ab-prod[data-base="' + cur.base + '"] img'), img = $('.ab-cfg-img');
+    if (src) img.src = src.getAttribute('src');
+    img.parentNode.className = 'ab-pm ' + PM[cur.base];
+    const p = price(cur.base);
+    $('.ab-cfg-price').textContent = p ? p.text : '';
+    $('.ab-add').textContent = idx >= 0 ? 'Änderung speichern' : 'In die Bestellung';
+    if (step !== 1) go(1, false);
+    pick.hidden = true; cfg.hidden = false;
+    sentence();
+    scroller.scrollTop = 0;
+    $('#ab-cfg-name').focus({ preventScroll: true });
+  };
+  const closeCfg = () => { cfg.hidden = true; pick.hidden = false; edit = -1; };
+  const add = (item) => {
+    const it = norm(item), k = key(it);
+    const j = S.cart.findIndex((x) => key(x) === k);
+    if (j >= 0) S.cart[j].qty = Math.min(20, S.cart[j].qty + it.qty); else S.cart.push(it);
+  };
+
+  $$('.ab-prod').forEach((b) => b.addEventListener('click', () => openCfg(b.dataset.base)));
+  $('[data-ab-pick]').addEventListener('click', () => { closeCfg(); $('#ab-h1').focus(); });
+  cfg.addEventListener('change', sentence);
+  $$('[data-ab-q]', cfg).forEach((b) => b.addEventListener('click', () => {
+    cur.qty = Math.max(1, Math.min(20, cur.qty + +b.dataset.abQ));
+    $('.ab-cfg-qty').textContent = cur.qty;
+    sentence();
+  }));
+  cfg.addEventListener('submit', (e) => {
+    e.preventDefault();
+    readCfg();
+    const it = norm(cur);
+    if (edit >= 0) { S.cart.splice(edit, 1); }
+    add(it);
+    toast(edit >= 0 ? 'Geändert' : it.qty > 1 ? it.qty + '× ' + BASE[it.base] + ' sind drin' : BASE[it.base] + ' ist drin');
+    closeCfg();
+    renderCart(); save();
+    $('#ab-h1').focus({ preventScroll: true });
+  });
+
+  /* Warenkorb: Menge, ändern */
+  dlg.addEventListener('click', (e) => {
+    const q = e.target.closest('[data-ab-item-q]'), ed = e.target.closest('[data-ab-edit]');
+    if (q) {
+      const [i, d] = q.dataset.abItemQ.split(':').map(Number);
+      const it = S.cart[i]; if (!it) return;
+      it.qty += d;
+      if (it.qty < 1) { S.cart.splice(i, 1); toast(BASE[it.base] + ' entfernt'); if (edit === i) closeCfg(); else if (edit > i) edit--; }
+      it.qty = Math.min(20, it.qty);
+      if (i === edit && it.qty >= 1) { cur.qty = it.qty; $('.ab-cfg-qty').textContent = cur.qty; sentence(); }
+      if (!S.cart.length && step > 1) go(1); else { renderCart(); if (step === 3) renderReceipt(); save(); }
+    } else if (ed) openCfg(null, +ed.dataset.abEdit);
+  });
+  $$('.ab-next').forEach((b) => b.addEventListener('click', () => {
+    if (step === 1) go(2);
+    else if (step === 2 && check()) go(3);
+  }));
+  $('[data-ab-cart]').addEventListener('click', () => { if (step !== 1) go(1); $('.ab-cart').scrollIntoView({ block: 'start' }); });
+  $$('[data-ab-go]').forEach((b) => b.addEventListener('click', () => go(+b.dataset.abGo)));
+
+  /* Schritt 2: Abholzeit, Name */
+  const times = $('.ab-times'), own = $('.ab-own'), ownIn = $('.ab-time'), hint = $('.ab-time-hint'), err = $('.ab-err');
+  const nameIn = $('.ab-name'), noteIn = $('.ab-notes');
+  const radio = (value, main, sub, cls) => {
+    const l = el('label', cls || ''), i = el('input'), s = el('span');
+    i.type = 'radio'; i.name = 'ab-time'; i.value = value; i.checked = S.time === value;
+    if (sub) s.append(el('small', '', sub));
+    s.append(main);
+    l.append(i, s);
+    return l;
+  };
+  const renderTimes = () => {
+    const sl = slots(), kids = [];
+    if (sl.asap || !known) kids.push(radio('asap', 'So bald wie möglich', '', 'ab-asap'));
+    const SHOW = 12;                                              // erst die nächsten 12 Zeiten, der Rest auf Wunsch
+    let hidden = 0;
+    if (known) sl.groups.forEach((g) => {
+      if (sl.groups.length > 1 || g.i !== 0) kids.push(el('p', 'ab-day', g.label));
+      g.ts.forEach((t) => {
+        const r = radio(g.i + '|' + t, hhmm(t));
+        if (kids.filter((k) => k.tagName === 'LABEL').length >= SHOW && S.time !== g.i + '|' + t) { r.hidden = true; hidden++; }
+        kids.push(r);
+      });
+    });
+    else if (berlin().min + LEAD <= 1435) kids.push(radio('own', 'Uhrzeit wählen', '', 'ab-asap'));
+    if (hidden) {
+      const more = el('button', 'ab-more', 'Weitere Zeiten (' + hidden + ')'); more.type = 'button';
+      more.addEventListener('click', () => { const h = $$('label[hidden]', times); h.forEach((l) => { l.hidden = false; }); more.remove(); if (h[0]) h[0].querySelector('input').focus(); });
+      kids.push(more);
+    }
+    times.replaceChildren(...kids);
+    const valid = $$('input', times).map((i) => i.value);
+    if (!valid.includes(S.time)) S.time = valid.length === 1 ? valid[0] : '';
+    const sel = $$('input', times).find((i) => i.value === S.time); if (sel) sel.checked = true;
+    own.hidden = S.time !== 'own';
+    ownIn.value = S.own || '';
+    const now = berlin();
+    ownIn.min = hhmm(Math.min(up15(now.min + LEAD), 1435));
+    hint.textContent = known
+      ? (sl.groups.length || sl.asap ? 'Frühestens ' + LEAD + ' Minuten nach deiner Bestellung.' : 'Gerade sind keine Abholzeiten möglich – schau später nochmal vorbei.')
+      : 'Frühestens ' + LEAD + ' Minuten nach deiner Bestellung.';
+    nameIn.value = S.name; noteIn.value = S.note;
+    err.textContent = '';
+  };
+  times.addEventListener('change', (e) => { S.time = e.target.value; own.hidden = S.time !== 'own'; if (S.time === 'own') ownIn.focus(); err.textContent = ''; save(); });
+  ownIn.addEventListener('input', () => { S.own = ownIn.value; err.textContent = ''; save(); });
+  nameIn.addEventListener('input', () => { S.name = nameIn.value; if (nameIn.value.trim()) { err.textContent = ''; nameIn.setAttribute('aria-invalid', 'false'); } save(); });
+  noteIn.addEventListener('input', () => { S.note = noteIn.value; save(); });
+  const check = () => {
+    S.name = nameIn.value.trim(); S.note = noteIn.value.trim();
+    let msg = '';
+    if (!S.time) msg = 'Bitte such dir eine Abholzeit aus.';
+    else if (S.time === 'own') {
+      const m = /^(\d{2}):(\d{2})$/.exec(S.own || '');
+      const earliest = berlin().min + LEAD;
+      if (!m) msg = 'Bitte gib eine Uhrzeit ein.';
+      else if (+m[1] * 60 + +m[2] < earliest) msg = 'Bitte frühestens ' + hhmm(Math.min(up15(earliest), 1435)) + ' Uhr – wir brauchen ein paar Minuten.';
+    }
+    const timeErr = !!msg;
+    if (!msg && !S.name) msg = 'Bitte sag uns deinen Namen.';
+    err.textContent = msg;
+    nameIn.setAttribute('aria-invalid', String(!!msg && !timeErr));
+    if (msg) {
+      (timeErr ? times.closest('.ab-fs') : nameIn.closest('.ab-field')).after(err);   // die Meldung steht direkt unter dem Feld
+      (!timeErr ? nameIn : S.time === 'own' ? ownIn : times.querySelector('input')).focus({ preventScroll: true });
+      err.scrollIntoView({ block: 'center' });
+    }
+    save();
+    return !msg;
+  };
+  $('.ab-form').addEventListener('submit', (e) => { e.preventDefault(); if (check()) go(3); });
+
+  /* Schritt 3: Bestellzettel, Nachricht, Absenden */
+  const message = () => {
+    const lines = ['Hallo Echte Bärliner Haunstetten! Ich möchte zum Abholen bestellen:', ''];
+    S.cart.forEach((it) => { lines.push(it.qty + '× ' + BASE[it.base]); lines.push('   ' + details(it)); });
+    lines.push('', 'Abholung: ' + timeLabel(), 'Name: ' + S.name);
+    if (S.note) lines.push('Anmerkung: ' + S.note);
+    lines.push('Bestell-Nr.: ' + S.code);
+    const sum = total();
+    lines.push('', sum != null ? 'Summe laut Speisekarte: ' + euro(sum) + ' – ich zahle beim Abholen.' : 'Ich zahle beim Abholen.');
+    return lines.join('\n');
+  };
+  const renderReceipt = () => {
+    if (!S.code) S.code = 'EB-' + String(Math.floor(1000 + Math.random() * 9000));
+    $$('.ab-code').forEach((c) => { c.textContent = S.code; });
+    $('.ab-r-items').replaceChildren(...S.cart.map((it) => {
+      const li = el('li');
+      li.append(el('b', '', it.qty + '×'), el('span', '', BASE[it.base]), el('em', '', price(it.base) ? euro(price(it.base).n * it.qty) : ''), el('p', '', details(it)));
+      return li;
+    }));
+    $('.ab-r-time').textContent = timeLabel();
+    $('.ab-r-name').textContent = S.name;
+    $('.ab-r-note').textContent = S.note;
+    $('.ab-r-note').hidden = $('.ab-r-note-t').hidden = !S.note;
+    const sum = total();
+    $('.ab-r-foot').textContent = sum != null ? 'Summe laut Speisekarte: ' + euro(sum) + '. Bezahlt wird beim Abholen im Laden.' : 'Bezahlt wird beim Abholen im Laden.';
+    const text = message();
+    const send = $('[data-ab-send]'), tel = $('[data-ab-tel]');
+    if (waDigits) {
+      send.href = $('[data-ab-again]').href = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent(text);
+    }
+    send.hidden = !waDigits;
+    $('[data-ab-nosend]').hidden = !!waDigits;
+    tel.hidden = !C.telefon;
+    save();
+  };
+  $('[data-ab-send]').addEventListener('click', () => setTimeout(() => { go(4); const name = S.name; S = fresh(); S.name = name; save(); renderCart(); }, 300));
+  $('[data-ab-copy]').addEventListener('click', () => {
+    const text = message();
+    const done = () => toast('Bestellung kopiert');
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done));
+    else fallbackCopy(text, done);
+  });
+  const fallbackCopy = (text, done) => {
+    const t = el('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    dlg.append(t); t.select();
+    try { if (document.execCommand('copy')) done(); } catch (e) { /* egal */ }
+    t.remove();
+  };
+  $('[data-ab-new]').addEventListener('click', () => { const name = S.name; S = fresh(); S.name = name; go(1); });
+
+  /* ---------- Öffnen und Schließen (mit #abholung in der Adresse, Zurück-Taste schließt) ---------- */
+  let pushed = false, opener = null;
+  const show = () => {
+    if (dlg.open) return;
+    opener = document.activeElement;
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    document.documentElement.classList.add('ab-open');
+  };
+  const open = (o = {}) => {
+    const wasOpen = dlg.open;
+    show();
+    if (location.hash !== '#abholung') { history.pushState({ ab: 1 }, '', '#abholung'); pushed = true; }
+    if (o.add) { const it = norm(o.add); add(it); go(1); toast(it.qty > 1 ? it.qty + '× ' + BASE[it.base] + ' sind drin' : BASE[it.base] + ' ist drin'); }
+    else if (o.item && BASE[o.item]) { if (step === 4) go(1, false); openCfg(o.item); }
+    else if (!wasOpen) go(step === 4 ? 4 : 1);
+  };
+  const hide = () => {
+    pushed = false;
+    if (typeof dlg.close === 'function' && dlg.open) dlg.close(); else dlg.removeAttribute('open');
+    document.documentElement.classList.remove('ab-open');
+    toastEl.classList.remove('is-on');
+    if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true });
+  };
+  const close = () => {
+    if (!dlg.open) return;
+    if (pushed && history.state && history.state.ab) { history.back(); return; }   // popstate schließt
+    hide();
+    if (location.hash === '#abholung') history.replaceState(null, '', location.pathname + location.search);
+  };
+  const sync = () => { if (location.hash === '#abholung') { if (!dlg.open) { show(); go(step === 4 ? 4 : 1); } } else if (dlg.open) hide(); };
+  window.addEventListener('popstate', sync);
+  window.addEventListener('hashchange', sync);
+  dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+  $$('[data-ab-close]').forEach((b) => b.addEventListener('click', close));
+
+  /* Alle „Bestellen“-Knöpfe der Seite öffnen diese Seite (data-ab-open="brot|box|teller" wählt gleich das Gericht) */
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-ab-open], a[href="#abholung"]');
+    if (!a || dlg.contains(a) || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    open({ item: a.dataset.abOpen || '' });
+  });
+  window.EBOrder = { open };
+
+  renderCart();
+  if (location.hash === '#abholung') { show(); go(1, false); }
+})();
 </script>
 <script>document.querySelectorAll('img[data-img-ref]').forEach(function(i){var k=document.querySelector('img[data-img-key="'+i.getAttribute('data-img-ref')+'"]');if(k)i.src=k.getAttribute('src');});['doener-box','doener-brot','doener-teller'].forEach(function(n){var k=document.querySelector('img[data-img-key="'+n+'"]');if(k)document.documentElement.style.setProperty('--img-'+n,'url("'+k.getAttribute('src')+'")');});</script>
 </body>
