@@ -1327,101 +1327,6 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
 @media (prefers-reduced-motion:reduce){.st-pulse{animation:none}}
 
 /* ===== /Bereich: standorte ===== */
-/* ===== Bereich: preise ===== */
-/* Preisliste: dunkle Tafel wie im Laden */
-.pl{margin-top:48px;padding:44px;border-radius:28px;background:var(--ink);color:var(--paper);display:grid;gap:28px;font-variant-numeric:tabular-nums}
-.pl :focus-visible{outline-color:var(--gold)}
-.menu .pl .kicker{color:var(--gold)}
-.pl-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 32px}
-.pl-head>div{display:flex;flex-direction:column;gap:10px}
-.pl h3{margin:0;font-weight:900;font-stretch:125%;font-size:clamp(28px,3.4vw,40px);line-height:1.05;text-transform:uppercase}
-.pl-head p{margin:0;max-width:420px;font-size:15.5px;line-height:1.5;color:var(--muted)}
-.pl-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:18px;align-items:start}
-.pl-side{display:grid;gap:18px}
-.pl-main,.pl-box{min-width:0;padding:26px 26px 24px;border-radius:22px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
-.pl h4{margin:0;font-size:21px;font-weight:900;font-stretch:115%;line-height:1.15;text-transform:uppercase}
-.pl h4 small,.pl h5 small{font-size:13px;font-weight:700;font-stretch:100%;letter-spacing:.02em;text-transform:none;color:var(--muted)}
-.pl-sub{margin:6px 0 0;font-size:14.5px;line-height:1.45;color:var(--muted)}
-
-/* Tabellen: Sorte | Kalb | Chicken */
-.pl-table{width:100%;margin-top:14px;border-collapse:collapse}
-.pl-table caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.pl-table th,.pl-table td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
-.pl-table thead th{padding:0 0 8px;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;white-space:nowrap}
-.pl-table thead tr:last-child th,.pl-table thead .pl-first{border-bottom-color:rgba(245,240,230,.26)}
-.pl-table thead .pl-first{text-align:left;vertical-align:bottom}
-.pl-table thead .pl-m{padding-left:16px}
-.pl-table thead .pl-m.pl-gs{padding-left:26px}
-.pl-table thead .pl-g{padding-bottom:6px;border-bottom:0;text-align:center;font-size:12.5px;color:var(--gold)}
-.pl-table tbody th{padding-right:10px;text-align:left;font-weight:400}
-.pl-table td{padding-left:16px;text-align:right;font-size:17px;font-weight:800;white-space:nowrap}
-.pl-table .pl-gs{padding-left:26px}
-.pl-table td.pl-one{text-align:center}
-.pl-table tbody tr:last-child>*{border-bottom:0}
-.pl-n{display:block;font-size:17px;font-weight:800;line-height:1.3}
-.pl-i{display:block;margin-top:1px;font-size:13.5px;line-height:1.35;color:var(--muted)}
-.pl-switch{display:none}
-
-.pl-veggie{margin:14px 0 0;font-size:14.5px;line-height:1.45;color:var(--muted-2)}
-.pl-inhalt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:16px 0 0;padding:14px 16px;border-radius:14px;background:rgba(245,240,230,.05);font-size:14.5px;line-height:1.45;color:var(--muted-2)}
-.pl-inhalt b{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding-top:2px}
-.pl-extras{margin-top:20px}
-.pl h5{margin:0 0 6px;font-size:15px;font-weight:900;font-stretch:112%;text-transform:uppercase}
-
-/* Zeilen mit Pünktchen */
-.pl-rows{display:flex;flex-direction:column;gap:2px;margin:10px 0 0;padding:0;list-style:none}
-.pl-rows li{display:flex;align-items:baseline;gap:8px;padding:5px 0;font-size:16px}
-.pl-rn{min-width:0;font-weight:700}
-.pl-rn small{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
-.pl-rows i{flex:1 1 16px;min-width:16px;border-bottom:2px dotted rgba(245,240,230,.24);transform:translateY(-4px)}
-.pl-rows b{font-weight:800;white-space:nowrap}
-
-/* Spezi Teller: hervorgehoben in Gold */
-.pl-teller{background:var(--gold);color:var(--ink);box-shadow:none}
-.pl-teller .pl-sub{color:#3D2F10}
-.pl-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.pl-pill{flex:0 1 auto;display:flex;align-items:baseline;gap:10px;padding:10px 16px;border-radius:14px;background:var(--ink);color:var(--paper)}
-.pl-pill span{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.pl-pill b{font-size:21px;font-weight:900}
-
-/* Getränke */
-.pl-drinks{grid-column:1/-1}
-.pl-drinks-in{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:8px 40px;margin-top:12px}
-.pl-dgroup{display:flex;flex-direction:column;gap:10px}
-.pl-dhead{display:flex;align-items:baseline;gap:10px;margin:5px 0 0;font-size:16px}
-.pl-dhead span{font-size:13px;font-weight:700;color:var(--muted)}
-.pl-dhead b{font-weight:800}
-.pl-dnames{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.pl-dnames li{padding:6px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(245,240,230,.2);font-size:14.5px;font-weight:700;color:var(--muted-2)}
-.pl-drinks .pl-rows{margin-top:0}
-
-.pl-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px 28px}
-.pl-foot p{margin:0;max-width:520px;font-size:14.5px;line-height:1.5;color:var(--muted)}
-
-@media (max-width:1000px){
-  .pl-grid{grid-template-columns:1fr}
-  .pl-side{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pl-teller{grid-column:1/-1}
-}
-@media (max-width:700px){
-  .pl{margin-top:36px;padding:28px 16px 24px;border-radius:24px;gap:22px}
-  .pl-main,.pl-box{padding:20px 16px}
-  .pl-side{grid-template-columns:1fr}
-  .pl-drinks-in{grid-template-columns:1fr;gap:14px}
-  .pl-switch{display:flex;gap:6px;margin-top:14px;padding:4px;border-radius:999px;background:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
-  .pl-switch button{flex:1;min-height:44px;padding:0 8px;white-space:nowrap;border:0;border-radius:999px;background:transparent;color:var(--muted-2);font:inherit;font-size:14.5px;font-weight:800;cursor:pointer}
-  .pl-switch button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
-  .pl-sorten[data-show="0"] [data-g]:not([data-g="0"]),.pl-sorten[data-show="1"] [data-g]:not([data-g="1"]),.pl-sorten[data-show="2"] [data-g]:not([data-g="2"]){display:none}
-  .pl-sorten thead .pl-g{display:none !important}
-  .pl-table td{font-size:16px}
-  .pl-table .pl-gs,.pl-table thead .pl-m.pl-gs{padding-left:14px}
-  .pl-pill{flex:1 1 130px}
-  .pl-n{font-size:16px}
-  .pl-inhalt{grid-template-columns:1fr;gap:2px}
-  .pl-inhalt b:last-of-type{margin-top:8px}
-  .pl-foot .btn{width:100%}
-}
-/* ===== /Bereich: preise ===== */
 /* ===== Bereich: abholung ===== */
 /* Bestellen zum Abholen: eigene Seite (Dialog über der Website), 3 Schritte */
 html.ab-open{overflow:hidden}
@@ -1453,96 +1358,121 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-h{margin:0 0 6px;font-size:clamp(28px,3.4vw,44px);font-weight:900;font-stretch:125%;line-height:1;text-transform:uppercase}
 .ab-lead{margin:0 0 26px;max-width:560px;font-size:16.5px;line-height:1.5;color:var(--muted-2)}
 
-/* Schritt 1: Gerichte */
-.ab-cats{position:sticky;top:0;z-index:2;display:flex;gap:8px;margin:-6px -4px 8px;padding:10px 4px;background:var(--ink);overflow-x:auto;scrollbar-width:none}
+/* Schritt 1: Speisekarte mit gezeichneten Bildern */
+.ab[data-mode="karte"][data-step="1"][data-empty] .ab-steps{display:none}
+.ab-lead b{color:var(--gold-hi)}
+.ab-cats{position:sticky;top:0;z-index:2;display:flex;gap:8px;margin:-6px -4px 6px;padding:10px 4px;background:var(--ink);overflow-x:auto;scrollbar-width:none}
 .ab-cats::-webkit-scrollbar{display:none}
 .ab-cats button{flex:none;min-height:40px;padding:0 16px;border:0;border-radius:999px;background:var(--ink-2);color:var(--muted-2);font:inherit;font-size:14.5px;font-weight:800;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
 .ab-cats button:hover{color:var(--paper);box-shadow:inset 0 0 0 1px rgba(217,169,58,.5)}
-.ab-cat{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:30px 0 14px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.ab-sec{margin-top:30px}
+.ab-sec-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;margin-bottom:14px}
+.ab-cat{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.ab-sec-h .ab-cat{margin:0}
 .ab-cat small{font-size:13.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
-.ab-pick>.ab-cat:first-of-type{margin-top:14px}
-.ab-prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.ab-prod{display:flex;flex-direction:row;overflow:hidden;padding:0;border:0;border-radius:24px;background:var(--ink-2);color:inherit;font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line);transition:transform .2s,box-shadow .2s}
-.ab-prod:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1.5px rgba(217,169,58,.5)}
-.ab-pm{position:relative;display:grid;place-items:center;height:190px;overflow:hidden}
-.ab-prod .ab-pm{flex:none;width:136px;height:auto;min-height:150px}
-.ab-prod .ab-pm img{height:124px}
-.ab-pm-ico svg,.ab-cfg-ico svg{width:88px;height:88px;color:var(--gold-hi)}
-.ab-cfg-ico{display:grid;place-items:center}
-.ab-pm.dark{background:radial-gradient(circle at 50% 60%,#3A2414,#1A1210)}
-.ab-pm.gold{background:radial-gradient(circle at 50% 60%,#F2CF73,#C8932A)}
-.ab-pm.paper{background:radial-gradient(circle at 50% 60%,#FFF8EA,#E7DCC6)}
-.ab-pm img{width:auto;height:170px;max-width:none;filter:drop-shadow(0 14px 18px rgba(0,0,0,.35))}
-.ab-pb{display:flex;flex-direction:column;gap:6px;min-width:0;padding:16px 18px 18px;flex:1}
-.ab-pt{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 10px}
-.ab-pt strong{font-size:19px;font-weight:900;line-height:1.2}
-.ab-price{font-weight:800;color:var(--gold-hi);white-space:nowrap}
-.ab-pd{font-size:14.5px;line-height:1.45;color:var(--muted)}
-.ab-pgo{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:10px;font-size:15px;font-weight:800;color:var(--gold-hi)}
-.ab-pgo svg{flex:none}
-/* Sparmenüs, Snacks, Getränke: Zeilen */
-.ab-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.ab-meat{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.ab-meat button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:none;color:var(--muted-2);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.ab-meat button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.ab-forms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.ab-form-b{display:flex;align-items:center;gap:12px;min-width:0;min-height:78px;padding:10px 14px 10px 10px;border:0;border-radius:18px;background:var(--ink-2);color:var(--muted-2);font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 1.5px var(--line);transition:box-shadow .15s,background-color .15s}
+.ab-form-b:hover{box-shadow:inset 0 0 0 1.5px rgba(245,240,230,.42)}
+.ab-form-b svg{flex:none;width:50px;height:50px;color:var(--gold-hi)}
+.ab-form-b span{min-width:0}
+.ab-form-b b{display:block;font-size:17px;font-weight:900;color:var(--paper)}
+.ab-form-b small{display:block;font-size:12.5px;line-height:1.3;color:var(--muted)}
+.ab-form-b[aria-pressed="true"]{background:#2A2117;box-shadow:inset 0 0 0 2px var(--gold)}
+.ab-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0;padding:0;list-style:none}
 .ab-drinks{grid-template-columns:repeat(2,minmax(0,1fr))}
-.ab-row{display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 8px 8px 18px;border-radius:18px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line);color:inherit;font:inherit;text-align:left}
-.ab-row-go{width:100%;padding:12px 18px;border:0;cursor:pointer;transition:box-shadow .2s}
-.ab-row-go:hover{box-shadow:inset 0 0 0 1.5px rgba(217,169,58,.5)}
-.ab-row-go svg{flex:none;color:var(--gold-hi)}
-.ab-rt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;font-size:16px;font-weight:700;line-height:1.3}
-.ab-rt strong{font-size:17px;font-weight:900}
-.ab-rt small{font-size:13.5px;font-weight:500;color:var(--muted)}
-.ab-row em{font-style:normal;font-weight:800;color:var(--gold-hi);white-space:nowrap;font-variant-numeric:tabular-nums}
-.ab-incart{flex:none;font-size:13px;font-weight:800;color:var(--ink);background:var(--gold);border-radius:999px;padding:2px 8px}
+.ab-row{position:relative;display:flex;align-items:center;gap:14px;min-height:70px;padding:8px 10px;border-radius:18px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .15s}
+.ab-row:has(.ab-go):hover{box-shadow:inset 0 0 0 1.5px rgba(217,169,58,.5)}
+.ab-ico{flex:none;display:grid;place-items:center;width:54px;height:54px;border-radius:15px;background:var(--ink-3);color:var(--gold-hi)}
+.ab-ico svg{width:40px;height:40px}
+.ab-rt{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0;overflow-wrap:break-word}
+.ab-rt strong{font-size:16.5px;font-weight:900;line-height:1.25}
+.ab-rt small{font-size:13.5px;line-height:1.35;color:var(--muted)}
+.ab-rp{font-style:normal;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ab-incart{flex:none;padding:2px 8px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:13px;font-weight:800}
 .ab-incart:empty{display:none}
-.ab-plus{flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--ink-3);color:var(--paper);font:inherit;font-size:24px;font-weight:700;line-height:1;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(245,240,230,.16)}
-.ab-plus:hover{background:var(--gold);color:var(--ink)}
+.ab-plus{position:relative;flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--gold);color:var(--ink);font:inherit;font-size:24px;font-weight:800;line-height:1;cursor:pointer}
+.ab-plus:hover{filter:brightness(1.08)}
+.ab-row .ab-go{position:static}
+.ab-row .ab-go::after{content:"";position:absolute;inset:0;border-radius:18px}
+.ab-row:has(.ab-go){cursor:pointer}
+.ab-step{display:flex;align-items:center;gap:4px}
+.ab-step output{min-width:20px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.ab-minus{background:var(--ink-3);color:var(--paper);box-shadow:inset 0 0 0 1px rgba(245,240,230,.16)}
+.ab-step.is-zero .ab-minus,.ab-step.is-zero output{display:none}
+.ab-feature{position:relative;display:flex;align-items:center;gap:18px;padding:18px;border-radius:22px;background:linear-gradient(135deg,#2A2117,var(--ink-2) 70%);box-shadow:inset 0 0 0 1.5px rgba(217,169,58,.4)}
+.ab-ico-big{width:104px;height:104px;border-radius:24px}
+.ab-ico-big svg{width:80px;height:80px}
+.ab-ft{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
+.ab-ft strong{font-size:20px;font-weight:900;font-stretch:112%;text-transform:uppercase}
+.ab-ft>p{margin:0;font-size:14.5px;line-height:1.45;color:var(--muted-2)}
+.ab-ft-p{display:flex;flex-wrap:wrap;gap:6px 16px;font-weight:800;font-variant-numeric:tabular-nums}
+.ab-ft-p span{color:var(--muted-2)}
+.ab-ft-p span.is-on{color:var(--paper)}
+.ab-ft-p small{margin-right:6px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.ab-ft-go{min-height:46px;margin-top:6px;padding:0 22px;font-size:16px}
+.ab-feature>.ab-incart{position:absolute;top:14px;right:14px}
+.ab-fine{margin:12px 0 0;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.ab-end{margin-top:26px}
 .ab-alt{margin:22px 0 0;font-size:15px;color:var(--muted)}
 .ab-alt a{color:var(--gold-hi);font-weight:700}
-
-/* Zusammenstellen */
-.ab-cfg{display:flex;flex-direction:column;gap:22px}
-.ab-cfg[hidden]{display:none}
 .ab-link{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0;border:0;background:none;color:var(--muted-2);font:inherit;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer}
 .ab-link:hover{color:var(--gold-hi)}
-.ab-cfg-head{display:flex;align-items:center;gap:18px}
-.ab-cfg-head .ab-pm{flex:none;width:112px;height:112px;border-radius:22px}
-.ab-cfg-head .ab-pm img{height:100px}
-.ab-cfg-head h3{margin:0;font-size:clamp(26px,3vw,38px);font-weight:900;font-stretch:125%;line-height:1;text-transform:uppercase}
-.ab-cfg-head p{margin:6px 0 0;font-size:15px;line-height:1.45;color:var(--muted-2)}
+
+/* Kurz zusammenstellen: kleines Fenster (Handy: von unten) */
+.ab-sheet{width:min(560px,calc(100% - 32px));max-width:none;max-height:min(90vh,880px);margin:auto;padding:0;border:0;border-radius:26px;background:var(--ink-2);color:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 1px var(--line);overflow:hidden}
+.ab-sheet[open]{display:flex;flex-direction:column;animation:sh-in .28s cubic-bezier(.2,.8,.2,1)}
+.ab-sheet::backdrop{background:rgba(8,7,6,.7)}
+@keyframes sh-in{from{opacity:0;transform:translateY(24px) scale(.98)}}
+.ab-sh{display:flex;flex-direction:column;flex:1;min-height:0}
+.ab-sh-head{display:flex;align-items:center;gap:14px;padding:16px 14px 14px 18px;border-bottom:1px solid var(--line)}
+.ab-sh-ico{flex:none;display:grid;place-items:center;width:58px;height:58px;border-radius:16px;background:var(--ink-3);color:var(--gold-hi)}
+.ab-sh-ico svg{width:44px;height:44px}
+.ab-sh-tt{flex:1;min-width:0}
+.ab-sh-tt h3{margin:0;font-size:21px;font-weight:900;font-stretch:112%;line-height:1.15;text-transform:uppercase}
+.ab-sh-tt h3:focus{outline:none}
+.ab-sh-tt p{margin:3px 0 0;font-size:14px;line-height:1.4;color:var(--muted)}
+.ab-sh-x{flex:none;align-self:flex-start;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--ink-3);color:var(--paper);cursor:pointer}
+.ab-sh-x:hover{background:#34302A}
+.ab-sh-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:18px;padding:18px 18px 20px}
+.ab-sh-foot{display:flex;align-items:center;gap:12px;padding:14px 18px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.ab-sh-foot .btn{flex:1;min-width:0;padding:0 16px}
 .ab-fs{margin:0;padding:0;border:0;min-width:0}
-.ab-fs legend{margin-bottom:12px;padding:0;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.ab-fs legend,.ab-legend{display:block;margin-bottom:10px;padding:0;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .ab-fs legend small{margin-left:8px;font-size:13px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
-/* Auswahl: Sorte, Fleisch, Beilage, Extras, Getränk */
-.ab-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:8px}
-.ab-seg{grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))}
-.ab-sorten{grid-template-columns:1fr;gap:6px}
+.ab-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:8px}
 .ab-opt{position:relative;display:block}
 .ab-opt input{position:absolute;left:0;top:0;width:1px;height:1px;margin:0;opacity:0}
-.ab-opt>span{display:flex;flex-direction:column;justify-content:center;gap:1px;height:100%;min-height:54px;padding:8px 14px;border-radius:16px;background:var(--ink-2);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;transition:box-shadow .15s,background-color .15s}
-.ab-opt b{font-size:16px;font-weight:800;line-height:1.25}
-.ab-opt small{font-size:13.5px;font-weight:600;color:var(--muted)}
+.ab-opt>span{display:flex;flex-direction:column;justify-content:center;gap:1px;height:100%;min-height:52px;padding:8px 14px;border-radius:15px;background:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;transition:box-shadow .15s,background-color .15s}
+.ab-opt b{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;line-height:1.25}
+.ab-opt small{font-size:13px;font-weight:600;color:var(--muted)}
 .ab-opt:hover>span{box-shadow:inset 0 0 0 1.5px rgba(245,240,230,.42)}
 .ab-opt input:checked+span{background:#2A2117;box-shadow:inset 0 0 0 2px var(--gold)}
 .ab-opt input:checked+span small{color:var(--gold-hi)}
 .ab-opt input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
-.ab-sorte>span{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;padding:10px 16px}
-.ab-sorte small{grid-column:1}
-.ab-sorte em{grid-column:2;grid-row:1/3;align-self:center;font-style:normal;font-size:15px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted-2)}
-.ab-sorte input:checked+span em{color:var(--gold-hi)}
-.ab-cfg-err:empty{display:none}
+.ab-dot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px rgba(0,0,0,.3)}
+.ab-select{appearance:none;-webkit-appearance:none;padding-right:44px;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23E9C46A' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 16px center;color-scheme:dark;cursor:pointer}
+.ab-wish{border-radius:16px;background:rgba(245,240,230,.04);box-shadow:inset 0 0 0 1px var(--line)}
+.ab-wish summary{display:flex;align-items:center;gap:4px 12px;flex-wrap:wrap;min-height:56px;padding:8px 52px 8px 16px;position:relative;list-style:none;cursor:pointer;font-weight:800}
+.ab-wish summary::-webkit-details-marker{display:none}
+.ab-wish summary::after{content:"";position:absolute;right:18px;top:50%;width:9px;height:9px;border-right:2.5px solid var(--gold-hi);border-bottom:2.5px solid var(--gold-hi);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.ab-wish[open] summary::after{transform:translateY(-25%) rotate(-135deg)}
+.ab-wish summary small{font-size:13.5px;font-weight:600;color:var(--muted)}
+.ab-wish.has-wish summary small{color:var(--gold-hi)}
+.ab-wish-in{display:flex;flex-direction:column;gap:18px;padding:4px 16px 16px}
+.ab-sh-err:empty{display:none}
 .ab-heat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .ab-heat label{position:relative}
 .ab-heat input{position:absolute;opacity:0;width:1px;height:1px}
-.ab-heat span{display:grid;place-items:center;min-height:52px;padding:6px 8px;border-radius:16px;background:var(--ink-2);box-shadow:inset 0 0 0 1.5px var(--line);font-size:14.5px;font-weight:700;text-align:center;color:var(--muted-2);cursor:pointer}
+.ab-heat span{display:grid;place-items:center;min-height:48px;padding:6px 8px;border-radius:15px;background:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);font-size:14px;font-weight:700;text-align:center;color:var(--muted-2);cursor:pointer}
 .ab-heat input:checked+span{background:#2A2117;color:var(--paper);box-shadow:inset 0 0 0 2px var(--gold)}
 .ab-heat input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
-.ab-sentence{margin:0;padding:14px 18px;border-radius:16px;background:var(--ink-2);font-size:15.5px;line-height:1.5;color:var(--muted-2)}
-.ab-sentence b{color:var(--paper)}
-.ab-addrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
-.ab-qty{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.ab-qty{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .ab-qty button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--paper);font:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer}
 .ab-qty button:hover{background:var(--ink-3)}
-.ab-qty output{min-width:28px;text-align:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
-.ab-addrow .btn{flex:1 1 220px}
+.ab-qty output{min-width:24px;text-align:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
 
 /* Schritt 2: Abholzeit */
 .ab-times{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:12px}
@@ -1627,13 +1557,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
 .ab-toast{position:fixed;left:50%;bottom:96px;z-index:5;transform:translate(-50%,20px);padding:12px 18px;border-radius:999px;background:var(--paper);color:var(--ink);font-size:15px;font-weight:800;box-shadow:0 14px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
 .ab-toast.is-on{opacity:1;transform:translate(-50%,0)}
 
-@media (max-width:1100px){.ab-prods,.ab-drinks{grid-template-columns:1fr}.ab-prod .ab-pm{width:120px;min-height:124px}.ab-prod .ab-pm img{height:104px}}
+@media (max-width:1100px){.ab-drinks{grid-template-columns:1fr}.ab-form-b{flex-direction:column;align-items:flex-start;gap:6px;padding:12px}.ab-form-b small{display:none}}
 /* Handy: Warenkorb unter der Auswahl, Leiste unten */
 .ab-bar{display:none}
 @media (max-width:980px){
   .ab-wrap{grid-template-columns:minmax(0,1fr);gap:28px;padding:26px 20px 120px}
   .ab-cart{position:static}
-  .ab-pb{padding:14px 16px}
+  .ab-drinks{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ab-bar{display:flex;align-items:center;gap:12px;position:absolute;left:0;right:0;bottom:0;z-index:3;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--ink);border-top:1px solid var(--line)}
   .ab-bar-n{display:flex;flex-direction:column;justify-content:center;min-height:44px;min-width:0;padding:0;border:0;background:none;color:var(--paper);font:inherit;text-align:left;cursor:pointer}
   .ab-bar-n b{font-size:16px;font-weight:800}
@@ -1654,15 +1584,46 @@ textarea.ab-input{min-height:88px;resize:vertical}
   .ab-receipt{padding:26px 20px 22px}
   .ab-r-brand b{font-size:18px}
   .ab-r-brand .ab-r-no{text-align:left}
-  .ab-cfg-head .ab-pm{width:88px;height:88px}
-  .ab-cfg-head .ab-pm img{height:80px}
-  .ab-pm-ico svg,.ab-cfg-ico svg{width:68px;height:68px}
-  .ab-row{padding-left:14px}
+  .ab-drinks{grid-template-columns:minmax(0,1fr)}
+  .ab-row{gap:10px;padding:8px}
+  .ab-step{gap:2px}.ab-step .ab-plus{width:40px;height:40px}
+  .ab-ico{width:48px;height:48px;border-radius:13px}.ab-ico svg{width:36px;height:36px}
+  .ab-forms{gap:8px}
+  .ab-form-b{align-items:center;text-align:center;padding:10px 6px}
+  .ab-form-b svg{width:44px;height:44px}
+  .ab-form-b b{font-size:15.5px}
+  .ab-feature{flex-direction:column;align-items:flex-start;padding:16px}
+  .ab-ico-big{width:84px;height:84px}.ab-ico-big svg{width:64px;height:64px}
+  .ab-ft-go{width:100%}
+  .ab-sheet{width:100%;max-height:92vh;margin:auto 0 0;border-radius:24px 24px 0 0}
+  .ab-sheet[open]{animation-name:sh-up}
+  .ab-sh-body{padding:16px}
+  .ab-sh-foot{padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+  .ab-sh-foot .ab-qty button{width:40px}
   .ab-cats{margin-left:-2px;margin-right:-2px}
 }
-@media (max-width:360px){.ab-title h2{font-size:15px}.ab-prod .ab-pm{width:92px}.ab-prod .ab-pm img{height:84px}.ab-pb{min-width:0;padding:12px 14px}.ab-bar-n small{display:none}.ab-bar .btn{padding:0 12px;font-size:15px}.ab-steps li{font-size:0;gap:0;padding:4px}.ab-steps li[aria-current="step"]{font-size:13px;gap:6px;padding:4px 10px 4px 4px}}
-@media (prefers-reduced-motion:reduce){.ab[open]{animation:none}.ab-prod,.ab-toast{transition:none}}
+@keyframes sh-up{from{transform:translateY(100%)}}
+@media (max-width:360px){.ab-title h2{font-size:15px}.ab-ico{width:42px;height:42px}.ab-ico svg{width:32px;height:32px}.ab-rt strong{font-size:15.5px}.ab-sh-foot{gap:10px}.ab-sh-foot .ab-qty{gap:2px}.ab-sh-foot .ab-qty button{width:36px}.ab-sh-foot .ab-qty output{min-width:16px}.ab-sh-foot .btn{padding:0 10px;font-size:14.5px}.ab-sh-tt h3{font-size:18px}.ab-sh-ico{width:50px;height:50px}.ab-sh-ico svg{width:38px;height:38px}.ab-bar-n small{display:none}.ab-bar .btn{padding:0 12px;font-size:15px}.ab-steps li{font-size:0;gap:0;padding:4px}.ab-steps li[aria-current="step"]{font-size:13px;gap:6px;padding:4px 10px 4px 4px}}
+@media (prefers-reduced-motion:reduce){.ab[open],.ab-sheet[open]{animation:none}.ab-row,.ab-form-b,.ab-toast{transition:none}}
 /* ===== /Bereich: abholung ===== */
+/* ===== Bereich: preise ===== */
+/* Speisekarte öffnen: dunkles Band unter den Karten */
+.sk-cta{margin-top:32px;display:flex;align-items:center;gap:18px 28px;padding:26px 30px;border-radius:26px;background:var(--ink);color:var(--paper)}
+.sk-cta :focus-visible{outline-color:var(--gold)}
+.sk-icos{flex:none;display:flex;gap:6px}
+.sk-icos i{display:grid;place-items:center;width:58px;height:58px;border-radius:16px;background:var(--ink-2);color:var(--gold-hi);box-shadow:inset 0 0 0 1px var(--line)}
+.sk-icos svg{width:40px;height:40px}
+.sk-t{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.sk-t strong{font-size:22px;font-weight:900;font-stretch:115%;line-height:1.15;text-transform:uppercase}
+.sk-t span{font-size:15.5px;line-height:1.5;color:var(--muted-2)}
+.sk-cta .btn{flex:none}
+@media (max-width:1000px){.sk-cta{flex-wrap:wrap}.sk-t{flex-basis:calc(100% - 280px)}}
+@media (max-width:700px){
+  .sk-cta{flex-direction:column;align-items:stretch;padding:24px 20px;gap:16px}
+  .sk-icos i{width:52px;height:52px}.sk-icos svg{width:36px;height:36px}
+  .sk-cta .btn{width:100%}
+}
+/* ===== /Bereich: preise ===== */
 </style>
 </head>
 <body>
@@ -1764,7 +1725,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
       <svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#karte">Speisekarte</a></li>
+      <li><a href="#karte" data-sk-open>Speisekarte</a></li>
       <li><a href="#allergene">Allergene</a></li>
       <li><a href="#laden">Über uns</a></li>
       <li><a href="#standort">Anfahrt &amp; Zeiten</a></li>
@@ -1784,7 +1745,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
       <h1 id="hero-title" class="enter" style="--i:1">Berliner<br>Döner.<br><span class="hot">Heiß vom<br>Spieß.</span></h1>
       <p class="lead enter" style="--i:2">Oft kopiert – doch nie erreicht. Frisch vom drehenden Spieß geschnitten, jetzt in der Albert-Leidl-Straße&nbsp;6 in Haunstetten: im Brot, in der Box oder auf dem Teller.</p>
       <div class="actions enter" style="--i:3">
-        <a class="btn btn-gold shine" href="#karte">Speisekarte ansehen
+        <a class="btn btn-gold shine" href="#karte" data-sk-open>Speisekarte ansehen
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn btn-ghost js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Albert-Leidl-Stra%C3%9Fe+6,+86179+Augsburg" target="_blank" rel="noopener">
@@ -1860,7 +1821,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <div class="card-body">
           <div class="card-title"><h3>Sandwich</h3><span class="price" data-price="sandwich"></span></div>
           <p>Im Bärliner Fladenbrot: Fleisch vom Spieß, Tomaten, Gurken, Eisbergsalat, Rotkohl und Soße – mit Kalb oder Chicken.</p>
-          <a class="card-more" href="#preise">Alle Sorten &amp; Preise</a>
+          <a class="card-more" href="#karte" data-sk-open>Alle Sorten &amp; Preise</a>
           <p class="al-codes">Allergene: siehe unten</p>
           <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="sandwich">Bestellen</a>
         </div>
@@ -1874,7 +1835,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <div class="card-body">
           <div class="card-title"><h3>Box</h3><span class="price" data-price="box"></span></div>
           <p>Fleisch vom Spieß, Tomaten, Gurken, Eisbergsalat, Rotkohl und Soße in der Box – perfekt zum Mitnehmen.</p>
-          <a class="card-more" href="#preise">Alle Sorten &amp; Preise</a>
+          <a class="card-more" href="#karte" data-sk-open>Alle Sorten &amp; Preise</a>
           <p class="al-codes">Allergene: siehe unten</p>
           <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="box">Bestellen</a>
         </div>
@@ -1888,7 +1849,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <div class="card-body">
           <div class="card-title"><h3>Spezi Teller</h3><span class="price" data-price="teller"></span></div>
           <p>Fleisch vom Spieß mit Pommes, Süßkartoffel oder Reis, Salat und Soßen – dazu Brot und ein Getränk nach Wahl.</p>
-          <a class="card-more" href="#preise">Alle Preise</a>
+          <a class="card-more" href="#karte" data-sk-open>Alle Preise</a>
           <p class="al-codes">Allergene: siehe unten</p>
           <a class="btn btn-ink js-order" href="#bestellen" data-ab-open="teller">Bestellen</a>
         </div>
@@ -1898,52 +1859,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
 
 
     <!-- Bereich: preise -->
-    <div class="pl js-only" id="preise" data-reveal>
-      <div class="pl-head">
-        <div>
-          <span class="kicker">Alle Preise</span>
-          <h3>Die ganze Karte</h3>
-        </div>
-        <p>So wie auf den Tafeln im Laden<span data-pl-stand></span>. Alle Preise in Euro.</p>
+    <div class="sk-cta js-only" id="preise" data-reveal>
+      <span class="sk-icos" aria-hidden="true"><i data-ab-ico="sandwich"></i><i data-ab-ico="duerum"></i><i data-ab-ico="box"></i><i data-ab-ico="teller"></i></span>
+      <div class="sk-t">
+        <strong>Die ganze Speisekarte</strong>
+        <span>Sandwich, Dürüm und Box in 7 Sorten, Spezi Teller, Sparmenüs, Snacks und Getränke – mit allen Preisen. Und mit einem Tipp bestellt.</span>
       </div>
-      <div class="pl-grid">
-        <section class="pl-main" aria-labelledby="pl-h-sorten">
-          <h4 id="pl-h-sorten">Sandwich, Box &amp; Dürüm</h4>
-          <p class="pl-sub">Sandwich im Bärliner Fladenbrot · Dürüm, der Wrap nach Bärliner Art · Box</p>
-          <div class="pl-switch" role="group" aria-label="Preise zeigen für"></div>
-          <table class="pl-table pl-sorten"><caption>Preise je Sorte in Euro</caption></table>
-          <p class="pl-veggie" hidden></p>
-          <p class="pl-inhalt"><b>Inhalte</b>Tomaten, Gurken, Eisbergsalat, Rotkohl<b>Soßen</b>Kräuter, Knoblauch, Scharf</p>
-          <div class="pl-extras" hidden>
-            <h5>Extras <small>zu Sandwich &amp; Dürüm</small></h5>
-            <ul class="pl-rows"></ul>
-          </div>
-        </section>
-        <div class="pl-side">
-          <section class="pl-box pl-teller" aria-labelledby="pl-h-teller" hidden>
-            <h4 id="pl-h-teller"></h4>
-            <p class="pl-sub"></p>
-            <div class="pl-pills"></div>
-          </section>
-          <section class="pl-box pl-menues" aria-labelledby="pl-h-menues" hidden>
-            <h4 id="pl-h-menues">Sparmenüs</h4>
-            <p class="pl-sub"></p>
-            <table class="pl-table"><caption>Sparmenüs, Preise in Euro</caption></table>
-          </section>
-          <section class="pl-box pl-snacks" aria-labelledby="pl-h-snacks" hidden>
-            <h4 id="pl-h-snacks">Snacks &amp; Beilagen</h4>
-            <ul class="pl-rows"></ul>
-          </section>
-        </div>
-        <section class="pl-box pl-drinks" aria-labelledby="pl-h-drinks" hidden>
-          <h4 id="pl-h-drinks">Getränke <small>inkl. Pfand</small></h4>
-          <div class="pl-drinks-in"></div>
-        </section>
-      </div>
-      <div class="pl-foot">
-        <p>Bei Allergien oder Unverträglichkeiten frag bitte im Laden nach unserer Allergen-Tabelle.</p>
-        <a class="btn btn-gold" href="#abholung" data-ab-open><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Zum Abholen bestellen</a>
-      </div>
+      <a class="btn btn-gold" href="#karte" data-sk-open>Speisekarte öffnen<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
     <!-- /Bereich: preise -->
 
@@ -2284,7 +2206,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <span>Das Original – heiß vom Spieß in der Albert-Leidl-Straße 6.</span>
       </div>
       <div class="sg-cta-act">
-        <a class="btn btn-gold" href="#karte">Zur Speisekarte</a>
+        <a class="btn btn-gold" href="#karte" data-sk-open>Zur Speisekarte</a>
         <a class="btn btn-ghost" href="#standort">So findest du uns</a>
       </div>
     </div>
@@ -2603,7 +2525,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
             </ul>
             <p>Dazu Dürüm-Wraps, Sparmenüs, Currywurst, Nuggets und Getränke – alle Preise stehen in der Speisekarte.</p>
             <div class="fq-acts">
-              <a class="btn btn-ink" href="#preise">Alle Preise</a>
+              <a class="btn btn-ink" href="#karte" data-sk-open>Alle Preise</a>
               <a class="btn btn-line-ink" href="#" data-fq-pdf hidden target="_blank" rel="noopener">Speisekarte als PDF<span class="fq-sr"> (neuer Tab)</span></a>
             </div>
           </div></div>
@@ -2791,7 +2713,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
       <nav aria-labelledby="bw-explore-title">
         <h2 class="bw-fh" id="bw-explore-title">Entdecken</h2>
         <ul class="bw-flist bw-explore">
-          <li><a href="#karte">Speisekarte</a></li>
+          <li><a href="#karte" data-sk-open>Speisekarte</a></li>
           <li><a href="#allergene">Allergene</a></li>
           <li><a href="#wunsch">Wunsch-Döner</a></li>
           <li><a href="#so-gehts">So geht’s</a></li>
@@ -2863,6 +2785,11 @@ textarea.ab-input{min-height:88px;resize:vertical}
 
 
 
+
+
+
+
+
 <!-- Bereich: abholung -->
 <dialog class="ab" id="abholung" aria-labelledby="ab-title">
   <header class="ab-top">
@@ -2878,104 +2805,47 @@ textarea.ab-input{min-height:88px;resize:vertical}
   <div class="ab-scroll">
     <div class="ab-wrap">
       <div class="ab-main">
-        <!-- Schritt 1: Gerichte -->
+        <!-- Schritt 1: Speisekarte – Tipp auf + bestellt -->
         <section class="ab-pane" data-pane="1" tabindex="-1" aria-labelledby="ab-h1">
-          <div class="ab-pick">
-            <h3 class="ab-h" id="ab-h1" tabindex="-1">Was darf’s sein?</h3>
-            <p class="ab-lead">Tipp auf ein Gericht und stell es dir zusammen. Die Preise sind die von den Tafeln im Laden.</p>
-            <div class="ab-cats" role="group" aria-label="Springen zu">
-              <button type="button" data-ab-jump="ab-c-doener">Döner</button>
-              <button type="button" data-ab-jump="ab-c-menues">Sparmenüs</button>
-              <button type="button" data-ab-jump="ab-c-snacks">Snacks</button>
-              <button type="button" data-ab-jump="ab-c-drinks">Getränke</button>
-            </div>
-            <h4 class="ab-cat" id="ab-c-doener">Döner <small>mit Kalb oder Chicken</small></h4>
-            <div class="ab-prods">
-              <button class="ab-prod" type="button" data-p="sandwich">
-                <span class="ab-pm dark" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-brot" alt="" width="425" height="510" loading="lazy"></span>
-                <span class="ab-pb"><span class="ab-pt"><strong>Sandwich</strong><span class="ab-price" data-ab-from="sandwich"></span></span>
-                <span class="ab-pd">Im Bärliner Fladenbrot – 7 Sorten, vom Original bis veggie.</span>
-                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-              </button>
-              <button class="ab-prod" type="button" data-p="duerum">
-                <span class="ab-pm dark ab-pm-ico" aria-hidden="true"><svg class="ab-ico-wrap" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="rotate(-28 32 32)"><path d="M21.5 18c-.6-3.4 2.4-5.6 5-4 .6-3.3 5.2-4 6.8-1.2 1.8-2.6 6.3-1.8 6.4 1.6 2.6-.8 4.3 1.4 3.3 3.6"/><path d="M21 18c2.4 2.2 19.6 2.2 22 0"/><path d="M21 18v29.5c0 3 5.2 5 11 5s11-2 11-5V18"/><path d="M21 31.5l2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2"/><path d="M26 39v7.5M32 40v8M38 39v7.5" stroke-width="1.4" opacity=".55"/><path d="M27 21.5l1.5 3.5M33.5 22l-.5 4M38.5 21l-1.5 3.6" stroke-width="1.4" opacity=".7"/></g></svg></span>
-                <span class="ab-pb"><span class="ab-pt"><strong>Dürüm</strong><span class="ab-price" data-ab-from="duerum"></span></span>
-                <span class="ab-pd">Der Wrap nach Bärliner Art – in denselben 7 Sorten.</span>
-                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-              </button>
-              <button class="ab-prod" type="button" data-p="box">
-                <span class="ab-pm gold" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-box" alt="" width="446" height="510" loading="lazy"></span>
-                <span class="ab-pb"><span class="ab-pt"><strong>Box</strong><span class="ab-price" data-ab-from="box"></span></span>
-                <span class="ab-pd">Alles in der Box – perfekt zum Mitnehmen.</span>
-                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-              </button>
-              <button class="ab-prod" type="button" data-p="teller">
-                <span class="ab-pm paper" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-teller" alt="" width="513" height="510" loading="lazy"></span>
-                <span class="ab-pb"><span class="ab-pt"><strong>Spezi Teller</strong><span class="ab-price" data-ab-from="teller"></span></span>
-                <span class="ab-pd">Mit Pommes, Süßkartoffel oder Reis – inkl. Brot &amp; 1 Getränk.</span>
-                <span class="ab-pgo">Zusammenstellen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-              </button>
-            </div>
-            <h4 class="ab-cat" id="ab-c-menues">Sparmenüs <small data-ab-menue-info></small></h4>
-            <div class="ab-list ab-menues"></div>
-            <h4 class="ab-cat" id="ab-c-snacks">Snacks &amp; Beilagen</h4>
-            <ul class="ab-list ab-simple" data-kind="snack"></ul>
-            <h4 class="ab-cat" id="ab-c-drinks">Getränke <small>inkl. Pfand</small></h4>
-            <ul class="ab-list ab-simple ab-drinks" data-kind="drink"></ul>
-            <p class="ab-alt" data-ab-delivery hidden>Lieber liefern lassen? <a href="#" target="_blank" rel="noopener"></a></p>
+          <h3 class="ab-h" id="ab-h1" tabindex="-1">Was darf’s sein?</h3>
+          <p class="ab-lead">Tipp auf <b>+</b>, such dir die Soße aus – fertig. Bezahlt wird beim Abholen.</p>
+          <div class="ab-cats" role="group" aria-label="Springen zu">
+            <button type="button" data-ab-jump="ab-c-doener">Döner</button>
+            <button type="button" data-ab-jump="ab-c-teller">Spezi Teller</button>
+            <button type="button" data-ab-jump="ab-c-menues">Sparmenüs</button>
+            <button type="button" data-ab-jump="ab-c-snacks">Snacks</button>
+            <button type="button" data-ab-jump="ab-c-drinks">Getränke</button>
           </div>
-
-          <form class="ab-cfg" hidden aria-labelledby="ab-cfg-name" novalidate>
-            <button class="ab-link" type="button" data-ab-pick><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Alle Gerichte</button>
-            <div class="ab-cfg-head">
-              <span class="ab-pm dark" aria-hidden="true"><img class="ab-cfg-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img-ref="doener-brot" alt="" width="425" height="510" loading="lazy"><span class="ab-cfg-ico"></span></span>
-              <div><h3 id="ab-cfg-name" tabindex="-1">Sandwich</h3><p class="ab-cfg-sub"></p></div>
+          <section class="ab-sec" id="ab-c-doener" aria-labelledby="ab-c-doener-h">
+            <div class="ab-sec-h">
+              <h4 class="ab-cat" id="ab-c-doener-h">Döner</h4>
+              <div class="ab-meat" role="group" aria-label="Preise zeigen für">
+                <button type="button" data-meat="kalb" aria-pressed="true">Kalb</button>
+                <button type="button" data-meat="chicken" aria-pressed="false">Chicken</button>
+              </div>
             </div>
-            <fieldset class="ab-fs" data-f="als" hidden><legend>Als Sandwich oder Box?</legend><div class="ab-opts ab-seg"></div></fieldset>
-            <fieldset class="ab-fs" data-f="sorte" hidden><legend>Welche Sorte? <small>Preis Kalb / Chicken</small></legend><div class="ab-opts ab-sorten"></div></fieldset>
-            <fieldset class="ab-fs" data-f="fleisch" hidden><legend>Welches Fleisch?</legend><div class="ab-opts ab-seg"></div></fieldset>
-            <fieldset class="ab-fs" data-f="beilage" hidden><legend></legend><div class="ab-opts ab-seg"></div></fieldset>
-            <fieldset class="ab-fs" data-f="dazu" hidden><legend>Dazu? <small>optional</small></legend><div class="ab-opts ab-seg"></div></fieldset>
-            <fieldset class="ab-fs" data-f="km" hidden><legend>Ketchup &amp; Mayo</legend><div class="ab-opts ab-seg"></div></fieldset>
-            <fieldset class="ab-fs" data-f="ing" hidden>
-              <legend>Was soll rein?</legend>
-              <div class="wd-chips">
-                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="tomate" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p55"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Tomaten</span></span></label>
-                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="gurke" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-gurke"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Gurken</span></span></label>
-                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="salat" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p48"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Salat<small>Eisberg</small></span></span></label>
-                <label class="wd-chip"><input type="checkbox" name="ab-zutat" value="rotkohl" checked><span class="wd-chip-ui"><span class="wd-ico"><i class="wd-p64"></i><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Rotkohl</span></span></label>
-              </div>
-            </fieldset>
-            <fieldset class="ab-fs" data-f="sauce" hidden>
-              <legend>Welche Soße? <small>gern auch mehrere</small></legend>
-              <div class="wd-chips">
-                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="kraeuter"><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#CBDCA0" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Kräuter<small>grün</small></span></span></label>
-                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="knoblauch" checked><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#F4EEE2" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Knoblauch<small>weiß</small></span></span></label>
-                <label class="wd-chip"><input type="checkbox" name="ab-sosse" value="scharf"><span class="wd-chip-ui"><span class="wd-ico"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 25C9 9 12 9 15 21S22 31 25 15 30 9 31 12" fill="none" stroke="#E0402A" stroke-width="4.5" stroke-linecap="round"/></svg><span class="wd-tick"><svg class="wd-t-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="wd-t-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span><span>Scharf<small>rot</small></span></span></label>
-              </div>
-            </fieldset>
-            <fieldset class="ab-fs" data-f="heat" hidden>
-              <legend>Wie scharf?</legend>
-              <div class="ab-heat">
-                <label><input type="radio" name="ab-heat" value="0" checked><span>mild</span></label>
-                <label><input type="radio" name="ab-heat" value="1"><span>etwas scharf</span></label>
-                <label><input type="radio" name="ab-heat" value="2"><span>scharf</span></label>
-                <label><input type="radio" name="ab-heat" value="3"><span>bärenscharf</span></label>
-              </div>
-            </fieldset>
-            <fieldset class="ab-fs" data-f="extras" hidden><legend>Extras <small>optional</small></legend><div class="ab-opts"></div></fieldset>
-            <fieldset class="ab-fs" data-f="drink" hidden><legend>Welches Getränk?</legend><div class="ab-opts ab-drinkopts"></div></fieldset>
-            <p class="ab-sentence" aria-live="polite"></p>
-            <p class="ab-err ab-cfg-err" role="alert"></p>
-            <div class="ab-addrow">
-              <div class="ab-qty" role="group" aria-label="Anzahl">
-                <button type="button" data-ab-q="-1" aria-label="Eins weniger">−</button>
-                <output class="ab-cfg-qty" aria-live="polite">1</output>
-                <button type="button" data-ab-q="1" aria-label="Eins mehr">+</button>
-              </div>
-              <button class="btn btn-gold ab-add" type="submit">In die Bestellung</button>
-            </div>
-          </form>
+            <div class="ab-forms" role="group" aria-label="Wie hättest du ihn gern?"></div>
+            <ul class="ab-list ab-sorten"></ul>
+            <p class="ab-fine">Immer mit Tomaten, Gurken, Eisbergsalat und Rotkohl. Soße nach Wahl: Kräuter, Knoblauch oder Scharf.</p>
+          </section>
+          <section class="ab-sec" id="ab-c-teller" aria-labelledby="ab-c-teller-h">
+            <h4 class="ab-cat" id="ab-c-teller-h">Spezi Teller</h4>
+            <div class="ab-feature"></div>
+          </section>
+          <section class="ab-sec" id="ab-c-menues" aria-labelledby="ab-c-menues-h">
+            <h4 class="ab-cat" id="ab-c-menues-h">Sparmenüs <small data-ab-menue-info></small></h4>
+            <ul class="ab-list ab-menues"></ul>
+          </section>
+          <section class="ab-sec" id="ab-c-snacks" aria-labelledby="ab-c-snacks-h">
+            <h4 class="ab-cat" id="ab-c-snacks-h">Snacks &amp; Beilagen</h4>
+            <ul class="ab-list" data-kind="snack"></ul>
+          </section>
+          <section class="ab-sec" id="ab-c-drinks" aria-labelledby="ab-c-drinks-h">
+            <h4 class="ab-cat" id="ab-c-drinks-h">Getränke <small>inkl. Pfand</small></h4>
+            <ul class="ab-list ab-drinks" data-kind="drink"></ul>
+          </section>
+          <p class="ab-fine ab-end">Bei Allergien oder Unverträglichkeiten frag bitte im Laden nach unserer Allergen-Tabelle. Preise in Euro<span data-ab-stand></span>.</p>
+          <p class="ab-alt" data-ab-delivery hidden>Lieber liefern lassen? <a href="#" target="_blank" rel="noopener"></a></p>
         </section>
 
         <!-- Schritt 2: Abholzeit und Name -->
@@ -3041,7 +2911,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
 
       <aside class="ab-cart" aria-labelledby="ab-cart-h">
         <h3 class="ab-cart-h" id="ab-cart-h" tabindex="-1">Deine Bestellung <span class="ab-count">0</span></h3>
-        <p class="ab-empty">Noch nichts drin. Such dir etwas aus.</p>
+        <p class="ab-empty">Noch nichts drin. Tipp auf <b>+</b> bei deinem Lieblingsgericht.</p>
         <ul class="ab-items"></ul>
         <p class="ab-sum" hidden></p>
         <button class="btn btn-gold ab-next" type="button" disabled>Weiter zur Abholzeit</button>
@@ -3053,6 +2923,50 @@ textarea.ab-input{min-height:88px;resize:vertical}
     <button class="ab-bar-n" type="button" data-ab-cart><b class="ab-bar-count">Noch leer</b><small>Deine Bestellung</small></button>
     <button class="btn btn-gold ab-next" type="button" disabled>Weiter zur Abholzeit</button>
   </div>
+  <!-- Kurz zusammenstellen: nur das Nötigste, der Rest unter „Extrawünsche“ -->
+  <dialog class="ab-sheet" aria-labelledby="ab-sh-title">
+    <form class="ab-sh" novalidate>
+      <div class="ab-sh-head">
+        <span class="ab-sh-ico" aria-hidden="true"></span>
+        <div class="ab-sh-tt"><h3 id="ab-sh-title" tabindex="-1"></h3><p class="ab-sh-sub"></p></div>
+        <button class="ab-sh-x" type="button" data-sh-close aria-label="Schließen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="ab-sh-body">
+        <fieldset class="ab-fs" data-f="als" hidden><legend>Als Sandwich oder Box?</legend><div class="ab-opts ab-seg"></div></fieldset>
+        <fieldset class="ab-fs" data-f="fleisch" hidden><legend>Fleisch</legend><div class="ab-opts ab-seg"></div></fieldset>
+        <fieldset class="ab-fs" data-f="beilage" hidden><legend></legend><div class="ab-opts ab-seg"></div></fieldset>
+        <fieldset class="ab-fs" data-f="dazu" hidden><legend>Dazu? <small>optional</small></legend><div class="ab-opts ab-seg"></div></fieldset>
+        <fieldset class="ab-fs" data-f="sauce" hidden><legend>Soße <small>gern auch mehrere</small></legend><div class="ab-opts ab-seg"></div></fieldset>
+        <label class="ab-fs ab-field" data-f="drink" hidden><span class="ab-legend">Getränk</span><select class="ab-input ab-select" name="ab-drink"></select></label>
+        <details class="ab-wish" data-f="wish" hidden>
+          <summary><span>Extrawünsche</span><small class="ab-wish-sum"></small></summary>
+          <div class="ab-wish-in">
+            <fieldset class="ab-fs" data-f="ing" hidden><legend>Was soll rein?</legend><div class="ab-opts ab-seg"></div></fieldset>
+            <fieldset class="ab-fs" data-f="km" hidden><legend>Ketchup &amp; Mayo</legend><div class="ab-opts ab-seg"></div></fieldset>
+            <fieldset class="ab-fs" data-f="extras" hidden><legend>Extras</legend><div class="ab-opts ab-seg"></div></fieldset>
+            <fieldset class="ab-fs" data-f="heat" hidden>
+              <legend>Wie scharf?</legend>
+              <div class="ab-heat">
+                <label><input type="radio" name="ab-heat" value="0" checked><span>mild</span></label>
+                <label><input type="radio" name="ab-heat" value="1"><span>etwas scharf</span></label>
+                <label><input type="radio" name="ab-heat" value="2"><span>scharf</span></label>
+                <label><input type="radio" name="ab-heat" value="3"><span>bärenscharf</span></label>
+              </div>
+            </fieldset>
+          </div>
+        </details>
+        <p class="ab-err ab-sh-err" role="alert"></p>
+      </div>
+      <div class="ab-sh-foot">
+        <div class="ab-qty" role="group" aria-label="Anzahl">
+          <button type="button" data-ab-q="-1" aria-label="Eins weniger">−</button>
+          <output class="ab-sh-qty" aria-live="polite">1</output>
+          <button type="button" data-ab-q="1" aria-label="Eins mehr">+</button>
+        </div>
+        <button class="btn btn-gold ab-add" type="submit">In die Bestellung</button>
+      </div>
+    </form>
+  </dialog>
   <div class="ab-toast" role="status" aria-live="polite"></div>
 </dialog>
 <!-- /Bereich: abholung -->
@@ -3064,7 +2978,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
   <a class="js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Albert-Leidl-Stra%C3%9Fe+6,+86179+Augsburg" target="_blank" rel="noopener">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
     Route</a>
-  <a href="#karte">
+  <a href="#karte" data-sk-open>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
     Speisekarte</a>
   <a class="accent" href="#bestellen" data-ab-open>
@@ -4323,161 +4237,6 @@ function ebAb(key) {
 })();
 
 </script>
-<script data-sec="preise">
-/* --- Preisliste: alles aus CONFIG.karte, so wie auf den Tafeln im Laden --- */
-(() => {
-  const root = document.getElementById('preise');
-  if (!root || typeof CONFIG === 'undefined') return;
-  const K = CONFIG.karte || {};
-  const $ = (s, r = root) => r.querySelector(s);
-  const $$ = (s, r = root) => Array.from(r.querySelectorAll(s));
-  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const num = (v) => { const n = Number(v); return n > 0 ? n : null; };
-  const fmt = (n) => (n ? n.toFixed(2).replace('.', ',') : '–');
-  const prices = (v) => [].concat(v == null ? [] : v).map(num);          // [Kalb, Chicken] oder [ein Preis]
-  const list = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' oder ' + a[a.length - 1] : a[0] || '');
-  const SIDE = { pommes: 'Pommes', suesskartoffel: 'Süßkartoffel', reis: 'Reis' };
-  const FORMS = [['sandwich', 'Sandwich'], ['box', 'Box'], ['duerum', 'Dürüm']];
-
-  const sorten = (K.sorten || []).filter((x) => x && x.name);
-  if (!sorten.length) { root.hidden = true; return; }
-  if (K.stand) $('[data-pl-stand]').textContent = ' – Stand ' + K.stand;
-
-  /* Preiszellen: zwei Preise nebeneinander (Kalb | Chicken) oder einer über beide Spalten */
-  const cells = (tr, v, g) => {
-    const p = prices(v);
-    if (p.length >= 2) p.slice(0, 2).forEach((n, j) => { const td = el('td', j ? '' : 'pl-gs', fmt(n)); td.dataset.g = g; tr.append(td); });
-    else { const td = el('td', 'pl-gs pl-one', fmt(p[0])); td.colSpan = 2; td.dataset.g = g; tr.append(td); }
-  };
-  const head = (table, labels) => {
-    const th0 = el('thead'), r1 = el('tr'), r2 = el('tr');
-    const first = el('th', 'pl-first', 'Sorte'); first.rowSpan = 2; first.scope = 'col';
-    r1.append(first);
-    labels.forEach((label, g) => {
-      const th = el('th', 'pl-g pl-gs', label); th.colSpan = 2; th.scope = 'colgroup'; th.dataset.g = g; r1.append(th);
-      ['Kalb', 'Chicken'].forEach((m, j) => { const t = el('th', j ? 'pl-m' : 'pl-m pl-gs', m); t.scope = 'col'; t.dataset.g = g; r2.append(t); });
-    });
-    th0.append(r1, r2);
-    table.append(th0);
-  };
-  const rowHead = (name, info) => {
-    const th = el('th'); th.scope = 'row';
-    th.append(el('span', 'pl-n', name));
-    [].concat(info || []).filter(Boolean).forEach((t) => th.append(el('span', 'pl-i', t)));
-    return th;
-  };
-
-  /* Sandwich, Box, Dürüm: Formen mit gleichen Preisen stehen zusammen („Sandwich & Box“) */
-  const groups = [];
-  FORMS.forEach(([f, label]) => {
-    if (!sorten.some((x) => x[f] != null)) return;
-    const sig = JSON.stringify(sorten.map((x) => prices(x[f])));
-    const g = groups.find((y) => y.sig === sig);
-    if (g) { g.forms.push(f); g.label += ' & ' + label; } else groups.push({ sig, forms: [f], label });
-  });
-  const table = $('.pl-sorten');
-  head(table, groups.map((g) => g.label));
-  if (groups.length < 2) table.querySelector('.pl-first').textContent = groups[0] ? groups[0].label : 'Sorte';
-  const body = el('tbody');
-  sorten.forEach((x) => {
-    const tr = el('tr');
-    tr.append(rowHead(x.name, [x.info, x.boxInfo && x.boxInfo !== x.info ? 'Box: ' + x.boxInfo : '']));
-    groups.forEach((g, i) => cells(tr, x[g.forms[0]], i));
-    body.append(tr);
-  });
-  table.append(body);
-  table.dataset.n = groups.length;
-  table.dataset.show = 0;
-  const sw = $('.pl-switch');
-  if (groups.length > 1) {
-    groups.forEach((g, i) => {
-      const b = el('button', '', g.label); b.type = 'button'; b.setAttribute('aria-pressed', String(!i));
-      b.addEventListener('click', () => { table.dataset.show = i; $$('button', sw).forEach((x, j) => x.setAttribute('aria-pressed', String(i === j))); });
-      sw.append(b);
-    });
-  } else sw.remove();
-
-  const veggie = sorten.find((x) => x.veggie), dazu = (K.veggieDazu || []).filter((d) => d && d.name && num(d.preis));
-  if (veggie && dazu.length) {
-    const same = dazu.every((d) => num(d.preis) === num(dazu[0].preis));
-    $('.pl-veggie').textContent = veggie.name + ' gibt’s auch mit ' + list(dazu.map((d) => d.name)) + ' – ' + (same ? 'je ' : '') + '+ ' + (same ? fmt(num(dazu[0].preis)) : dazu.map((d) => d.name + ' ' + fmt(num(d.preis))).join(', ')) + ' €.';
-    $('.pl-veggie').hidden = false;
-  }
-
-  /* Zeilen mit Pünktchen bis zum Preis */
-  const rows = (ul, items) => {
-    items.forEach((it) => {
-      const li = el('li');
-      const n = el('span', 'pl-rn', it.name);
-      if (it.menge) n.append(el('small', '', ' ' + it.menge));
-      const dots = el('i'); dots.setAttribute('aria-hidden', 'true');
-      li.append(n, dots, el('b', '', fmt(num(it.preis))));
-      ul.append(li);
-    });
-  };
-  const extras = (K.extras || []).filter((x) => x && x.name);
-  if (extras.length) { rows($('.pl-extras .pl-rows'), extras.map((x) => ({ name: x.name, preis: x.preis }))); $('.pl-extras').hidden = false; }
-
-  /* Spezi Teller */
-  const T = K.teller;
-  if (T && T.name) {
-    const box = $('.pl-teller');
-    $('h4', box).textContent = T.name;
-    const sides = (T.beilage || []).map((k) => SIDE[k]).filter(Boolean);
-    $('.pl-sub', box).textContent = (sides.length ? 'Mit ' + list(sides) + ', Fleisch vom Spieß, Salat und Soßen' : 'Fleisch vom Spieß, Salat und Soßen') + (T.info ? ' – ' + T.info : '') + '.';
-    const p = prices(T.preis), pills = $('.pl-pills', box);
-    (p.length >= 2 ? [['Kalb', p[0]], ['Chicken', p[1]]] : [['', p[0]]]).forEach(([m, n]) => {
-      const d = el('div', 'pl-pill'); if (m) d.append(el('span', '', m)); d.append(el('b', '', fmt(n))); pills.append(d);
-    });
-    box.hidden = false;
-  }
-
-  /* Sparmenüs */
-  const menues = (K.menues || []).filter((x) => x && x.name);
-  if (menues.length) {
-    const box = $('.pl-menues'), t = $('table', box);
-    $('.pl-sub', box).textContent = K.menue && K.menue.info ? 'Immer ' + K.menue.info + '.' : '';
-    head(t, ['']);
-    t.querySelector('.pl-first').textContent = 'Menü';
-    t.querySelector('.pl-g').remove();
-    const b = el('tbody');
-    menues.forEach((m) => {
-      const tr = el('tr'), als = (m.als || []).map((f) => (FORMS.find((x) => x[0] === f) || [])[1]).filter(Boolean);
-      tr.append(rowHead(m.name, als.length > 1 ? 'als ' + list(als) : ''));
-      cells(tr, m.preis, 0);
-      b.append(tr);
-    });
-    t.append(b);
-    box.hidden = false;
-  }
-
-  /* Snacks & Beilagen */
-  const snacks = (K.snacks || []).filter((x) => x && x.name);
-  if (snacks.length) { rows($('.pl-snacks .pl-rows'), snacks); $('.pl-snacks').hidden = false; }
-
-  /* Getränke: gleiche Größe und gleicher Preis stehen zusammen */
-  const drinks = (K.getraenke || []).filter((x) => x && x.name);
-  if (drinks.length) {
-    const wrap = $('.pl-drinks-in'), seen = new Set(), single = [];
-    drinks.forEach((d) => {
-      const k = (d.menge || '') + '|' + num(d.preis);
-      if (seen.has(k)) return;
-      const same = drinks.filter((x) => (x.menge || '') + '|' + num(x.preis) === k);
-      if (same.length < 3) { single.push(...same); seen.add(k); return; }
-      seen.add(k);
-      const g = el('div', 'pl-dgroup');
-      const h = el('p', 'pl-dhead');
-      h.append(el('span', '', (d.menge ? d.menge + ' · ' : '') + 'je'), el('b', '', fmt(num(d.preis))));
-      const ul = el('ul', 'pl-dnames');
-      same.forEach((x) => ul.append(el('li', '', x.name)));
-      g.append(h, ul);
-      wrap.append(g);
-    });
-    if (single.length) { const ul = el('ul', 'pl-rows'); rows(ul, single); wrap.append(ul); }
-    $('.pl-drinks').hidden = false;
-  }
-})();
-</script>
 <script data-sec="abholung">
 /* --- Bestellen zum Abholen: Auswahl → Abholzeit → als fertige Nachricht per WhatsApp an den Laden --- */
 (() => {
@@ -4712,48 +4471,132 @@ function ebAb(key) {
     return dayLabel(berlin(), i) + ', ' + hhmm(t) + ' Uhr' + (t >= 1440 ? ' (nach Mitternacht)' : '');
   };
 
+  /* ---------- Gezeichnete Bilder (SVG) für die Speisekarte ---------- */
+  const SVG = (inner) => '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';
+  const F = ' fill="currentColor" fill-opacity=".13"', SOFT = ' stroke-width="1.5" opacity=".55"';
+  const ICO = {
+    sandwich: SVG('<path d="M8 32a24 21 0 0 0 48 0z"' + F + '/><path d="M8.5 31c1.6-5.6 6.2-7.8 9.6-4.2 1.8-5.8 8.6-6.8 10.8-1.8 2.6-5.2 9.8-5 11.4.6 3-3.8 9-2.6 9.8 2.4 2.6-1.2 5.6.4 5.4 3"/><path d="M15 26.5l3 4.5M27 24l-1 6M36 24.5l2 5.5M46 27l-2.5 4"' + SOFT + '/><path d="M18 41.5h.01M26 46h.01M34 47h.01M42 44h.01M48 38.5h.01" stroke-width="3"/>'),
+    duerum: SVG('<g transform="rotate(-28 32 32)"><path d="M21 18v29.5c0 3 5.2 5 11 5s11-2 11-5V18"' + F + '/><path d="M21.5 18c-.6-3.4 2.4-5.6 5-4 .6-3.3 5.2-4 6.8-1.2 1.8-2.6 6.3-1.8 6.4 1.6 2.6-.8 4.3 1.4 3.3 3.6"/><path d="M21 18c2.4 2.2 19.6 2.2 22 0"/><path d="M21 31.5l2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2 2.75 2.2 2.75-2.2"/><path d="M26 39v7.5M32 40v8M38 39v7.5"' + SOFT + '/></g>'),
+    box: SVG('<path d="M15 28h34l-4.5 26.5a3 3 0 0 1-3 2.5H22.5a3 3 0 0 1-3-2.5z"' + F + '/><path d="M15.5 28c-.8-6 4.6-9.6 9-6.6 1.8-5.6 10.2-6.4 12.4-1 3.4-3.4 10.2-1.4 10.6 3.6 2.4.4 3.4 2.4 3 4"/><path d="M13 28h38"/><path d="M27 38.5h10M28.5 44.5h7"' + SOFT + '/><path d="M24 23l2 4M33 21l-1 5M41 23.5l-2 4"' + SOFT + '/>'),
+    teller: SVG('<circle cx="32" cy="32" r="26"' + F + '/><circle cx="32" cy="32" r="19"/><path d="M17.5 28.5l5 6.5 5-8 5 9 5-9 5 8 5-6"/><path d="M22 20l6 3M37 18.5l-1.5 6M44.5 39l-6-1.5M24 43l5-3.5M33 44.5l1-6"' + SOFT + '/>'),
+    menu: SVG('<path d="M9 26h20l-2.4 26a3 3 0 0 1-3 2.7h-9.2a3 3 0 0 1-3-2.7z"' + F + '/><path d="M19 26l3-13h6"/><path d="M10.5 36h17"' + SOFT + '/><path d="M36 33h20l-3 21.5a2.5 2.5 0 0 1-2.5 2.2H41.5a2.5 2.5 0 0 1-2.5-2.2z"' + F + '/><path d="M39.5 33l-1.5-12M44 33l-.5-15M48.5 33l.5-13M52.5 33l1.5-11"/>'),
+    spiess: SVG('<path d="M32 4v8.5M32 49v9"/><path d="M19 12.5c8-2 18-2 26 0l-5.5 35c-4.5 1.6-10.5 1.6-15 0z"' + F + '/><path d="M21 21.5c7 1.5 15 1.5 22 0M22.4 30.5c6 1.4 13.2 1.4 19.2 0M23.8 39.5c5 1.2 11.4 1.2 16.4 0"' + SOFT + '/><path d="M24 58.5h16"/>'),
+    mehr: SVG('<g transform="translate(-6 0)">' + '<path d="M32 4v8.5M32 49v9"/><path d="M19 12.5c8-2 18-2 26 0l-5.5 35c-4.5 1.6-10.5 1.6-15 0z"' + F + '/><path d="M21 21.5c7 1.5 15 1.5 22 0M22.4 30.5c6 1.4 13.2 1.4 19.2 0M23.8 39.5c5 1.2 11.4 1.2 16.4 0"' + SOFT + '/><path d="M24 58.5h16"/>' + '</g><circle cx="49" cy="17" r="8.5"/><path d="M49 12.8v8.4M44.8 17h8.4"/>'),
+    kaese: SVG('<path d="M8 38L56 22v26H8z"' + F + '/><path d="M8 38L43 13l13 9"/><circle cx="21" cy="43.5" r="2.6"/><circle cx="33" cy="39" r="2"/><circle cx="46.5" cy="36" r="2.8"/><circle cx="41" cy="44.5" r="1.6"/>'),
+    gemuese: SVG('<path d="M32 20c-11-5-21 2-21 14 0 12 9 22 21 22s21-10 21-22c0-12-10-19-21-14z"' + F + '/><path d="M32 20v-6c0-3 2.5-5 6-5"/><path d="M24 22c-3 6-3 22 2 32M40 22c3 6 3 22-2 32"' + SOFT + '/><path d="M15 33l7-3M15.5 42l8-3.5M41 41l7-3"/>'),
+    pommes: SVG('<path d="M18 28h28l-3.6 25.5a3 3 0 0 1-3 2.5H24.6a3 3 0 0 1-3-2.5z"' + F + '/><path d="M22 28l-2-17M27 28l1-19M32 28l-1-16M37 28l2-18M42 28l3-14"/><path d="M20.5 38h23"' + SOFT + '/>'),
+    gemischt: SVG('<path d="M21 5v7.5M43 5v7.5M21 44v13M43 44v13"/><path d="M12 12.5c6-1.6 12-1.6 18 0l-4 30.5c-3 1.2-7 1.2-10 0z"' + F + '/><path d="M34 12.5c6-1.6 12-1.6 18 0l-4 30.5c-3 1.2-7 1.2-10 0z"/><path d="M13.6 21.5c5 1.2 9.8 1.2 14.8 0M15 31c4 1 8 1 12 0M35.6 21.5c5 1.2 9.8 1.2 14.8 0M37 31c4 1 8 1 12 0"' + SOFT + '/><path d="M14 57.5h36"/>'),
+    veggie: SVG('<path d="M13 51C13 27 29 14 52 12c0 23-12 39-39 39z"' + F + '/><path d="M13 51l25-25"/><path d="M26 38l-1-9M32 32l-1-8M26 38l9-.5M32 32l8 0"' + SOFT + '/>'),
+    currywurst: SVG('<path d="M7 38h50l-6.5 13a3 3 0 0 1-2.7 1.7H16.2a3 3 0 0 1-2.7-1.7z"' + F + '/><ellipse cx="16" cy="33.5" rx="5" ry="3.2"/><ellipse cx="27" cy="32" rx="5" ry="3.2"/><ellipse cx="38" cy="33" rx="5" ry="3.2"/><path d="M11 30c4 3 7-2 11 0s7-2 11 0 7-2 11 0"' + SOFT + '/><path d="M47 33l7-20M52 13l3 1"/>'),
+    nuggets: SVG('<path d="M9 41c-1-7 4-12 11-12 6 0 10 4 10 10s-5 10-11 10c-5 0-9-3-10-8z"' + F + '/><path d="M33 44c-1-6 3-11 10-11 7 1 12 5 11 11-1 5-6 8-12 8-5 0-8-3-9-8z"' + F + '/><path d="M22 23c0-6 5-10 11-9 6 1 9 5 8 10-1 6-6 8-11 8s-8-4-8-9z"' + F + '/><path d="M15 38h.01M20 43h.01M41 41h.01M47 46h.01M29 21h.01M35 25h.01" stroke-width="3"/>'),
+    dose: SVG('<path d="M22 15h20v37a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z"' + F + '/><path d="M24 9h16l2 6H22z"/><path d="M22 23h20M22 46h20"' + SOFT + '/><path d="M29 12h6"/>'),
+    schlank: SVG('<path d="M25 13h14v40a3.5 3.5 0 0 1-3.5 3.5h-7A3.5 3.5 0 0 1 25 53z"' + F + '/><path d="M26.5 8h11l1.5 5H25z"/><path d="M25 22h14M25 47h14"' + SOFT + '/><path d="M28 36l8-6"' + SOFT + '/>'),
+    flasche: SVG('<path d="M28 6h8v6c0 2.5 6 4.5 6 10.5V53a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4V22.5c0-6 6-8 6-10.5z"' + F + '/><path d="M27 6h10"/><path d="M22 31h20M22 45h20"' + SOFT + '/>'),
+    becher: SVG('<path d="M18 19h28l-3 33.5a4 4 0 0 1-4 3.5H25a4 4 0 0 1-4-3.5z"' + F + '/><path d="M15 13h34v6H15z"/><path d="M20.5 30h23M21.6 42h20.8"' + SOFT + '/>'),
+    beutel: SVG('<path d="M19 21h26v29a6 6 0 0 1-6 6H25a6 6 0 0 1-6-6z"' + F + '/><path d="M19 21l2-4h22l2 4"/><path d="M37 17l7-12"/><path d="M19 32h26"' + SOFT + '/><path d="M27 41h10"' + SOFT + '/>')
+  };
+  const SORTE_ICO = { original: 'spiess', wedding: 'mehr', kreuzberg: 'kaese', schoeneberg: 'gemuese', neukoelln: 'pommes', tempelhof: 'gemischt', moabit: 'veggie' };
+  const SNACK_ICO = { currywurst: 'currywurst', nuggets4: 'nuggets', nuggets6: 'nuggets', pommes: 'pommes', suesskartoffel: 'pommes' };
+  const DRINK_ICO = { vio: 'flasche', 'red-bull': 'schlank', ayran: 'becher', 'capri-sonne': 'beutel' };
+
   /* ---------- Ansicht ---------- */
-  const scroller = $('.ab-scroll'), cfg = $('.ab-cfg'), pick = $('.ab-pick');
-  let step = 1, edit = -1, cur = null, meatPref = 'kalb';
+  const scroller = $('.ab-scroll');
+  let step = 1, edit = -1, cur = null, meatPref = 'kalb', mode = 'order';
+  let form = ['sandwich', 'duerum', 'box'].find((f) => PROD[f]) || '';
   const toastEl = $('.ab-toast');
   let toastT = 0;
   const toast = (t) => { toastEl.textContent = t; toastEl.classList.add('is-on'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('is-on'), 2400); };
   const drin = (it) => (it.qty > 1 ? it.qty + '× ' + title(it) + ' sind drin' : title(it) + ' ist drin');
-  const ARROW = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  const MENU_ICO = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 26h20l-2.4 26a3 3 0 0 1-3 2.7h-9.2a3 3 0 0 1-3-2.7z"/><path d="M19 26l3-13h6"/><path d="M10.5 36h17"/><path d="M36 33h20l-3 21.5a2.5 2.5 0 0 1-2.5 2.2H41.5a2.5 2.5 0 0 1-2.5-2.2z"/><path d="M39.5 33l-1.5-12M44 33l-.5-15M48.5 33l.5-13M52.5 33l1.5-11"/></svg>';
+  const ico = (k) => ICO[k] || ICO.menu;
+  const short = (n) => n.toFixed(2).replace('.', ',');
+  const inCart = (fn) => S.cart.filter(fn).reduce((a, it) => a + it.qty, 0);
+  const FORM_SUB = { sandwich: 'im Bärliner Fladenbrot', duerum: 'der Wrap nach Bärliner Art', box: 'alles in der Box' };
+  /* gezeichnete Bilder auch außerhalb (Band „Die ganze Speisekarte“) */
+  document.querySelectorAll('[data-ab-ico]').forEach((e) => { e.innerHTML = ico(e.dataset.abIco); });
 
-  /* Kacheln und Listen aus der Karte */
-  $$('.ab-prod').forEach((b) => { if (!PROD[b.dataset.p]) b.hidden = true; });
-  $$('[data-ab-from]').forEach((e) => { const n = from(e.dataset.abFrom); e.textContent = n ? 'ab ' + euro(n) : ''; });
-  if (M.info) $('[data-ab-menue-info]').textContent = M.info;
-  const menuBox = $('.ab-menues');
-  MENUES.forEach((m) => {
-    const p = 'menu:' + m.id, P = PROD[p], b = el('button', 'ab-row ab-row-go');
-    b.type = 'button'; b.dataset.p = p;
-    const t = el('span', 'ab-rt'); t.append(el('strong', '', P.name));
-    const als = (m.als || []).filter((x) => FORM[x]).map((x) => FORM[x]);
-    t.append(el('small', '', als.length ? 'als ' + list(als, ' oder ') + (Array.isArray(m.preis) ? ', Kalb oder Chicken' : '') : 'mit Getränk und Beilage'));
-    const n = from(p);
-    b.append(t, el('em', '', n ? (Array.isArray(m.preis) ? 'ab ' : '') + euro(n) : ''));
-    b.insertAdjacentHTML('beforeend', ARROW);
-    menuBox.append(b);
-  });
-  const simpleRow = (p) => {
-    const P = PROD[p], li = el('li', 'ab-row');
-    li.append(el('span', 'ab-rt', P.name), el('b', 'ab-incart'), el('em', '', num(P.preis) ? euro(num(P.preis)) : ''));
-    const add = el('button', 'ab-plus', '+'); add.type = 'button'; add.dataset.abAdd = p; add.setAttribute('aria-label', P.name + ' hinzufügen');
-    li.append(add);
+  /* ---------- Speisekarte (Schritt 1): Zeilen einmal bauen, danach nur Preise und Zähler auffrischen ---------- */
+  const row = (icon, name, sub) => {
+    const li = el('li', 'ab-row'), i = el('span', 'ab-ico'), t = el('span', 'ab-rt');
+    i.innerHTML = ico(icon); i.setAttribute('aria-hidden', 'true');
+    t.append(el('strong', '', name)); if (sub) t.append(el('small', '', sub));
+    li.append(i, t, el('b', 'ab-incart'), el('em', 'ab-rp'));
     return li;
   };
-  $('.ab-simple[data-kind="snack"]').append(...SNACKS.map((x) => simpleRow('snack:' + x.id)));
-  $('.ab-simple[data-kind="drink"]').append(...DRINKS.map((x) => simpleRow('drink:' + x.id)));
-  [['ab-c-menues', MENUES], ['ab-c-snacks', SNACKS], ['ab-c-drinks', DRINKS]].forEach(([id, a]) => {
+  const goBtn = (label) => { const b = el('button', 'ab-plus ab-go', '+'); b.type = 'button'; b.setAttribute('aria-label', label); return b; };
+
+  /* Döner: Sandwich | Dürüm | Box, dann die Sorten */
+  const formsBox = $('.ab-forms');
+  Object.keys(FORM).filter((f) => PROD[f]).forEach((f) => {
+    const b = el('button', 'ab-form-b'); b.type = 'button'; b.dataset.form = f; b.setAttribute('aria-pressed', String(f === form));
+    b.innerHTML = ico(f);
+    const t = el('span'); t.append(el('b', '', FORM[f]), el('small', '', FORM_SUB[f])); b.append(t);
+    b.addEventListener('click', () => { form = f; refreshMenu(); });
+    formsBox.append(b);
+  });
+  const sortenBox = $('.ab-sorten');
+  const sortenRows = SORTEN.map((x) => {
+    const li = row(SORTE_ICO[x.id] || 'spiess', x.name + (x.veggie ? ' (veggie)' : ''), x.info);
+    const b = goBtn('');
+    b.addEventListener('click', () => openSheet({ p: form, s: x.id, m: meatPref }));
+    li.append(b); sortenBox.append(li);
+    return { x, li, b };
+  });
+  $$('.ab-meat button').forEach((b) => b.addEventListener('click', () => { meatPref = b.dataset.meat; refreshMenu(); }));
+
+  /* Spezi Teller: eine Karte */
+  const feature = $('.ab-feature');
+  let tellerBtn = null;
+  if (T) {
+    const i = el('span', 'ab-ico ab-ico-big'); i.innerHTML = ico('teller'); i.setAttribute('aria-hidden', 'true');
+    const t = el('div', 'ab-ft');
+    const sides = (T.beilage || []).map((k) => SIDE[k]).filter(Boolean);
+    t.append(el('strong', '', T.name), el('p', '', (sides.length ? 'Mit ' + list(sides, ' oder ') + ', Fleisch vom Spieß, Salat und Soßen' : 'Fleisch vom Spieß, Salat und Soßen') + (T.info ? ' – ' + T.info : '') + '.'));
+    const pr = el('p', 'ab-ft-p');
+    tellerBtn = el('button', 'btn btn-gold ab-ft-go', 'Bestellen'); tellerBtn.type = 'button';
+    tellerBtn.addEventListener('click', () => openSheet({ p: 'teller', m: meatPref }));
+    t.append(pr, tellerBtn);
+    feature.append(i, t, el('b', 'ab-incart'));
+  } else { $('#ab-c-teller').hidden = true; $('[data-ab-jump="ab-c-teller"]').hidden = true; }
+
+  /* Sparmenüs */
+  if (M.info) $('[data-ab-menue-info]').textContent = M.info;
+  const menuRows = MENUES.map((m) => {
+    const p = 'menu:' + m.id, als = (m.als || []).filter((x) => FORM[x]).map((x) => FORM[x]);
+    const li = row(m.als && m.als[0] === 'duerum' ? 'duerum' : m.als && m.als.length ? 'menu' : 'currywurst', PROD[p].name, als.length ? 'als ' + list(als, ' oder ') : 'mit Pommes oder Süßkartoffel');
+    const b = goBtn(PROD[p].name + ' bestellen');
+    b.addEventListener('click', () => openSheet({ p, m: meatPref }));
+    li.append(b); $('.ab-menues').append(li);
+    return { m, p, li };
+  });
+
+  /* Snacks und Getränke: + legt direkt rein, daneben − und die Anzahl */
+  const simpleRows = [];
+  const simple = (box, p, icon) => {
+    const P = PROD[p], li = row(icon, P.name), st = el('div', 'ab-step');
+    const minus = el('button', 'ab-plus ab-minus', '−'); minus.type = 'button'; minus.setAttribute('aria-label', 'Eins weniger: ' + P.name);
+    const out = el('output', '', '0');
+    const plusB = el('button', 'ab-plus', '+'); plusB.type = 'button'; plusB.setAttribute('aria-label', P.name + ' hinzufügen');
+    minus.addEventListener('click', () => {
+      const j = S.cart.findIndex((it) => it.p === p); if (j < 0) return;
+      if (--S.cart[j].qty < 1) { S.cart.splice(j, 1); plusB.focus(); }
+      renderCart(); save();
+    });
+    plusB.addEventListener('click', () => { const it = add({ p, qty: 1 }); if (it) { toast(drin(it)); renderCart(); save(); } });
+    st.append(minus, out, plusB);
+    li.querySelector('.ab-rp').textContent = num(P.preis) ? euro(num(P.preis)) : '';
+    li.append(st); box.append(li);
+    simpleRows.push({ p, st, out });
+  };
+  SNACKS.forEach((x) => simple($('.ab-list[data-kind="snack"]'), 'snack:' + x.id, SNACK_ICO[x.id] || 'pommes'));
+  DRINKS.forEach((x) => simple($('.ab-list[data-kind="drink"]'), 'drink:' + x.id, DRINK_ICO[x.id] || 'dose'));
+  [['ab-c-menues', MENUES], ['ab-c-snacks', SNACKS], ['ab-c-drinks', DRINKS], ['ab-c-doener', SORTEN]].forEach(([id, a]) => {
     if (a.length) return;
     $('#' + id).hidden = true; $('[data-ab-jump="' + id + '"]').hidden = true;
   });
+  if (K.stand) $('[data-ab-stand]').textContent = ', Stand ' + K.stand;
   $$('[data-ab-jump]').forEach((b) => b.addEventListener('click', () => {
     const h = $('#' + b.dataset.abJump);
-    scroller.scrollTo({ top: h.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - $('.ab-cats').offsetHeight - 14,
+    scroller.scrollTo({ top: h.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - $('.ab-cats').offsetHeight - 10,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }));
   if (C.lieferdienstUrl) {
@@ -4763,11 +4606,45 @@ function ebAb(key) {
     box.hidden = false;
   }
 
+  /* Preise (je nach Kalb/Chicken und Sandwich/Dürüm/Box) und „2×“-Zähler */
+  const refreshMenu = () => {
+    $$('.ab-meat button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.meat === meatPref)));
+    $$('.ab-form-b').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.form === form)));
+    const meatName = MEAT[meatPref];
+    sortenRows.forEach(({ x, li, b }) => {
+      const v = x[form], n = byMeat(v, meatPref);
+      li.querySelector('.ab-rp').textContent = n ? euro(n) : '';
+      const c = inCart((it) => it.p === form && it.s === x.id);
+      li.querySelector('.ab-incart').textContent = c ? c + '×' : '';
+      b.setAttribute('aria-label', FORM[form] + ' ' + x.name + (Array.isArray(v) ? ', ' + meatName : '') + (n ? ', ' + short(n) + ' Euro' : '') + ' – bestellen');
+    });
+    if (T) {
+      const p = [].concat(T.preis).map(num);
+      $('.ab-ft-p', feature).replaceChildren(...(p.length > 1 ? [['Kalb', p[0]], ['Chicken', p[1]]] : [['', p[0]]]).map(([m, n]) => {
+        const s = el('span', m && m === meatName ? 'is-on' : ''); if (m) s.append(el('small', '', m)); s.append(n ? euro(n) : ''); return s;
+      }));
+      const c = inCart((it) => it.p === 'teller');
+      feature.querySelector('.ab-incart').textContent = c ? c + '×' : '';
+    }
+    menuRows.forEach(({ m, p, li }) => {
+      const n = byMeat(m.preis, meatPref);
+      li.querySelector('.ab-rp').textContent = n ? euro(n) : '';
+      const c = inCart((it) => it.p === p);
+      li.querySelector('.ab-incart').textContent = c ? c + '×' : '';
+    });
+    simpleRows.forEach(({ p, st, out }) => {
+      const c = inCart((it) => it.p === p);
+      out.textContent = c; st.classList.toggle('is-zero', !c);
+    });
+  };
+
+  /* ---------- Warenkorb ---------- */
   const renderCart = () => {
     const n = S.cart.reduce((a, it) => a + it.qty, 0), sum = total();
-    const fa = document.activeElement, fq = fa && fa.closest && dlg.contains(fa) ? (fa.dataset.abItemQ ? '[data-ab-item-q="' + fa.dataset.abItemQ + '"]' : fa.dataset.abEdit != null ? '[data-ab-edit="' + fa.dataset.abEdit + '"]' : '') : '';
+    const fa = document.activeElement, fq = fa && fa.closest && dlg.contains(fa) && !sheet.open ? (fa.dataset.abItemQ ? '[data-ab-item-q="' + fa.dataset.abItemQ + '"]' : fa.dataset.abEdit != null ? '[data-ab-edit="' + fa.dataset.abEdit + '"]' : '') : '';
     $('.ab-count').textContent = n;
     $('.ab-empty').hidden = !!S.cart.length;
+    dlg.toggleAttribute('data-empty', !S.cart.length);
     $('.ab-items').replaceChildren(...S.cart.map((it, idx) => {
       const li = el('li', 'ab-item'), l = line(it), d = details(it);
       li.append(el('strong', '', title(it) + (l != null ? ' · ' + euro(l) : '')));
@@ -4789,16 +4666,22 @@ function ebAb(key) {
     sumEl.hidden = sum == null;
     if (sum != null) { const l = el('span', '', 'Summe'); l.append(el('small', '', 'laut Speisekarte, bezahlt wird im Laden')); sumEl.replaceChildren(l, el('span', '', euro(sum))); }
     $('.ab-bar-count').textContent = n ? count(n) + (sum != null ? ' · ' + euro(sum) : '') : 'Noch leer';
-    $$('[data-ab-add]').forEach((b) => {
-      const c = S.cart.filter((it) => it.p === b.dataset.abAdd).reduce((a, it) => a + it.qty, 0);
-      b.parentNode.querySelector('.ab-incart').textContent = c ? c + '×' : '';
-    });
+    refreshMenu();
     if (fq) { const back = $('.ab-items ' + fq) || $('#ab-cart-h'); if (back && !$('.ab-pane[data-pane="' + step + '"]').hidden) back.focus({ preventScroll: true }); }
     $$('.ab-next').forEach((b) => {
-      const short = !!b.closest('.ab-bar');                       // in der Handy-Leiste kürzer, damit es in eine Zeile passt
+      const sh = !!b.closest('.ab-bar');                          // in der Handy-Leiste kürzer, damit es in eine Zeile passt
       b.disabled = !S.cart.length;
-      b.textContent = step === 2 ? (short ? 'Zur Übersicht' : 'Weiter zur Übersicht') : (short ? 'Zur Abholzeit' : 'Weiter zur Abholzeit');
+      b.textContent = step === 2 ? (sh ? 'Zur Übersicht' : 'Weiter zur Übersicht') : (sh ? 'Zur Abholzeit' : 'Weiter zur Abholzeit');
     });
+  };
+
+  /* Überschrift: „Speisekarte“, solange man nur schaut */
+  const LEADS = { karte: 'Alles von den Tafeln im Laden. Tipp auf + und bestell zum Abholen – bezahlt wird vor Ort.', order: 'Tipp auf +, such dir die Soße aus – fertig. Bezahlt wird beim Abholen.' };
+  const setMode = (m) => {
+    mode = m === 'karte' ? 'karte' : 'order';
+    dlg.dataset.mode = mode;
+    $('#ab-title').textContent = mode === 'karte' && step === 1 ? 'Speisekarte' : 'Bestellen & abholen';
+    if (waDigits) $('#ab-h1 + .ab-lead').textContent = LEADS[mode];
   };
 
   const go = (n, focus = true) => {
@@ -4811,7 +4694,7 @@ function ebAb(key) {
       if (s === Math.min(n, 3)) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
       li.classList.toggle('is-done', s < n || n === 4);
     });
-    if (n === 1) { cfg.hidden = true; pick.hidden = false; }
+    setMode(mode);
     if (n === 2) renderTimes();
     if (n === 3) renderReceipt();
     renderCart();
@@ -4820,13 +4703,15 @@ function ebAb(key) {
     save();
   };
 
-  /* ---------- Zusammenstellen ---------- */
-  const fs = (f) => $('.ab-fs[data-f="' + f + '"]', cfg);
-  const cfgErr = $('.ab-cfg-err');
-  const opt = (type, name, value, label, sub, checked, cls) => {
-    const l = el('label', 'ab-opt' + (cls ? ' ' + cls : '')), i = el('input'), s = el('span');
+  /* ---------- Kurz zusammenstellen (kleines Fenster) ---------- */
+  const sheet = $('.ab-sheet'), shForm = $('.ab-sh', sheet), shErr = $('.ab-sh-err', sheet), wish = $('.ab-wish', sheet);
+  const fs = (f) => $('[data-f="' + f + '"]', sheet);
+  const opt = (type, name, value, label, sub, checked, dot) => {
+    const l = el('label', 'ab-opt'), i = el('input'), s = el('span');
     i.type = type; i.name = name; i.value = value; i.checked = !!checked;
-    s.append(el('b', '', label));
+    const b = el('b', '', label);
+    if (dot) { const d = el('i', 'ab-dot'); d.style.setProperty('--c', dot); b.prepend(d); }
+    s.append(b);
     if (sub) s.append(el('small', '', sub));
     l.append(i, s);
     return l;
@@ -4836,80 +4721,75 @@ function ebAb(key) {
     box.hidden = !show;
     if (show) $('.ab-opts', box).replaceChildren(...build());
   };
-  const priceOf = (v, m) => { const n = byMeat(v, m); return n ? euro(n) : ''; };
-  const renderGroups = (only) => {
+  const SAUCE_DOT = { kraeuter: '#CBDCA0', knoblauch: '#F4EEE2', scharf: '#E0402A' };
+  const renderSheet = () => {
     const f = feat(cur), P = PROD[cur.p], so = P.kind === 'doener' ? sorte(cur.s) : null;
-    const want = (g) => !only || only.includes(g);
-    if (want('als')) group('als', !!f.als, () => (f.als || []).map((x) => opt('radio', 'ab-als', x, FORM[x], '', cur.als === x)));
-    if (want('sorte')) group('sorte', !!f.sorte, () => SORTEN.map((x) => {
-      const v = x[P.form], two = Array.isArray(v);
-      const l = opt('radio', 'ab-sorte', x.id, x.name, P.form === 'box' && x.boxInfo ? x.boxInfo : x.info, cur.s === x.id, 'ab-sorte');
-      $('span', l).append(el('em', '', two ? [0, 1].map((i) => (num(v[i]) ? num(v[i]).toFixed(2).replace('.', ',') : '–')).join(' / ') + ' €' : num(v) ? euro(num(v)) : ''));
-      return l;
-    }));
-    if (want('fleisch')) group('fleisch', !!f.meat, () => Object.keys(MEAT).map((m) => opt('radio', 'ab-fleisch', m, MEAT[m],
-      priceOf(P.kind === 'doener' ? so[P.form] : P.kind === 'teller' ? T.preis : P.m.preis, m), cur.m === m)));
-    if (want('beilage')) {
-      group('beilage', !!f.side, () => (f.side || []).map((k) => opt('radio', 'ab-beilage', k, SIDE[k], '', cur.side === k)));
-      if (f.side) $('legend', fs('beilage')).textContent = list(f.side.map((k) => SIDE[k]), ' oder ') + '?';
+    const priceSrc = P.kind === 'doener' ? so[P.form] : P.kind === 'teller' ? T.preis : P.kind === 'menu' ? P.m.preis : null;
+    group('als', !!f.als, () => (f.als || []).map((x) => opt('radio', 'ab-als', x, FORM[x], '', cur.als === x)));
+    group('fleisch', !!f.meat, () => Object.keys(MEAT).map((m) => { const n = byMeat(priceSrc, m); return opt('radio', 'ab-fleisch', m, MEAT[m], n ? euro(n) : '', cur.m === m); }));
+    group('beilage', !!f.side, () => (f.side || []).map((k) => opt('radio', 'ab-beilage', k, SIDE[k], '', cur.side === k)));
+    if (f.side) $('legend', fs('beilage')).textContent = list(f.side.map((k) => SIDE[k]), ' oder ') + '?';
+    group('dazu', !!f.dazu, () => DAZU.map((d) => opt('checkbox', 'ab-dazu', d.id, 'mit ' + d.name, num(d.preis) ? '+ ' + euro(num(d.preis)) : '', (cur.dazu || []).includes(d.id))));
+    group('sauce', !!f.sauce, () => SAUCE_ORDER.map((k) => opt('checkbox', 'ab-sosse', k, SAUCE[k], '', (cur.sauce || []).includes(k), SAUCE_DOT[k])));
+    group('ing', !!f.ing, () => ING_ORDER.map((k) => opt('checkbox', 'ab-zutat', k, ING[k], '', (cur.ing || []).includes(k))));
+    group('km', !!f.km, () => [['ketchup', 'Ketchup'], ['mayo', 'Mayo']].map(([k, n]) => opt('checkbox', 'ab-km', k, n, '', (cur.km || []).includes(k))));
+    group('extras', !!f.extras, () => EXTRAS.map((x) => opt('checkbox', 'ab-extra', x.id, x.name, num(x.preis) ? '+ ' + euro(num(x.preis)) : '', (cur.ex || []).includes(x.id))));
+    fs('heat').hidden = !f.heat;
+    $$('input[name="ab-heat"]', sheet).forEach((i) => { i.checked = +i.value === (cur.heat || 0); });
+    const drink = fs('drink'), sel = $('select', drink);
+    drink.hidden = f.drink == null;
+    if (f.drink != null) {
+      sel.replaceChildren(el('option', '', 'Bitte aussuchen'), ...drinkOpts(f.drink).map((d) => el('option', '', d.name)));
+      sel.options[0].value = '';
+      drinkOpts(f.drink).forEach((d, i) => { sel.options[i + 1].value = d.id; });
+      sel.value = cur.drink || '';
     }
-    if (want('dazu')) group('dazu', !!f.dazu, () => DAZU.map((d) => opt('checkbox', 'ab-dazu', d.id, 'mit ' + d.name, num(d.preis) ? '+ ' + euro(num(d.preis)) : '', (cur.dazu || []).includes(d.id))));
-    if (want('km')) group('km', !!f.km, () => [['ketchup', 'Ketchup'], ['mayo', 'Mayo']].map(([k, n]) => opt('checkbox', 'ab-km', k, n, '', (cur.km || []).includes(k))));
-    if (want('extras')) group('extras', !!f.extras, () => EXTRAS.map((x) => opt('checkbox', 'ab-extra', x.id, x.name, num(x.preis) ? '+ ' + euro(num(x.preis)) : '', (cur.ex || []).includes(x.id))));
-    if (want('drink')) group('drink', f.drink != null, () => drinkOpts(f.drink).map((d) => opt('radio', 'ab-drink', d.id, d.name, '', cur.drink === d.id)));
-    if (want('ing')) fs('ing').hidden = !f.ing;
-    if (want('sauce')) fs('sauce').hidden = !f.sauce;
-    if (want('heat')) fs('heat').hidden = !f.ing;
+    wish.hidden = !(f.ing || f.km || f.extras || f.heat);
   };
-  const val = (n) => { const i = $('input[name="' + n + '"]:checked', cfg); return i ? i.value : undefined; };
-  const vals = (n) => $$('input[name="' + n + '"]:checked', cfg).map((i) => i.value);
-  const readCfg = () => {
-    const f = feat(cur);
-    if (f.meat && val('ab-fleisch')) meatPref = val('ab-fleisch');
-    const o = { p: cur.p, s: val('ab-sorte') || cur.s, als: val('ab-als') || cur.als, m: meatPref, side: val('ab-beilage') || cur.side,
-      dazu: vals('ab-dazu'), km: vals('ab-km'), ex: vals('ab-extra'), drink: val('ab-drink') || cur.drink, qty: cur.qty,
-      ing: vals('ab-zutat'), sauce: vals('ab-sosse'), heat: +(val('ab-heat') || 0) };
-    if (f.side && !f.side.includes(o.side)) o.side = cur.side;
-    cur = norm(o);
+  const val = (n) => { const i = $('input[name="' + n + '"]:checked', sheet); return i ? i.value : undefined; };
+  const vals = (n) => $$('input[name="' + n + '"]:checked', sheet).map((i) => i.value);
+  const readSheet = () => {
+    if (feat(cur).meat && val('ab-fleisch')) meatPref = val('ab-fleisch');
+    cur = norm({ p: cur.p, s: cur.s, als: val('ab-als') || cur.als, m: meatPref, side: val('ab-beilage') || cur.side,
+      dazu: vals('ab-dazu'), km: vals('ab-km'), ex: vals('ab-extra'), drink: $('select', fs('drink')).value, qty: cur.qty,
+      ing: vals('ab-zutat'), sauce: vals('ab-sosse'), heat: +(val('ab-heat') || 0) });
   };
-  const sentence = () => {
-    const p = $('.ab-sentence'), d = details(cur), l = line(cur);
-    p.replaceChildren(el('b', '', (cur.qty > 1 ? cur.qty + '× ' : '') + title(cur)), d ? ' – ' + d + '.' : '.');
-    $('.ab-add').textContent = (edit >= 0 ? 'Änderung speichern' : 'In die Bestellung') + (l != null ? ' · ' + euro(l) : '');
+  /* Extrawünsche: kurz zusammengefasst in der Überschrift */
+  const wishText = () => {
+    const d = [];
+    if (cur.ing && cur.ing.length < ING_ORDER.length) d.push('ohne ' + list(ING_ORDER.filter((k) => !cur.ing.includes(k)).map((k) => ING[k])));
+    if (cur.km && cur.km.length < 2) d.push(cur.km.length ? 'nur ' + (cur.km[0] === 'mayo' ? 'Mayo' : 'Ketchup') : 'ohne Ketchup & Mayo');
+    if (cur.ex && cur.ex.length) d.push('+ ' + cur.ex.map((id) => EXTRAS.find((x) => x.id === id).name).join(', '));
+    if (cur.heat) d.push(HEAT[cur.heat]);
+    return d.join(' · ');
   };
-  const HEAD = { sandwich: ['dark', 'sandwich'], box: ['gold', 'box'], teller: ['paper', 'teller'] };
-  /* Bild oben: Foto, wenn es eins gibt – sonst ein Zeichen */
-  const setHead = () => {
-    const P = PROD[cur.p], f = feat(cur);
-    const look = HEAD[P.kind === 'menu' ? (f.als ? cur.als : (P.m.als || [])[0]) : P.form || cur.p];
-    const img = $('.ab-cfg-img'), ico = $('.ab-cfg-ico'), src = look && $('.ab-prod[data-p="' + look[1] + '"] img');
-    img.hidden = !src; ico.hidden = !!src;
-    if (src) img.src = src.getAttribute('src');
-    else ico.innerHTML = P.form === 'duerum' || (P.kind === 'menu' && (P.m.als || [])[0] === 'duerum') ? $('.ab-prod[data-p="duerum"] svg').outerHTML : MENU_ICO;
-    img.parentNode.className = 'ab-pm ' + (look ? look[0] : 'dark ab-pm-ico');
+  const sheetSum = () => {
+    const l = line(cur), w = wishText();
+    $('.ab-wish-sum', sheet).textContent = w || 'z. B. ohne Gurken, Extra Käse, schärfer';
+    wish.classList.toggle('has-wish', !!w);
+    const narrow = window.matchMedia('(max-width: 700px)').matches;     // auf dem Handy kürzer, damit es in eine Zeile passt
+    $('.ab-add', sheet).textContent = (edit >= 0 ? 'Speichern' : narrow ? 'Hinzufügen' : 'In die Bestellung') + (l != null ? ' · ' + euro(l) : '');
+    $('.ab-sh-qty', sheet).textContent = cur.qty;
   };
-  const openCfg = (preset, idx = -1) => {
+  const openSheet = (preset, idx = -1) => {
     edit = idx;
     cur = norm(idx >= 0 ? S.cart[idx] : preset);
     if (!cur) return;
     if (cur.m) meatPref = cur.m;
     const P = PROD[cur.p];
-    $$('input[name="ab-zutat"]', cfg).forEach((i) => { i.checked = (cur.ing || []).includes(i.value); });
-    $$('input[name="ab-sosse"]', cfg).forEach((i) => { i.checked = (cur.sauce || []).includes(i.value); });
-    $$('input[name="ab-heat"]', cfg).forEach((i) => { i.checked = +i.value === (cur.heat || 0); });
-    renderGroups();
-    $('.ab-cfg-qty').textContent = cur.qty;
-    $('#ab-cfg-name').textContent = P.kind === 'teller' ? T.name : P.name;
-    $('.ab-cfg-sub').textContent = P.kind === 'teller' ? T.info || '' : P.kind === 'menu' ? M.info || '' : P.form === 'sandwich' ? 'im Bärliner Fladenbrot' : P.form === 'duerum' ? 'der Wrap nach Bärliner Art' : '';
-    setHead();
-    cfgErr.textContent = '';
-    if (step !== 1) go(1, false);
-    pick.hidden = true; cfg.hidden = false;
-    sentence();
-    scroller.scrollTop = 0;
-    $('#ab-cfg-name').focus({ preventScroll: true });
+    const so = P.kind === 'doener' ? sorte(cur.s) : null;
+    $('#ab-sh-title').textContent = P.kind === 'doener' ? P.name + ' ' + so.name : P.kind === 'teller' ? T.name : P.name;
+    $('.ab-sh-sub', sheet).textContent = P.kind === 'doener' ? [P.form === 'box' && so.boxInfo ? so.boxInfo : so.info, FORM_SUB[P.form]].filter(Boolean).join(' · ') : P.kind === 'teller' ? T.info || '' : M.info || '';
+    $('.ab-sh-ico', sheet).innerHTML = ico(P.kind === 'doener' ? P.form : P.kind === 'teller' ? 'teller' : P.m.als && P.m.als[0] === 'duerum' ? 'duerum' : P.m.als && P.m.als.length ? 'menu' : 'currywurst');
+    renderSheet();
+    wish.open = !!wishText();
+    shErr.textContent = '';
+    sheetSum();
+    if (!sheet.open) { if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', ''); }
+    $('.ab-sh-body', sheet).scrollTop = 0;
+    $('#ab-sh-title').focus({ preventScroll: true });
   };
-  const closeCfg = () => { cfg.hidden = true; pick.hidden = false; edit = -1; };
+  const closeSheet = () => { if (typeof sheet.close === 'function' && sheet.open) sheet.close(); else sheet.removeAttribute('open'); edit = -1; };
   const add = (item) => {
     const it = norm(item);
     if (!it) return null;
@@ -4918,56 +4798,44 @@ function ebAb(key) {
     return it;
   };
 
-  $$('.ab-prod, .ab-row-go').forEach((b) => b.addEventListener('click', () => openCfg({ p: b.dataset.p })));
-  $('[data-ab-pick]').addEventListener('click', () => { closeCfg(); $('#ab-h1').focus(); });
-  cfg.addEventListener('change', (e) => {
-    const before = cur.s, als = cur.als;
-    readCfg();
-    if (cur.s !== before) renderGroups(['fleisch', 'beilage', 'dazu']);   // andere Sorte: andere Preise und Auswahl
-    if (cur.als !== als) setHead();
-    if (e.target.name === 'ab-drink') cfgErr.textContent = '';
-    sentence();
+  shForm.addEventListener('change', (e) => {
+    readSheet();
+    if (e.target.name === 'ab-fleisch') refreshMenu();
+    if (e.target.name === 'ab-drink' && cur.drink) shErr.textContent = '';
+    sheetSum();
   });
-  $$('[data-ab-q]', cfg).forEach((b) => b.addEventListener('click', () => {
-    cur.qty = Math.max(1, Math.min(20, cur.qty + +b.dataset.abQ));
-    $('.ab-cfg-qty').textContent = cur.qty;
-    sentence();
-  }));
-  cfg.addEventListener('submit', (e) => {
+  $$('[data-ab-q]', sheet).forEach((b) => b.addEventListener('click', () => { cur.qty = Math.max(1, Math.min(20, cur.qty + +b.dataset.abQ)); sheetSum(); }));
+  $$('[data-sh-close]', sheet).forEach((b) => b.addEventListener('click', closeSheet));
+  sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });   // Klick neben das Fenster
+  sheet.addEventListener('close', () => { edit = -1; });
+  shForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    readCfg();
+    readSheet();
     if (cur.drink === '') {                                   // Getränk ist beim Teller und bei Sparmenüs dabei
-      cfgErr.textContent = 'Bitte such dir noch ein Getränk aus.';
-      fs('drink').after(cfgErr);
-      $('input[name="ab-drink"]', cfg).focus({ preventScroll: true });
-      fs('drink').scrollIntoView({ block: 'center' });
+      shErr.textContent = 'Bitte such dir noch ein Getränk aus.';
+      fs('drink').after(shErr);
+      $('select', fs('drink')).focus();
       return;
     }
     const wasEdit = edit >= 0;
     if (wasEdit) S.cart.splice(edit, 1);
     const it = add(cur);
+    closeSheet();
     toast(wasEdit ? 'Geändert' : drin(it));
-    closeCfg();
     renderCart(); save();
-    $('#ab-h1').focus({ preventScroll: true });
   });
 
-  /* Warenkorb: Menge, ändern; Snacks und Getränke direkt mit + */
+  /* Warenkorb: Menge, ändern */
   dlg.addEventListener('click', (e) => {
-    const q = e.target.closest('[data-ab-item-q]'), ed = e.target.closest('[data-ab-edit]'), plusB = e.target.closest('[data-ab-add]');
+    const q = e.target.closest('[data-ab-item-q]'), ed = e.target.closest('[data-ab-edit]');
     if (q) {
       const [i, d] = q.dataset.abItemQ.split(':').map(Number);
       const it = S.cart[i]; if (!it) return;
       it.qty += d;
-      if (it.qty < 1) { S.cart.splice(i, 1); toast(title(it) + ' entfernt'); if (edit === i) closeCfg(); else if (edit > i) edit--; }
+      if (it.qty < 1) { S.cart.splice(i, 1); toast(title(it) + ' entfernt'); }
       it.qty = Math.min(20, it.qty);
-      if (i === edit && it.qty >= 1) { cur.qty = it.qty; $('.ab-cfg-qty').textContent = cur.qty; sentence(); }
       if (!S.cart.length && step > 1) go(1); else { renderCart(); if (step === 3) renderReceipt(); save(); }
-    } else if (ed) openCfg(null, +ed.dataset.abEdit);
-    else if (plusB) {
-      const it = add({ p: plusB.dataset.abAdd, qty: 1 });
-      if (it) { toast(drin(it)); renderCart(); save(); }
-    }
+    } else if (ed) openSheet(null, +ed.dataset.abEdit);
   });
   $$('.ab-next').forEach((b) => b.addEventListener('click', () => {
     if (step === 1) go(2);
@@ -5108,7 +4976,8 @@ function ebAb(key) {
   };
   $('[data-ab-new]').addEventListener('click', () => { const name = S.name; S = fresh(); S.name = name; go(1); });
 
-  /* ---------- Öffnen und Schließen (mit #abholung in der Adresse, Zurück-Taste schließt) ---------- */
+  /* ---------- Öffnen und Schließen (#speisekarte oder #abholung in der Adresse, Zurück-Taste schließt) ---------- */
+  const HASHES = ['#abholung', '#speisekarte'];
   let pushed = false, opener = null;
   const show = () => {
     if (dlg.open) return;
@@ -5118,15 +4987,23 @@ function ebAb(key) {
   };
   const open = (o = {}) => {
     const wasOpen = dlg.open;
-    show();
-    if (location.hash !== '#abholung') { history.pushState({ ab: 1 }, '', '#abholung'); pushed = true; }
     const item = PROD[o.item] ? o.item : LEGACY[o.item];
+    const preset = o.wunsch ? fromWunsch(o.wunsch) : item ? { p: item, m: meatPref } : null;
+    setMode(o.mode === 'karte' && !o.add && !preset ? 'karte' : 'order');
+    show();
+    const h = mode === 'karte' ? '#speisekarte' : '#abholung';
+    if (location.hash !== h) {
+      if (pushed && HASHES.includes(location.hash)) history.replaceState({ ab: 1 }, '', h);
+      else { history.pushState({ ab: 1 }, '', h); pushed = true; }
+    }
+    if (preset && PROD[preset.p] && PROD[preset.p].kind === 'doener') form = preset.p;
     if (o.add) { const it = add(o.add); go(1); if (it) toast(drin(it)); }
-    else if (o.wunsch || item) { if (step === 4) go(1, false); openCfg(o.wunsch ? fromWunsch(o.wunsch) : { p: item }); }
-    else if (!wasOpen) go(step === 4 ? 4 : 1);
+    else if (preset) { if (step !== 1 || !wasOpen) go(1, false); openSheet(preset); }
+    else if (!wasOpen || mode === 'karte') go(step === 4 && mode !== 'karte' ? 4 : 1);
   };
   const hide = () => {
     pushed = false;
+    closeSheet();
     if (typeof dlg.close === 'function' && dlg.open) dlg.close(); else dlg.removeAttribute('open');
     document.documentElement.classList.remove('ab-open');
     toastEl.classList.remove('is-on');
@@ -5136,25 +5013,30 @@ function ebAb(key) {
     if (!dlg.open) return;
     if (pushed && history.state && history.state.ab) { history.back(); return; }   // popstate schließt
     hide();
-    if (location.hash === '#abholung') history.replaceState(null, '', location.pathname + location.search);
+    if (HASHES.includes(location.hash)) history.replaceState(null, '', location.pathname + location.search);
   };
-  const sync = () => { if (location.hash === '#abholung') { if (!dlg.open) { show(); go(step === 4 ? 4 : 1); } } else if (dlg.open) hide(); };
+  const sync = () => {
+    if (HASHES.includes(location.hash)) {
+      if (!dlg.open) { setMode(location.hash === '#speisekarte' ? 'karte' : 'order'); show(); go(step === 4 && mode !== 'karte' ? 4 : 1); }
+    } else if (dlg.open) hide();
+  };
   window.addEventListener('popstate', sync);
   window.addEventListener('hashchange', sync);
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
   $$('[data-ab-close]').forEach((b) => b.addEventListener('click', close));
 
-  /* Alle „Bestellen“-Knöpfe der Seite öffnen diese Seite (data-ab-open="sandwich|box|teller" wählt gleich das Gericht) */
+  /* „Speisekarte“-Links öffnen die Speisekarte, „Bestellen“-Knöpfe die Bestellung (data-ab-open="sandwich|box|teller" fragt gleich nach der Soße) */
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('[data-ab-open], a[href="#abholung"]');
+    const a = e.target.closest('[data-ab-open], [data-sk-open], a[href="#abholung"], a[href="#speisekarte"]');
     if (!a || dlg.contains(a) || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
-    open({ item: a.dataset.abOpen || '' });
+    const karte = a.hasAttribute('data-sk-open') || a.getAttribute('href') === '#speisekarte';
+    open({ item: a.dataset.abOpen || '', mode: karte ? 'karte' : 'order' });
   });
   window.EBOrder = { open };
 
   renderCart();
-  if (location.hash === '#abholung') { show(); go(1, false); }
+  if (HASHES.includes(location.hash)) { setMode(location.hash === '#speisekarte' ? 'karte' : 'order'); show(); go(1, false); }
 })();
 </script>
 <script>document.querySelectorAll('img[data-img-ref]').forEach(function(i){var k=document.querySelector('img[data-img-key="'+i.getAttribute('data-img-ref')+'"]');if(k)i.src=k.getAttribute('src');});['doener-box','doener-brot','doener-teller'].forEach(function(n){var k=document.querySelector('img[data-img-key="'+n+'"]');if(k)document.documentElement.style.setProperty('--img-'+n,'url("'+k.getAttribute('src')+'")');});</script>
