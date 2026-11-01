@@ -42,7 +42,7 @@ export function textPath(f, text, { size, x = 0, y = 0, tracking = 0, width }) {
   }
 }
 
-/** Emblem (Handwerker mit Schlüssel im Siegel) aus scripts/emblem.generated.json. */
+/** Emblem (Schlüssel im Siegel) aus scripts/emblem.generated.json. */
 export function tracedEmblem() {
   return JSON.parse(readFileSync(path.join(root, 'scripts/emblem.generated.json'), 'utf8'))
 }

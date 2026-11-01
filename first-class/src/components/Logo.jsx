@@ -5,7 +5,7 @@ const GOLD = '#c49e56'
 const ANTHRACITE = '#15171a'
 const CREAM = '#f7f2e8'
 
-/** Rundes Siegel: Handwerker mit Schlüssel über der Schulter. */
+/** Rundes Siegel mit verziertem Schlüssel. */
 function Emblem({ scale }) {
   return (
     <g transform={`scale(${scale})`}>
