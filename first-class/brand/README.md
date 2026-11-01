@@ -1,14 +1,17 @@
 # FIRST CLASS – Logo
 
-Rundes Siegel mit einem verzierten Schlüssel, daneben der kräftige Schriftzug
-„FIRST CLASS“, eine Goldlinie und „SCHLÜSSELDIENST“ – in Gold und Anthrazit wie
-die Website.
+Rundes Siegel mit einem Löwenkopf, der einen Schlüssel im Maul trägt – Stärke
+und Schutz. Daneben der kräftige Schriftzug „FIRST CLASS“, eine Goldlinie und
+„SCHLÜSSELDIENST“ – in Gold und Anthrazit wie die Website.
 
-Das Schlüsselmotiv wurde mit der Bild-KI von Canva erzeugt
-(`quelle/emblem-schluessel.png`) und mit `npm run logo:emblem` in Vektorflächen
-umgewandelt; die Kreisringe sind geometrisch exakt neu konstruiert. Als
-Alternative liegt `quelle/emblem-gekreuzt.png` bereit (gekreuzte Schlüssel mit
-Krone): `node scripts/trace-emblem.mjs gekreuzt`, danach `npm run logo`.
+Das Motiv wurde mit der Bild-KI von Canva erzeugt (`quelle/emblem-loewe.png`)
+und mit `npm run logo:emblem` in Vektorflächen umgewandelt; die Kreisringe sind
+geometrisch exakt neu konstruiert.
+
+Weitere Konzepte liegen in `quelle/` bereit (verzierter Schlüssel, Wappen mit
+Lorbeer, gekreuzte Schlüssel, FC-Schlüssel). Umstellen:
+`node scripts/trace-emblem.mjs brand/quelle/emblem-wappen.png`, danach
+`npm run logo`.
 
 Alle Dateien sind Vektorgrafiken; die Schrift ist in Pfade umgewandelt. Sie
 lassen sich daher ohne Schriftarten öffnen und direkt plotten.
@@ -43,7 +46,7 @@ liegt als eigene Fläche vor, ohne Verläufe.
 - **Getönte Heckscheibe:** `logo-dunkel` (Schrift creme, Siegel gold).
 
 Die genauen Maße legt der Folierer am Fahrzeug fest (Türgriff, Sicken, Sensoren).
-Der Schlüsselgriff enthält feine Verzierungen. Auf der Tür (Siegel ca. 13 cm
+Die Löwenmähne enthält feine Strähnen. Auf der Tür (Siegel ca. 13 cm
 Durchmesser) sind sie plottbar, der Folierer sollte sie beim Entgittern aber
 prüfen. Für kleine Aufkleber unter etwa 20 cm Breite besser nur den
 Schriftzug verwenden oder das Siegel drucken statt plotten.

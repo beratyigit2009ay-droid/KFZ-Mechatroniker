@@ -9,7 +9,7 @@
  * - public/favicon.svg
  * - src/components/logo.generated.js  Pfade für das Logo auf der Website
  *
- * Aufbau: rundes Siegel mit Schlüssel (scripts/trace-emblem.mjs),
+ * Aufbau: rundes Siegel mit Löwe und Schlüssel (scripts/trace-emblem.mjs),
  * daneben „FIRST CLASS“, eine Goldlinie und „SCHLÜSSELDIENST“.
  */
 import { mkdir, writeFile } from 'node:fs/promises'

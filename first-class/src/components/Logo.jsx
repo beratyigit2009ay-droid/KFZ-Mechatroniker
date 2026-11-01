@@ -5,7 +5,7 @@ const GOLD = '#c49e56'
 const ANTHRACITE = '#15171a'
 const CREAM = '#f7f2e8'
 
-/** Rundes Siegel mit verziertem Schlüssel. */
+/** Rundes Siegel: Löwe mit Schlüssel im Maul. */
 function Emblem({ scale }) {
   return (
     <g transform={`scale(${scale})`}>

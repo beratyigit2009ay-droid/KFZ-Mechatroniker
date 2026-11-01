@@ -107,7 +107,7 @@ in `src/config.js` die `url` eingetragen ist.
 
 ## Logo
 
-Das Logo (Siegel mit verziertem Schlüssel, Schriftzug in Gold und Anthrazit) liegt mit
+Das Logo (Siegel mit Löwe und Schlüssel, Schriftzug in Gold und Anthrazit) liegt mit
 allen Fassungen in `brand/` – als SVG, PDF und PNG, inklusive Fassung für die
 Fahrzeugtür. Hinweise für den Folierer stehen in `brand/README.md`. Neu erzeugen
 mit `npm run logo` (aktualisiert auch das Logo der Website und das Favicon).
