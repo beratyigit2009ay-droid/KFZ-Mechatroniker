@@ -41,13 +41,28 @@ function structuredData() {
     '@type': 'Locksmith',
     name: `${site.name} Schlüsseldienst`,
     description:
-      'Schlüsseldienst für Türöffnungen, Schlosswechsel, Einbruchschutz und Sicherheitstechnik.',
+      '24-Stunden-Schlüsselnotdienst, Schlosswechsel, Schließanlagen und Autoschlüssel mit Ladengeschäft im City Center Gersthofen.',
+    telephone: telHref().replace('tel:', ''),
+    email: site.email,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.locality,
+      postalCode: site.postalCode,
+      addressCountry: 'DE',
+      ...(isPlaceholder(site.street) ? {} : { streetAddress: site.street }),
+    },
+    areaServed: ['Augsburg', 'Gersthofen'],
+    openingHoursSpecification: site.openingHours.map((o) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: o.days,
+      opens: o.opens,
+      closes: o.closes,
+    })),
   }
-  if (baseUrl) data.image = `${baseUrl}og-image.png`
-  // Platzhalter gehören nicht in strukturierte Daten.
-  if (!isPlaceholder(site.phone)) data.telephone = telHref().replace('tel:', '')
-  if (!isPlaceholder(site.area)) data.areaServed = site.area
-  if (baseUrl) data.url = baseUrl
+  if (baseUrl) {
+    data.url = baseUrl
+    data.image = `${baseUrl}og-image.png`
+  }
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`
 }
 

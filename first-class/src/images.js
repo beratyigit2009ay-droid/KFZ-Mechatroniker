@@ -34,9 +34,9 @@ export const images = {
     src: 'images/autooeffnung.svg',
     alt: 'Illustration: Fahrzeug in Linienzeichnung mit Funkschlüssel',
   },
-  beratung: {
-    src: 'images/beratung.svg',
-    alt: 'Illustration: Notizblock mit Sicherheits-Checkliste, Schließzylinder und Schlüssel',
+  schluessel: {
+    src: 'images/schluessel.svg',
+    alt: 'Illustration: Schlüsselrohling und fertiger Schlüssel an einer Schlüsselfräse',
   },
   keys: {
     src: 'images/keys.svg',

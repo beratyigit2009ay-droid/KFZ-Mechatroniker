@@ -154,10 +154,10 @@ export default function Header() {
           <div className="mt-auto pt-10">
             <CallButton className="w-full" showNumber />
             <p className="mt-5 text-center text-sm text-smoke">
-              Einsatzgebiet: <span className="text-mist">{site.area}</span>
+              Notdienst: <span className="text-mist">24 Stunden</span>
             </p>
             <p className="mt-1 text-center text-sm text-smoke">
-              Erreichbar: <span className="text-mist">{site.hours}</span>
+              Laden: <span className="text-mist">{site.hours}</span>
             </p>
           </div>
         </nav>

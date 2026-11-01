@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1d21"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".45" stop-color="#d5b475"/>
+      <stop offset="1" stop-color="#8a6a2c"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6c6"/>
+      <stop offset=".5" stop-color="#c9a35c"/>
+      <stop offset="1" stop-color="#7d5f27"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25282d"/>
+      <stop offset=".6" stop-color="#191b1f"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#131518"/>
+      <stop offset=".5" stop-color="#1a1d21"/>
+      <stop offset="1" stop-color="#121417"/>
+    </linearGradient>
+    <linearGradient id="warmV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe2ad"/>
+      <stop offset=".55" stop-color="#e9b766"/>
+      <stop offset="1" stop-color="#a8762e"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd38a" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f0c47a" stop-opacity=".42"/>
+      <stop offset=".45" stop-color="#d9a85a" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#d9a85a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx=".5" cy=".45" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c49e56" stroke-opacity=".065"/>
+    </pattern>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  
+  <ellipse cx="400" cy="300" rx="360" ry="250" fill="url(#glow)" opacity=".5"/>
+  <!-- Grundplatte -->
+  <rect x="90" y="430" width="620" height="54" rx="10" fill="#1d2024" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="110" y="484" width="40" height="30" fill="#16181b" stroke="#c49e56" stroke-opacity=".5"/>
+  <rect x="650" y="484" width="40" height="30" fill="#16181b" stroke="#c49e56" stroke-opacity=".5"/>
+  <!-- Schlitten mit Taster und Fräse -->
+  <rect x="230" y="176" width="420" height="26" rx="6" fill="#23262b" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="268" y="202" width="14" height="96" fill="url(#goldV)"/>
+  <path d="M268 298h14l-7 22Z" fill="url(#gold)"/>
+  <rect x="553" y="202" width="14" height="40" fill="url(#goldV)"/>
+  <g filter="url(#shadow)">
+    <circle cx="560" cy="290" r="52" fill="#1d2024" stroke="url(#gold)" stroke-width="3"/>
+    <path d="M612.0 290.0L619.8 294.8" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M610.7 301.6L617.2 308.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M606.9 312.6L611.8 320.3" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M600.7 322.4L603.8 331.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M592.4 330.7L593.5 339.7" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M582.6 336.9L581.6 346.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M571.6 340.7L568.6 349.4" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M560.0 342.0L555.2 349.8" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M548.4 340.7L542.0 347.2" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M537.4 336.9L529.7 341.8" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M527.6 330.7L519.0 333.8" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M519.3 322.4L510.3 323.5" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M513.1 312.6L504.0 311.6" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M509.3 301.6L500.6 298.6" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M508.0 290.0L500.2 285.2" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M509.3 278.4L502.8 272.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M513.1 267.4L508.2 259.7" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M519.3 257.6L516.2 249.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M527.6 249.3L526.5 240.3" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M537.4 243.1L538.4 234.0" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M548.4 239.3L551.4 230.6" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M560.0 238.0L564.8 230.2" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M571.6 239.3L578.0 232.8" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M582.6 243.1L590.3 238.2" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M592.4 249.3L601.0 246.2" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M600.7 257.6L609.7 256.5" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M606.9 267.4L616.0 268.4" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/><path d="M610.7 278.4L619.4 281.4" stroke="#e5cc96" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="560" cy="290" r="14" fill="url(#gold)"/>
+  </g>
+  <!-- Spannbacken -->
+  <rect x="150" y="372" width="230" height="58" rx="6" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="430" y="372" width="230" height="58" rx="6" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Original (mit Bart) und Rohling -->
+  <g transform="translate(170 350) rotate(0) scale(0.95)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9h-7v-6h-8v11h-8v-11h-9v8h-8v-8H95v6h-8v-6H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+    <circle r="13.5" fill="none" stroke="#000" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(450 350) scale(0.95)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
+  </g>
+  <!-- Funken an der Fräse -->
+  <g stroke="#ffe2a8" stroke-linecap="round" stroke-width="2">
+    <path d="M520 338l-22 18M530 344l-10 26M512 330l-30 6" opacity=".8"/>
+  </g>
+  <text x="265" y="548" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" letter-spacing="3.08" fill="#e5cc96" fill-opacity="0.85" text-anchor="middle">ORIGINAL</text>
+  <text x="545" y="548" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" letter-spacing="3.08" fill="#e5cc96" fill-opacity="0.85" text-anchor="middle">ROHLING</text>
+  <g>
+    <circle cx="612" cy="290" r="4" fill="none" stroke="#e5cc96" stroke-width="1.4"/>
+    <circle cx="612" cy="290" r="1.6" fill="#e5cc96"/>
+    <path d="M612 290L690 130H664" fill="none" stroke="#c49e56" stroke-opacity=".7"/>
+    <text x="750" y="134.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" letter-spacing="3.3600000000000003" fill="#e5cc96" fill-opacity="0.85" text-anchor="end">FRÄSE</text>
+  </g>
+  
+  <rect width="800" height="600" fill="url(#vignette)"/>
+</svg>

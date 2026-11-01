@@ -67,7 +67,8 @@ export default function ServicePage({ slug }) {
 
             <div className="mt-16" data-reveal>
               <h2 className="eyebrow text-gold-700">
-                {slug === 'beratung' || slug === 'sicherheitstechnik' ? 'Themen & Lösungen' : 'Wobei wir helfen'}
+                {{ sicherheitstechnik: 'Themen & Lösungen', schluessel: 'Was wir anfertigen' }[slug] ??
+                  'Wobei wir helfen'}
               </h2>
               <ul className="mt-7 grid gap-4 sm:grid-cols-2">
                 {service.situations.map((item) => (
@@ -139,9 +140,11 @@ export default function ServicePage({ slug }) {
                   <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                   <span>
                     <span className="block text-[0.66rem] font-semibold tracking-[0.26em] text-smoke uppercase">
-                      Öffnungszeiten
+                      Notdienst & Laden
                     </span>
-                    <span className="text-white">{site.hours}</span>
+                    <span className="text-white">
+                      24 h Notdienst · Laden {site.hours}
+                    </span>
                   </span>
                 </li>
                 <li className="flex items-start gap-3">

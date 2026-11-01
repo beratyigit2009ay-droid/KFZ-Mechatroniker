@@ -180,61 +180,61 @@ export default function Contact() {
             Wir sind für Sie <span className="text-gold-300 italic">erreichbar.</span>
           </h2>
           <p className="mt-6 max-w-md text-[1.03rem] leading-relaxed text-mist">
-            Wenn Sie ausgesperrt sind, erreichen Sie uns am schnellsten telefonisch. Für Beratungen
-            und Terminwünsche können Sie uns auch eine Rückrufbitte senden.
+            Ausgesperrt? Unser Notdienst ist rund um die Uhr erreichbar. Für Beratung,
+            Schließanlagen oder Schlüssel besuchen Sie uns im Laden – oder senden Sie uns eine
+            Rückrufbitte.
           </p>
 
           <dl className="mt-12 space-y-7">
-            <div className="flex gap-5">
-              <dt className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-gold-300 ring-1 ring-gold-500/40">
-                <Icon name="phone" className="h-5 w-5" />
-                <span className="sr-only">Telefon</span>
-              </dt>
-              <dd>
-                <span
-                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
-                  aria-hidden="true"
-                >
-                  Telefon
-                </span>
-                <a
-                  href={telHref()}
-                  className="mt-1 inline-block font-display text-[1.9rem] leading-tight text-white transition-colors hover:text-gold-300"
-                >
-                  {site.phone}
-                </a>
-              </dd>
-            </div>
-            <div className="flex gap-5">
-              <dt className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-gold-300 ring-1 ring-gold-500/40">
-                <Icon name="pin" className="h-5 w-5" />
-                <span className="sr-only">Einsatzgebiet</span>
-              </dt>
-              <dd>
-                <span
-                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
-                  aria-hidden="true"
-                >
-                  Einsatzgebiet
-                </span>
-                <span className="mt-1 block text-[1.05rem] text-white">{site.area}</span>
-              </dd>
-            </div>
-            <div className="flex gap-5">
-              <dt className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-gold-300 ring-1 ring-gold-500/40">
-                <Icon name="clock" className="h-5 w-5" />
-                <span className="sr-only">Öffnungszeiten</span>
-              </dt>
-              <dd>
-                <span
-                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
-                  aria-hidden="true"
-                >
-                  Öffnungszeiten
-                </span>
-                <span className="mt-1 block text-[1.05rem] text-white">{site.hours}</span>
-              </dd>
-            </div>
+            {[
+              {
+                icon: 'phone',
+                label: 'Notdienst · 24 Stunden',
+                value: site.phone,
+                href: telHref(),
+                big: true,
+              },
+              {
+                icon: 'phone',
+                label: 'Ladengeschäft',
+                value: site.phoneShop,
+                href: telHref(site.phoneShop),
+              },
+              { icon: 'mail', label: 'E-Mail', value: site.email, href: site.emailHref },
+              {
+                icon: 'pin',
+                label: 'Laden & Einsatzgebiet',
+                value: `${site.shop}, ${site.postalCode} ${site.locality} · Einsatz in ${site.area}`,
+              },
+              { icon: 'clock', label: 'Öffnungszeiten Laden', value: site.hours },
+            ].map((item) => (
+              <div key={item.label} className="flex gap-5">
+                <dt className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-gold-300 ring-1 ring-gold-500/40">
+                  <Icon name={item.icon} className="h-5 w-5" />
+                  <span className="sr-only">{item.label}</span>
+                </dt>
+                <dd className="min-w-0">
+                  <span
+                    className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
+                    aria-hidden="true"
+                  >
+                    {item.label}
+                  </span>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className={`mt-1 inline-block break-all text-white transition-colors hover:text-gold-300 ${
+                        item.big ? 'font-display text-[1.9rem] leading-tight' : 'text-[1.05rem]'
+                      }`}
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    <span className="mt-1 block text-[1.05rem] text-white">{item.value}</span>
+                  )}
+                </dd>
+              </div>
+            ))}
           </dl>
 
           <CallButton className="mt-12" showNumber />

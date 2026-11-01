@@ -32,7 +32,7 @@ export default function Hero() {
       <div className="container-x relative grid items-center gap-16 pt-32 pb-24 sm:pt-36 lg:min-h-[min(100svh,980px)] lg:grid-cols-12 lg:gap-10 lg:pt-40 lg:pb-28">
         <div className="lg:col-span-7">
           <p className="eyebrow hero-rise text-gold-400" style={{ '--i': 0 }}>
-            Schlüsseldienst & Sicherheitstechnik
+            24-Stunden-Schlüsselnotdienst · Augsburg & Gersthofen
           </p>
 
           <h1
@@ -49,8 +49,8 @@ export default function Hero() {
             style={{ '--i': 2 }}
           >
             <strong className="font-semibold text-white">{site.name} Schlüsseldienst</strong> – Ihr
-            zuverlässiger Ansprechpartner für Türöffnungen, Schlosswechsel und moderne
-            Sicherheitstechnik.
+            zuverlässiger Ansprechpartner für Türöffnungen, Schlosswechsel, Schließanlagen und
+            Autoschlüssel in {site.area}.
           </p>
 
           <ul className="hero-rise mt-9 space-y-3.5" style={{ '--i': 3 }}>

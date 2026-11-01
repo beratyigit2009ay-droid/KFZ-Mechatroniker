@@ -400,47 +400,52 @@ scenes.autooeffnung = svg(
   `,
 )
 
-/* Beratung: Arbeitsplatz von oben – Notizblock mit Checkliste, Zylinder, Schlüssel */
-scenes.beratung = svg(
+/* Schlüssel nachmachen: Schlüsselfräse mit Original und Rohling */
+scenes.schluessel = svg(
   800,
   600,
   `
-  <ellipse cx="380" cy="300" rx="380" ry="280" fill="url(#glow)" opacity=".5"/>
-  <g transform="rotate(-6 330 300)" filter="url(#shadow)">
-    <rect x="170" y="90" width="320" height="420" rx="10" fill="${C.paper}"/>
-    <rect x="170" y="90" width="320" height="46" rx="10" fill="#22252a"/>
-    <rect x="170" y="120" width="320" height="16" fill="#22252a"/>
-    ${Array.from({ length: 7 }, (_, i) => `<circle cx="${205 + i * 42}" cy="112" r="5" fill="${C.paper}" opacity=".85"/>`).join('')}
-    <text x="200" y="184" ${FONT} font-size="15" letter-spacing="4" fill="#5b574f">SICHERHEITS-CHECK</text>
-    <path d="M200 198H460" stroke="#c49e56" stroke-width="2"/>
-    ${['Tür & Rahmen', 'Schloss & Zylinder', 'Schutzbeschlag', 'Zusatzsicherung', 'Kosten besprochen']
-      .map((t, i) => {
-        const y = 244 + i * 50
-        const done = i < 4
-        return `<rect x="200" y="${y - 16}" width="22" height="22" rx="4" fill="none" stroke="#8a6a2c" stroke-width="2"/>
-      ${done ? `<path d="M204 ${y - 5}l6 6 11-13" fill="none" stroke="#8a6a2c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
-      <text x="238" y="${y + 1}" font-family="Georgia, 'Times New Roman', serif" font-size="20" fill="#23252a">${t.replace('&', '&amp;')}</text>`
-      })
-      .join('')}
+  <ellipse cx="400" cy="300" rx="360" ry="250" fill="url(#glow)" opacity=".5"/>
+  <!-- Grundplatte -->
+  <rect x="90" y="430" width="620" height="54" rx="10" fill="#1d2024" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="110" y="484" width="40" height="30" fill="#16181b" stroke="${C.line}" stroke-opacity=".5"/>
+  <rect x="650" y="484" width="40" height="30" fill="#16181b" stroke="${C.line}" stroke-opacity=".5"/>
+  <!-- Schlitten mit Taster und Fräse -->
+  <rect x="230" y="176" width="420" height="26" rx="6" fill="#23262b" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="268" y="202" width="14" height="96" fill="url(#goldV)"/>
+  <path d="M268 298h14l-7 22Z" fill="url(#gold)"/>
+  <rect x="553" y="202" width="14" height="40" fill="url(#goldV)"/>
+  <g filter="url(#shadow)">
+    <circle cx="560" cy="290" r="52" fill="#1d2024" stroke="url(#gold)" stroke-width="3"/>
+    ${Array.from({ length: 28 }, (_, i) => {
+      const a = (i * 2 * Math.PI) / 28
+      const x1 = (560 + Math.cos(a) * 52).toFixed(1)
+      const y1 = (290 + Math.sin(a) * 52).toFixed(1)
+      const x2 = (560 + Math.cos(a + 0.08) * 60).toFixed(1)
+      const y2 = (290 + Math.sin(a + 0.08) * 60).toFixed(1)
+      return `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${C.lineLight}" stroke-width="2" stroke-linecap="round"/>`
+    }).join('')}
+    <circle cx="560" cy="290" r="14" fill="url(#gold)"/>
   </g>
-  <!-- Stift -->
-  <g transform="translate(540 120) rotate(62)" filter="url(#shadow)">
-    <rect x="0" y="-7" width="230" height="14" rx="7" fill="#23262b" stroke="url(#gold)" stroke-width="1.5"/>
-    <rect x="160" y="-7" width="10" height="14" fill="url(#gold)"/>
-    <path d="M230-7l26 7-26 7Z" fill="url(#gold)"/>
+  <!-- Spannbacken -->
+  <rect x="150" y="372" width="230" height="58" rx="6" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="430" y="372" width="230" height="58" rx="6" fill="#202328" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Original (mit Bart) und Rohling -->
+  ${key({ x: 170, y: 350, s: 0.95 })}
+  <g transform="translate(450 350) scale(0.95)" filter="url(#shadow)">
+    <path fill-rule="evenodd" fill="url(#gold)" d="M-28 0a28 28 0 1 0 56 0a28 28 0 1 0-56 0ZM-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0Z"/>
+    <rect x="24" y="-11" width="12" height="22" rx="3" fill="url(#gold)"/>
+    <path fill="url(#gold)" d="M34-6H150l6 6-6 6H140v9H34Z"/>
+    <path d="M42 0H140" stroke="#000" stroke-opacity=".28" stroke-width="2"/>
   </g>
-  <!-- Zylinder und Schlüssel -->
-  <g transform="translate(600 404) rotate(-14)" filter="url(#shadow)">
-    <rect x="-80" y="-24" width="160" height="34" rx="10" fill="url(#gold)"/>
-    <rect x="-80" y="10" width="68" height="22" fill="url(#gold)" opacity=".85"/>
-    <rect x="12" y="10" width="68" height="22" fill="url(#gold)" opacity=".85"/>
-    <path d="M-12 10q12 44 24 0" fill="#a8833e"/>
-    <circle cx="0" cy="22" r="4" fill="#1a1408" opacity=".7"/>
+  <!-- Funken an der Fräse -->
+  <g stroke="#ffe2a8" stroke-linecap="round" stroke-width="2">
+    <path d="M520 338l-22 18M530 344l-10 26M512 330l-30 6" opacity=".8"/>
   </g>
-  ${key({ x: 590, y: 520, r: -160, s: 0.7 })}
-  ${key({ x: 676, y: 268, r: 120, s: 0.55 })}
+  ${label({ x: 265, y: 548, text: 'ORIGINAL', anchor: 'middle', size: 11 })}
+  ${label({ x: 545, y: 548, text: 'ROHLING', anchor: 'middle', size: 11 })}
+  ${callout({ from: [612, 290], to: [690, 130], text: 'FRÄSE', anchor: 'end', dx: -86 })}
   `,
-  { grid: false },
 )
 
 /* Schlüssel-Textur für dunkle Hintergründe */

@@ -2,6 +2,24 @@ import { site, telHref } from '../config.js'
 import Icon from '../components/Icon.jsx'
 import Photo from '../components/Photo.jsx'
 
+const pillars = [
+  {
+    icon: 'consult',
+    title: 'Experten',
+    text: 'Wir beraten Sie kompetent zu Schließanlagen und zur Absicherung Ihres Objekts – vom Zimmerschlüssel bis zum Sicherheitsschloss.',
+  },
+  {
+    icon: 'key',
+    title: 'Persönlich',
+    text: `In unserem Ladengeschäft im ${site.shop} finden Sie Schlüssel und Schlösser vieler namhafter Hersteller – bis zu einbruchhemmenden Sicherungssystemen.`,
+  },
+  {
+    icon: 'care',
+    title: 'Erfahren',
+    text: 'Unser Team besteht aus langjährigen Profis rund um Notdienst, Schlüssel und Schließanlagen. Wir bilden uns regelmäßig weiter.',
+  },
+]
+
 export default function About() {
   return (
     <section
@@ -20,10 +38,12 @@ export default function About() {
               name="about"
               className="relative aspect-[4/5] rounded-[2rem] shadow-[0_50px_90px_-50px_rgb(15_17_19/0.7)]"
             />
-            <div className="absolute -right-3 -bottom-10 max-w-[16.5rem] rounded-2xl bg-ink-900 p-6 text-white shadow-[0_30px_60px_-30px_rgb(15_17_19/0.8)] sm:-right-8">
-              <Icon name="key" className="h-6 w-6 text-gold-300" />
-              <p className="mt-4 font-display text-[1.45rem] leading-snug">
-                „Wir arbeiten so, wie wir es uns selbst von einem Handwerker wünschen würden.“
+            <div className="absolute -right-3 -bottom-10 max-w-[17rem] rounded-2xl bg-ink-900 p-6 text-white shadow-[0_30px_60px_-30px_rgb(15_17_19/0.8)] sm:-right-8">
+              <p className="text-[0.68rem] font-semibold tracking-[0.26em] text-gold-400 uppercase">
+                Wir betreuen
+              </p>
+              <p className="mt-3 font-display text-[1.45rem] leading-snug">
+                Privatpersonen, Firmen und Hausverwaltungen.
               </p>
             </div>
           </div>
@@ -31,9 +51,7 @@ export default function About() {
 
         <div className="lg:col-span-7">
           <div data-reveal style={{ '--delay': '120ms' }}>
-            <p className="eyebrow text-gold-700">
-              Über uns
-            </p>
+            <p className="eyebrow text-gold-700">Über uns</p>
             <h2
               id="ueber-uns-title"
               className="mt-5 font-display text-[2.4rem] leading-[1.05] font-medium text-ink-900 sm:text-5xl lg:text-[3.5rem]"
@@ -41,31 +59,30 @@ export default function About() {
               {site.name} – Ihr Ansprechpartner für{' '}
               <span className="text-gold-700 italic">Tür und Sicherheit.</span>
             </h2>
+            <p className="mt-8 max-w-2xl text-[1.03rem] leading-relaxed text-slate">
+              Als Schlüsseldienst für {site.area} sind wir rund um die Uhr für Sie da – und mit
+              unserem Ladengeschäft im {site.shop} auch persönlich vor Ort. Wer vor einer
+              verschlossenen Tür steht, braucht jemanden, auf den Verlass ist. Genau das ist unser
+              Anspruch.
+            </p>
           </div>
 
-          <div
-            className="mt-8 max-w-2xl space-y-5 text-[1.03rem] leading-relaxed text-slate"
+          <ul
+            className="mt-12 grid gap-8 border-t border-ink-900/10 pt-10 sm:grid-cols-3"
             data-reveal
-            style={{ '--delay': '200ms' }}
           >
-            <p>
-              Wer vor einer verschlossenen Tür steht, braucht vor allem eines: jemanden, auf den
-              Verlass ist. Genau das ist unser Anspruch. Wir nehmen Ihr Anliegen ernst, hören zu und
-              erklären verständlich, was zu tun ist.
-            </p>
-            <p>
-              Wir arbeiten sorgfältig und mit Respekt vor Ihrem Eigentum. Bevor wir beginnen,
-              besprechen wir mit Ihnen das Vorgehen und die Kosten. So können Sie in Ruhe
-              entscheiden – auch dann, wenn die Situation gerade stressig ist.
-            </p>
-            <p>
-              Ob Türöffnung, Schlosswechsel oder Beratung zu mehr Sicherheit: Unser Ziel ist, dass
-              Sie sich nach unserem Besuch gut aufgehoben fühlen – und in Ihrem Zuhause sicher.
-            </p>
-          </div>
+            {pillars.map((item) => (
+              <li key={item.title}>
+                <Icon name={item.icon} className="h-6 w-6 text-gold-700" />
+                <h3 className="mt-4 font-display text-[1.5rem] leading-tight text-ink-900">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-[0.93rem] leading-relaxed text-slate">{item.text}</p>
+              </li>
+            ))}
+          </ul>
 
-
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-reveal>
+          <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center" data-reveal>
             <a href="#kontakt" className="btn btn-outline-dark">
               Kontakt aufnehmen
               <Icon name="arrowRight" className="h-4 w-4" />

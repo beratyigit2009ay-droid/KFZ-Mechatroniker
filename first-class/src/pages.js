@@ -10,14 +10,13 @@ export const pages = [
   {
     key: 'home',
     file: 'index.html',
-    title: `${site.name} Schlüsseldienst | Türöffnung, Schlosswechsel & Sicherheitstechnik`,
-    description:
-      'FIRST CLASS Schlüsseldienst – Ihr zuverlässiger Ansprechpartner für Türöffnungen, Schlosswechsel und moderne Sicherheitstechnik. Klare Kosteninformation vor Arbeitsbeginn.',
+    title: `${site.name} Schlüsseldienst Gersthofen & Augsburg | 24h Notdienst`,
+    description: `24-Stunden-Schlüsselnotdienst für ${site.area}: Türöffnung, Schlosswechsel, Schließanlagen und Autoschlüssel. Ladengeschäft im ${site.shop}. Notdienst: ${site.phone}.`,
   },
   ...services.map((service) => ({
     key: service.slug,
     file: `${service.slug}.html`,
-    title: `${service.title} | ${site.name} Schlüsseldienst`,
+    title: `${service.title} in Gersthofen & Augsburg | ${site.name} Schlüsseldienst`,
     description: service.metaDescription,
     image: service.image,
   })),

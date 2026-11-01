@@ -9,20 +9,25 @@ import PageHero from '../components/PageHero.jsx'
 const documents = {
   impressum: {
     title: 'Impressum',
-    note: 'Vorlage: Bitte alle Platzhalter in eckigen Klammern durch die tatsächlichen Unternehmensangaben ersetzen und das Impressum vor der Veröffentlichung rechtlich prüfen lassen.',
+    note: 'Vorlage: Telefon, E-Mail und Ort sind eingetragen. Bitte die übrigen Platzhalter in eckigen Klammern (z. B. Inhaber, Straße, Steuernummer) ergänzen und das Impressum vor der Veröffentlichung rechtlich prüfen lassen.',
     sections: [
       {
         heading: 'Angaben gemäß § 5 DDG',
         lines: [
-          '[FIRMENNAME BZW. NAME DES INHABERS]',
-          '[RECHTSFORM]',
-          '[STRASSE UND HAUSNUMMER]',
-          '[PLZ UND ORT]',
+          `${site.name} ${site.descriptor}`,
+          '[NAME DES INHABERS BZW. RECHTSFORM]',
+          site.shop,
+          site.street,
+          `${site.postalCode} ${site.locality}`,
         ],
       },
       {
         heading: 'Kontakt',
-        lines: [`Telefon: ${site.phone}`, 'E-Mail: [E-MAIL-ADRESSE]'],
+        lines: [
+          `Telefon (Notdienst): ${site.phone}`,
+          `Telefon (Laden): ${site.phoneShop}`,
+          `E-Mail: ${site.email}`,
+        ],
       },
       {
         heading: 'Vertretungsberechtigt',
@@ -57,10 +62,10 @@ const documents = {
       {
         heading: '1. Verantwortliche Stelle',
         lines: [
-          '[FIRMENNAME BZW. NAME DES INHABERS]',
-          '[STRASSE UND HAUSNUMMER], [PLZ UND ORT]',
-          `Telefon: ${site.phone}`,
-          'E-Mail: [E-MAIL-ADRESSE]',
+          `${site.name} ${site.descriptor}, [NAME DES INHABERS]`,
+          `${site.shop}, ${site.street}, ${site.postalCode} ${site.locality}`,
+          `Telefon: ${site.phoneShop}`,
+          `E-Mail: ${site.email}`,
         ],
       },
       {

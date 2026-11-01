@@ -20,9 +20,8 @@ export default function Footer() {
               <Logo />
             </a>
             <p className="mt-7 max-w-sm text-[0.95rem] leading-relaxed">
-              {site.name} ist Ihr Schlüsseldienst für Türöffnungen, Schlosswechsel und
-              Sicherheitstechnik – mit klarer Kosteninformation vor Arbeitsbeginn und einem
-              sorgfältigen Umgang mit Ihrem Eigentum.
+              {site.name} ist Ihr Schlüsseldienst für {site.area}: 24-Stunden-Notdienst,
+              Schlosswechsel, Schließanlagen und Autoschlüssel – mit Ladengeschäft im {site.shop}.
             </p>
           </div>
 
@@ -34,23 +33,47 @@ export default function Footer() {
               <li>
                 <a
                   href={telHref()}
-                  className="group inline-flex items-center gap-3 text-white transition-colors hover:text-gold-300"
+                  className="inline-flex items-start gap-3 text-white transition-colors hover:text-gold-300"
                 >
-                  <Icon name="phone" className="h-4 w-4 text-gold-400" />
-                  {site.phone}
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <span>
+                    {site.phone}
+                    <span className="block text-[0.8rem] text-smoke">Notdienst · 24 Stunden</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={telHref(site.phoneShop)}
+                  className="inline-flex items-start gap-3 text-white transition-colors hover:text-gold-300"
+                >
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <span>
+                    {site.phoneShop}
+                    <span className="block text-[0.8rem] text-smoke">Ladengeschäft</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={site.emailHref}
+                  className="inline-flex items-start gap-3 break-all transition-colors hover:text-gold-300"
+                >
+                  <Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  {site.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <span>
-                  <span className="sr-only">Einsatzgebiet: </span>
-                  {site.area}
+                  {site.shop}, {site.postalCode} {site.locality}
+                  <span className="block text-[0.8rem] text-smoke">Einsatz in {site.area}</span>
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <span>
-                  <span className="sr-only">Erreichbarkeit: </span>
+                  <span className="sr-only">Öffnungszeiten Laden: </span>
                   {site.hours}
                 </span>
               </li>
@@ -91,7 +114,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href={links.section('kontakt')} className="transition-colors hover:text-gold-300">
+                <a
+                  href={links.section('kontakt')}
+                  className="transition-colors hover:text-gold-300"
+                >
                   Kontakt
                 </a>
               </li>

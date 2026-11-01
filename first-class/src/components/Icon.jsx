@@ -99,6 +99,41 @@ const paths = {
   close: <path d="M6 6l12 12M18 6L6 18" />,
   plus: <path d="M12 5v14M5 12h14" />,
   chevronRight: <path d="M9 6l6 6-6 6" />,
+  mail: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="1.6" />
+      <path d="M4 7l8 6 8-6" />
+    </>
+  ),
+  stamp: (
+    <>
+      <path d="M9.5 11V8.6a2.5 2.5 0 1 1 5 0V11" />
+      <path d="M5 14.5A1.5 1.5 0 0 1 6.5 13h11a1.5 1.5 0 0 1 1.5 1.5V17H5z" />
+      <path d="M5.5 20h13" />
+    </>
+  ),
+  battery: (
+    <>
+      <rect x="3.5" y="7.5" width="15" height="9" rx="1.6" />
+      <path d="M20.5 10.5v3M7 10.5v3M10 10.5v3" />
+    </>
+  ),
+  trophy: (
+    <>
+      <path d="M7.5 4h9v5a4.5 4.5 0 0 1-9 0z" />
+      <path d="M7.5 6H4.5a3 3 0 0 0 3 4M16.5 6h3a3 3 0 0 1-3 4" />
+      <path d="M12 13.5V17M8.5 20h7M9.5 17h5" />
+    </>
+  ),
+  engrave: (
+    <>
+      <path d="M3.5 12.5V5A1.5 1.5 0 0 1 5 3.5h7.5l8 8-9 9z" />
+      <circle cx="8" cy="8" r="1.4" />
+    </>
+  ),
+  quote: (
+    <path d="M9.5 7C6.5 8 5 10.2 5 13.5V17h4.5v-4.5H7c0-2.2.9-3.5 2.5-4.2zM18.5 7c-3 1-4.5 3.2-4.5 6.5V17h4.5v-4.5H16c0-2.2.9-3.5 2.5-4.2z" />
+  ),
 }
 
 export default function Icon({ name, className = 'h-5 w-5', strokeWidth = 1.5, ...rest }) {

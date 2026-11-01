@@ -19,7 +19,8 @@ Unterordner und auch beim direkten Öffnen der `index.html` im Browser.
 
 ## Vor der Veröffentlichung
 
-1. **Unternehmensdaten eintragen** in `src/config.js`:
+1. **Unternehmensdaten prüfen** in `src/config.js` (Telefon, E-Mail, Öffnungszeiten und
+   Ort sind eingetragen; offen sind Straße und Zahlungsarten):
    - `phone` – ersetzt `[TELEFONNUMMER]` überall; alle Anrufbuttons (`tel:`-Links) nutzen
      automatisch diese Nummer.
    - `area` – `[STADT UND UMGEBUNG]`
