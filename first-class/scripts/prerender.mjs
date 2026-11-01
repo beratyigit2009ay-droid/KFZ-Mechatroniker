@@ -51,11 +51,13 @@ function structuredData() {
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`
 }
 
-// Entscheidet vor dem ersten Bild, ob das Intro läuft: bei jedem Aufruf der
-// Startseite (auch nach F5) – außer bei Direktlinks (#kontakt, ?anliegen=…)
-// und wenn im System „Bewegung reduzieren“ aktiv ist. #intro erzwingt es.
+// Entscheidet vor dem ersten Bild, ob und welches Intro läuft:
+// - Vollversion beim ersten Besuch, Kurzversion bei späteren Besuchen
+// - einmal pro Sitzung; nie bei Direktlinks (#kontakt, ?anliegen=…), bei
+//   Navigation innerhalb der Website, bei „Bewegung reduzieren“ oder Datensparmodus
+// - #intro in der Adresse zeigt die Vollversion erneut
 // Sicherheitsnetz: Lädt das Skript der Seite nicht, endet das Intro nach 12 s.
-const introScript = `<script>(function(){var d=document.documentElement,q=location,m='skip';try{var r=matchMedia('(prefers-reduced-motion: reduce)').matches;if(q.hash==='#intro'||(!r&&!q.hash&&!q.search))m='full'}catch(e){}window.__fcIntro=m;if(m!=='skip'){d.classList.add('intro-playing','intro-hold');window.__fcIntroFailsafe=setTimeout(function(){d.classList.remove('intro-playing','intro-hold')},12000)}})()</script>`
+const introScript = `<script>(function(){var d=document.documentElement,q=location,m='skip';try{var same=false;try{same=!!document.referrer&&new URL(document.referrer).origin===q.origin}catch(e){}var c=navigator.connection,r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=null,l=null;try{s=sessionStorage.getItem('fc-intro');l=localStorage.getItem('fc-intro-seen')}catch(e){}if(q.hash==='#intro')m='full';else if(!r&&!(c&&c.saveData)&&!q.hash&&!q.search&&!same&&s!=='1')m=l==='1'?'short':'full'}catch(e){}window.__fcIntro=m;if(m!=='skip'){d.classList.add('intro-playing','intro-hold');window.__fcIntroFailsafe=setTimeout(function(){d.classList.remove('intro-playing','intro-hold')},12000)}})()</script>`
 
 function head(page) {
   // Vorschaubild für geteilte Links (WhatsApp, Facebook …) braucht eine absolute URL.
