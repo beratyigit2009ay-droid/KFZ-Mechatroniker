@@ -13,7 +13,7 @@
   },
   "sicherheitstechnik": {
     "url": "https://cdn.acedata2.cloud/nanobanana/24a232400f2b651bd759e309e13cd457399f19ce6233cc8eaa2bf8251da41a1b.jpg",
-    "alt": "Profilzylinder und passende Schlüssel einer Schließanlage auf dunklem Stein, im Vordergrund ein Generalschlüssel"
+    "alt": "Profilzylinder aus Messing und Schlüssel mit farbigen Kappen für eine Schließanlage auf dunklem Stein"
   },
   "einbruchschutz": {
     "url": "https://cdn.acedata2.cloud/nanobanana/38d007b5012533f82881ba1654f05c415fdc460fb9177bbec83e08597835484e.jpg",
@@ -21,7 +21,7 @@
   },
   "autooeffnung": {
     "url": "https://cdn.acedata2.cloud/nanobanana/17a776346928b8a572da10d21a13717bb1fe25fce8604b1a7ba85e2dc9501d63.jpg",
-    "alt": "Autoschlüssel mit Klappbart und Funktasten neben einem frisch gefrästen Schlüsselrohling, im Hintergrund eine Schlüsselfräse"
+    "alt": "Klappschlüssel eines Autos neben einem frisch gefrästen Schlüssel auf einer Werkbank, dahinter eine Schlüsselfräse"
   },
   "schluessel": {
     "url": "https://cdn.acedata2.cloud/nanobanana/64b0ad44ab21dc1b72d9efd14dff506e756fb9ee99ed3b972aa80fad4e4ab8db.jpg",
@@ -29,11 +29,11 @@
   },
   "about": {
     "url": "https://cdn.acedata2.cloud/nanobanana/11d63d378bb5c7d6846adce8a65ca0609ddfc62dd5157d1860319b7e2f7f1c7a.png",
-    "alt": "Ordentlich ausgelegtes Werkzeug auf einer dunklen Werkbank: Schraubendreher, Schließzylinder, Schlüsselbund und Maßband"
+    "alt": "Ordentlich ausgelegtes Werkzeug auf dunklem Leder: Schließzylinder, Schlüsselbund, Schraubendreher, Öffnungswerkzeuge und Maßband"
   },
   "entranceNight": {
     "url": "https://cdn.acedata2.cloud/nanobanana/01b8d2c47d1c3c29e3fe87d93d7d268acf79bab0392ab61a6c54c6bec1f706bf.jpg",
-    "alt": "Moderner Hauseingang bei Nacht mit beleuchtetem Vordach, Glasseitenteil und breiten Steinstufen"
+    "alt": "Moderner Hauseingang bei Nacht mit beleuchtetem Vordach, Glasseitenteilen und breiten Steinstufen"
   },
   "shop": {
     "url": "https://cdn.acedata2.cloud/nanobanana/526a52beafbc3dc21b5958eb2d762e4c405e49d4f087da8900bb96257fd852a0.jpg",
@@ -46,6 +46,9 @@
   "introDoor": {
     "url": "https://cdn.acedata2.cloud/nanobanana/b1f980fa8f3aaf06dddd0cd22c5ed45c7556e0cf5548174e6ded3d8c58e40495.jpg",
     "alt": "",
-    "focus": [0.5, 0.58]
+    "focus": [
+      0.646,
+      0.58
+    ]
   }
 }

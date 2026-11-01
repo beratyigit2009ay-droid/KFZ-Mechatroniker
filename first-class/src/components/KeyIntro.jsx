@@ -61,7 +61,7 @@ const PHOTO_WAIT = 900 // so lange darf das Foto zum Laden brauchen, sonst Zeich
 /** Foto-Kamerafahrt: Bild wird zum Schloss hin vergrößert und unscharf. */
 function photoFrame(img, zoom) {
   const blur = Math.max(0, (zoom - 0.5) / 0.5) * 7
-  img.style.transform = `scale(${(1 + zoom * 5).toFixed(4)})`
+  img.style.transform = `scale(${(1 + zoom * 8).toFixed(4)})`
   img.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : ''
 }
 
@@ -336,7 +336,8 @@ export default function KeyIntro() {
       ready = true
       window.clearTimeout(waitTimer)
       usePhoto = photoOk
-      if (photoWrap) photoWrap.classList.toggle('is-ready', photoOk)
+      // Bis hierher deckt die dunkle Fotofläche die Bühne ab.
+      if (photoWrap) photoWrap.classList.add(photoOk ? 'is-ready' : 'is-off')
       if (exterior) {
         exterior.style.visibility = ''
         if (photoOk) exterior.style.display = 'none'

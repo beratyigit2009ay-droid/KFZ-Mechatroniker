@@ -660,12 +660,19 @@ html:not(.reveal-ready) .process-line {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  visibility: hidden;
   background: #0b0c0e;
   will-change: opacity;
 }
-.intro-photo.is-ready {
+.intro-photo.is-off {
+  display: none;
+}
+.intro-photo img {
+  visibility: hidden;
+}
+.intro-photo.is-ready img {
   visibility: visible;
+}
+.intro-photo.is-ready {
   animation: photo-on 1.2s ease-out both;
 }
 .intro-photo img {
