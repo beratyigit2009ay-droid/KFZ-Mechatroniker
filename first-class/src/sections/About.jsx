@@ -2,12 +2,6 @@ import { site, telHref } from '../config.js'
 import Icon from '../components/Icon.jsx'
 import Photo from '../components/Photo.jsx'
 
-const values = [
-  { icon: 'consult', title: 'Ehrliche Beratung', text: 'Wir empfehlen nur, was Ihnen wirklich hilft.' },
-  { icon: 'care', title: 'Sorgfältige Arbeit', text: 'Respekt vor Ihrer Tür und Ihrem Zuhause.' },
-  { icon: 'transparency', title: 'Klare Absprachen', text: 'Vorgehen und Kosten – vor Beginn besprochen.' },
-]
-
 export default function About() {
   return (
     <section
@@ -38,7 +32,6 @@ export default function About() {
         <div className="lg:col-span-7">
           <div data-reveal style={{ '--delay': '120ms' }}>
             <p className="eyebrow text-gold-700">
-              <span className="font-display text-base tracking-normal italic">05</span>
               Über uns
             </p>
             <h2
@@ -71,23 +64,8 @@ export default function About() {
             </p>
           </div>
 
-          <ul
-            className="mt-12 grid gap-6 border-t border-ink-900/10 pt-10 sm:grid-cols-3"
-            data-reveal
-            style={{ '--delay': '260ms' }}
-          >
-            {values.map((value) => (
-              <li key={value.title}>
-                <Icon name={value.icon} className="h-6 w-6 text-gold-700" />
-                <h3 className="mt-4 font-display text-[1.4rem] leading-tight text-ink-900">
-                  {value.title}
-                </h3>
-                <p className="mt-1.5 text-[0.92rem] leading-relaxed text-slate">{value.text}</p>
-              </li>
-            ))}
-          </ul>
 
-          <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center" data-reveal>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-reveal>
             <a href="#kontakt" className="btn btn-outline-dark">
               Kontakt aufnehmen
               <Icon name="arrowRight" className="h-4 w-4" />

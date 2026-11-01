@@ -1,12 +1,17 @@
-import { serviceBySlug } from './content.js'
+import { serviceBySlug, services } from './content.js'
 
 export const PREFILL_EVENT = 'firstclass:contact-prefill'
 
-/** Vorschlagstext für das Nachrichtenfeld, abhängig vom Anliegen. */
-export function prefillText(topic) {
-  if (topic === 'preis') return 'Ich bitte um eine Preisauskunft für: '
+/** Auswahl „Worum geht es?“ im Kontaktformular. */
+export const CONTACT_TOPICS = [...services.map((s) => s.title), 'Preisanfrage', 'Sonstiges']
+
+/** Vorbelegung für das Kontaktformular, abhängig vom Anliegen (z. B. aus ?anliegen=…). */
+export function prefillFor(topic) {
+  if (topic === 'preis') {
+    return { topic: 'Preisanfrage', message: 'Ich bitte um eine Preisauskunft für: ' }
+  }
   const service = serviceBySlug[topic]
-  return service ? `Mein Anliegen: ${service.title}. ` : ''
+  return service ? { topic: service.title, message: '' } : null
 }
 
 export function requestContactPrefill(topic) {

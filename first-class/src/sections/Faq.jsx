@@ -70,7 +70,6 @@ export default function Faq() {
         <div className="lg:col-span-5 xl:col-span-4">
           <div className="lg:sticky lg:top-32" data-reveal>
             <p className="eyebrow text-gold-700">
-              <span className="font-display text-base tracking-normal italic">06</span>
               Häufige Fragen
             </p>
             <h2

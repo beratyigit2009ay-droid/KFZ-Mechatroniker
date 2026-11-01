@@ -116,7 +116,7 @@ export default function Footer() {
         </div>
       </div>
       {/* Platz für den fixierten Anrufbutton auf Mobilgeräten */}
-      <div className="h-[calc(5rem+env(safe-area-inset-bottom))] lg:hidden" aria-hidden="true" />
+      <div className="h-[calc(5rem+env(safe-area-inset-bottom))] sm:hidden" aria-hidden="true" />
     </footer>
   )
 }

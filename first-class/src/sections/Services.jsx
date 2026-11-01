@@ -16,7 +16,6 @@ export default function Services() {
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             id="leistungen-title"
-            index="01"
             eyebrow="Leistungen"
             title="Alles rund um Tür, Schloss und Sicherheit."
             intro="Von der Türöffnung bis zur durchdachten Sicherheitslösung: Wir hören zu, erklären verständlich und arbeiten sorgfältig – damit Sie sich in Ihrem Zuhause wieder sicher fühlen."
@@ -38,7 +37,7 @@ export default function Services() {
               data-reveal
               style={{ '--delay': `${(index % 3) * 110}ms` }}
             >
-              <ServiceCard service={service} number={String(index + 1).padStart(2, '0')} />
+              <ServiceCard service={service} />
             </li>
           ))}
         </ul>

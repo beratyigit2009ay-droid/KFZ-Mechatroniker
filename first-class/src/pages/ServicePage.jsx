@@ -7,6 +7,7 @@ import Icon from '../components/Icon.jsx'
 import PageHero from '../components/PageHero.jsx'
 import Photo from '../components/Photo.jsx'
 import ServiceCard from '../components/ServiceCard.jsx'
+import LockExplainer from '../sections/LockExplainer.jsx'
 import Process from '../sections/Process.jsx'
 
 function otherServices(slug) {
@@ -158,7 +159,10 @@ export default function ServicePage({ slug }) {
         </div>
       </section>
 
-      {slug === 'tueroeffnung' && <Process index={null} className="border-t border-ink-900/[0.06]" />}
+      {slug === 'tueroeffnung' && <Process className="border-t border-ink-900/[0.06]" />}
+      {(slug === 'schlosswechsel' || slug === 'sicherheitstechnik') && (
+        <LockExplainer className="border-t border-ink-900/[0.06] bg-cream-50" />
+      )}
 
       <section aria-labelledby="more-title" className="bg-cream-100 py-24 lg:py-32">
         <div className="container-x">

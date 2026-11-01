@@ -23,7 +23,6 @@ export default function Promise() {
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7" data-reveal>
             <p className="eyebrow text-gold-400">
-              <span className="font-display text-base tracking-normal italic">02</span>
               Unser Anspruch
             </p>
             <h2

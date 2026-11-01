@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 
 /**
- * Blendet Elemente mit `data-reveal` beim Scrollen dezent ein.
+ * Blendet Elemente mit `data-reveal` beim Scrollen dezent ein. Markiert wird mit
+ * `data-revealed` (nicht per Klasse), damit React es beim Neuzeichnen nicht entfernt.
  * Inhalte sind ohne JavaScript sofort sichtbar; Elemente, die beim Laden
  * bereits im Bild sind, werden nie versteckt (kein Flackern).
  */
@@ -12,7 +13,7 @@ export default function useReveal() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (reduced || !('IntersectionObserver' in window)) {
-      elements.forEach((el) => el.classList.add('is-visible'))
+      elements.forEach((el) => el.setAttribute('data-revealed', ''))
       return
     }
 
@@ -20,7 +21,7 @@ export default function useReveal() {
     const pending = elements.filter((el) => {
       const rect = el.getBoundingClientRect()
       const seen = rect.top < viewport * 0.92
-      if (seen) el.classList.add('is-visible')
+      if (seen) el.setAttribute('data-revealed', '')
       return !seen
     })
     root.classList.add('reveal-ready')
@@ -29,7 +30,7 @@ export default function useReveal() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
+            entry.target.setAttribute('data-revealed', '')
             observer.unobserve(entry.target)
           }
         })

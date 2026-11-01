@@ -241,6 +241,14 @@ export const costFactors = [
   },
 ]
 
+export const trustTips = [
+  'Fragen Sie schon am Telefon, mit welchen Kosten Sie rechnen müssen – inklusive Anfahrt und möglicher Zuschläge.',
+  'Lassen Sie sich vor Arbeitsbeginn den Preis nennen und erklären, welche Arbeiten nötig sind.',
+  'Eine nur zugezogene Tür lässt sich oft ohne Schlosstausch öffnen. Fragen Sie nach, wenn sofort ausgetauscht werden soll.',
+  'Leisten Sie keine Vorauszahlung und unterschreiben Sie nichts unter Zeitdruck.',
+  'Bestehen Sie auf einer Rechnung mit Aufstellung der Leistungen.',
+]
+
 export const faqs = [
   {
     q: 'Wie schnell können Sie vor Ort sein?',

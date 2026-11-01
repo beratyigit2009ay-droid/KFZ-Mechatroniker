@@ -1,12 +1,16 @@
 import { site, telHref } from '../config.js'
-import { costFactors } from '../content.js'
+import { costFactors, trustTips } from '../content.js'
 import Icon from '../components/Icon.jsx'
 import Photo from '../components/Photo.jsx'
 import { requestContactPrefill } from '../prefill.js'
 
 export default function Pricing() {
   return (
-    <section id="preise" aria-labelledby="preise-title" className="bg-cream-50 pb-24 sm:pb-28 lg:pb-36">
+    <section
+      id="preise"
+      aria-labelledby="preise-title"
+      className="bg-cream-50 pb-24 sm:pb-28 lg:pb-36"
+    >
       <div className="container-x">
         <div
           className="grain relative overflow-hidden rounded-[2rem] bg-ink-900 text-white shadow-[0_60px_120px_-60px_rgb(15_17_19/0.8)] lg:rounded-[2.5rem]"
@@ -14,18 +18,12 @@ export default function Pricing() {
         >
           <div className="grid lg:grid-cols-12">
             <div className="relative min-h-[18rem] lg:col-span-5 lg:min-h-full">
-              <Photo
-                name="entranceNight"
-                className="absolute inset-0 h-full w-full"
-              />
+              <Photo name="entranceNight" className="absolute inset-0 h-full w-full" />
               <div className="absolute inset-0 bg-linear-to-t from-ink-900 via-ink-900/30 to-transparent lg:bg-linear-to-r lg:from-transparent lg:via-ink-900/20 lg:to-ink-900" />
             </div>
 
             <div className="relative px-6 py-14 sm:px-12 lg:col-span-7 lg:py-20 lg:pr-16 lg:pl-6 xl:pl-10">
-              <p className="eyebrow text-gold-400">
-                <span className="font-display text-base tracking-normal italic">04</span>
-                Preise & Transparenz
-              </p>
+              <p className="eyebrow text-gold-400">Preise & Transparenz</p>
               <h2
                 id="preise-title"
                 className="mt-5 font-display text-[2.4rem] leading-[1.04] font-medium sm:text-5xl lg:text-[3.4rem]"
@@ -48,7 +46,9 @@ export default function Pricing() {
                       <h3 className="font-display text-[1.4rem] leading-tight text-white">
                         {factor.title}
                       </h3>
-                      <p className="mt-1.5 text-[0.92rem] leading-relaxed text-mist">{factor.text}</p>
+                      <p className="mt-1.5 text-[0.92rem] leading-relaxed text-mist">
+                        {factor.text}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -58,9 +58,9 @@ export default function Pricing() {
                 <p className="flex items-start gap-4">
                   <Icon name="shield" className="mt-0.5 h-6 w-6 shrink-0 text-gold-300" />
                   <span className="text-[1rem] leading-relaxed text-white/90">
-                    <strong className="font-semibold text-gold-200">Unser Versprechen:</strong> Bevor
-                    wir mit der Arbeit beginnen, informieren wir Sie über die vereinbarten Kosten.
-                    Erst mit Ihrer Zustimmung legen wir los.
+                    <strong className="font-semibold text-gold-200">Unser Versprechen:</strong>{' '}
+                    Bevor wir mit der Arbeit beginnen, informieren wir Sie über die vereinbarten
+                    Kosten. Erst mit Ihrer Zustimmung legen wir los.
                   </span>
                 </p>
               </div>
@@ -91,6 +91,35 @@ export default function Pricing() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-16 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-12" data-reveal>
+          <div className="lg:col-span-5">
+            <p className="eyebrow text-gold-700">Verbraucher-Tipp</p>
+            <h3 className="mt-5 font-display text-[2rem] leading-[1.08] font-medium text-ink-900 sm:text-[2.5rem]">
+              Woran Sie einen seriösen Schlüsseldienst erkennen.
+            </h3>
+            <p className="mt-5 max-w-md text-[1.02rem] leading-relaxed text-slate">
+              Wer ausgesperrt ist, steht unter Druck. Diese Punkte helfen Ihnen – egal, wen Sie
+              anrufen. Bei uns gehören klare Kosten vor Arbeitsbeginn und eine Rechnung mit
+              Aufstellung selbstverständlich dazu.
+            </p>
+          </div>
+          <ol className="grid gap-3 lg:col-span-7">
+            {trustTips.map((tip, index) => (
+              <li
+                key={tip}
+                className="flex gap-5 rounded-2xl bg-cream-100 p-5 ring-1 ring-ink-900/[0.05] sm:p-6"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-900 font-display text-[1.1rem] text-gold-300">
+                  {index + 1}
+                </span>
+                <span className="self-center text-[0.98rem] leading-relaxed text-graphite">
+                  {tip}
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

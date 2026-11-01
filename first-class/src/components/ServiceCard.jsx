@@ -2,7 +2,7 @@ import { useLinks } from '../context.js'
 import Icon from './Icon.jsx'
 import Photo from './Photo.jsx'
 
-export default function ServiceCard({ service, number }) {
+export default function ServiceCard({ service }) {
   const links = useLinks()
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-cream-50 shadow-[0_1px_0_rgb(15_17_19/0.04),0_34px_60px_-42px_rgb(15_17_19/0.45)] ring-1 ring-ink-900/[0.07] transition-[transform,box-shadow] duration-500 ease-[var(--ease-soft)] hover:-translate-y-1.5 hover:shadow-[0_1px_0_rgb(15_17_19/0.04),0_50px_80px_-44px_rgb(15_17_19/0.6)]">
@@ -16,14 +16,6 @@ export default function ServiceCard({ service, number }) {
         <span className="absolute top-5 left-5 flex h-12 w-12 items-center justify-center rounded-full bg-ink-950/70 text-gold-300 ring-1 ring-gold-400/40 backdrop-blur-md">
           <Icon name={service.icon} className="h-5 w-5" />
         </span>
-        {number && (
-          <span
-            aria-hidden="true"
-            className="absolute right-6 bottom-3 font-display text-[3.2rem] leading-none text-white/90 italic"
-          >
-            {number}
-          </span>
-        )}
       </div>
 
       <div className="flex flex-1 flex-col px-7 pt-7 pb-8 lg:px-8">

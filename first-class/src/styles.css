@@ -326,7 +326,7 @@
     transform 0.9s var(--ease-soft);
   transition-delay: var(--delay, 0ms);
 }
-.reveal-ready [data-reveal].is-visible {
+.reveal-ready [data-reveal][data-revealed] {
   opacity: 1;
   transform: none;
 }
@@ -340,7 +340,7 @@
     transform 0.8s var(--ease-soft);
   transition-delay: calc(var(--i, 0) * 220ms + 150ms);
 }
-.reveal-ready [data-reveal='group'].is-visible .process-step {
+.reveal-ready [data-reveal='group'][data-revealed] .process-step {
   opacity: 1;
   transform: none;
 }
@@ -357,7 +357,7 @@
     transform-origin: left;
   }
 }
-.reveal-ready .is-visible .process-line,
+.reveal-ready [data-revealed] .process-line,
 html:not(.reveal-ready) .process-line {
   transform: none;
 }
@@ -393,14 +393,173 @@ html:not(.reveal-ready) .process-line {
   }
 }
 
-/* ---------- Intro: Schlüssel, Zylinder im Schnitt, Öffnung entlang der Scherlinie ---------- */
+/* ---------- Zylinder im Schnitt (Intro und Erklärer) ---------- */
+
+.cyl-label {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-soft);
+  transition-delay: var(--d, 0ms);
+}
+.labels-on .cyl-label {
+  opacity: 1;
+}
+.cyl-shear-glow {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.aligned .cyl-shear-glow {
+  opacity: 1;
+}
+.cyl-turn-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+.cyl-turn-head,
+.cyl-pulse {
+  opacity: 0;
+}
+.cyl-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.turned .cyl-turn-arc {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transition:
+    stroke-dashoffset 0.55s var(--ease-soft),
+    opacity 0.15s ease;
+}
+.turned .cyl-turn-head {
+  opacity: 1;
+  transition: opacity 0.2s ease 0.45s;
+}
+.turned .cyl-pulse {
+  animation: cyl-pulse 0.9s ease-out 0.3s both;
+}
+@keyframes cyl-pulse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4.5);
+  }
+}
+.cyl-driver,
+.cyl-keypin {
+  transition:
+    stroke 0.3s ease,
+    stroke-width 0.3s ease;
+}
+.show-blocked .cyl-pin:not(.is-aligned) .cyl-driver,
+.show-blocked .cyl-pin:not(.is-aligned) .cyl-keypin {
+  stroke: #f2a395;
+  stroke-width: 2.5px;
+}
+.is-shaking .cyl-key-wrap {
+  animation: key-shake 0.45s ease-in-out;
+}
+@keyframes key-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  20%,
+  60% {
+    transform: translateX(-7px);
+  }
+  40%,
+  80% {
+    transform: translateX(7px);
+  }
+}
+
+/* Themen-Auswahl im Kontaktformular */
+.topic-chip span {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgb(15 17 19 / 0.15);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-graphite);
+  background: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.topic-chip:hover span {
+  border-color: var(--color-gold-600);
+}
+.topic-chip input:checked + span {
+  border-color: var(--color-ink-900);
+  background: var(--color-ink-900);
+  color: var(--color-gold-200);
+}
+.topic-chip input:focus-visible + span {
+  outline: 2px solid var(--color-gold-600);
+  outline-offset: 2px;
+}
+
+/* Schieberegler im Zylinder-Erklärer */
+.lock-range {
+  appearance: none;
+  height: 2.25rem;
+  background: transparent;
+  cursor: pointer;
+}
+.lock-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-gold-500), var(--color-gold-300));
+}
+.lock-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-gold-500), var(--color-gold-300));
+}
+.lock-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: calc(-0.8rem + 2px);
+  border-radius: 999px;
+  background: var(--color-gold-200);
+  border: 4px solid var(--color-ink-900);
+  box-shadow: 0 0 0 1px var(--color-gold-400);
+}
+.lock-range::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: var(--color-gold-200);
+  border: 4px solid var(--color-ink-900);
+  box-shadow: 0 0 0 1px var(--color-gold-400);
+}
+.lock-range:focus-visible {
+  outline: none;
+}
+.lock-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px var(--color-gold-400);
+}
+.lock-range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px var(--color-gold-400);
+}
+
+/* ---------- Intro ---------- */
 
 .intro {
   position: fixed;
   inset: 0;
   z-index: 100;
   display: none;
+  overflow: hidden;
   color: #fff;
+  background: #0b0c0e;
 }
 .intro-playing .intro {
   display: block;
@@ -412,6 +571,9 @@ html:not(.reveal-ready) .process-line {
 .intro-hold .hero-fade,
 .intro-hold .hero-photo {
   animation-play-state: paused;
+}
+.intro.is-open {
+  background: transparent;
 }
 
 .intro-half {
@@ -457,6 +619,42 @@ html:not(.reveal-ready) .process-line {
   top: -100%;
 }
 
+/* Außenansicht mit Kamerafahrt */
+.intro-exterior {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: opacity;
+}
+.intro-lamp {
+  animation: lamp-on 1.1s steps(1, end) 0.15s both;
+}
+@keyframes lamp-on {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.55;
+  }
+  26% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  48% {
+    opacity: 0.35;
+  }
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+.intro.is-short .intro-lamp {
+  animation: none;
+}
+
 .intro-brand {
   position: absolute;
   top: max(1.75rem, 7vh);
@@ -494,31 +692,31 @@ html:not(.reveal-ready) .process-line {
   padding: 0 1.25rem;
   text-align: center;
 }
-.intro-tagline {
+.intro-step {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.9rem;
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 2.4vw, 1.9rem);
   font-style: italic;
   color: var(--color-gold-300);
-  animation: fade 1s var(--ease-soft) 1.3s both;
+  text-wrap: balance;
+}
+.intro-step-num {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--color-smoke);
+  font-variant-numeric: tabular-nums;
+}
+.intro-step-num:empty,
+.intro-step-text:empty {
+  display: none;
 }
 .intro-legend {
   display: none;
-}
-
-.intro-label {
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-soft);
-  transition-delay: var(--d, 0ms);
-}
-.intro.labels-on .intro-label {
-  opacity: 1;
-}
-.intro-shear-glow {
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-.intro.aligned .intro-shear-glow {
-  opacity: 1;
 }
 
 .intro-seam {
@@ -533,15 +731,22 @@ html:not(.reveal-ready) .process-line {
   transform: scaleX(0.15);
   transition:
     opacity 0.4s ease,
-    transform 0.6s var(--ease-soft);
+    transform 0.6s var(--ease-soft),
+    box-shadow 0.5s ease;
 }
 .intro.aligned .intro-seam {
   opacity: 0.9;
   transform: scaleX(1);
 }
+/* Nach der Drehung: warmes Licht dringt durch die Fuge */
+.intro.turned .intro-seam {
+  box-shadow:
+    0 0 24px 4px rgb(255 214 150 / 0.55),
+    0 0 90px 20px rgb(255 200 120 / 0.25);
+}
 .intro.is-open .intro-seam {
   opacity: 0;
-  transition: opacity 0.5s ease 0.25s;
+  transition: opacity 0.6s ease 0.3s;
 }
 
 .intro-progress {
@@ -586,8 +791,9 @@ html:not(.reveal-ready) .process-line {
 .intro.is-open .intro-brand,
 .intro.is-open .intro-caption,
 .intro.is-open .intro-skip,
-.intro.is-open .intro-progress {
-  opacity: 0;
+.intro.is-open .intro-progress,
+.intro.is-open .intro-exterior {
+  opacity: 0 !important;
   transition: opacity 0.3s ease;
 }
 
@@ -598,7 +804,7 @@ html:not(.reveal-ready) .process-line {
     width: 128vw;
     transform: none;
   }
-  .intro-label {
+  .intro .cyl-label {
     display: none;
   }
   .intro-legend {
@@ -610,6 +816,11 @@ html:not(.reveal-ready) .process-line {
     max-width: 22rem;
     font-size: 0.74rem;
     color: var(--color-mist);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .intro.labels-on .intro-legend {
+    opacity: 1;
   }
   .intro-legend li {
     display: flex;

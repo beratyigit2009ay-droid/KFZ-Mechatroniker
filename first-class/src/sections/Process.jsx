@@ -3,7 +3,7 @@ import CallButton from '../components/CallButton.jsx'
 import Icon from '../components/Icon.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 
-export default function Process({ index = '03', className = '' }) {
+export default function Process({ className = '' }) {
   return (
     <section
       id="ablauf"
@@ -13,7 +13,6 @@ export default function Process({ index = '03', className = '' }) {
       <div className="container-x">
         <SectionHeading
           id="ablauf-title"
-          index={index}
           eyebrow="Ablauf der Türöffnung"
           title="In vier klaren Schritten zurück in Ihre Wohnung."
           intro="Damit Sie jederzeit wissen, was passiert: Wir sprechen alles mit Ihnen ab, bevor wir mit der Arbeit beginnen."

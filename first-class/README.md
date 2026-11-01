@@ -37,16 +37,33 @@ Unterordner und auch beim direkten Öffnen der `index.html` im Browser.
 
 ## Intro
 
-Beim ersten Besuch der Startseite läuft ein kurzes Intro (ca. 4 Sekunden): Ein
-Schlüssel fährt in den Profilzylinder, die Tür wird im Schnitt sichtbar, die Stifte
-richten sich an der Scherlinie aus – und die Seite öffnet sich genau dort.
+Die Startseite beginnt mit einem kurzen Intro:
 
-- läuft einmal pro Browser-Sitzung, nur auf der Startseite
-- jederzeit überspringbar (Button, Esc-Taste, Scrollen)
-- entfällt automatisch, wenn „Bewegung reduzieren“ im System aktiv ist
-- zum erneuten Ansehen `#intro` an die Adresse anhängen
-- Code: `src/components/KeyIntro.jsx`; zum Entfernen die Zeile mit `<KeyIntro />` in
-  `src/App.jsx` löschen
+1. Haustür bei Nacht, die Wandleuchte schaltet sich ein.
+2. Die Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar.
+3. Der Schlüssel hebt Kernstifte (Messing) und Gehäusestifte (Stahl) an – die
+   Stifte bewegen sich passend zu den Zacken des Schlüssels.
+4. Alle Trennfugen liegen auf der Scherlinie, der Schlüssel dreht, warmes Licht
+   dringt durch die Fuge – und die Seite öffnet sich genau dort.
+
+Kurze Texte erklären jeden Schritt. Verhalten:
+
+- **Erster Besuch:** Vollversion (ca. 5 Sekunden). **Spätere Besuche:** Kurzversion
+  (ca. 2 Sekunden). **Innerhalb einer Sitzung:** kein Intro mehr.
+- Kein Intro bei Direktlinks (z. B. `#kontakt`, `?anliegen=…`), bei Klicks innerhalb
+  der Website, bei „Bewegung reduzieren“ oder im Datensparmodus.
+- Startet erst, wenn der Tab sichtbar ist; jederzeit überspringbar (Button, Esc,
+  Scrollen).
+- `#intro` an die Adresse anhängen zeigt die Vollversion erneut.
+- Code: `src/components/KeyIntro.jsx`, Entscheidungslogik in `scripts/prerender.mjs`;
+  zum Entfernen die Zeile mit `<KeyIntro />` in `src/App.jsx` löschen.
+
+## Zylinder zum Ausprobieren
+
+Der Bereich „So funktioniert Ihr Schließzylinder“ (Startseite, Schlosswechsel,
+Sicherheitstechnik) lässt Besucher den Schlüssel selbst einführen und drehen – mit
+passendem oder falschem Schlüssel. Beim falschen Schlüssel werden die blockierenden
+Stifte markiert. Intro und Erklärer nutzen dasselbe Modell (`src/lock.js`).
 
 ## Bilder
 
@@ -80,6 +97,7 @@ src/
   content.js       Texte: Leistungen, Ablauf, Kostenfaktoren, FAQ
   images.js        Bildquellen
   pages.js         Seitenliste mit Titeln und Beschreibungen
+  lock.js          Modell des Schließzylinders (Intro und Erklärer)
   sections/        Bereiche der Startseite (Hero, Leistungen, FAQ, Kontakt …)
   pages/           Startseite, Leistungsseiten, Rechtstexte
   components/      Header, Footer, Buttons, Icons, Logo …

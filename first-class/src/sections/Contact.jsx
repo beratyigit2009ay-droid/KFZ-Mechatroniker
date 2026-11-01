@@ -3,9 +3,9 @@ import { site, telHref } from '../config.js'
 import { useLinks } from '../context.js'
 import CallButton from '../components/CallButton.jsx'
 import Icon from '../components/Icon.jsx'
-import { PREFILL_EVENT, prefillText } from '../prefill.js'
+import { CONTACT_TOPICS, PREFILL_EVENT, prefillFor } from '../prefill.js'
 
-const empty = { name: '', phone: '', message: '', consent: false, company: '' }
+const empty = { topic: '', name: '', phone: '', message: '', consent: false, company: '' }
 
 const validators = {
   name: (v) => (v.trim().length < 2 ? 'Bitte geben Sie Ihren Namen an.' : ''),
@@ -34,8 +34,14 @@ function validate(values) {
 function Field({ id, label, error, hint, children }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-[0.8rem] font-semibold tracking-[0.08em] text-ink-900">
-        {label} <span className="text-gold-700" aria-hidden="true">*</span>
+      <label
+        htmlFor={id}
+        className="block text-[0.8rem] font-semibold tracking-[0.08em] text-ink-900"
+      >
+        {label}{' '}
+        <span className="text-gold-700" aria-hidden="true">
+          *
+        </span>
       </label>
       {children}
       {hint && !error && (
@@ -44,7 +50,10 @@ function Field({ id, label, error, hint, children }) {
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="mt-2 flex items-start gap-2 text-[0.85rem] font-medium text-[#a1281d]">
+        <p
+          id={`${id}-error`}
+          className="mt-2 flex items-start gap-2 text-[0.85rem] font-medium text-[#a1281d]"
+        >
           <Icon name="info" className="mt-0.5 h-4 w-4 shrink-0" />
           {error}
         </p>
@@ -76,9 +85,13 @@ export default function Contact() {
   // Vorbelegung über ?anliegen=… oder den Button „Preis anfragen“.
   useEffect(() => {
     const apply = (topic) => {
-      const text = prefillText(topic)
-      if (!text) return
-      setValues((current) => (current.message.trim() ? current : { ...current, message: text }))
+      const prefill = prefillFor(topic)
+      if (!prefill) return
+      setValues((current) => ({
+        ...current,
+        topic: prefill.topic,
+        message: current.message.trim() ? current.message : prefill.message,
+      }))
     }
     const topic = new URLSearchParams(window.location.search).get('anliegen')
     if (topic) apply(topic)
@@ -122,6 +135,7 @@ export default function Contact() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
+          anliegen: values.topic,
           name: values.name.trim(),
           telefon: values.phone.trim(),
           nachricht: values.message.trim(),
@@ -158,10 +172,7 @@ export default function Contact() {
       />
       <div className="container-x relative grid gap-16 lg:grid-cols-12 lg:gap-12 xl:gap-20">
         <div className="lg:col-span-5" data-reveal>
-          <p className="eyebrow text-gold-400">
-            <span className="font-display text-base tracking-normal italic">07</span>
-            Kontakt
-          </p>
+          <p className="eyebrow text-gold-400">Kontakt</p>
           <h2
             id="kontakt-title"
             className="mt-5 font-display text-[2.5rem] leading-[1.04] font-medium sm:text-5xl lg:text-[3.6rem]"
@@ -180,7 +191,10 @@ export default function Contact() {
                 <span className="sr-only">Telefon</span>
               </dt>
               <dd>
-                <span className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase" aria-hidden="true">
+                <span
+                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
+                  aria-hidden="true"
+                >
                   Telefon
                 </span>
                 <a
@@ -197,7 +211,10 @@ export default function Contact() {
                 <span className="sr-only">Einsatzgebiet</span>
               </dt>
               <dd>
-                <span className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase" aria-hidden="true">
+                <span
+                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
+                  aria-hidden="true"
+                >
                   Einsatzgebiet
                 </span>
                 <span className="mt-1 block text-[1.05rem] text-white">{site.area}</span>
@@ -209,7 +226,10 @@ export default function Contact() {
                 <span className="sr-only">Öffnungszeiten</span>
               </dt>
               <dd>
-                <span className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase" aria-hidden="true">
+                <span
+                  className="block text-[0.68rem] font-semibold tracking-[0.28em] text-smoke uppercase"
+                  aria-hidden="true"
+                >
                   Öffnungszeiten
                 </span>
                 <span className="mt-1 block text-[1.05rem] text-white">{site.hours}</span>
@@ -234,7 +254,11 @@ export default function Contact() {
                     status === 'sent' ? 'bg-ink-900 text-gold-300' : 'bg-gold-500/15 text-gold-700'
                   }`}
                 >
-                  <Icon name={status === 'sent' ? 'check' : 'info'} className="h-6 w-6" strokeWidth={1.8} />
+                  <Icon
+                    name={status === 'sent' ? 'check' : 'info'}
+                    className="h-6 w-6"
+                    strokeWidth={1.8}
+                  />
                 </span>
 
                 {status === 'sent' && (
@@ -257,8 +281,11 @@ export default function Contact() {
                     </h3>
                     <p className="mt-4 text-[1.02rem] leading-relaxed text-slate">
                       Bitte beachten Sie: Das Kontaktformular ist noch nicht mit einem Versand
-                      verbunden. <strong className="text-ink-900">Ihre Anfrage wurde daher nicht
-                      übermittelt.</strong> So erreichen Sie uns sofort:
+                      verbunden.{' '}
+                      <strong className="text-ink-900">
+                        Ihre Anfrage wurde daher nicht übermittelt.
+                      </strong>{' '}
+                      So erreichen Sie uns sofort:
                     </p>
                   </>
                 )}
@@ -284,7 +311,10 @@ export default function Contact() {
               </div>
             ) : (
               <form ref={formRef} noValidate onSubmit={handleSubmit} aria-labelledby="form-title">
-                <h3 id="form-title" className="font-display text-[2.1rem] leading-tight text-ink-900">
+                <h3
+                  id="form-title"
+                  className="font-display text-[2.1rem] leading-tight text-ink-900"
+                >
                   Rückruf anfragen
                 </h3>
                 <p className="mt-2 text-[0.92rem] text-slate">
@@ -333,6 +363,31 @@ export default function Contact() {
                   </Field>
                 </div>
 
+                <fieldset className="mt-6">
+                  <legend className="text-[0.8rem] font-semibold tracking-[0.08em] text-ink-900">
+                    Worum geht es?{' '}
+                    <span className="font-normal tracking-normal text-slate">(optional)</span>
+                  </legend>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {CONTACT_TOPICS.map((topic) => (
+                      <label key={topic} className="topic-chip">
+                        <input
+                          type="radio"
+                          name="topic"
+                          value={topic}
+                          checked={values.topic === topic}
+                          onChange={update('topic')}
+                          onClick={() =>
+                            values.topic === topic && setValues((c) => ({ ...c, topic: '' }))
+                          }
+                          className="sr-only"
+                        />
+                        <span>{topic}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
                 <div className="mt-6">
                   <Field id="message" label="Nachricht" error={showError('message')}>
                     <textarea
@@ -346,7 +401,7 @@ export default function Contact() {
                       aria-invalid={Boolean(showError('message'))}
                       aria-describedby={describedBy('message')}
                       className={`${inputClass} ${inputState(showError('message'))} resize-y`}
-                      placeholder="Worum geht es? Zum Beispiel Schlosswechsel, Beratung oder Terminwunsch."
+                      placeholder="Beschreiben Sie kurz Ihr Anliegen, z. B. Art der Tür oder Ihren Terminwunsch."
                     />
                   </Field>
                 </div>
@@ -387,11 +442,17 @@ export default function Contact() {
                       >
                         Datenschutzerklärung
                       </a>
-                      . <span className="text-gold-700" aria-hidden="true">*</span>
+                      .{' '}
+                      <span className="text-gold-700" aria-hidden="true">
+                        *
+                      </span>
                     </span>
                   </label>
                   {showError('consent') && (
-                    <p id="consent-error" className="mt-2 flex items-start gap-2 text-[0.85rem] font-medium text-[#a1281d]">
+                    <p
+                      id="consent-error"
+                      className="mt-2 flex items-start gap-2 text-[0.85rem] font-medium text-[#a1281d]"
+                    >
                       <Icon name="info" className="mt-0.5 h-4 w-4 shrink-0" />
                       {showError('consent')}
                     </p>
