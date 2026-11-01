@@ -102,6 +102,7 @@ export default function Hero() {
               <Photo
                 name="hero"
                 priority
+                sizes="(min-width: 1024px) 38vw, (min-width: 640px) 70vw, 92vw"
                 className="hero-photo aspect-[4/5]"
               />
               <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink-950/70 via-ink-950/0 to-ink-950/10" />

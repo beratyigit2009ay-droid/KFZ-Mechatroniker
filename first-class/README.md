@@ -68,14 +68,39 @@ Stifte markiert. Intro und Erklärer nutzen dasselbe Modell (`src/lock.js`).
 
 ## Bilder
 
-Die Bilder sind eigens gezeichnete Illustrationen (goldene Linien auf Anthrazit) und
-liegen lokal in `public/images/`. Sie werden von `scripts/illustrations.mjs` erzeugt
-(`npm run illustrations`) und lassen sich dort in Farbe und Motiv anpassen. Es werden
-keine Bilder von fremden Servern geladen.
+Grundlage sind eigens gezeichnete Illustrationen (goldene Linien auf Anthrazit) in
+`public/images/`, erzeugt von `scripts/illustrations.mjs` (`npm run illustrations`).
 
-Eigene Fotos (z. B. vom Team oder von echten Einsätzen) wirken noch persönlicher: Datei
-nach `public/images/` legen und in `src/images.js` beim jeweiligen Eintrag `src`
-anpassen, z. B. `src: 'images/team.jpg'`.
+### Fotos
+
+Für alle Bildplätze gibt es KI-generierte Fotos (Nano Banana), eingetragen mit
+Download-Adresse und Bildbeschreibung in `scripts/photos.json`. Einbinden mit:
+
+```bash
+npm run photos   # lädt die Fotos, erzeugt WebP in mehreren Größen
+npm run build
+```
+
+`npm run photos` lädt jedes Foto einmalig nach `photos-src/` (nicht im Git),
+erzeugt daraus `public/images/photos/<name>-<breite>.webp` und schreibt
+`src/photos.generated.js`. Jedes dort eingetragene Foto ersetzt automatisch die
+gleichnamige Illustration; die Seiten laden je nach Bildschirm die passende Größe.
+Fehlt ein Foto, bleibt an dieser Stelle die Illustration.
+
+- **Intro:** Mit dem Foto `introDoor` beginnt das Intro an der echten Haustür und
+  fährt ins Schloss. `focus` in `scripts/photos.json` gibt die Lage des Schlosses im
+  Bild an (Anteil von Breite und Höhe, 0–1). Ohne Foto läuft die gezeichnete Tür.
+- **Ladengeschäft:** Das Foto `shop` erscheint im Bereich „Ladengeschäft“ mit dem
+  Hinweis „Symbolbild“, weil es nicht den echten Laden zeigt.
+- Sobald Fotos eingebunden sind, steht im Footer „Fotos: KI-generierte Symbolbilder“.
+
+Eigene Fotos (Team, Laden, echte Einsätze) wirken noch persönlicher: Datei als
+`photos-src/<name>.jpg` ablegen (z. B. `photos-src/shop.jpg`), Bildbeschreibung in
+`scripts/photos.json` anpassen und `npm run photos` ausführen. Bei echten Fotos
+Hinweis im Shop-Bereich und im Footer entfernen.
+
+Es werden keine Bilder von fremden Servern geladen; alle Dateien liegen auf der
+eigenen Website.
 
 `public/og-image.png` ist das Vorschaubild für geteilte Links. Es wird verwendet, sobald
 in `src/config.js` die `url` eingetragen ist.
@@ -87,6 +112,7 @@ npm install
 npm run dev      # Entwicklungsserver
 npm run build    # baut dist/ und rendert alle Seiten vor
 npm run illustrations  # Illustrationen neu erzeugen
+npm run photos   # Fotos laden und als WebP aufbereiten
 npm run preview  # fertige Website lokal ansehen
 ```
 
@@ -96,13 +122,15 @@ npm run preview  # fertige Website lokal ansehen
 src/
   config.js        Unternehmensdaten (Telefon, Gebiet, Zeiten …)
   content.js       Texte: Leistungen, Ablauf, Kostenfaktoren, FAQ
-  images.js        Bildquellen
+  images.js        Bildquellen (Illustrationen, ersetzt durch Fotos)
+  photos.generated.js  von npm run photos erzeugt
   pages.js         Seitenliste mit Titeln und Beschreibungen
   lock.js          Modell des Schließzylinders (Intro und Erklärer)
   sections/        Bereiche der Startseite (Hero, Leistungen, FAQ, Kontakt …)
   pages/           Startseite, Leistungsseiten, Rechtstexte
   components/      Header, Footer, Buttons, Icons, Logo …
 scripts/prerender.mjs   erzeugt statisches HTML + Meta-Angaben je Seite
+scripts/photos.mjs      lädt Fotos und erzeugt WebP-Größen
 ```
 
 Schriften (Cormorant Garamond, Manrope) sind lokal eingebunden – es werden keine

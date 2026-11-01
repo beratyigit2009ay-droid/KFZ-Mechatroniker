@@ -1,11 +1,17 @@
+import { photos } from './photos.generated.js'
+
 /**
- * Bilder der Website. Die Illustrationen werden von
- * `scripts/illustrations.mjs` erzeugt und liegen lokal in `public/images/`.
+ * Bilder der Website.
  *
- * Eigene Fotos verwenden: Datei nach `public/images/` legen und beim
- * jeweiligen Eintrag `src` anpassen, z. B. `src: 'images/team.jpg'`.
+ * Grundlage sind die Illustrationen aus `scripts/illustrations.mjs`
+ * (public/images/*.svg). Sobald `npm run photos` ein gleichnamiges Foto
+ * erzeugt hat (src/photos.generated.js), wird stattdessen das Foto gezeigt –
+ * in mehreren Größen, damit Handys keine riesigen Dateien laden.
+ *
+ * Eigene Fotos: Datei unter photos-src/<name>.jpg ablegen, Bildbeschreibung
+ * in scripts/photos.json eintragen und `npm run photos` ausführen.
  */
-export const images = {
+const illustrations = {
   hero: {
     src: 'images/hero.svg',
     alt: 'Illustration: moderne Haustür bei Nacht mit Stoßgriff, Profilzylinder und Werkzeugkoffer des Monteurs',
@@ -47,3 +53,9 @@ export const images = {
     alt: 'Illustration: beleuchteter Hauseingang am Abend mit Vordach und Stufen',
   },
 }
+
+/** Fotos haben Vorrang; Einträge ohne Illustration (z. B. `shop`) gibt es nur als Foto. */
+export const images = { ...illustrations, ...photos }
+
+export const hasPhoto = (name) => Boolean(photos[name])
+export const usesPhotos = Object.keys(photos).length > 0

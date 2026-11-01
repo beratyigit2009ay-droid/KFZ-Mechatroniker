@@ -9,6 +9,7 @@ export default function ServiceCard({ service }) {
       <div className="relative aspect-[4/3] overflow-hidden">
         <Photo
           name={service.image}
+          sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
           className="h-full w-full"
           imgClassName="transition-transform duration-[1400ms] ease-[var(--ease-soft)] group-hover:scale-[1.06]"
         />

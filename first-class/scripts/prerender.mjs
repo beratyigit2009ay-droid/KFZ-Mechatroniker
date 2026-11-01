@@ -11,7 +11,7 @@ const dist = path.join(root, 'dist')
 const ssrDir = path.join(root, '.ssr')
 
 const ssrEntry = (await readdir(ssrDir)).find((file) => /^entry-server\.m?js$/.test(file))
-const { render, pages, site, isPlaceholder, telHref } = await import(
+const { render, pages, site, isPlaceholder, telHref, photos } = await import(
   pathToFileURL(path.join(ssrDir, ssrEntry)).href
 )
 
@@ -34,6 +34,11 @@ const fontPreloads = assets
     (file) =>
       `<link rel="preload" href="./assets/${file}" as="font" type="font/woff2" crossorigin />`,
   )
+
+// Foto der Intro-Kamerafahrt – nur laden, wenn die Vollversion wirklich läuft.
+const introPhoto = photos.introDoor
+  ? `if(m==='full'){var k=document.createElement('link');k.rel='preload';k.as='image';k.href=${JSON.stringify(photos.introDoor.src)};k.setAttribute('imagesrcset',${JSON.stringify(photos.introDoor.srcSet)});k.setAttribute('imagesizes','100vw');k.setAttribute('fetchpriority','high');document.head.appendChild(k)}`
+  : ''
 
 function structuredData() {
   const data = {
@@ -72,7 +77,7 @@ function structuredData() {
 //   Navigation innerhalb der Website, bei „Bewegung reduzieren“ oder Datensparmodus
 // - #intro in der Adresse zeigt die Vollversion erneut
 // Sicherheitsnetz: Lädt das Skript der Seite nicht, endet das Intro nach 12 s.
-const introScript = `<script>(function(){var d=document.documentElement,q=location,m='skip';try{var same=false;try{same=!!document.referrer&&new URL(document.referrer).origin===q.origin}catch(e){}var c=navigator.connection,r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=null,l=null;try{s=sessionStorage.getItem('fc-intro');l=localStorage.getItem('fc-intro-seen')}catch(e){}if(q.hash==='#intro')m='full';else if(!r&&!(c&&c.saveData)&&!q.hash&&!q.search&&!same&&s!=='1')m=l==='1'?'short':'full'}catch(e){}window.__fcIntro=m;if(m!=='skip'){d.classList.add('intro-playing','intro-hold');window.__fcIntroFailsafe=setTimeout(function(){d.classList.remove('intro-playing','intro-hold')},12000)}})()</script>`
+const introScript = `<script>(function(){var d=document.documentElement,q=location,m='skip';try{var same=false;try{same=!!document.referrer&&new URL(document.referrer).origin===q.origin}catch(e){}var c=navigator.connection,r=matchMedia('(prefers-reduced-motion: reduce)').matches,s=null,l=null;try{s=sessionStorage.getItem('fc-intro');l=localStorage.getItem('fc-intro-seen')}catch(e){}if(q.hash==='#intro')m='full';else if(!r&&!(c&&c.saveData)&&!q.hash&&!q.search&&!same&&s!=='1')m=l==='1'?'short':'full'}catch(e){}window.__fcIntro=m;if(m!=='skip'){d.classList.add('intro-playing','intro-hold');window.__fcIntroFailsafe=setTimeout(function(){d.classList.remove('intro-playing','intro-hold')},12000)}${introPhoto}})()</script>`
 
 function head(page) {
   // Vorschaubild für geteilte Links (WhatsApp, Facebook …) braucht eine absolute URL.
@@ -105,7 +110,10 @@ for (const page of pages) {
     .replace('data-page=""', `data-page="${page.key}"`)
     .replace('<!--app-html-->', () => render(page.key))
     // Klassisches, verzögertes Skript statt Modul (funktioniert auch über file://).
-    .replace(/<script type="module" crossorigin src="([^"]+)"><\/script>/, '<script defer src="$1"></script>')
+    .replace(
+      /<script type="module" crossorigin src="([^"]+)"><\/script>/,
+      '<script defer src="$1"></script>',
+    )
     .replace(/<link rel="stylesheet" crossorigin href=/g, '<link rel="stylesheet" href=')
 
   await writeFile(path.join(dist, page.file), html)

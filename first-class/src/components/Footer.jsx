@@ -1,5 +1,6 @@
 import { site, telHref } from '../config.js'
 import { services } from '../content.js'
+import { usesPhotos } from '../images.js'
 import { useLinks } from '../context.js'
 import Icon from './Icon.jsx'
 import Logo from './Logo.jsx'
@@ -130,6 +131,11 @@ export default function Footer() {
         <div className="mt-8 flex flex-col gap-3 text-[0.8rem] text-smoke sm:flex-row sm:items-center sm:justify-between">
           <p suppressHydrationWarning>
             © {year} {site.name} {site.descriptor}
+            {usesPhotos && (
+              <span className="mt-1 block sm:mt-0 sm:ml-3 sm:inline">
+                Fotos: KI-generierte Symbolbilder
+              </span>
+            )}
           </p>
           <p className="flex gap-5">
             <a href={links.to('impressum')} className="transition-colors hover:text-gold-300">

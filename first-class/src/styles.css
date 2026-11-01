@@ -655,6 +655,56 @@ html:not(.reveal-ready) .process-line {
   animation: none;
 }
 
+/* Foto-Variante der Außenansicht: Licht geht an, Kamera taucht ins Schloss */
+.intro-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+  background: #0b0c0e;
+  will-change: opacity;
+}
+.intro-photo.is-ready {
+  visibility: visible;
+  animation: photo-on 1.2s ease-out both;
+}
+.intro-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--fx) var(--fy);
+  transform-origin: var(--fx) var(--fy);
+  will-change: transform, filter;
+}
+.intro-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(75% 65% at var(--fx) var(--fy), transparent 35%, rgb(5 6 7 / 0.6));
+  pointer-events: none;
+}
+@keyframes photo-on {
+  0% {
+    filter: brightness(0.12);
+  }
+  20% {
+    filter: brightness(0.55);
+  }
+  28% {
+    filter: brightness(0.2);
+  }
+  45% {
+    filter: brightness(0.9);
+  }
+  52% {
+    filter: brightness(0.5);
+  }
+  70%,
+  100% {
+    filter: brightness(1);
+  }
+}
+
 .intro-brand {
   position: absolute;
   top: max(1.75rem, 7vh);
@@ -792,6 +842,7 @@ html:not(.reveal-ready) .process-line {
 .intro.is-open .intro-caption,
 .intro.is-open .intro-skip,
 .intro.is-open .intro-progress,
+.intro.is-open .intro-photo,
 .intro.is-open .intro-exterior {
   opacity: 0 !important;
   transition: opacity 0.3s ease;

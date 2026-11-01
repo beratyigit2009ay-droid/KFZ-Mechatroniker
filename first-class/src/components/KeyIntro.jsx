@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { KEY_HOME, KEY_OUT, RIGHT_CUTS, buildProfile, createRefs, drawCylinder } from '../lock.js'
 import CylinderScene, { CylinderDefs } from './CylinderScene.jsx'
 import { LogoMark } from './Logo.jsx'
+import { photos } from '../photos.generated.js'
 
 /**
  * Intro der Startseite.
  *
- * Vollversion (erster Besuch): Haustür bei Nacht, das Licht geht an, die
- * Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar, der
+ * Vollversion (erster Besuch): Haustür bei Nacht (Foto, falls vorhanden,
+ * sonst Zeichnung), das Licht geht an, die Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar, der
  * Schlüssel hebt die Stifte bis zur Scherlinie, dreht – und die Seite öffnet
  * sich genau entlang der Scherlinie.
  * Kurzversion (spätere Besuche): nur Schlüssel, Scherlinie, Öffnen.
@@ -51,6 +52,18 @@ const TIMELINES = {
 }
 
 const PROFILE = buildProfile(RIGHT_CUTS)
+
+// Foto der Haustür für die Kamerafahrt; `focus` = Lage des Schlosses im Bild (0–1).
+const DOOR = photos.introDoor
+const DOOR_FOCUS = DOOR?.focus ?? [0.5, 0.58]
+const PHOTO_WAIT = 900 // so lange darf das Foto zum Laden brauchen, sonst Zeichnung
+
+/** Foto-Kamerafahrt: Bild wird zum Schloss hin vergrößert und unscharf. */
+function photoFrame(img, zoom) {
+  const blur = Math.max(0, (zoom - 0.5) / 0.5) * 7
+  img.style.transform = `scale(${(1 + zoom * 5).toFixed(4)})`
+  img.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : ''
+}
 
 const LEGEND = [
   { label: 'Schlüssel', swatch: 'linear-gradient(135deg,#f3e6c6,#c49e56)' },
@@ -200,6 +213,7 @@ export default function KeyIntro() {
   const rootRef = useRef(null)
   const barRef = useRef(null)
   const exteriorRef = useRef(null)
+  const photoRef = useRef(null)
   const stepRef = useRef(null)
   const refs = useRef(createRefs(2))
 
@@ -229,6 +243,12 @@ export default function KeyIntro() {
     root.classList.add(`is-${mode}`)
     const exterior = exteriorRef.current
     if (!T.zoom && exterior) exterior.style.display = 'none'
+    const photoImg = photoRef.current
+    const photoWrap = photoImg?.parentElement
+    // Erst mit dem Foto, wenn es rechtzeitig geladen ist – sonst die Zeichnung.
+    // Bis das feststeht, bleibt die Bühne dunkel.
+    let usePhoto = false
+    if (photoImg && T.zoom && exterior) exterior.style.visibility = 'hidden'
 
     let raf = 0
     let opened = false
@@ -262,6 +282,7 @@ export default function KeyIntro() {
       cancelAnimationFrame(raf)
       drawCylinder(refs.current, { keyX: KEY_HOME, profile: PROFILE, xray: 1 })
       if (exterior) exterior.style.opacity = '0'
+      if (photoWrap) photoWrap.style.opacity = '0'
       showStep(T.steps.length - 1)
       root.classList.add('labels-on', 'aligned', 'turned', 'is-open')
       if (barRef.current) barRef.current.style.transform = 'scaleX(1)'
@@ -273,13 +294,19 @@ export default function KeyIntro() {
       if (!start) start = now
       const t = now - start
 
-      if (exterior && T.zoom) {
+      if (T.zoom) {
         const zoom = easeInCubic(progress(t, T.zoom))
-        exterior.setAttribute(
-          'viewBox',
-          exteriorViewBox(zoom, window.innerWidth / window.innerHeight),
-        )
-        exterior.style.opacity = String(1 - progress(t, T.exteriorFade))
+        const fade = String(1 - progress(t, T.exteriorFade))
+        if (usePhoto) {
+          photoFrame(photoImg, zoom)
+          photoWrap.style.opacity = fade
+        } else if (exterior) {
+          exterior.setAttribute(
+            'viewBox',
+            exteriorViewBox(zoom, window.innerWidth / window.innerHeight),
+          )
+          exterior.style.opacity = fade
+        }
       }
 
       const keyX = KEY_OUT + (KEY_HOME - KEY_OUT) * easeOutCubic(progress(t, T.key))
@@ -297,11 +324,25 @@ export default function KeyIntro() {
     }
 
     // Erst starten, wenn der Tab sichtbar ist – sonst verpasst man das Intro.
+    let ready = false
     const begin = () => {
-      if (document.hidden || raf || opened) return
+      if (!ready || document.hidden || raf || opened) return
       raf = requestAnimationFrame(frame)
     }
     const onVisibility = () => begin()
+    let waitTimer = 0
+    const prepare = (photoOk) => {
+      if (ready) return
+      ready = true
+      window.clearTimeout(waitTimer)
+      usePhoto = photoOk
+      if (photoWrap) photoWrap.classList.toggle('is-ready', photoOk)
+      if (exterior) {
+        exterior.style.visibility = ''
+        if (photoOk) exterior.style.display = 'none'
+      }
+      begin()
+    }
 
     const onKey = (event) => {
       if (['Escape', 'Enter', ' ', 'ArrowDown', 'PageDown'].includes(event.key)) open()
@@ -311,11 +352,20 @@ export default function KeyIntro() {
     window.addEventListener('keydown', onKey)
     window.addEventListener('fc:skip-intro', open)
     document.addEventListener('visibilitychange', onVisibility)
-    begin()
+    if (photoImg && T.zoom) {
+      waitTimer = window.setTimeout(() => prepare(false), PHOTO_WAIT)
+      photoImg
+        .decode()
+        .then(() => prepare(photoImg.naturalWidth > 0))
+        .catch(() => prepare(false))
+    } else {
+      prepare(false)
+    }
 
     return () => {
       cancelAnimationFrame(raf)
       window.clearTimeout(finishTimer)
+      window.clearTimeout(waitTimer)
       window.removeEventListener('wheel', open)
       window.removeEventListener('touchmove', open)
       window.removeEventListener('keydown', onKey)
@@ -342,6 +392,24 @@ export default function KeyIntro() {
       </div>
 
       <Exterior svgRef={exteriorRef} />
+      {DOOR && (
+        <div
+          className="intro-photo"
+          style={{ '--fx': `${DOOR_FOCUS[0] * 100}%`, '--fy': `${DOOR_FOCUS[1] * 100}%` }}
+        >
+          <img
+            ref={photoRef}
+            src={DOOR.src}
+            srcSet={DOOR.srcSet}
+            sizes="100vw"
+            width={DOOR.width}
+            height={DOOR.height}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )}
 
       <div className="intro-brand">
         <LogoMark className="h-11 w-11 text-gold-400" />
