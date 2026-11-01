@@ -9,15 +9,15 @@
  * - public/favicon.svg
  * - src/components/logo.generated.js  Pfade für das Logo auf der Website
  *
- * Aufbau: rundes Siegel mit Handwerker im Profil, daneben „FIRST CLASS“,
- * darunter ein Schlüssel als Linie und „SCHLÜSSELDIENST“.
+ * Aufbau: rundes Siegel mit Handwerker und Schlüssel (scripts/trace-emblem.mjs),
+ * daneben „FIRST CLASS“, eine Goldlinie und „SCHLÜSSELDIENST“.
  */
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { site } from '../src/config.js'
-import { craftsmanEmblem, font, keyRule, textPath } from './logo-lib.mjs'
+import { font, textPath, tracedEmblem } from './logo-lib.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const brand = path.join(root, 'brand')
@@ -32,7 +32,7 @@ const heavy = font('@fontsource/barlow-semi-condensed', 800)
 const bold = font('@fontsource/barlow-semi-condensed', 700)
 const sizeForCap = (f, cap) => cap / (f['OS/2'].capHeight / f.unitsPerEm)
 
-const emblem = craftsmanEmblem()
+const emblem = tracedEmblem()
 
 // ---------- Schriftblock (Ursprung links oben) ----------
 const WORD_CAP = 48
@@ -42,17 +42,16 @@ const word = textPath(heavy, 'FIRST CLASS', {
   y: WORD_CAP,
   tracking: 0.05,
 })
-const KEY_Y = WORD_CAP + 17
-const key = keyRule(7.5, KEY_Y, word.width - 7.5)
-const SUB_CAP = 12.5
+const RULE = { y: WORD_CAP + 14, h: 3 }
+const SUB_CAP = 13
 const sub = textPath(bold, 'SCHLÜSSELDIENST', {
   size: sizeForCap(bold, SUB_CAP),
-  x: key.textStart,
-  y: KEY_Y + 9 + SUB_CAP,
-  width: key.textEnd - key.textStart,
+  x: 1,
+  y: RULE.y + RULE.h + 12 + SUB_CAP,
+  width: word.width - 2,
 })
 const BLOCK_W = word.width
-const BLOCK_H = KEY_Y + 9 + SUB_CAP
+const BLOCK_H = RULE.y + RULE.h + 12 + SUB_CAP
 
 // ---------- Querformat: Siegel links, Schrift rechts ----------
 const H_HEIGHT = 120
@@ -67,9 +66,8 @@ const textColor = (scheme) => (scheme === 'dark' ? COLORS.cream : COLORS.anthrac
 function emblemSvg(transform) {
   return [
     `<g transform="${transform}">`,
-    `<path fill="${COLORS.anthracite}" fill-rule="evenodd" d="${emblem.disc}"/>`,
-    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${emblem.ring}"/>`,
-    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${emblem.figure}"/>`,
+    `<path fill="${COLORS.anthracite}" fill-rule="evenodd" d="${emblem.dark}"/>`,
+    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${emblem.gold}"/>`,
     '</g>',
   ].join('')
 }
@@ -78,7 +76,7 @@ function blockSvg(scheme, dx, dy) {
   return [
     `<g transform="translate(${dx.toFixed(2)} ${dy.toFixed(2)})">`,
     `<path fill="${textColor(scheme)}" d="${word.d}"/>`,
-    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${key.d}"/>`,
+    `<rect fill="${COLORS.gold}" x="1" y="${RULE.y}" width="${(word.width - 2).toFixed(2)}" height="${RULE.h}"/>`,
     `<path fill="${COLORS.gold}" d="${sub.d}"/>`,
     '</g>',
   ].join('')
@@ -166,12 +164,11 @@ const generated = {
   width: H_WIDTH,
   height: H_HEIGHT,
   emblemScale: EMBLEM_SCALE,
-  ring: emblem.ring,
-  disc: emblem.disc,
-  figure: emblem.figure,
+  dark: emblem.dark,
+  gold: emblem.gold,
   text: { x: TX, y: Number(TY.toFixed(2)) },
   word: word.d,
-  key: key.d,
+  rule: { y: RULE.y, w: Number((word.width - 2).toFixed(2)), h: RULE.h },
   sub: sub.d,
 }
 await writeFile(

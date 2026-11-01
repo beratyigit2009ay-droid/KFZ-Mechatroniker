@@ -5,13 +5,12 @@ const GOLD = '#c49e56'
 const ANTHRACITE = '#15171a'
 const CREAM = '#f7f2e8'
 
-/** Rundes Siegel mit Handwerker im Profil. */
+/** Rundes Siegel: Handwerker mit Schlüssel über der Schulter. */
 function Emblem({ scale }) {
   return (
     <g transform={`scale(${scale})`}>
-      <path fill={ANTHRACITE} fillRule="evenodd" d={logo.disc} />
-      <path fill={GOLD} fillRule="evenodd" d={logo.ring} />
-      <path fill={GOLD} fillRule="evenodd" d={logo.figure} />
+      <path fill={ANTHRACITE} fillRule="evenodd" d={logo.dark} />
+      <path fill={GOLD} fillRule="evenodd" d={logo.gold} />
     </g>
   )
 }
@@ -25,7 +24,7 @@ export function LogoMark({ className = 'h-12 w-12' }) {
 }
 
 /**
- * Vollständiges Logo: Siegel, „FIRST CLASS“, Schlüssel-Linie, „SCHLÜSSELDIENST“.
+ * Vollständiges Logo: Siegel, „FIRST CLASS“, Goldlinie, „SCHLÜSSELDIENST“.
  * `tone="light"` = für dunkle Flächen (heller Schriftzug).
  */
 export default function Logo({ tone = 'light', className = 'h-12 w-auto lg:h-14' }) {
@@ -39,7 +38,7 @@ export default function Logo({ tone = 'light', className = 'h-12 w-auto lg:h-14'
       <Emblem scale={logo.emblemScale} />
       <g transform={`translate(${logo.text.x} ${logo.text.y})`}>
         <path fill={tone === 'light' ? CREAM : ANTHRACITE} d={logo.word} />
-        <path fill={GOLD} fillRule="evenodd" d={logo.key} />
+        <rect fill={GOLD} x="1" y={logo.rule.y} width={logo.rule.w} height={logo.rule.h} />
         <path fill={GOLD} d={logo.sub} />
       </g>
     </svg>

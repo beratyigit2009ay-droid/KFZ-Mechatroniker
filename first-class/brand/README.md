@@ -1,8 +1,13 @@
 # FIRST CLASS – Logo
 
-Rundes Siegel mit einem Handwerker im Profil (Mütze, Vollbart, Arbeitsjacke),
-daneben der kräftige Schriftzug „FIRST CLASS“, darunter ein Schlüssel als Linie
-und „SCHLÜSSELDIENST“ – in Gold und Anthrazit wie die Website.
+Rundes Siegel mit einem Handwerker (Schiebermütze, Vollbart, Arbeitsjacke), der
+einen großen Schlüssel über der Schulter trägt. Daneben der kräftige Schriftzug
+„FIRST CLASS“, eine Goldlinie und „SCHLÜSSELDIENST“ – in Gold und Anthrazit
+wie die Website.
+
+Die Figur wurde mit der Bild-KI von Canva erzeugt (`quelle/emblem-canva.png`)
+und mit `npm run logo:emblem` in Vektorflächen umgewandelt; die Kreisringe sind
+geometrisch exakt neu konstruiert.
 
 Alle Dateien sind Vektorgrafiken; die Schrift ist in Pfade umgewandelt. Sie
 lassen sich daher ohne Schriftarten öffnen und direkt plotten.
@@ -37,9 +42,10 @@ liegt als eigene Fläche vor, ohne Verläufe.
 - **Getönte Heckscheibe:** `logo-dunkel` (Schrift creme, Siegel gold).
 
 Die genauen Maße legt der Folierer am Fahrzeug fest (Türgriff, Sicken, Sensoren).
-Bei 60 cm Breite sind die feinsten Details (Ohr, Mützenband) etwa 1,3–2 mm
-stark – plottbar, der Folierer sollte sie beim Entgittern aber prüfen. Für kleine Aufkleber unter etwa
-15 cm Breite besser nur das Siegel oder den Schriftzug verwenden.
+Das Siegel enthält feine Details (Gesicht, Bart, Finger). Auf der Tür (Siegel
+ca. 13 cm Durchmesser) sind sie plottbar, der Folierer sollte sie beim Entgittern
+aber prüfen. Für kleine Aufkleber unter etwa 20 cm Breite besser nur den
+Schriftzug verwenden oder das Siegel drucken statt plotten.
 
 ## Neu erzeugen
 
@@ -47,5 +53,8 @@ stark – plottbar, der Folierer sollte sie beim Entgittern aber prüfen. Für k
 npm run logo
 ```
 
-Die Fassungen entstehen aus `scripts/logo.mjs` und `scripts/logo-lib.mjs`. Die
+Die Fassungen entstehen aus `scripts/logo.mjs` und `scripts/logo-lib.mjs`; das
+Siegel aus `scripts/trace-emblem.mjs` (`npm run logo:emblem`). Bei einer höher
+aufgelösten Vorlage `quelle/emblem-canva.png` ersetzen und beide Befehle
+ausführen. Die
 Telefonnummer der Türbeschriftung kommt aus `src/config.js`.

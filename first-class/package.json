@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "illustrations": "node scripts/illustrations.mjs",
     "photos": "node scripts/photos.mjs",
-    "logo": "node scripts/logo.mjs"
+    "logo": "node scripts/logo.mjs",
+    "logo:emblem": "node scripts/trace-emblem.mjs"
   },
   "dependencies": {
     "@fontsource-variable/cormorant-garamond": "^5.3.0",
@@ -24,6 +25,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "fontkit": "^2.0.4",
     "paper": "^0.12.20",
+    "potrace": "^2.1.8",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.4"
