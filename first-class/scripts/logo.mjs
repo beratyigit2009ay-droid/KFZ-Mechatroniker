@@ -8,13 +8,16 @@
  * - brand/png/*.png   Rastergrafiken mit transparentem Hintergrund
  * - public/favicon.svg
  * - src/components/logo.generated.js  Pfade für das Logo auf der Website
+ *
+ * Aufbau: rundes Siegel mit Handwerker im Profil, daneben „FIRST CLASS“,
+ * darunter ein Schlüssel als Linie und „SCHLÜSSELDIENST“.
  */
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { site } from '../src/config.js'
-import { emblemParts, font, textPath } from './logo-lib.mjs'
+import { craftsmanEmblem, font, keyRule, textPath } from './logo-lib.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const brand = path.join(root, 'brand')
@@ -29,63 +32,54 @@ const heavy = font('@fontsource/barlow-semi-condensed', 800)
 const bold = font('@fontsource/barlow-semi-condensed', 700)
 const sizeForCap = (f, cap) => cap / (f['OS/2'].capHeight / f.unitsPerEm)
 
-const emblem = emblemParts()
+const emblem = craftsmanEmblem()
 
-// ---------- Querformat: Schild links, Schriftzug rechts ----------
-const TX = 126
+// ---------- Schriftblock (Ursprung links oben) ----------
+const WORD_CAP = 48
 const word = textPath(heavy, 'FIRST CLASS', {
-  size: sizeForCap(heavy, 52),
-  x: TX,
-  y: 64,
-  tracking: 0.06,
+  size: sizeForCap(heavy, WORD_CAP),
+  x: 0,
+  y: WORD_CAP,
+  tracking: 0.05,
 })
-const rule = { x: TX + 1, y: 79, w: word.width - 2, h: 3 }
+const KEY_Y = WORD_CAP + 17
+const key = keyRule(7.5, KEY_Y, word.width - 7.5)
+const SUB_CAP = 12.5
 const sub = textPath(bold, 'SCHLÜSSELDIENST', {
-  size: sizeForCap(bold, 15.5),
-  x: TX + 1,
-  y: 109,
-  width: word.width - 2,
+  size: sizeForCap(bold, SUB_CAP),
+  x: key.textStart,
+  y: KEY_Y + 9 + SUB_CAP,
+  width: key.textEnd - key.textStart,
 })
-const H_WIDTH = Math.ceil(TX + word.width + 2)
+const BLOCK_W = word.width
+const BLOCK_H = KEY_Y + 9 + SUB_CAP
+
+// ---------- Querformat: Siegel links, Schrift rechts ----------
 const H_HEIGHT = 120
+const EMBLEM_SCALE = H_HEIGHT / emblem.size
+const TX = H_HEIGHT + 24
+const TY = (H_HEIGHT - BLOCK_H) / 2
+const H_WIDTH = Math.ceil(TX + BLOCK_W + 1)
 
-/** Farbschema: `light` für helle Flächen (weißes Auto), `dark` für dunkle. */
-function palette(scheme) {
-  return scheme === 'dark'
-    ? {
-        frame: COLORS.gold,
-        inner: COLORS.gold,
-        keyhole: null,
-        text: COLORS.cream,
-        accent: COLORS.gold,
-      }
-    : {
-        frame: COLORS.gold,
-        inner: COLORS.anthracite,
-        keyhole: COLORS.gold,
-        text: COLORS.anthracite,
-        accent: COLORS.gold,
-      }
-}
+/** `light` = für helle Flächen (weißes Auto), `dark` = für dunkle Flächen. */
+const textColor = (scheme) => (scheme === 'dark' ? COLORS.cream : COLORS.anthracite)
 
-function emblemSvg(scheme, transform = '') {
-  const c = palette(scheme)
+function emblemSvg(transform) {
   return [
-    `<g${transform ? ` transform="${transform}"` : ''}>`,
-    `<path fill="${c.frame}" fill-rule="evenodd" d="${emblem.frame}"/>`,
-    `<path fill="${c.inner}" fill-rule="evenodd" d="${emblem.inner}"/>`,
-    c.keyhole ? `<path fill="${c.keyhole}" d="${emblem.keyhole}"/>` : '',
+    `<g transform="${transform}">`,
+    `<path fill="${COLORS.anthracite}" fill-rule="evenodd" d="${emblem.disc}"/>`,
+    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${emblem.ring}"/>`,
+    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${emblem.figure}"/>`,
     '</g>',
   ].join('')
 }
 
-function wordmarkSvg(scheme, dx = 0, dy = 0) {
-  const c = palette(scheme)
+function blockSvg(scheme, dx, dy) {
   return [
-    `<g transform="translate(${dx} ${dy})">`,
-    `<path fill="${c.text}" d="${word.d}"/>`,
-    `<rect fill="${c.accent}" x="${rule.x}" y="${rule.y}" width="${rule.w.toFixed(2)}" height="${rule.h}"/>`,
-    `<path fill="${c.accent}" d="${sub.d}"/>`,
+    `<g transform="translate(${dx.toFixed(2)} ${dy.toFixed(2)})">`,
+    `<path fill="${textColor(scheme)}" d="${word.d}"/>`,
+    `<path fill="${COLORS.gold}" fill-rule="evenodd" d="${key.d}"/>`,
+    `<path fill="${COLORS.gold}" d="${sub.d}"/>`,
     '</g>',
   ].join('')
 }
@@ -94,25 +88,29 @@ const svgDoc = (w, h, body, title) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"><title>${title}</title>${body}</svg>\n`
 
 const horizontal = (scheme) =>
-  svgDoc(H_WIDTH, H_HEIGHT, emblemSvg(scheme) + wordmarkSvg(scheme), 'FIRST CLASS Schlüsseldienst')
+  svgDoc(
+    H_WIDTH,
+    H_HEIGHT,
+    emblemSvg(`scale(${EMBLEM_SCALE})`) + blockSvg(scheme, TX, TY),
+    'FIRST CLASS Schlüsseldienst',
+  )
 
-// ---------- Hochformat: Schild oben, Schriftzug darunter ----------
+// ---------- Hochformat: Siegel oben, Schrift darunter ----------
 function stacked(scheme) {
-  const scale = 1.5
-  const W = Math.ceil(word.width) + 8
-  const top = 120 * scale + 30
+  const W = Math.ceil(BLOCK_W + 8)
+  const E = 170
+  const H = Math.ceil(E + 26 + BLOCK_H + 4)
   return svgDoc(
     W,
-    Math.ceil(top + 112),
-    emblemSvg(scheme, `translate(${((W - 100 * scale) / 2).toFixed(2)} 0) scale(${scale})`) +
-      wordmarkSvg(scheme, 4 - TX, top),
+    H,
+    emblemSvg(`translate(${((W - E) / 2).toFixed(2)} 0) scale(${E / emblem.size})`) +
+      blockSvg(scheme, 4, E + 26),
     'FIRST CLASS Schlüsseldienst',
   )
 }
 
 // ---------- Autotür: Logo + Notdienst-Nummer ----------
 function carDoor() {
-  const c = palette('light')
   const label = textPath(bold, '24 H NOTDIENST · AUGSBURG & GERSTHOFEN', {
     size: sizeForCap(bold, 13),
     x: 1,
@@ -128,20 +126,19 @@ function carDoor() {
     y: 232,
     tracking: 0.03,
   })
-  const H = 240
   return svgDoc(
     H_WIDTH,
-    H,
-    emblemSvg('light') +
-      wordmarkSvg('light') +
-      `<path fill="${c.accent}" d="${label.d}"/>` +
-      `<path fill="${c.text}" d="${phone.d}"/>`,
+    240,
+    emblemSvg(`scale(${EMBLEM_SCALE})`) +
+      blockSvg('light', TX, TY) +
+      `<path fill="${COLORS.gold}" d="${label.d}"/>` +
+      `<path fill="${COLORS.anthracite}" d="${phone.d}"/>`,
     'FIRST CLASS Schlüsseldienst – Fahrzeugbeschriftung',
   )
 }
 
-// ---------- Emblem allein (Favicon, Profilbild) ----------
-const emblemOnly = (scheme) => svgDoc(100, 120, emblemSvg(scheme), 'FIRST CLASS')
+// ---------- Siegel allein (Favicon, Profilbild, Stempel) ----------
+const emblemOnly = () => svgDoc(200, 200, emblemSvg('scale(1)'), 'FIRST CLASS')
 
 const files = {
   'logo-hell.svg': horizontal('light'),
@@ -149,31 +146,32 @@ const files = {
   'logo-hochformat-hell.svg': stacked('light'),
   'logo-hochformat-dunkel.svg': stacked('dark'),
   'logo-autotuer.svg': carDoor(),
-  'emblem-hell.svg': emblemOnly('light'),
-  'emblem-dunkel.svg': emblemOnly('dark'),
+  'emblem.svg': emblemOnly(),
 }
 
 await mkdir(path.join(brand, 'png'), { recursive: true })
 for (const [name, svg] of Object.entries(files)) {
   await writeFile(path.join(brand, name), svg)
   await sharp(Buffer.from(svg), { density: 600 })
-    .resize({ width: name.startsWith('emblem') ? 1000 : 2400 })
+    .resize({ width: name.startsWith('emblem') ? 1200 : 2400 })
     .png()
     .toFile(path.join(brand, 'png', name.replace('.svg', '.png')))
   console.log(`✓ brand/${name}`)
 }
 
-await writeFile(path.join(root, 'public/favicon.svg'), files['emblem-hell.svg'])
+await writeFile(path.join(root, 'public/favicon.svg'), files['emblem.svg'])
 console.log('✓ public/favicon.svg')
 
 const generated = {
   width: H_WIDTH,
   height: H_HEIGHT,
-  frame: emblem.frame,
-  inner: emblem.inner,
-  keyhole: emblem.keyhole,
+  emblemScale: EMBLEM_SCALE,
+  ring: emblem.ring,
+  disc: emblem.disc,
+  figure: emblem.figure,
+  text: { x: TX, y: Number(TY.toFixed(2)) },
   word: word.d,
-  rule: { x: rule.x, y: rule.y, w: Number(rule.w.toFixed(2)), h: rule.h },
+  key: key.d,
   sub: sub.d,
 }
 await writeFile(

@@ -6,6 +6,7 @@
 import * as fontkit from 'fontkit'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import paper from 'paper/dist/paper-core.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const fontCache = new Map()
@@ -94,4 +95,74 @@ export function emblemParts({ band = 6.5, gap = 3.2 } = {}) {
     inner: shield(band + gap) + hole,
     keyhole: hole,
   }
+}
+
+// ---------------------------------------------------------------------------
+// Emblem „Handwerker“: Mann im Profil mit Mütze und Vollbart im runden Siegel.
+// Formen werden mit paper.js verrechnet, damit jede Farbe eine saubere,
+// überschneidungsfreie Fläche ist (wichtig zum Plotten).
+// ---------------------------------------------------------------------------
+paper.setup(new paper.Size(1000, 1000))
+const P = paper
+const pCircle = (cx, cy, rad) => new P.Path.Circle(new P.Point(cx, cy), rad)
+const pRect = (x, y, w, h) => new P.Path.Rectangle(new P.Rectangle(x, y, w, h))
+const pPath = (d) => new P.CompoundPath(d)
+
+// Silhouette, Zeichenfläche 200 × 200, Blick nach rechts.
+const MAN = `M-4 212C2 186 22 166 50 156C62 152 70 147 73 140C74 135 74 131 74 128
+C68 121 65 112 63 101C61 92 61 84 62 77C59 75 58 71 60 68C66 46 84 31 106 29
+C120 28 131 33 136 42C138 46 138 50 136 53C143 55 150 57 156 60C158 62 157 64 154 64
+L135 64C135 69 136 73 135 77C134 80 133 82 133 84C137 89 142 93 146 97
+C147 99 146 100 143 101L138 102C139 104 139 105 138 106C140 107 140 109 138 110
+C139 112 139 113 137 114C141 118 142 124 141 130C140 137 135 142 128 144
+C122 145 117 144 113 143C113 148 114 151 117 154C138 157 162 164 180 176
+C192 184 200 198 204 212Z`
+
+// Details als Aussparungen: Mützenband, Ohr, Kragen der Arbeitsjacke.
+const MAN_CUTS = [
+  'M61 72C85 64 112 60 136 59L136 62C112 63 86 67 62 75Z',
+  'M94 88C94 82 102 80 105 86C107 91 106 98 101 101L99 99C102 96 103 91 101 87C99 84 96 85 96 89Z',
+  'M76 147C90 156 106 160 119 158L134 186L130 188L117 162C103 164 88 159 74 151Z',
+]
+
+/** Siegel mit Handwerker: ring (gold), disc (anthrazit, Figur ausgespart), figure (gold). */
+export function craftsmanEmblem() {
+  let figure = pPath(MAN)
+  for (const cut of MAN_CUTS) figure = figure.subtract(pPath(cut))
+  const ring = pCircle(100, 100, 100).subtract(pCircle(100, 100, 91))
+  const disc = pCircle(100, 100, 87)
+  const fig = figure.intersect(disc)
+  return {
+    size: 200,
+    ring: ring.pathData,
+    disc: disc.subtract(fig).pathData,
+    figure: fig.pathData,
+  }
+}
+
+/**
+ * Schlüssel als Linie: Reide links (Mitte bei x, y), Halm bis x + length,
+ * Bart rechts unten. Liefert Pfad und Maße für die Unterzeile.
+ */
+export function keyRule(
+  x,
+  y,
+  length,
+  { bowR = 7.5, holeR = 3, shaft = 3.4, bitW = 22, bitH = 12 } = {},
+) {
+  let k = pCircle(x, y, bowR)
+  k = k.unite(pRect(x + bowR - 1, y - 4.2, 2.6, 8.4))
+  k = k.unite(pRect(x + bowR + 2.6, y - shaft / 2, 1.6, shaft))
+  k = k.unite(pRect(x + bowR + 4.2, y - 3.4, 2.4, 6.8))
+  k = k.unite(pRect(x + bowR + 6, y - shaft / 2, length - bowR - 6, shaft))
+  const bx = x + length - bitW
+  const t = bitW / 5
+  const top = y + shaft / 2 - 0.3
+  k = k.unite(
+    pPath(
+      `M${bx} ${top}V${top + bitH}H${bx + t}V${top + bitH - 4}H${bx + 2 * t}V${top + bitH}H${bx + 3 * t}V${top + bitH - 5.5}H${bx + 4 * t}V${top + bitH - 2}H${x + length}V${top}Z`,
+    ),
+  )
+  k = k.subtract(pCircle(x, y, holeR))
+  return { d: k.pathData, textStart: x + bowR + 10, textEnd: bx - 8 }
 }

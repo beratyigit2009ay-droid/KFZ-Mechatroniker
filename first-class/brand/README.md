@@ -1,8 +1,11 @@
 # FIRST CLASS – Logo
 
-Schild mit Schlüsselloch und kräftigem Schriftzug, in Gold und Anthrazit wie die
-Website. Alle Dateien sind Vektorgrafiken; die Schrift ist in Pfade umgewandelt.
-Sie lassen sich daher ohne Schriftarten öffnen und direkt plotten.
+Rundes Siegel mit einem Handwerker im Profil (Mütze, Vollbart, Arbeitsjacke),
+daneben der kräftige Schriftzug „FIRST CLASS“, darunter ein Schlüssel als Linie
+und „SCHLÜSSELDIENST“ – in Gold und Anthrazit wie die Website.
+
+Alle Dateien sind Vektorgrafiken; die Schrift ist in Pfade umgewandelt. Sie
+lassen sich daher ohne Schriftarten öffnen und direkt plotten.
 
 ## Dateien
 
@@ -12,7 +15,7 @@ Sie lassen sich daher ohne Schriftarten öffnen und direkt plotten.
 | `logo-dunkel.svg` / `pdf/logo-dunkel.pdf` | Querformat für dunkle Flächen, z. B. getönte Heckscheibe, Website |
 | `logo-autotuer.svg` / `pdf/logo-autotuer.pdf` | Fahrzeugtür: Logo mit 24-h-Notdienst und Telefonnummer |
 | `logo-hochformat-hell.svg` / `-dunkel.svg` | Hochformat, z. B. Heckklappe, Schaufenster, Social-Media-Profil |
-| `emblem-hell.svg` / `emblem-dunkel.svg` | Nur das Schild, z. B. Favicon, Stempel, kleine Flächen |
+| `emblem.svg` / `pdf/emblem.pdf` | Nur das Siegel, z. B. Favicon, Profilbild, Stempel, kleine Flächen |
 | `png/` | Dieselben Motive als PNG mit transparentem Hintergrund |
 
 ## Farben
@@ -29,12 +32,14 @@ liegt als eigene Fläche vor, ohne Verläufe.
 
 ## Mercedes C-Klasse (weiß) – Vorschlag
 
-- **Fahrer- und Beifahrertür:** `logo-autotuer` ca. 60 cm breit (ca. 26 cm hoch).
+- **Fahrer- und Beifahrertür:** `logo-autotuer` ca. 60 cm breit (ca. 27 cm hoch).
 - **Heckklappe:** `logo-hell` ca. 40–45 cm breit.
-- **Getönte Heckscheibe:** `logo-dunkel` (Schrift creme, Schild gold).
+- **Getönte Heckscheibe:** `logo-dunkel` (Schrift creme, Siegel gold).
 
 Die genauen Maße legt der Folierer am Fahrzeug fest (Türgriff, Sicken, Sensoren).
-Bei 60 cm Breite sind die feinsten Linien rund 3 mm stark und damit gut plottbar.
+Bei 60 cm Breite sind die feinsten Details (Ohr, Mützenband) etwa 1,3–2 mm
+stark – plottbar, der Folierer sollte sie beim Entgittern aber prüfen. Für kleine Aufkleber unter etwa
+15 cm Breite besser nur das Siegel oder den Schriftzug verwenden.
 
 ## Neu erzeugen
 

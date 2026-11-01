@@ -413,7 +413,7 @@ export default function KeyIntro() {
       )}
 
       <div className="intro-brand">
-        <Logo className="h-12 w-auto sm:h-14" />
+        <Logo className="h-14 w-auto sm:h-16" />
       </div>
       <div className="intro-caption" aria-hidden="true">
         <ul className="intro-legend">
