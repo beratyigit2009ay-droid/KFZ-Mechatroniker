@@ -718,29 +718,9 @@ html:not(.reveal-ready) .process-line {
   left: 50%;
   display: flex;
   align-items: center;
-  gap: 0.9rem;
   transform: translateX(-50%);
-  white-space: nowrap;
   animation: fade 0.9s var(--ease-soft) 0.1s both;
 }
-.intro-brand-name {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  line-height: 1;
-}
-.intro-brand-sub {
-  display: block;
-  margin-top: 0.4rem;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.46em;
-  text-transform: uppercase;
-  color: var(--color-gold-400);
-}
-
 .intro-caption {
   position: absolute;
   left: 0;

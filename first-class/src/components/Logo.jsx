@@ -1,38 +1,44 @@
-export function LogoMark({ className = 'h-10 w-10' }) {
+import { logo } from './logo.generated.js'
+
+// Logo-Farben – identisch mit den Dateien in brand/ (scripts/logo.mjs).
+const GOLD = '#c49e56'
+const ANTHRACITE = '#15171a'
+const CREAM = '#f7f2e8'
+
+/** Schild mit Schlüsselloch. `tone="light"` = für dunkle Flächen. */
+function Emblem({ tone }) {
+  const onDark = tone === 'light'
   return (
-    <svg viewBox="0 0 40 40" className={className} aria-hidden="true" focusable="false">
-      <circle cx="20" cy="20" r="19" fill="none" stroke="currentColor" strokeWidth="1" />
-      <circle
-        cx="20"
-        cy="20"
-        r="15.6"
-        fill="none"
-        stroke="currentColor"
-        strokeOpacity="0.4"
-        strokeWidth="0.6"
-      />
-      <circle cx="20" cy="16.4" r="3.5" fill="currentColor" />
-      <path d="M18.1 18.9 17 27.4h6l-1.1-8.5z" fill="currentColor" />
+    <>
+      <path fill={GOLD} fillRule="evenodd" d={logo.frame} />
+      <path fill={onDark ? GOLD : ANTHRACITE} fillRule="evenodd" d={logo.inner} />
+      {!onDark && <path fill={GOLD} d={logo.keyhole} />}
+    </>
+  )
+}
+
+export function LogoMark({ className = 'h-12 w-auto', tone = 'light' }) {
+  return (
+    <svg viewBox="0 0 100 120" className={className} aria-hidden="true" focusable="false">
+      <Emblem tone={tone} />
     </svg>
   )
 }
 
-export default function Logo({ tone = 'light', compact = false }) {
-  const text = tone === 'light' ? 'text-white' : 'text-ink-900'
-  const sub = tone === 'light' ? 'text-gold-400' : 'text-gold-700'
+/** Vollständiges Logo: Schild, „FIRST CLASS“, Linie, „SCHLÜSSELDIENST“. */
+export default function Logo({ tone = 'light', className = 'h-11 w-auto lg:h-12' }) {
+  const onDark = tone === 'light'
   return (
-    <span className="flex items-center gap-3">
-      <LogoMark className={`${compact ? 'h-9 w-9' : 'h-10 w-10'} shrink-0 text-gold-400`} />
-      <span className="leading-none">
-        <span
-          className={`block font-display text-[1.42rem] font-semibold tracking-[0.2em] ${text}`}
-        >
-          FIRST CLASS
-        </span>
-        <span className={`mt-1.5 block text-[0.56rem] font-semibold tracking-[0.46em] uppercase ${sub}`}>
-          Schlüsseldienst
-        </span>
-      </span>
-    </span>
+    <svg
+      viewBox={`0 0 ${logo.width} ${logo.height}`}
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <Emblem tone={tone} />
+      <path fill={onDark ? CREAM : ANTHRACITE} d={logo.word} />
+      <rect fill={GOLD} x={logo.rule.x} y={logo.rule.y} width={logo.rule.w} height={logo.rule.h} />
+      <path fill={GOLD} d={logo.sub} />
+    </svg>
   )
 }

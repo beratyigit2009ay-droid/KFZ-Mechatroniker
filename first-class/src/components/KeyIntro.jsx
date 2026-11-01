@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { KEY_HOME, KEY_OUT, RIGHT_CUTS, buildProfile, createRefs, drawCylinder } from '../lock.js'
 import CylinderScene, { CylinderDefs } from './CylinderScene.jsx'
-import { LogoMark } from './Logo.jsx'
+import Logo from './Logo.jsx'
 import { photos } from '../photos.generated.js'
 
 /**
@@ -413,11 +413,7 @@ export default function KeyIntro() {
       )}
 
       <div className="intro-brand">
-        <LogoMark className="h-11 w-11 text-gold-400" />
-        <span>
-          <span className="intro-brand-name">FIRST CLASS</span>
-          <span className="intro-brand-sub">Schlüsseldienst</span>
-        </span>
+        <Logo className="h-12 w-auto sm:h-14" />
       </div>
       <div className="intro-caption" aria-hidden="true">
         <ul className="intro-legend">

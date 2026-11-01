@@ -105,6 +105,13 @@ eigenen Website.
 `public/og-image.png` ist das Vorschaubild für geteilte Links. Es wird verwendet, sobald
 in `src/config.js` die `url` eingetragen ist.
 
+## Logo
+
+Das Logo (Schild mit Schlüsselloch, Schriftzug in Gold und Anthrazit) liegt mit
+allen Fassungen in `brand/` – als SVG, PDF und PNG, inklusive Fassung für die
+Fahrzeugtür. Hinweise für den Folierer stehen in `brand/README.md`. Neu erzeugen
+mit `npm run logo` (aktualisiert auch das Logo der Website und das Favicon).
+
 ## Entwicklung
 
 ```bash
@@ -113,6 +120,7 @@ npm run dev      # Entwicklungsserver
 npm run build    # baut dist/ und rendert alle Seiten vor
 npm run illustrations  # Illustrationen neu erzeugen
 npm run photos   # Fotos laden und als WebP aufbereiten
+npm run logo     # Logo-Dateien und Website-Logo erzeugen
 npm run preview  # fertige Website lokal ansehen
 ```
 
@@ -131,6 +139,8 @@ src/
   components/      Header, Footer, Buttons, Icons, Logo …
 scripts/prerender.mjs   erzeugt statisches HTML + Meta-Angaben je Seite
 scripts/photos.mjs      lädt Fotos und erzeugt WebP-Größen
+scripts/logo.mjs        erzeugt das Logo in allen Fassungen (brand/)
+brand/                  Logo-Dateien für Druck und Folierung
 ```
 
 Schriften (Cormorant Garamond, Manrope) sind lokal eingebunden – es werden keine
