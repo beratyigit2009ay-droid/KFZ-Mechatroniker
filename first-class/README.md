@@ -48,13 +48,12 @@ Die Startseite beginnt mit einem kurzen Intro:
 
 Kurze Texte erklären jeden Schritt. Verhalten:
 
-- **Erster Besuch:** Vollversion (ca. 5 Sekunden). **Spätere Besuche:** Kurzversion
-  (ca. 2 Sekunden). **Innerhalb einer Sitzung:** kein Intro mehr.
-- Kein Intro bei Direktlinks (z. B. `#kontakt`, `?anliegen=…`), bei Klicks innerhalb
-  der Website, bei „Bewegung reduzieren“ oder im Datensparmodus.
+- Läuft bei **jedem Aufruf** der Startseite, auch nach Neuladen (F5).
+- Kein Intro bei Direktlinks (z. B. `#kontakt`, `?anliegen=…`) und wenn im System
+  „Bewegung reduzieren“ aktiv ist.
 - Startet erst, wenn der Tab sichtbar ist; jederzeit überspringbar (Button, Esc,
   Scrollen).
-- `#intro` an die Adresse anhängen zeigt die Vollversion erneut.
+- `#intro` an die Adresse anhängen erzwingt das Intro.
 - Code: `src/components/KeyIntro.jsx`, Entscheidungslogik in `scripts/prerender.mjs`;
   zum Entfernen die Zeile mit `<KeyIntro />` in `src/App.jsx` löschen.
 

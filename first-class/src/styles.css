@@ -651,9 +651,6 @@ html:not(.reveal-ready) .process-line {
     opacity: 1;
   }
 }
-.intro.is-short .intro-lamp {
-  animation: none;
-}
 
 .intro-brand {
   position: absolute;

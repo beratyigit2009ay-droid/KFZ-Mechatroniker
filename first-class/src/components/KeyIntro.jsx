@@ -4,50 +4,32 @@ import CylinderScene, { CylinderDefs } from './CylinderScene.jsx'
 import { LogoMark } from './Logo.jsx'
 
 /**
- * Intro der Startseite.
+ * Intro der Startseite – läuft bei jedem Aufruf (auch nach F5).
  *
- * Vollversion (erster Besuch): Haustür bei Nacht, das Licht geht an, die
- * Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar, der
- * Schlüssel hebt die Stifte bis zur Scherlinie, dreht – und die Seite öffnet
- * sich genau entlang der Scherlinie.
- * Kurzversion (spätere Besuche): nur Schlüssel, Scherlinie, Öffnen.
+ * Haustür bei Nacht, das Licht geht an, die Kamera fährt auf das Schloss zu,
+ * die Tür wird im Schnitt sichtbar, der Schlüssel hebt die Stifte bis zur
+ * Scherlinie, dreht – und die Seite öffnet sich genau entlang der Scherlinie.
  *
- * Ob und welche Version läuft, entscheidet ein Skript im <head>
- * (scripts/prerender.mjs), damit vor dem ersten Bild nichts aufblitzt.
+ * Ob das Intro läuft, entscheidet ein Skript im <head> (scripts/prerender.mjs),
+ * damit vor dem ersten Bild nichts aufblitzt.
  */
 
-const TIMELINES = {
-  full: {
-    zoom: [350, 1500],
-    exteriorFade: [1250, 1600],
-    xray: [1450, 2050],
-    key: [1850, 3650],
-    aligned: 3650,
-    turn: 3850,
-    open: 4550,
-    done: 5500,
-    steps: [
-      [1450, 'Blick in den Schließzylinder'],
-      [2350, 'Der Schlüssel hebt die Stifte an'],
-      [3650, 'Alle Stifte stehen auf der Scherlinie'],
-      [3850, 'Der Kern dreht sich – die Tür ist offen'],
-    ],
-  },
-  short: {
-    zoom: null,
-    exteriorFade: null,
-    xray: null,
-    key: [150, 1150],
-    aligned: 1150,
-    turn: 1250,
-    open: 1850,
-    done: 2800,
-    steps: [
-      [0, 'Der Schlüssel hebt die Stifte an'],
-      [1150, 'Alle Stifte stehen auf der Scherlinie'],
-      [1250, 'Die Tür ist offen'],
-    ],
-  },
+// Zeitplan in Millisekunden
+const T = {
+  zoom: [350, 1500],
+  exteriorFade: [1250, 1600],
+  xray: [1450, 2050],
+  key: [1850, 3650],
+  aligned: 3650,
+  turn: 3850,
+  open: 4550,
+  done: 5500,
+  steps: [
+    [1450, 'Blick in den Schließzylinder'],
+    [2350, 'Der Schlüssel hebt die Stifte an'],
+    [3650, 'Alle Stifte stehen auf der Scherlinie'],
+    [3850, 'Der Kern dreht sich – die Tür ist offen'],
+  ],
 }
 
 const PROFILE = buildProfile(RIGHT_CUTS)
@@ -61,7 +43,7 @@ const LEGEND = [
 ]
 
 const clamp = (v) => Math.min(1, Math.max(0, v))
-const progress = (t, range) => (range ? clamp((t - range[0]) / (range[1] - range[0])) : 1)
+const progress = (t, [a, b]) => clamp((t - a) / (b - a))
 const easeOutCubic = (x) => 1 - (1 - x) ** 3
 const easeInCubic = (x) => x ** 3
 const easeInOut = (x) => (x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2)
@@ -217,18 +199,9 @@ export default function KeyIntro() {
       return
     }
     window.clearTimeout(window.__fcIntroFailsafe)
-    try {
-      sessionStorage.setItem('fc-intro', '1')
-      localStorage.setItem('fc-intro-seen', '1')
-    } catch {
-      /* Speicher gesperrt – dann läuft das Intro bei jedem Besuch */
-    }
 
-    const T = TIMELINES[mode]
     const root = rootRef.current
-    root.classList.add(`is-${mode}`)
     const exterior = exteriorRef.current
-    if (!T.zoom && exterior) exterior.style.display = 'none'
 
     let raf = 0
     let opened = false
@@ -273,7 +246,7 @@ export default function KeyIntro() {
       if (!start) start = now
       const t = now - start
 
-      if (exterior && T.zoom) {
+      if (exterior) {
         const zoom = easeInCubic(progress(t, T.zoom))
         exterior.setAttribute(
           'viewBox',
@@ -287,7 +260,7 @@ export default function KeyIntro() {
 
       const current = T.steps.reduce((acc, [at], i) => (t >= at ? i : acc), -1)
       if (current >= 0) showStep(current)
-      if (!T.xray || t > T.xray[1] - 250) root.classList.add('labels-on')
+      if (t > T.xray[1] - 250) root.classList.add('labels-on')
       if (t > T.aligned) root.classList.add('aligned')
       if (t > T.turn) root.classList.add('turned')
       if (barRef.current) barRef.current.style.transform = `scaleX(${clamp(t / T.open).toFixed(3)})`
