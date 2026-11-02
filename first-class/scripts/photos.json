@@ -42,13 +42,5 @@
   "keys": {
     "url": "https://cdn.acedata2.cloud/nanobanana/079a42f863c8a8fc14dcb1a5db5917fe584a735d045694e82a5e8de31706a33e.jpg",
     "alt": ""
-  },
-  "introDoor": {
-    "url": "https://cdn.acedata2.cloud/nanobanana/b1f980fa8f3aaf06dddd0cd22c5ed45c7556e0cf5548174e6ded3d8c58e40495.jpg",
-    "alt": "",
-    "focus": [
-      0.646,
-      0.58
-    ]
   }
 }

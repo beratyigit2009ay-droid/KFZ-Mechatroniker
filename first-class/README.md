@@ -40,8 +40,10 @@ Unterordner und auch beim direkten Öffnen der `index.html` im Browser.
 
 Die Startseite beginnt mit einem kurzen Intro:
 
-1. Haustür bei Nacht, die Wandleuchte schaltet sich ein.
-2. Die Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar.
+1. Das Löwen-Logo erscheint: die Goldringe zeichnen sich, ein Lichtschimmer läuft
+   über das Siegel, der Schriftzug baut sich auf.
+2. Die Kamera fährt in den Schlüssel im Maul des Löwen – derselbe Schlüssel wird
+   im Schnitt durch den Zylinder sichtbar.
 3. Der Schlüssel hebt Kernstifte (Messing) und Gehäusestifte (Stahl) an – die
    Stifte bewegen sich passend zu den Zacken des Schlüssels.
 4. Alle Trennfugen liegen auf der Scherlinie, der Schlüssel dreht, warmes Licht
@@ -87,9 +89,6 @@ erzeugt daraus `public/images/photos/<name>-<breite>.webp` und schreibt
 gleichnamige Illustration; die Seiten laden je nach Bildschirm die passende Größe.
 Fehlt ein Foto, bleibt an dieser Stelle die Illustration.
 
-- **Intro:** Mit dem Foto `introDoor` beginnt das Intro an der echten Haustür und
-  fährt ins Schloss. `focus` in `scripts/photos.json` gibt die Lage des Schlosses im
-  Bild an (Anteil von Breite und Höhe, 0–1). Ohne Foto läuft die gezeichnete Tür.
 - **Ladengeschäft:** Das Foto `shop` erscheint im Bereich „Ladengeschäft“ mit dem
   Hinweis „Symbolbild“, weil es nicht den echten Laden zeigt.
 - Sobald Fotos eingebunden sind, steht im Footer „Fotos: KI-generierte Symbolbilder“.

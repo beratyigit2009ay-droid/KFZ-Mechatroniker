@@ -619,96 +619,125 @@ html:not(.reveal-ready) .process-line {
   top: -100%;
 }
 
-/* Außenansicht mit Kamerafahrt */
-.intro-exterior {
+/* Auftakt: großes Löwen-Logo, danach Kamerafahrt in den Schlüssel */
+.intro-logo {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  will-change: opacity;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.4rem, 4.5vh, 2.6rem);
+  background:
+    radial-gradient(55% 45% at 50% 44%, rgb(196 158 86 / 0.16), transparent 72%),
+    #0b0c0e;
+  will-change: transform, opacity, filter;
 }
-.intro-lamp {
-  animation: lamp-on 1.1s steps(1, end) 0.15s both;
-}
-@keyframes lamp-on {
-  0% {
-    opacity: 0;
-  }
-  18% {
-    opacity: 0.55;
-  }
-  26% {
-    opacity: 0.1;
-  }
-  40% {
-    opacity: 0.9;
-  }
-  48% {
-    opacity: 0.35;
-  }
-  60%,
-  100% {
-    opacity: 1;
-  }
-}
-.intro.is-short .intro-lamp {
-  animation: none;
-}
-
-/* Foto-Variante der Außenansicht: Licht geht an, Kamera taucht ins Schloss */
-.intro-photo {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #0b0c0e;
-  will-change: opacity;
-}
-.intro-photo.is-off {
+.intro.is-short .intro-logo {
   display: none;
 }
-.intro-photo img {
-  visibility: hidden;
+.intro-logo-emblem {
+  width: min(64vw, 44vh, 25rem);
+  height: auto;
+  overflow: visible;
 }
-.intro-photo.is-ready img {
-  visibility: visible;
+.intro-logo-word {
+  width: min(76vw, 52vh, 30rem);
+  height: auto;
+  overflow: visible;
 }
-.intro-photo.is-ready {
-  animation: photo-on 1.2s ease-out both;
+.il-dark,
+.il-gold,
+.il-shine,
+.il-word,
+.il-rule,
+.il-sub {
+  opacity: 0;
 }
-.intro-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--fx) var(--fy);
-  transform-origin: var(--fx) var(--fy);
-  will-change: transform, filter;
+.il-ring {
+  opacity: 0;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
 }
-.intro-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(75% 65% at var(--fx) var(--fy), transparent 35%, rgb(5 6 7 / 0.6));
-  pointer-events: none;
+.il-rule,
+.il-shine {
+  transform-box: fill-box;
+  transform-origin: center;
 }
-@keyframes photo-on {
+.intro.is-full .intro-logo-emblem {
+  animation: il-settle 1.4s var(--ease-soft) both;
+}
+.intro.is-full .il-ring {
+  animation: il-draw 1.35s cubic-bezier(0.65, 0, 0.35, 1) 0.05s both;
+}
+.intro.is-full .il-dark {
+  animation: fade 0.7s ease-out 0.05s both;
+}
+.intro.is-full .il-gold {
+  animation: fade 0.7s ease-out 0.6s both;
+}
+.intro.is-full .il-shine {
+  animation: il-shine 1.1s cubic-bezier(0.45, 0, 0.25, 1) 1.05s both;
+}
+.intro.is-full .il-word {
+  animation: il-rise 0.7s var(--ease-soft) 0.8s both;
+}
+.intro.is-full .il-rule {
+  animation: il-rule 0.7s var(--ease-soft) 1.05s both;
+}
+.intro.is-full .il-sub {
+  animation: il-rise 0.7s var(--ease-soft) 1.25s both;
+}
+@keyframes il-settle {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes il-draw {
   0% {
-    filter: brightness(0.12);
+    opacity: 1;
+    stroke-dashoffset: 1;
   }
-  20% {
-    filter: brightness(0.55);
+  70% {
+    opacity: 1;
+    stroke-dashoffset: 0;
   }
-  28% {
-    filter: brightness(0.2);
-  }
-  45% {
-    filter: brightness(0.9);
-  }
-  52% {
-    filter: brightness(0.5);
-  }
-  70%,
   100% {
-    filter: brightness(1);
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes il-shine {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(320px);
+  }
+}
+@keyframes il-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes il-rule {
+  from {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
   }
 }
 
@@ -720,6 +749,10 @@ html:not(.reveal-ready) .process-line {
   align-items: center;
   transform: translateX(-50%);
   animation: fade 0.9s var(--ease-soft) 0.1s both;
+}
+/* In der Vollversion erst nach dem großen Logo */
+.intro:not(.is-short) .intro-brand {
+  animation-delay: 2.7s;
 }
 .intro-caption {
   position: absolute;
@@ -829,8 +862,7 @@ html:not(.reveal-ready) .process-line {
 .intro.is-open .intro-caption,
 .intro.is-open .intro-skip,
 .intro.is-open .intro-progress,
-.intro.is-open .intro-photo,
-.intro.is-open .intro-exterior {
+.intro.is-open .intro-logo {
   opacity: 0 !important;
   transition: opacity 0.3s ease;
 }

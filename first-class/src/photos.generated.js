@@ -76,16 +76,5 @@ export const photos = {
     "width": 2752,
     "height": 1536,
     "alt": ""
-  },
-  "introDoor": {
-    "src": "images/photos/introDoor-1200.webp",
-    "srcSet": "images/photos/introDoor-480.webp 480w, images/photos/introDoor-800.webp 800w, images/photos/introDoor-1200.webp 1200w, images/photos/introDoor-1536.webp 1536w",
-    "width": 1536,
-    "height": 2752,
-    "alt": "",
-    "focus": [
-      0.646,
-      0.58
-    ]
   }
 }

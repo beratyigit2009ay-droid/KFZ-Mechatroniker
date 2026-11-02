@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { KEY_HOME, KEY_OUT, RIGHT_CUTS, buildProfile, createRefs, drawCylinder } from '../lock.js'
 import CylinderScene, { CylinderDefs } from './CylinderScene.jsx'
 import Logo from './Logo.jsx'
-import { photos } from '../photos.generated.js'
+import { logo } from './logo.generated.js'
 
 /**
  * Intro der Startseite.
  *
- * Vollversion (erster Besuch): Haustür bei Nacht (Foto, falls vorhanden,
- * sonst Zeichnung), das Licht geht an, die Kamera fährt auf das Schloss zu, die Tür wird im Schnitt sichtbar, der
- * Schlüssel hebt die Stifte bis zur Scherlinie, dreht – und die Seite öffnet
- * sich genau entlang der Scherlinie.
+ * Vollversion (erster Besuch): Das Löwen-Logo erscheint – Ringe zeichnen sich,
+ * ein Lichtschimmer läuft über das Siegel, der Schriftzug baut sich auf. Dann
+ * fährt die Kamera in den Schlüssel im Maul des Löwen; derselbe Schlüssel
+ * gleitet im Schnitt in den Zylinder, hebt die Stifte bis zur Scherlinie,
+ * dreht – und die Seite öffnet sich genau entlang der Scherlinie.
  * Kurzversion (spätere Besuche): nur Schlüssel, Scherlinie, Öffnen.
  *
  * Ob und welche Version läuft, entscheidet ein Skript im <head>
@@ -19,24 +20,24 @@ import { photos } from '../photos.generated.js'
 
 const TIMELINES = {
   full: {
-    zoom: [350, 1500],
-    exteriorFade: [1250, 1600],
-    xray: [1450, 2050],
-    key: [1850, 3650],
-    aligned: 3650,
-    turn: 3850,
-    open: 4550,
-    done: 5500,
+    zoom: [1750, 2700],
+    logoFade: [2500, 2850],
+    xray: [2650, 3150],
+    key: [2750, 4300],
+    aligned: 4300,
+    turn: 4500,
+    open: 5150,
+    done: 6100,
     steps: [
-      [1450, 'Blick in den Schließzylinder'],
-      [2350, 'Der Schlüssel hebt die Stifte an'],
-      [3650, 'Alle Stifte stehen auf der Scherlinie'],
-      [3850, 'Der Kern dreht sich – die Tür ist offen'],
+      [2650, 'Blick in den Schließzylinder'],
+      [3300, 'Der Schlüssel hebt die Stifte an'],
+      [4300, 'Alle Stifte stehen auf der Scherlinie'],
+      [4500, 'Der Kern dreht sich – die Tür ist offen'],
     ],
   },
   short: {
     zoom: null,
-    exteriorFade: null,
+    logoFade: null,
     xray: null,
     key: [150, 1150],
     aligned: 1150,
@@ -53,16 +54,73 @@ const TIMELINES = {
 
 const PROFILE = buildProfile(RIGHT_CUTS)
 
-// Foto der Haustür für die Kamerafahrt; `focus` = Lage des Schlosses im Bild (0–1).
-const DOOR = photos.introDoor
-const DOOR_FOCUS = DOOR?.focus ?? [0.5, 0.58]
-const PHOTO_WAIT = 900 // so lange darf das Foto zum Laden brauchen, sonst Zeichnung
+// Lage des Schlüssels im Maul des Löwen (Anteil am Siegel) – Ziel der Kamerafahrt.
+const KEY_FOCUS = [0.75, 0.55]
+const GOLD = '#c49e56'
+const ANTHRACITE = '#15171a'
+const CREAM = '#f7f2e8'
+const WORD_W = logo.rule.w + 2
+const WORD_H = logo.rule.y + logo.rule.h + 25
 
-/** Foto-Kamerafahrt: Bild wird zum Schloss hin vergrößert und unscharf. */
-function photoFrame(img, zoom) {
-  const blur = Math.max(0, (zoom - 0.5) / 0.5) * 7
-  img.style.transform = `scale(${(1 + zoom * 8).toFixed(4)})`
-  img.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : ''
+/** Kamerafahrt in den Schlüssel: vergrößern, zum Ende hin unscharf. */
+function zoomFrame(el, zoom) {
+  const blur = Math.max(0, (zoom - 0.45) / 0.55) * 8
+  el.style.transform = `scale(${(1 + zoom * 15).toFixed(4)})`
+  el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : ''
+}
+
+/** Großes Logo für den Auftakt; die Teile werden per CSS nacheinander eingeblendet. */
+function IntroLogo({ logoRef, emblemRef }) {
+  return (
+    <div ref={logoRef} className="intro-logo" aria-hidden="true">
+      <svg ref={emblemRef} className="intro-logo-emblem" viewBox="0 0 200 200" focusable="false">
+        <defs>
+          <clipPath id="il-gold-clip">
+            <path clipRule="evenodd" d={logo.gold} />
+          </clipPath>
+          <linearGradient id="il-shine" x1="0" x2="1">
+            <stop offset="0" stopColor="#fff6dc" stopOpacity="0" />
+            <stop offset=".5" stopColor="#fff6dc" stopOpacity=".85" />
+            <stop offset="1" stopColor="#fff6dc" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path className="il-dark" fill={ANTHRACITE} fillRule="evenodd" d={logo.dark} />
+        <path className="il-gold" fill={GOLD} fillRule="evenodd" d={logo.gold} />
+        <g clipPath="url(#il-gold-clip)">
+          <rect
+            className="il-shine"
+            x="-90"
+            y="-40"
+            width="70"
+            height="280"
+            fill="url(#il-shine)"
+          />
+        </g>
+        <circle
+          className="il-ring"
+          cx="100"
+          cy="100"
+          r="95.1"
+          fill="none"
+          stroke={GOLD}
+          strokeWidth="2.8"
+          pathLength="1"
+        />
+      </svg>
+      <svg className="intro-logo-word" viewBox={`0 0 ${WORD_W} ${WORD_H}`} focusable="false">
+        <path className="il-word" fill={CREAM} d={logo.word} />
+        <rect
+          className="il-rule"
+          fill={GOLD}
+          x="1"
+          y={logo.rule.y}
+          width={logo.rule.w}
+          height={logo.rule.h}
+        />
+        <path className="il-sub" fill={GOLD} d={logo.sub} />
+      </svg>
+    </div>
+  )
 }
 
 const LEGEND = [
@@ -79,141 +137,12 @@ const easeOutCubic = (x) => 1 - (1 - x) ** 3
 const easeInCubic = (x) => x ** 3
 const easeInOut = (x) => (x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2)
 
-// Kamerafahrt in der Außenansicht: von der ganzen Tür bis auf den Zylinder.
-// Der Ausschnitt hat immer das Seitenverhältnis des Bildschirms.
-const LOCK_POINT = [596, 640]
-function exteriorViewBox(zoom, aspect) {
-  const h0 = Math.max(920, 430 / aspect) // hochkant: Tür und Leuchte bleiben ganz im Bild
-  const h = h0 * (26 / h0) ** zoom
-  const w = h * aspect
-  const cx = 530 + (LOCK_POINT[0] - 530) * zoom
-  const cy = 500 + (LOCK_POINT[1] - 500) * zoom
-  return `${(cx - w / 2).toFixed(2)} ${(cy - h / 2).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`
-}
-
-/** Außenansicht: moderne Haustür bei Nacht mit Wandleuchte. */
-function Exterior({ svgRef }) {
-  return (
-    <svg
-      ref={svgRef}
-      className="intro-exterior"
-      viewBox="0 0 1000 1000"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <linearGradient id="ix-wall" x1="0" x2="1">
-          <stop offset="0" stopColor="#101214" />
-          <stop offset=".5" stopColor="#1a1d21" />
-          <stop offset="1" stopColor="#0f1113" />
-        </linearGradient>
-        <linearGradient id="ix-warm" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffe2ad" />
-          <stop offset=".55" stopColor="#e9b766" />
-          <stop offset="1" stopColor="#a8762e" />
-        </linearGradient>
-        <linearGradient id="ix-leaf" x1="0" x2="1">
-          <stop offset="0" stopColor="#262a2f" />
-          <stop offset="1" stopColor="#131518" />
-        </linearGradient>
-        <linearGradient id="ix-gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f3e6c6" />
-          <stop offset=".5" stopColor="#d5b475" />
-          <stop offset="1" stopColor="#8a6a2c" />
-        </linearGradient>
-        <linearGradient id="ix-beam" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffd38a" stopOpacity=".42" />
-          <stop offset="1" stopColor="#ffd38a" stopOpacity="0" />
-        </linearGradient>
-        <radialGradient id="ix-glow">
-          <stop offset="0" stopColor="#f0c47a" stopOpacity=".35" />
-          <stop offset="1" stopColor="#f0c47a" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <rect x="-3000" y="-3000" width="7000" height="7000" fill="#0c0d0f" />
-      <rect x="-3000" y="0" width="7000" height="900" fill="url(#ix-wall)" />
-      <g stroke="#ffffff" strokeOpacity=".035">
-        {Array.from({ length: 16 }, (_, i) => (
-          <path key={i} d={`M${-20 + i * 70} 0V900`} />
-        ))}
-      </g>
-
-      {/* Wandleuchte, schaltet sich ein */}
-      <g className="intro-lamp">
-        <path d="M688 330L612 900H800L728 330Z" fill="url(#ix-beam)" />
-        <ellipse cx="560" cy="560" rx="300" ry="380" fill="url(#ix-glow)" />
-      </g>
-      <rect
-        x="690"
-        y="284"
-        width="36"
-        height="46"
-        rx="4"
-        fill="#24272c"
-        stroke="#c49e56"
-        strokeOpacity=".7"
-      />
-      <rect className="intro-lamp" x="695" y="324" width="26" height="5" rx="2" fill="#ffe3b0" />
-
-      {/* Tür mit Glasseitenteil */}
-      <rect
-        x="372"
-        y="172"
-        width="256"
-        height="728"
-        fill="#0b0c0e"
-        stroke="url(#ix-gold)"
-        strokeWidth="3"
-      />
-      <rect x="384" y="184" width="54" height="716" fill="url(#ix-warm)" opacity=".9" />
-      <g stroke="#7a5420" strokeOpacity=".4">
-        {Array.from({ length: 22 }, (_, i) => (
-          <path key={i} d={`M384 ${212 + i * 31}H438`} />
-        ))}
-      </g>
-      <rect x="446" y="184" width="170" height="716" fill="url(#ix-leaf)" />
-      <g stroke="#c49e56" strokeOpacity=".16">
-        {[476, 506, 536, 566].map((x) => (
-          <path key={x} d={`M${x} 210V870`} />
-        ))}
-      </g>
-      <rect x="586" y="380" width="8" height="200" rx="4" fill="url(#ix-gold)" />
-      <rect x="578" y="398" width="10" height="5" rx="2" fill="url(#ix-gold)" />
-      <rect x="578" y="556" width="10" height="5" rx="2" fill="url(#ix-gold)" />
-
-      {/* Schutzbeschlag mit Profilzylinder – Ziel der Kamerafahrt */}
-      <rect
-        x="584"
-        y="612"
-        width="24"
-        height="58"
-        rx="7"
-        fill="#202328"
-        stroke="url(#ix-gold)"
-        strokeWidth="1.4"
-      />
-      <g transform="translate(596 632) scale(0.36)">
-        <path
-          d="M-10 13.75A17 17 0 1 1 10 13.75V49Q10 53 6 53H-6Q-10 53-10 49Z"
-          fill="url(#ix-gold)"
-        />
-        <path d="M0-8V9" stroke="#1a1408" strokeWidth="2.6" strokeLinecap="round" />
-      </g>
-
-      <rect x="-3000" y="900" width="7000" height="4000" fill="#0b0c0e" />
-      <path d="M-3000 900H4000" stroke="url(#ix-gold)" strokeWidth="2" />
-      <path d="M372 900L300 1000H700L628 900Z" fill="#ffd38a" opacity=".06" />
-    </svg>
-  )
-}
-
 export default function KeyIntro() {
   const [done, setDone] = useState(false)
   const rootRef = useRef(null)
   const barRef = useRef(null)
-  const exteriorRef = useRef(null)
-  const photoRef = useRef(null)
+  const logoRef = useRef(null)
+  const emblemRef = useRef(null)
   const stepRef = useRef(null)
   const refs = useRef(createRefs(2))
 
@@ -241,14 +170,8 @@ export default function KeyIntro() {
     const T = TIMELINES[mode]
     const root = rootRef.current
     root.classList.add(`is-${mode}`)
-    const exterior = exteriorRef.current
-    if (!T.zoom && exterior) exterior.style.display = 'none'
-    const photoImg = photoRef.current
-    const photoWrap = photoImg?.parentElement
-    // Erst mit dem Foto, wenn es rechtzeitig geladen ist – sonst die Zeichnung.
-    // Bis das feststeht, bleibt die Bühne dunkel.
-    let usePhoto = false
-    if (photoImg && T.zoom && exterior) exterior.style.visibility = 'hidden'
+    const logoEl = logoRef.current
+    let originSet = false
 
     let raf = 0
     let opened = false
@@ -281,8 +204,7 @@ export default function KeyIntro() {
       opened = true
       cancelAnimationFrame(raf)
       drawCylinder(refs.current, { keyX: KEY_HOME, profile: PROFILE, xray: 1 })
-      if (exterior) exterior.style.opacity = '0'
-      if (photoWrap) photoWrap.style.opacity = '0'
+      if (logoEl) logoEl.style.opacity = '0'
       showStep(T.steps.length - 1)
       root.classList.add('labels-on', 'aligned', 'turned', 'is-open')
       if (barRef.current) barRef.current.style.transform = 'scaleX(1)'
@@ -294,19 +216,18 @@ export default function KeyIntro() {
       if (!start) start = now
       const t = now - start
 
-      if (T.zoom) {
-        const zoom = easeInCubic(progress(t, T.zoom))
-        const fade = String(1 - progress(t, T.exteriorFade))
-        if (usePhoto) {
-          photoFrame(photoImg, zoom)
-          photoWrap.style.opacity = fade
-        } else if (exterior) {
-          exterior.setAttribute(
-            'viewBox',
-            exteriorViewBox(zoom, window.innerWidth / window.innerHeight),
-          )
-          exterior.style.opacity = fade
+      if (T.zoom && logoEl && t >= T.zoom[0]) {
+        if (!originSet) {
+          // Kamerafahrt zielt auf den Schlüssel im Maul des Löwen.
+          const box = logoEl.getBoundingClientRect()
+          const e = emblemRef.current.getBoundingClientRect()
+          const ox = e.left - box.left + e.width * KEY_FOCUS[0]
+          const oy = e.top - box.top + e.height * KEY_FOCUS[1]
+          logoEl.style.transformOrigin = `${ox.toFixed(1)}px ${oy.toFixed(1)}px`
+          originSet = true
         }
+        zoomFrame(logoEl, easeInCubic(progress(t, T.zoom)))
+        logoEl.style.opacity = String(1 - progress(t, T.logoFade))
       }
 
       const keyX = KEY_OUT + (KEY_HOME - KEY_OUT) * easeOutCubic(progress(t, T.key))
@@ -324,26 +245,11 @@ export default function KeyIntro() {
     }
 
     // Erst starten, wenn der Tab sichtbar ist – sonst verpasst man das Intro.
-    let ready = false
     const begin = () => {
-      if (!ready || document.hidden || raf || opened) return
+      if (document.hidden || raf || opened) return
       raf = requestAnimationFrame(frame)
     }
     const onVisibility = () => begin()
-    let waitTimer = 0
-    const prepare = (photoOk) => {
-      if (ready) return
-      ready = true
-      window.clearTimeout(waitTimer)
-      usePhoto = photoOk
-      // Bis hierher deckt die dunkle Fotofläche die Bühne ab.
-      if (photoWrap) photoWrap.classList.add(photoOk ? 'is-ready' : 'is-off')
-      if (exterior) {
-        exterior.style.visibility = ''
-        if (photoOk) exterior.style.display = 'none'
-      }
-      begin()
-    }
 
     const onKey = (event) => {
       if (['Escape', 'Enter', ' ', 'ArrowDown', 'PageDown'].includes(event.key)) open()
@@ -353,20 +259,11 @@ export default function KeyIntro() {
     window.addEventListener('keydown', onKey)
     window.addEventListener('fc:skip-intro', open)
     document.addEventListener('visibilitychange', onVisibility)
-    if (photoImg && T.zoom) {
-      waitTimer = window.setTimeout(() => prepare(false), PHOTO_WAIT)
-      photoImg
-        .decode()
-        .then(() => prepare(photoImg.naturalWidth > 0))
-        .catch(() => prepare(false))
-    } else {
-      prepare(false)
-    }
+    begin()
 
     return () => {
       cancelAnimationFrame(raf)
       window.clearTimeout(finishTimer)
-      window.clearTimeout(waitTimer)
       window.removeEventListener('wheel', open)
       window.removeEventListener('touchmove', open)
       window.removeEventListener('keydown', onKey)
@@ -392,25 +289,7 @@ export default function KeyIntro() {
         </svg>
       </div>
 
-      <Exterior svgRef={exteriorRef} />
-      {DOOR && (
-        <div
-          className="intro-photo"
-          style={{ '--fx': `${DOOR_FOCUS[0] * 100}%`, '--fy': `${DOOR_FOCUS[1] * 100}%` }}
-        >
-          <img
-            ref={photoRef}
-            src={DOOR.src}
-            srcSet={DOOR.srcSet}
-            sizes="100vw"
-            width={DOOR.width}
-            height={DOOR.height}
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      )}
+      <IntroLogo logoRef={logoRef} emblemRef={emblemRef} />
 
       <div className="intro-brand">
         <Logo className="h-14 w-auto sm:h-16" />
