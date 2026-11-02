@@ -1197,6 +1197,141 @@ body.still .bw-go .bw-star-r,body.still .bw-go .bw-star{animation:none}
   .bw-star-r{opacity:0}
   .bw-mq-track{transform:none}
 }
+/* ===== Bereich: standorte ===== */
+/* Alle Standorte: echte Karte (Natural Earth), Pfeile von Haunstetten zu jedem Echte Bärliner */
+.st{position:relative;background:var(--ink);padding:112px 0;border-top:1px solid var(--line)}
+.st-top{display:grid;grid-template-columns:1.15fr 1fr;gap:20px 48px;align-items:end;margin-bottom:44px}
+.st-top .display{margin-top:16px}
+.st-lead{margin:0;max-width:430px;justify-self:end;font-size:clamp(17px,1.5vw,19px);line-height:1.55;color:var(--muted-2)}
+
+.st-maps{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.st-map,.st-lens{position:relative;margin:0;border-radius:28px;overflow:hidden;background:#12110E;box-shadow:inset 0 0 0 1px var(--line)}
+.st-svg.st-svg-p{display:none}
+.st-lens{display:flex;flex-direction:column;gap:6px;padding:26px 16px 14px}
+.st-lens-cap{display:flex;flex-direction:column;gap:8px;padding:0 8px;font-size:14px;line-height:1.45;color:var(--muted)}
+.st-lens-svg{width:100%;max-width:440px;margin:auto}
+.st-svg{display:block;width:100%;height:auto;font-family:inherit}
+.st-map>.st-svg{position:relative;z-index:1}
+.st-map>.st-svg.st-base{position:absolute;z-index:0;left:0;top:0;pointer-events:none;will-change:transform}   /* Grundkarte: eigene Ebene */
+.st-u{transform:scale(var(--u))}                 /* Schrift, Punkte, Pfeilspitzen: gleiche Pixelgröße auf jedem Bildschirm */
+.st-de{fill:#18160F}
+.st-by{fill:#1E1B15}
+.st-lake{fill:#1D272D}
+.st-river{fill:none;stroke:#2C3A41;stroke-width:calc(1.4px * var(--u));stroke-linecap:round;stroke-linejoin:round}
+.st-state{fill:none;stroke:rgba(245,240,230,.15);stroke-width:calc(1px * var(--u));stroke-dasharray:calc(4px * var(--u)) calc(4px * var(--u))}
+.st-border{fill:none;stroke:rgba(245,240,230,.28);stroke-width:calc(1.2px * var(--u));stroke-linejoin:round}
+.st-region{fill:rgba(245,240,230,.12);font-size:calc(11px * var(--u));font-weight:800;letter-spacing:.3em;font-stretch:125%}
+
+.st-route{transition:opacity .25s}
+.st-arc{fill:none;stroke:var(--gold);stroke-width:calc(1.6px * var(--u));stroke-linecap:round;opacity:.8;transition:stroke .2s,stroke-width .2s,opacity .2s}
+.st-soon .st-arc{stroke-dasharray:.012 .014;opacity:.6}
+.st-far .st-arc{stroke-dasharray:.006 .01;stroke-width:calc(1.3px * var(--u));opacity:.6}
+.st-svg .st-head{fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.st-pt{cursor:pointer;transition:opacity .25s}
+.st-hit{fill:transparent}
+.st-dot{fill:var(--gold);stroke:#0F0E0C;stroke-width:2.5;transition:fill .2s,transform .2s}
+.st-home .st-dot{fill:var(--gold-hi);stroke-width:3}
+.st-soon .st-dot{fill:#12110E;stroke:var(--gold);stroke-width:1.8;stroke-dasharray:2.6 2}
+.st-pulse{opacity:0;animation:stPulse 3s ease-out 4}   /* ein paar Mal, dann Ruhe: die große Karte muss nicht dauernd neu gezeichnet werden */
+.st-pulse2{animation-delay:1.5s}
+@keyframes stPulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(4.2);opacity:0}}
+.st-lbl{transition:opacity .25s;pointer-events:none}
+.st-lbl text{fill:var(--paper);font-size:13.5px;font-weight:800;letter-spacing:.01em;paint-order:stroke;stroke:#12110E;stroke-width:4px;stroke-linejoin:round}
+.st-lbl .st-n{fill:var(--gold)}
+.st-lbl.st-soon text{fill:var(--muted-2)}
+.st-lbl-l text{font-size:12px;fill:var(--muted-2)}
+.st-lbl-home text{fill:var(--gold-hi);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.st-lbl-far text{font-size:12.5px}
+.st-lbl-far .st-far-km{fill:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.02em}
+
+.st-ring{fill:rgba(217,169,58,.08);stroke:rgba(217,169,58,.55);stroke-width:calc(1.2px * var(--u));stroke-dasharray:calc(3px * var(--u)) calc(3px * var(--u))}
+.st-l-bg{fill:url(#st-lens-bg)}
+.st-l-edge{fill:none;stroke:rgba(217,169,58,.6);stroke-width:calc(1.4px * var(--u))}
+.st-km-ring{fill:none;stroke:rgba(245,240,230,.09);stroke-width:calc(1px * var(--u));stroke-dasharray:calc(2px * var(--u)) calc(4px * var(--u))}
+.st-km-t{fill:rgba(245,240,230,.4);font-size:10px;font-weight:700;letter-spacing:.06em;paint-order:stroke;stroke:#161511;stroke-width:4px;stroke-linejoin:round}
+.st-l-tick{stroke:var(--gold);stroke-width:1.5}
+.st-l-n{fill:var(--gold);font-size:11px;font-weight:800}
+.st-spark{pointer-events:none}
+.st-spark-core{fill:#FFF4D6}
+
+/* Hervorheben: Liste <-> Karte */
+.st-svg.st-hl .st-route:not(.is-on){opacity:.15}
+.st-svg.st-hl .st-pt:not(.is-on):not(.st-home){opacity:.35}
+.st-svg.st-hl .st-lbl:not(.is-on):not(.st-lbl-home){opacity:.3}
+.st-route.is-on .st-arc{stroke:var(--gold-hi);stroke-width:calc(2.6px * var(--u));opacity:1}
+.st-route.is-on .st-head{stroke:var(--gold-hi)}
+.st-pt.is-on .st-dot{fill:var(--gold-hi);transform:scale(1.35)}
+
+/* Einzeichnen beim ersten Sichtkontakt (nur mit JS und ohne reduzierte Bewegung) */
+.st-anim .st-arc{stroke-dasharray:1 1;stroke-dashoffset:1}
+.st-anim .st-soon .st-arc,.st-anim .st-far .st-arc{stroke-dashoffset:0;opacity:0}
+.st-anim .st-soon .st-arc{stroke-dasharray:.012 .014}
+.st-anim .st-far .st-arc{stroke-dasharray:.006 .01}
+.st-anim .st-head,.st-anim .st-lbl{opacity:0}
+.st-anim .st-pt:not(.st-home) .st-dot{transform:scale(0)}
+.st-go .st-arc{stroke-dashoffset:0;transition:stroke-dashoffset 1.3s cubic-bezier(.55,0,.25,1) var(--d,0s),stroke .2s,stroke-width .2s,opacity .2s}
+.st-go .st-soon .st-arc,.st-go .st-far .st-arc{opacity:.6;transition:opacity .9s ease var(--d,0s),stroke .2s,stroke-width .2s}
+.st-go .st-head{opacity:1;transition:opacity .3s ease calc(var(--d,0s) + 1.1s),stroke .2s}
+.st-go .st-pt:not(.st-home) .st-dot{transform:scale(1);transition:transform .5s cubic-bezier(.3,1.6,.5,1) var(--d,0s),fill .2s}
+.st-go .st-pt.is-on .st-dot{transform:scale(1.35)}
+.st-go .st-lbl{opacity:1;transition:opacity .6s ease var(--d,0s)}
+.st-svg.st-hl .st-lbl:not(.is-on):not(.st-lbl-home){opacity:.3}
+.st-off .st-pulse{animation-play-state:paused}
+/* nach dem Einzeichnen: Hervorheben ohne die Einzeichnen-Verzögerung */
+.st-go.st-done .st-lbl{transition:opacity .25s}
+.st-go.st-done .st-pt .st-dot{transition:transform .2s,fill .2s}
+.st-go.st-done .st-soon .st-arc,.st-go.st-done .st-far .st-arc{transition:opacity .2s,stroke .2s,stroke-width .2s}
+.st-go.st-done .st-svg .st-head{transition:stroke .2s}
+
+.st-cap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 20px;padding:13px 20px 14px;border-top:1px solid var(--line)}
+.st-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;font-weight:700;color:var(--muted)}
+.st-legend span{display:inline-flex;align-items:center;gap:8px}
+.st-legend i{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.st-legend .st-lg-home{background:var(--gold-hi);box-shadow:0 0 0 4px rgba(233,196,106,.22)}
+.st-legend .st-lg-soon{background:transparent;border:1.5px dashed var(--gold)}
+.st-credit{font-size:11.5px;color:rgba(245,240,230,.58)}
+
+.st-dir{columns:3 300px;column-gap:40px;margin-top:44px}
+.st-group{break-inside:avoid;padding-bottom:32px}
+.st-gh{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.st-gh span{padding:1px 8px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);font-size:12px;letter-spacing:0;color:var(--muted)}
+.st-group ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.st-item{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 8px;border-bottom:1px solid var(--line);color:var(--paper);text-decoration:none;transition:background-color .2s}
+.st-item:hover,.st-item.is-on{background:rgba(245,240,230,.045)}
+.st-item:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
+.st-mark{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none}
+.is-home .st-mark{background:var(--gold-hi);box-shadow:0 0 0 4px rgba(233,196,106,.22)}
+.is-soon .st-mark{background:transparent;box-shadow:inset 0 0 0 1.5px var(--gold)}
+.st-tx{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.st-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.st-name strong{font-size:17px;font-weight:800;line-height:1.25}
+.st-addr{font-size:14.5px;line-height:1.35;color:var(--muted);overflow-wrap:anywhere}
+.st-km{font-size:14px;font-weight:700;color:var(--muted-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.st-km::after{content:" ↗";color:var(--gold)}
+.st-km-plain::after{content:none}
+.st-badge{padding:3px 8px;border-radius:999px;background:rgba(217,169,58,.14);color:var(--gold-hi);font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.st-badge-home{background:var(--gold);color:var(--ink)}
+.st-note{margin:28px 0 0;max-width:720px;font-size:14px;line-height:1.5;color:var(--muted)}
+
+@media (max-width:1100px){.st-maps{grid-template-columns:1fr}.st-lens{flex-direction:row;align-items:center;gap:28px}.st-lens-cap{flex:1}.st-lens-svg{flex:1.3;margin:0}}
+@media (max-width:860px){.st-top{grid-template-columns:1fr}.st-lead{justify-self:start}}
+@media (max-width:700px){
+  .st{padding:80px 0}
+  .st-top{margin-bottom:32px}
+  .st-map,.st-lens{border-radius:20px}
+  .st-svg.st-svg-w{display:none}
+  .st-svg.st-svg-p{display:block}
+  .st-lens{flex-direction:column;align-items:stretch;padding:20px 14px 12px}
+  .st-cap{padding:12px 16px}
+  .st-lens-svg{flex:none;margin:4px auto 0}
+  .st-legend{font-size:12.5px}
+  .st-dir{margin-top:32px}
+  .st-lbl-l text{font-size:11px}
+}
+@media (max-width:360px){.st-lens{padding:18px 6px 10px}}
+@media (prefers-reduced-motion:reduce){.st-pulse{animation:none}}
+
+/* ===== /Bereich: standorte ===== */
 /* ===== Bereich: abholung ===== */
 /* Bestellen zum Abholen: eigene Seite (Dialog über der Website), 3 Schritte */
 html.ab-open{overflow:hidden}
@@ -1375,6 +1510,32 @@ textarea.ab-input{min-height:88px;resize:vertical}
 .ab-form{display:flex;flex-direction:column;gap:26px;max-width:620px}
 .ab-hint{margin:0;font-size:14px;line-height:1.5;color:var(--muted)}
 .ab-err{margin:0;min-height:1.4em;font-size:14.5px;font-weight:700;color:#FF8F70}
+/* Schritt 2: per WhatsApp oder direkt hier */
+.ab-how[hidden],.ab-direkt[hidden],.ab-demo[hidden]{display:none}
+.ab-ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ab-way{position:relative;display:flex}
+.ab-way input{position:absolute;opacity:0;width:1px;height:1px}
+.ab-way>span{display:flex;flex:1;flex-direction:column;gap:4px;min-height:84px;padding:14px 16px;border-radius:16px;background:var(--ink-2);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;transition:background .2s,box-shadow .2s}
+.ab-way b{display:flex;align-items:center;gap:8px;font-size:16.5px;font-weight:800}
+.ab-way b svg{flex:none;color:var(--gold)}
+.ab-way small{font-size:13.5px;line-height:1.4;color:var(--muted)}
+.ab-way input:checked+span{background:#2A2117;box-shadow:inset 0 0 0 2px var(--gold)}
+.ab-way input:checked+span small{color:var(--muted-2)}
+.ab-way input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
+.ab-demo{margin-top:10px}
+.ab-demo b{color:var(--gold-hi)}
+.ab-direkt{display:flex;flex-direction:column;gap:26px}
+.ab-check{display:flex;align-items:flex-start;gap:12px;font-size:15.5px;font-weight:600;line-height:1.45;cursor:pointer}
+.ab-check input{flex:none;width:24px;height:24px;margin:0;accent-color:var(--gold);cursor:pointer}
+.ab-check input[aria-invalid="true"]{outline:2px solid #FF8F70;outline-offset:2px}
+.ab-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px #FF8F70}
+.ab-hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.ab-r-d[hidden]{display:none}
+.ab-direct.is-busy{opacity:.7;cursor:progress}
+.ab-send-err:empty{display:none}
+.ab-nw{white-space:nowrap}
+@media (max-width:480px){.ab-way>span{padding:14px}.ab-way b{flex-direction:column;align-items:flex-start;gap:6px}}
+@media (max-width:380px){.ab-ways{grid-template-columns:1fr}.ab-way>span{min-height:0}.ab-way b{flex-direction:row;align-items:center}}
 
 /* Warenkorb */
 .ab-cart{position:sticky;top:0;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:24px;background:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
@@ -1426,7 +1587,8 @@ textarea.ab-input{min-height:88px;resize:vertical}
 /* Fertig */
 .ab-done{display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:560px}
 .ab-done-ico{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--gold);color:var(--ink)}
-.ab-done .ab-r-no{text-align:left}
+.ab-done .ab-r-no{text-align:left;color:var(--muted)}
+.ab-done .ab-r-no strong{margin-top:2px;font-size:26px;color:var(--gold-hi)}
 .ab-done-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
 
 .ab-toast{position:fixed;left:50%;bottom:96px;z-index:5;transform:translate(-50%,20px);padding:12px 18px;border-radius:999px;background:var(--paper);color:var(--ink);font-size:15px;font-weight:800;box-shadow:0 14px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
@@ -1480,6 +1642,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
 @keyframes sh-up{from{transform:translateY(100%)}}
 @media (max-width:360px){.ab-title h2{font-size:15px}.ab-ico{width:42px;height:42px}.ab-ico svg{width:32px;height:32px}.ab-rt strong{font-size:15.5px}.ab-sh-foot{gap:10px}.ab-sh-foot .ab-qty{gap:2px}.ab-sh-foot .ab-qty button{width:36px}.ab-sh-foot .ab-qty output{min-width:16px}.ab-sh-foot .btn{padding:0 10px;font-size:14.5px}.ab-sh-tt h3{font-size:18px}.ab-sh-ico{width:50px;height:50px}.ab-sh-ico svg{width:38px;height:38px}.ab-bar-n small{display:none}.ab-bar .btn{padding:0 12px;font-size:15px}.ab-steps li{font-size:0;gap:0;padding:4px}.ab-steps li[aria-current="step"]{font-size:13px;gap:6px;padding:4px 10px 4px 4px}}
 @media (prefers-reduced-motion:reduce){.ab[open],.ab-sheet[open]{animation:none}.ab-row,.ab-form-b,.ab-toast{transition:none}}
+.ab-sum>span:last-child{white-space:nowrap}
 /* ===== /Bereich: abholung ===== */
 /* ===== Bereich: preise ===== */
 /* Speisekarte öffnen: dunkles Band unter den Karten */
@@ -1499,141 +1662,6 @@ textarea.ab-input{min-height:88px;resize:vertical}
   .sk-cta .btn{width:100%}
 }
 /* ===== /Bereich: preise ===== */
-/* ===== Bereich: standorte ===== */
-/* Alle Standorte: echte Karte (Natural Earth), Pfeile von Haunstetten zu jedem Echte Bärliner */
-.st{position:relative;background:var(--ink);padding:112px 0;border-top:1px solid var(--line)}
-.st-top{display:grid;grid-template-columns:1.15fr 1fr;gap:20px 48px;align-items:end;margin-bottom:44px}
-.st-top .display{margin-top:16px}
-.st-lead{margin:0;max-width:430px;justify-self:end;font-size:clamp(17px,1.5vw,19px);line-height:1.55;color:var(--muted-2)}
-
-.st-maps{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:20px;align-items:stretch}
-.st-map,.st-lens{position:relative;margin:0;border-radius:28px;overflow:hidden;background:#12110E;box-shadow:inset 0 0 0 1px var(--line)}
-.st-svg.st-svg-p{display:none}
-.st-lens{display:flex;flex-direction:column;gap:6px;padding:26px 16px 14px}
-.st-lens-cap{display:flex;flex-direction:column;gap:8px;padding:0 8px;font-size:14px;line-height:1.45;color:var(--muted)}
-.st-lens-svg{width:100%;max-width:440px;margin:auto}
-.st-svg{display:block;width:100%;height:auto;font-family:inherit}
-.st-map>.st-svg{position:relative;z-index:1}
-.st-map>.st-svg.st-base{position:absolute;z-index:0;left:0;top:0;pointer-events:none;will-change:transform}   /* Grundkarte: eigene Ebene */
-.st-u{transform:scale(var(--u))}                 /* Schrift, Punkte, Pfeilspitzen: gleiche Pixelgröße auf jedem Bildschirm */
-.st-de{fill:#18160F}
-.st-by{fill:#1E1B15}
-.st-lake{fill:#1D272D}
-.st-river{fill:none;stroke:#2C3A41;stroke-width:calc(1.4px * var(--u));stroke-linecap:round;stroke-linejoin:round}
-.st-state{fill:none;stroke:rgba(245,240,230,.15);stroke-width:calc(1px * var(--u));stroke-dasharray:calc(4px * var(--u)) calc(4px * var(--u))}
-.st-border{fill:none;stroke:rgba(245,240,230,.28);stroke-width:calc(1.2px * var(--u));stroke-linejoin:round}
-.st-region{fill:rgba(245,240,230,.12);font-size:calc(11px * var(--u));font-weight:800;letter-spacing:.3em;font-stretch:125%}
-
-.st-route{transition:opacity .25s}
-.st-arc{fill:none;stroke:var(--gold);stroke-width:calc(1.6px * var(--u));stroke-linecap:round;opacity:.8;transition:stroke .2s,stroke-width .2s,opacity .2s}
-.st-soon .st-arc{stroke-dasharray:.012 .014;opacity:.6}
-.st-far .st-arc{stroke-dasharray:.006 .01;stroke-width:calc(1.3px * var(--u));opacity:.6}
-.st-svg .st-head{fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
-.st-pt{cursor:pointer;transition:opacity .25s}
-.st-hit{fill:transparent}
-.st-dot{fill:var(--gold);stroke:#0F0E0C;stroke-width:2.5;transition:fill .2s,transform .2s}
-.st-home .st-dot{fill:var(--gold-hi);stroke-width:3}
-.st-soon .st-dot{fill:#12110E;stroke:var(--gold);stroke-width:1.8;stroke-dasharray:2.6 2}
-.st-pulse{opacity:0;animation:stPulse 3s ease-out 4}   /* ein paar Mal, dann Ruhe: die große Karte muss nicht dauernd neu gezeichnet werden */
-.st-pulse2{animation-delay:1.5s}
-@keyframes stPulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(4.2);opacity:0}}
-.st-lbl{transition:opacity .25s;pointer-events:none}
-.st-lbl text{fill:var(--paper);font-size:13.5px;font-weight:800;letter-spacing:.01em;paint-order:stroke;stroke:#12110E;stroke-width:4px;stroke-linejoin:round}
-.st-lbl .st-n{fill:var(--gold)}
-.st-lbl.st-soon text{fill:var(--muted-2)}
-.st-lbl-l text{font-size:12px;fill:var(--muted-2)}
-.st-lbl-home text{fill:var(--gold-hi);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
-.st-lbl-far text{font-size:12.5px}
-.st-lbl-far .st-far-km{fill:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.02em}
-
-.st-ring{fill:rgba(217,169,58,.08);stroke:rgba(217,169,58,.55);stroke-width:calc(1.2px * var(--u));stroke-dasharray:calc(3px * var(--u)) calc(3px * var(--u))}
-.st-l-bg{fill:url(#st-lens-bg)}
-.st-l-edge{fill:none;stroke:rgba(217,169,58,.6);stroke-width:calc(1.4px * var(--u))}
-.st-km-ring{fill:none;stroke:rgba(245,240,230,.09);stroke-width:calc(1px * var(--u));stroke-dasharray:calc(2px * var(--u)) calc(4px * var(--u))}
-.st-km-t{fill:rgba(245,240,230,.4);font-size:10px;font-weight:700;letter-spacing:.06em;paint-order:stroke;stroke:#161511;stroke-width:4px;stroke-linejoin:round}
-.st-l-tick{stroke:var(--gold);stroke-width:1.5}
-.st-l-n{fill:var(--gold);font-size:11px;font-weight:800}
-.st-spark{pointer-events:none}
-.st-spark-core{fill:#FFF4D6}
-
-/* Hervorheben: Liste <-> Karte */
-.st-svg.st-hl .st-route:not(.is-on){opacity:.15}
-.st-svg.st-hl .st-pt:not(.is-on):not(.st-home){opacity:.35}
-.st-svg.st-hl .st-lbl:not(.is-on):not(.st-lbl-home){opacity:.3}
-.st-route.is-on .st-arc{stroke:var(--gold-hi);stroke-width:calc(2.6px * var(--u));opacity:1}
-.st-route.is-on .st-head{stroke:var(--gold-hi)}
-.st-pt.is-on .st-dot{fill:var(--gold-hi);transform:scale(1.35)}
-
-/* Einzeichnen beim ersten Sichtkontakt (nur mit JS und ohne reduzierte Bewegung) */
-.st-anim .st-arc{stroke-dasharray:1 1;stroke-dashoffset:1}
-.st-anim .st-soon .st-arc,.st-anim .st-far .st-arc{stroke-dashoffset:0;opacity:0}
-.st-anim .st-soon .st-arc{stroke-dasharray:.012 .014}
-.st-anim .st-far .st-arc{stroke-dasharray:.006 .01}
-.st-anim .st-head,.st-anim .st-lbl{opacity:0}
-.st-anim .st-pt:not(.st-home) .st-dot{transform:scale(0)}
-.st-go .st-arc{stroke-dashoffset:0;transition:stroke-dashoffset 1.3s cubic-bezier(.55,0,.25,1) var(--d,0s),stroke .2s,stroke-width .2s,opacity .2s}
-.st-go .st-soon .st-arc,.st-go .st-far .st-arc{opacity:.6;transition:opacity .9s ease var(--d,0s),stroke .2s,stroke-width .2s}
-.st-go .st-head{opacity:1;transition:opacity .3s ease calc(var(--d,0s) + 1.1s),stroke .2s}
-.st-go .st-pt:not(.st-home) .st-dot{transform:scale(1);transition:transform .5s cubic-bezier(.3,1.6,.5,1) var(--d,0s),fill .2s}
-.st-go .st-pt.is-on .st-dot{transform:scale(1.35)}
-.st-go .st-lbl{opacity:1;transition:opacity .6s ease var(--d,0s)}
-.st-svg.st-hl .st-lbl:not(.is-on):not(.st-lbl-home){opacity:.3}
-.st-off .st-pulse{animation-play-state:paused}
-/* nach dem Einzeichnen: Hervorheben ohne die Einzeichnen-Verzögerung */
-.st-go.st-done .st-lbl{transition:opacity .25s}
-.st-go.st-done .st-pt .st-dot{transition:transform .2s,fill .2s}
-.st-go.st-done .st-soon .st-arc,.st-go.st-done .st-far .st-arc{transition:opacity .2s,stroke .2s,stroke-width .2s}
-.st-go.st-done .st-svg .st-head{transition:stroke .2s}
-
-.st-cap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 20px;padding:13px 20px 14px;border-top:1px solid var(--line)}
-.st-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;font-weight:700;color:var(--muted)}
-.st-legend span{display:inline-flex;align-items:center;gap:8px}
-.st-legend i{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
-.st-legend .st-lg-home{background:var(--gold-hi);box-shadow:0 0 0 4px rgba(233,196,106,.22)}
-.st-legend .st-lg-soon{background:transparent;border:1.5px dashed var(--gold)}
-.st-credit{font-size:11.5px;color:rgba(245,240,230,.58)}
-
-.st-dir{columns:3 300px;column-gap:40px;margin-top:44px}
-.st-group{break-inside:avoid;padding-bottom:32px}
-.st-gh{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-.st-gh span{padding:1px 8px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);font-size:12px;letter-spacing:0;color:var(--muted)}
-.st-group ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.st-item{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 8px;border-bottom:1px solid var(--line);color:var(--paper);text-decoration:none;transition:background-color .2s}
-.st-item:hover,.st-item.is-on{background:rgba(245,240,230,.045)}
-.st-item:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
-.st-mark{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none}
-.is-home .st-mark{background:var(--gold-hi);box-shadow:0 0 0 4px rgba(233,196,106,.22)}
-.is-soon .st-mark{background:transparent;box-shadow:inset 0 0 0 1.5px var(--gold)}
-.st-tx{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
-.st-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
-.st-name strong{font-size:17px;font-weight:800;line-height:1.25}
-.st-addr{font-size:14.5px;line-height:1.35;color:var(--muted);overflow-wrap:anywhere}
-.st-km{font-size:14px;font-weight:700;color:var(--muted-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.st-km::after{content:" ↗";color:var(--gold)}
-.st-km-plain::after{content:none}
-.st-badge{padding:3px 8px;border-radius:999px;background:rgba(217,169,58,.14);color:var(--gold-hi);font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.st-badge-home{background:var(--gold);color:var(--ink)}
-.st-note{margin:28px 0 0;max-width:720px;font-size:14px;line-height:1.5;color:var(--muted)}
-
-@media (max-width:1100px){.st-maps{grid-template-columns:1fr}.st-lens{flex-direction:row;align-items:center;gap:28px}.st-lens-cap{flex:1}.st-lens-svg{flex:1.3;margin:0}}
-@media (max-width:860px){.st-top{grid-template-columns:1fr}.st-lead{justify-self:start}}
-@media (max-width:700px){
-  .st{padding:80px 0}
-  .st-top{margin-bottom:32px}
-  .st-map,.st-lens{border-radius:20px}
-  .st-svg.st-svg-w{display:none}
-  .st-svg.st-svg-p{display:block}
-  .st-lens{flex-direction:column;align-items:stretch;padding:20px 14px 12px}
-  .st-cap{padding:12px 16px}
-  .st-lens-svg{flex:none;margin:4px auto 0}
-  .st-legend{font-size:12.5px}
-  .st-dir{margin-top:32px}
-  .st-lbl-l text{font-size:11px}
-}
-@media (max-width:360px){.st-lens{padding:18px 6px 10px}}
-@media (prefers-reduced-motion:reduce){.st-pulse{animation:none}}
-
-/* ===== /Bereich: standorte ===== */
 /* ===== Bereich: handy ===== */
 /* Handy: Karten zum Wischen, Eingeklapptes, mitlaufende Vorschau */
 .card-dots,.al-toggle,.st-more{display:none}
@@ -2816,6 +2844,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
           <p>Beim Aufruf der Seite verarbeitet unser Hosting-Anbieter [Name des Hosters] technisch notwendige Zugriffsdaten (z.&nbsp;B. IP-Adresse, Zeitpunkt, aufgerufene Seite), um die Website auszuliefern und abzusichern. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren Betrieb (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO). Die Daten werden nach [Anzahl] Tagen gelöscht.</p>
           <p>Links zu Google Maps, Lieferdiensten oder Instagram führen zu externen Angeboten. Erst wenn du sie anklickst, gelten deren Datenschutzbestimmungen.</p>
           <p>Bestellen zum Abholen: Deine Auswahl, Abholzeit, dein Name und deine Anmerkung bleiben nur in deinem Browser (bis du den Tab schließt). Die Website speichert und überträgt davon nichts. Erst wenn du auf „Per WhatsApp senden“ tippst, öffnet sich WhatsApp mit dem fertigen Text – und erst wenn du dort sendest, bekommen wir die Nachricht. Dann gelten zusätzlich die Datenschutzhinweise von WhatsApp (Meta). Wir nutzen die Angaben nur, um deine Bestellung zuzubereiten (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO).</p>
+          <p data-direkt-info hidden>Anders bei „Direkt hier“ (ohne WhatsApp): Wenn du auf „Jetzt verbindlich bestellen“ tippst, schickt die Website deine Bestellung mit Vorname, Nachname, Handynummer, E-Mail-Adresse und Anmerkung als WhatsApp-Nachricht an unser Laden-Handy. Dafür nutzen wir den Dienst CallMeBot – deine Angaben gehen dabei über dessen Server und über WhatsApp (Meta). Wir nutzen sie nur für diese Bestellung und für Rückfragen dazu (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO). Damit niemand massenhaft Spaß-Bestellungen schickt, merkt sich dein Browser eine Stunde lang nur die Uhrzeiten deiner Direkt-Bestellungen; an uns geht davon nichts.</p>
           <p>Verantwortlich: [Name des Betreibers], Albert-Leidl-Straße 6, 86179 Augsburg, [E-Mail-Adresse]. Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (Art.&nbsp;15–20 DSGVO), das Recht, der Verarbeitung zu widersprechen (Art.&nbsp;21 DSGVO), sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde, z.&nbsp;B. dem Bayerischen Landesamt für Datenschutzaufsicht (BayLDA).</p>
         </div>
       </details>
@@ -2834,6 +2863,9 @@ textarea.ab-input{min-height:88px;resize:vertical}
     </div>
   </div>
 </footer>
+
+
+
 
 
 
@@ -2926,8 +2958,26 @@ textarea.ab-input{min-height:88px;resize:vertical}
               </div>
               <p class="ab-hint ab-time-hint"></p>
             </fieldset>
-            <label class="ab-field"><span>Dein Name</span><input class="ab-input ab-name" type="text" name="name" autocomplete="given-name" maxlength="40" required></label>
+            <fieldset class="ab-fs ab-how" hidden>
+              <legend>Wie soll die Bestellung zu uns kommen?</legend>
+              <div class="ab-ways">
+                <label class="ab-way"><input type="radio" name="ab-how" value="wa"><span><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 9.2c.3 2.4 2.4 4.6 4.9 5.2l1.3-1.3 2 1-.4 1.4c-3.8.5-8.3-3.6-8.1-7.6l1.5-.5 1 2z"/></svg>Per WhatsApp</b><small>Am schnellsten – nur dein Vorname</small></span></label>
+                <label class="ab-way"><input type="radio" name="ab-how" value="direkt"><span><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Direkt hier</b><small>Ohne WhatsApp – mit Name, Handy und <span class="ab-nw">E-Mail</span></small></span></label>
+              </div>
+              <p class="ab-hint ab-demo" hidden><b>Vorschau:</b> „Direkt hier“ kannst du ausprobieren – gesendet wird dabei nichts.</p>
+            </fieldset>
+            <label class="ab-field"><span class="ab-name-l">Dein Name</span><input class="ab-input ab-name" type="text" name="name" autocomplete="given-name" maxlength="40" required></label>
+            <div class="ab-direkt" hidden>
+              <label class="ab-field"><span>Nachname</span><input class="ab-input ab-last" type="text" name="nachname" autocomplete="family-name" maxlength="40"></label>
+              <label class="ab-field"><span>Handynummer <small>für Rückfragen</small></span><input class="ab-input ab-phone" type="tel" name="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="z. B. 0176 12345678"></label>
+              <label class="ab-field"><span>E-Mail</span><input class="ab-input ab-mail" type="email" name="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="80" placeholder="z. B. name@beispiel.de"></label>
+            </div>
             <label class="ab-field"><span>Anmerkung <small>(optional)</small></span><textarea class="ab-input ab-notes" name="note" maxlength="160" rows="3" placeholder="z. B. Besteck dazu, Soße separat"></textarea></label>
+            <div class="ab-direkt" hidden>
+              <label class="ab-check"><input type="checkbox" class="ab-ok"><span>Ich hole die Bestellung zur gewählten Zeit ab und bezahle im Laden.</span></label>
+              <p class="ab-hint">Deine Angaben bekommt nur unser Laden-Handy – für diese eine Bestellung und falls wir kurz zurückrufen müssen.</p>
+              <label class="ab-hp" aria-hidden="true">Bitte leer lassen<input type="text" name="eb_hp" tabindex="-1" autocomplete="off"></label>
+            </div>
             <p class="ab-err" role="alert"></p>
             <button class="ab-link" type="button" data-ab-go="1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurück zur Auswahl</button>
           </form>
@@ -2943,12 +2993,16 @@ textarea.ab-input{min-height:88px;resize:vertical}
             <dl class="ab-r-meta">
               <dt>Abholung</dt><dd class="ab-r-time"></dd>
               <dt>Name</dt><dd class="ab-r-name"></dd>
+              <dt class="ab-r-d">Handy</dt><dd class="ab-r-d ab-r-tel"></dd>
+              <dt class="ab-r-d">E-Mail</dt><dd class="ab-r-d ab-r-mail"></dd>
               <dt class="ab-r-note-t">Anmerkung</dt><dd class="ab-r-note"></dd>
             </dl>
             <p class="ab-r-foot">Bezahlt wird beim Abholen im Laden.</p>
           </div>
           <div class="ab-send">
             <a class="btn ab-wa" href="#" target="_blank" rel="noopener" data-ab-send hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 9.2c.3 2.4 2.4 4.6 4.9 5.2l1.3-1.3 2 1-.4 1.4c-3.8.5-8.3-3.6-8.1-7.6l1.5-.5 1 2z"/></svg>Per WhatsApp senden</a>
+            <button class="btn btn-gold ab-direct" type="button" data-ab-direct hidden>Jetzt verbindlich bestellen</button>
+            <p class="ab-err ab-send-err" role="alert"></p>
             <div class="ab-send-more">
               <a class="ab-link js-tel" href="#" data-ab-tel hidden>Oder anrufen und vorlesen</a>
               <button class="ab-link" type="button" data-ab-copy>Text kopieren</button>
@@ -2963,7 +3017,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
           <div class="ab-done">
             <span class="ab-done-ico" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
             <h3 class="ab-h" id="ab-h4">Fast geschafft!</h3>
-            <p class="ab-lead">Tipp in WhatsApp noch auf <b>Senden</b> – dann ist deine Bestellung bei uns.</p>
+            <p class="ab-lead ab-done-lead">Tipp in WhatsApp noch auf <b>Senden</b> – dann ist deine Bestellung bei uns.</p>
             <div class="ab-r-no">Deine Bestell-Nr.<strong class="ab-code">EB-0000</strong></div>
             <div class="ab-done-acts">
               <button class="btn btn-gold" type="button" data-ab-close>Zurück zur Website</button>
@@ -3061,6 +3115,11 @@ const CONFIG = {
   // Solange sie leer ist, zeigt die Seite am Ende den Bestellzettel zum Vorzeigen an der Theke.
   whatsapp: '+49 176 57739308',   // z. B. '+49 170 1234567' – leer lassen, dann gibt es am Ende einen Bestellzettel für die Theke
   abholVorlauf: 20,       // frühestens so viele Minuten nach der Bestellung abholen
+  // „Direkt hier bestellen“ (ohne WhatsApp beim Kunden): Kunden geben Vorname, Nachname, Handynummer und E-Mail an,
+  // die Bestellung kommt trotzdem als WhatsApp-Nachricht auf die Nummer oben – verschickt über den Dienst CallMeBot.
+  // Dafür einmal auf callmebot.com mit dieser Nummer freischalten und den Schlüssel (API-Key) hier eintragen.
+  // Leer = Kunden bestellen nur „Per WhatsApp“.
+  direkt: { apikey: '', maxSumme: 100, proStunde: 3 },   // maxSumme: größere Bestellungen nur per WhatsApp · proStunde: pro Gerät
   lieferdienstUrl: '',    // z. B. Link zu Lieferando / Wolt / Uber Eats
   lieferdienstName: '',   // z. B. 'Lieferando' (Button heißt dann „Über Lieferando bestellen“)
   instagramUrl: '',       // z. B. 'https://www.instagram.com/...'
@@ -4209,6 +4268,116 @@ function ebAb(key) {
   });
 })();
 </script>
+<script data-sec="standorte">
+/* --- Alle Standorte: Karte <-> Liste, Pfeile einzeichnen, Lichtpunkte auf den Pfeilen --- */
+(() => {
+  const sec = document.getElementById('standorte');
+  if (!sec) return;
+  const svgs = [...sec.querySelectorAll('.st-svg')];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Grundkarte (Land, Seen, Flüsse, Grenzen) als eigene Ebene darunter: sie wird nur einmal gemalt,
+  // Pfeile, Punkte und Lichtpunkte darüber bewegen sich, ohne dass die ganze Karte jedes Bild neu gemalt wird
+  const LAND = '.st-de,.st-by,.st-lake,.st-river,.st-state,.st-border';
+  svgs.forEach((svg) => {
+    if (!svg.closest('.st-map')) return;
+    const parts = Array.from(svg.children).filter((c) => c.matches(LAND));
+    if (!parts.length) return;
+    const base = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    ['viewBox', 'preserveAspectRatio', 'class'].forEach((a) => { if (svg.hasAttribute(a)) base.setAttribute(a, svg.getAttribute(a)); });
+    base.classList.add('st-base');
+    base.setAttribute('aria-hidden', 'true'); base.setAttribute('focusable', 'false');
+    parts.forEach((c) => base.appendChild(c));
+    svg.parentNode.insertBefore(base, svg);
+    svg.stBase = base;
+  });
+
+  // Schrift, Punkte und Linien bleiben auf jedem Bildschirm gleich groß: --u = Karteneinheiten pro Pixel
+  const setU = (svg) => {
+    const w = svg.getBoundingClientRect().width;
+    const min = svg.classList.contains('st-svg-p') ? 340 : svg.classList.contains('st-lens-svg') ? 300 : 0;   // so breit wurde die Beschriftung geplant
+    if (w) { const u = (svg.viewBox.baseVal.width / Math.max(w, min)).toFixed(3); svg.style.setProperty('--u', u); if (svg.stBase) svg.stBase.style.setProperty('--u', u); }
+  };
+  svgs.forEach(setU);
+  if ('ResizeObserver' in window) { const ro = new ResizeObserver((es) => es.forEach((e) => setU(e.target))); svgs.forEach((s) => ro.observe(s)); }
+  else window.addEventListener('resize', () => svgs.forEach(setU));
+
+  // Eintrag in der Liste <-> Pfeil und Punkt auf der Karte
+  const on = (id) => {
+    sec.querySelectorAll('.is-on').forEach((e) => e.classList.remove('is-on'));
+    svgs.forEach((s) => s.classList.toggle('st-hl', !!id));
+    if (id) sec.querySelectorAll('[data-st~="' + id + '"]').forEach((e) => e.classList.add('is-on'));
+  };
+  sec.querySelectorAll('.st-item').forEach((a) => {
+    const id = a.classList.contains('is-home') ? null : a.dataset.st;
+    a.addEventListener('pointerenter', () => on(id));
+    a.addEventListener('pointerleave', () => on(null));
+    a.addEventListener('focus', () => on(id));
+    a.addEventListener('blur', () => on(null));
+  });
+  sec.querySelectorAll('.st-pt').forEach((g) => {
+    const ids = g.dataset.st.split(' ');
+    const item = sec.querySelector('.st-item[data-st="' + ids[0] + '"]');
+    const home = g.classList.contains('st-home');
+    g.addEventListener('pointerenter', () => { if (!home) on(ids[0]); if (ids.length > 1) ids.forEach((i) => sec.querySelectorAll('.st-item[data-st="' + i + '"]').forEach((e) => e.classList.add('is-on'))); });
+    g.addEventListener('pointerleave', () => on(null));
+    g.addEventListener('click', () => { if (!item) return; if (ids.length > 1) item.focus(); else if (item.tagName === 'A') item.click(); });
+  });
+
+  if (reduce || !('IntersectionObserver' in window)) return;
+
+  // kleine Lichtpunkte, die nacheinander die Pfeile entlanglaufen (nur auf der gerade sichtbaren Karte)
+  const NS = 'http://www.w3.org/2000/svg';
+  const runs = window.matchMedia('(max-width: 600px)').matches ? '1' : '2';   // Handy: einmal reicht, das spart Akku
+  const sparks = (svg) => {
+    const glow = svg.querySelector('radialGradient[id^="st-glow"]');
+    const arcs = [...svg.querySelectorAll('.st-route:not(.st-soon):not(.st-far) .st-arc')];
+    arcs.forEach((p, i) => {
+      const g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'st-spark');
+      g.setAttribute('opacity', '0');
+      g.innerHTML = '<g class="st-u"><circle r="9" fill="url(#' + (glow ? glow.id : '') + ')"/><circle class="st-spark-core" r="2.2"/></g>';
+      const dur = Math.max(6, arcs.length * 0.75) + 's';
+      const move = document.createElementNS(NS, 'animateMotion');
+      [['dur', dur], ['repeatCount', runs], ['calcMode', 'linear'], ['keyPoints', '0;1;1'], ['keyTimes', '0;.2;1'], ['begin', 'indefinite']]
+        .forEach(([k, v]) => move.setAttribute(k, v));
+      const mp = document.createElementNS(NS, 'mpath');
+      mp.setAttribute('href', '#' + p.id);
+      move.appendChild(mp);
+      const fade = document.createElementNS(NS, 'animate');
+      [['attributeName', 'opacity'], ['values', '0;1;1;0;0'], ['keyTimes', '0;.03;.17;.21;1'], ['dur', dur], ['repeatCount', runs], ['begin', 'indefinite']]
+        .forEach(([k, v]) => fade.setAttribute(k, v));
+      g.append(move, fade);
+      p.parentNode.insertBefore(g, p.nextSibling);
+      const t = 0.75 * i;
+      try { move.beginElementAt(t); fade.beginElementAt(t); } catch (e) { g.remove(); }
+    });
+  };
+
+  sec.classList.add('st-anim');
+  const maps = sec.querySelector('.st-maps');
+  let started = false;
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (en.isIntersecting) {
+      sec.classList.remove('st-off');
+      if (!started) {
+        started = true;
+        sec.classList.add('st-go');
+        setTimeout(() => sec.classList.add('st-done'), 5000);   // Einzeichnen fertig: ab jetzt ohne Verzögerung
+        setTimeout(() => svgs.forEach((s) => { if (s.getBoundingClientRect().width) sparks(s); if (document.body.classList.contains('still')) s.pauseAnimations(); }), 2800);
+      } else if (!document.body.classList.contains('still')) svgs.forEach((s) => s.unpauseAnimations && s.unpauseAnimations());
+    } else if (started) {
+      sec.classList.add('st-off');                 // außerhalb des Bildschirms: Animationen anhalten
+      svgs.forEach((s) => s.pauseAnimations && s.pauseAnimations());
+    }
+  }), { threshold: 0.15 });
+  io.observe(maps);
+  document.querySelectorAll('.motion-toggle, .motion-toggle-link').forEach((b) => b.addEventListener('click', () => svgs.forEach((s) => {
+    if (document.body.classList.contains('still')) s.pauseAnimations(); else if (!sec.classList.contains('st-off')) s.unpauseAnimations();
+  })));
+})();
+
+</script>
 <script data-sec="abholung">
 /* --- Bestellen zum Abholen: Auswahl → Abholzeit → als fertige Nachricht per WhatsApp an den Laden --- */
 (() => {
@@ -4369,12 +4538,31 @@ function ebAb(key) {
     $$('.ab-r-no').forEach((e) => { e.hidden = true; });
   }
 
+  /* „Direkt hier“ bestellen (ohne WhatsApp beim Kunden): Die Bestellung geht über CallMeBot als WhatsApp-Nachricht
+     an die Laden-Nummer – nur wenn dafür ein Schlüssel eingetragen ist (in der Vorschau wird es nur ausprobiert). */
+  const DK = C.direkt || {};
+  const DEMO = !!DK.vorschau;
+  const DKEY = String(DK.apikey || '').trim();
+  const direktOn = !!waDigits && (DEMO || !!DKEY);
+  const DMAX = num(DK.maxSumme) || 100;                      // „Direkt“ nur bis zu diesem Betrag – größere Bestellungen per WhatsApp
+  const DHOUR = Math.max(1, Math.round(+DK.proStunde) || 3);  // höchstens so viele Direkt-Bestellungen pro Stunde von einem Gerät
+  document.querySelectorAll('[data-direkt-info]').forEach((p) => { p.hidden = !direktOn; });
+  /* Gegen Spaß-Bestellungen: nur die Uhrzeiten der letzten Direkt-Bestellungen, eine Stunde lang, in diesem Browser */
+  const sentLog = () => {
+    try { const a = JSON.parse(localStorage.getItem('eb-direkt') || '[]'); return Array.isArray(a) ? a.filter((t) => +t > 0 && Date.now() - t < 36e5) : []; } catch (e) { return []; }
+  };
+  const logSent = () => { try { localStorage.setItem('eb-direkt', JSON.stringify(sentLog().concat(Date.now()))); } catch (e) { /* egal */ } };
+
   /* Zustand: bleibt nur in diesem Tab (sessionStorage), damit beim Neuladen nichts verloren geht */
-  const fresh = () => ({ cart: [], time: '', own: '', name: '', note: '', code: '' });
+  const fresh = () => ({ cart: [], time: '', own: '', name: '', note: '', code: '', how: 'wa', last: '', tel: '', mail: '', ok: false });
   let S = fresh();
   try { const saved = JSON.parse(sessionStorage.getItem('eb-abholung') || 'null'); if (saved && Array.isArray(saved.cart)) S = Object.assign(S, saved); } catch (e) { /* kein Speicher: egal */ }
   const save = () => { try { sessionStorage.setItem('eb-abholung', JSON.stringify(S)); } catch (e) { /* egal */ } };
   S.cart = S.cart.map(norm).filter(Boolean);
+  if (!direktOn || S.how !== 'direkt') S.how = 'wa';
+  const direkt = () => S.how === 'direkt' && direktOn;
+  /* Neue Bestellung: Warenkorb leer, die eigenen Angaben bleiben (nur in diesem Tab) */
+  const restart = () => { const k = { name: S.name, last: S.last, tel: S.tel, mail: S.mail, how: S.how }; S = Object.assign(fresh(), k); save(); };
 
   /* Öffnungszeiten (deutsche Zeit) → Abholzeiten in 15-Minuten-Schritten */
   const DAYKEYS = ['so', 'mo', 'di', 'mi', 'do', 'fr', 'sa'];
@@ -4823,9 +5011,12 @@ function ebAb(key) {
   $('[data-ab-cart]').addEventListener('click', () => { if (step !== 1) go(1); $('.ab-cart').scrollIntoView({ block: 'start' }); });
   $$('[data-ab-go]').forEach((b) => b.addEventListener('click', () => go(+b.dataset.abGo)));
 
-  /* Schritt 2: Abholzeit, Name */
+  /* Schritt 2: Abholzeit, wie die Bestellung zu uns kommt, Name (bei „Direkt hier“ mit Nachname, Handy und E-Mail) */
   const times = $('.ab-times'), own = $('.ab-own'), ownIn = $('.ab-time'), hint = $('.ab-time-hint'), err = $('.ab-form .ab-err');
   const nameIn = $('.ab-name'), noteIn = $('.ab-notes');
+  const howFs = $('.ab-how'), lastIn = $('.ab-last'), telIn = $('.ab-phone'), mailIn = $('.ab-mail'), okIn = $('.ab-ok'), hpIn = $('.ab-hp input');
+  const LEAD2 = $('#ab-h2 + .ab-lead').textContent;
+  let shown2 = 0;                                                  // wann Schritt 2 aufging (Bots sind schneller als Menschen)
   const radio = (value, main, sub, cls) => {
     const l = el('label', cls || ''), i = el('input'), s = el('span');
     i.type = 'radio'; i.name = 'ab-time'; i.value = value; i.checked = S.time === value;
@@ -4833,6 +5024,13 @@ function ebAb(key) {
     s.append(main);
     l.append(i, s);
     return l;
+  };
+  const setHow = () => {
+    const d = direkt();
+    $$('input[name="ab-how"]', howFs).forEach((i) => { i.checked = i.value === S.how; });
+    $$('.ab-direkt').forEach((b) => { b.hidden = !d; });
+    $('.ab-name-l').textContent = d ? 'Vorname' : 'Dein Name';
+    [lastIn, telIn, mailIn].forEach((i) => { i.required = d; });
   };
   const renderTimes = () => {
     const sl = slots(), kids = [];
@@ -4864,30 +5062,80 @@ function ebAb(key) {
     hint.textContent = known
       ? (sl.groups.length || sl.asap ? 'Frühestens ' + LEAD + ' Minuten nach deiner Bestellung.' : 'Gerade sind keine Abholzeiten möglich – schau später nochmal vorbei.')
       : 'Frühestens ' + LEAD + ' Minuten nach deiner Bestellung.';
+    howFs.hidden = !direktOn;
+    $('.ab-demo', howFs).hidden = !DEMO;
+    $('#ab-h2 + .ab-lead').textContent = direktOn ? 'Such dir eine Zeit aus – und ob die Bestellung per WhatsApp kommt oder direkt hier.' : LEAD2;
     nameIn.value = S.name; noteIn.value = S.note;
+    lastIn.value = S.last; telIn.value = S.tel; mailIn.value = S.mail; okIn.checked = !!S.ok;
+    setHow();
+    $$('[aria-invalid]', $('.ab-form')).forEach((i) => i.setAttribute('aria-invalid', 'false'));
     err.textContent = '';
+    shown2 = Date.now();
   };
   times.addEventListener('change', (e) => { S.time = e.target.value; own.hidden = S.time !== 'own'; if (S.time === 'own') ownIn.focus(); err.textContent = ''; save(); });
   ownIn.addEventListener('input', () => { S.own = ownIn.value; err.textContent = ''; save(); });
-  nameIn.addEventListener('input', () => { S.name = nameIn.value; if (nameIn.value.trim()) { err.textContent = ''; nameIn.setAttribute('aria-invalid', 'false'); } save(); });
-  noteIn.addEventListener('input', () => { S.note = noteIn.value; save(); });
+  howFs.addEventListener('change', (e) => {
+    if (e.target.name !== 'ab-how') return;
+    S.how = e.target.value === 'direkt' ? 'direkt' : 'wa';
+    setHow(); err.textContent = ''; save();
+  });
+  /* Eingaben merken; eine Fehlermarkierung verschwindet, sobald man das Feld korrigiert */
+  [[nameIn, 'name'], [lastIn, 'last'], [telIn, 'tel'], [mailIn, 'mail'], [noteIn, 'note']].forEach(([inp, k]) => inp.addEventListener('input', () => {
+    S[k] = inp.value;
+    if (inp.getAttribute('aria-invalid') === 'true') { inp.setAttribute('aria-invalid', 'false'); err.textContent = ''; }
+    save();
+  }));
+  okIn.addEventListener('change', () => { S.ok = okIn.checked; if (okIn.checked) { okIn.setAttribute('aria-invalid', 'false'); err.textContent = ''; } save(); });
+
+  /* Prüfen, ob die Angaben echt aussehen – eine Website ohne eigenen Server kann nicht mehr tun */
+  const nameOk = (v) => v.replace(/[\s.'’-]/g, '').length >= 2 && !/[\d@<>_=+*#/\\|{}[\]:;!?$%&()"]/.test(v);
+  const telNorm = (v) => { let d = String(v || '').replace(/[^\d+]/g, ''); if (d.startsWith('00')) d = '+' + d.slice(2); return d; };
+  const telOk = (v) => {
+    const d = telNorm(v), digits = d.replace(/\D/g, '');
+    return /^(\+|0)\d+$/.test(d) && digits.length >= 10 && digits.length <= 15 && !/^(\d)\1+$/.test(digits.replace(/^(49|0)/, ''));
+  };
+  const mailOk = (v) => /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)*\.[A-Za-z]{2,}$/.test(v) && !/\.\./.test(v) && !/@(example|beispiel|test)\./i.test(v);
+  const telShow = (v) => { const d = telNorm(v); return d.startsWith('0') ? '+49' + d.slice(1) : d; };
+  const fullName = () => (direkt() ? S.name + ' ' + S.last : S.name).trim();
+  /* „Direkt hier“: Betrag und Anzahl pro Stunde – sonst lieber per WhatsApp */
+  const direktStop = () => {
+    const sum = total();
+    if (sum != null && sum > DMAX) return 'Direkt hier geht bis ' + euro(DMAX) + '. Für größere Bestellungen nimm bitte WhatsApp – dann können wir kurz Rücksprache halten.';
+    if (!DEMO && sentLog().length >= DHOUR) return 'Von diesem Gerät kamen in der letzten Stunde schon ' + DHOUR + ' Direkt-Bestellungen. Weitere bitte per WhatsApp.';
+    return '';
+  };
+
   const check = () => {
     S.name = nameIn.value.trim(); S.note = noteIn.value.trim();
-    let msg = '';
-    if (!S.time) msg = 'Bitte such dir eine Abholzeit aus.';
+    S.last = lastIn.value.trim(); S.tel = telIn.value.trim(); S.mail = mailIn.value.trim(); S.ok = okIn.checked;
+    $$('[aria-invalid]', $('.ab-form')).forEach((i) => i.setAttribute('aria-invalid', 'false'));
+    let msg = '', at = null, inp = null;
+    const fail = (m, input, anchor) => { if (!msg) { msg = m; inp = input; at = anchor || input.closest('.ab-field, .ab-check, .ab-fs'); } };
+    if (!S.time) fail('Bitte such dir eine Abholzeit aus.', times.querySelector('input') || times, times.closest('.ab-fs'));
     else if (S.time === 'own') {
       const m = /^(\d{2}):(\d{2})$/.exec(S.own || '');
       const earliest = berlin().min + LEAD;
-      if (!m) msg = 'Bitte gib eine Uhrzeit ein.';
-      else if (+m[1] * 60 + +m[2] < earliest) msg = 'Bitte frühestens ' + hhmm(Math.min(up15(earliest), 1435)) + ' Uhr – wir brauchen ein paar Minuten.';
+      if (!m) fail('Bitte gib eine Uhrzeit ein.', ownIn, times.closest('.ab-fs'));
+      else if (+m[1] * 60 + +m[2] < earliest) fail('Bitte frühestens ' + hhmm(Math.min(up15(earliest), 1435)) + ' Uhr – wir brauchen ein paar Minuten.', ownIn, times.closest('.ab-fs'));
     }
-    const timeErr = !!msg;
-    if (!msg && !S.name) msg = 'Bitte sag uns deinen Namen.';
+    const d = direkt();
+    if (d) { const stop = direktStop(); if (stop) fail(stop, $('input[value="wa"]', howFs), howFs); }
+    if (!S.name) fail(d ? 'Bitte sag uns deinen Vornamen.' : 'Bitte sag uns deinen Namen.', nameIn);
+    else if (d && !nameOk(S.name)) fail('Bitte schreib deinen Vornamen aus – ohne Zahlen und Zeichen.', nameIn);
+    if (d) {
+      if (!S.last) fail('Bitte gib auch deinen Nachnamen an.', lastIn);
+      else if (!nameOk(S.last)) fail('Bitte schreib deinen Nachnamen aus – ohne Zahlen und Zeichen.', lastIn);
+      if (!S.tel) fail('Bitte gib deine Handynummer an – nur falls wir kurz zurückrufen müssen.', telIn);
+      else if (!telOk(S.tel)) fail('Bitte prüf deine Handynummer, z. B. 0176 12345678.', telIn);
+      if (!S.mail) fail('Bitte gib deine E-Mail-Adresse an.', mailIn);
+      else if (!mailOk(S.mail)) fail('Bitte prüf deine E-Mail-Adresse, z. B. name@beispiel.de.', mailIn);
+      if (!S.ok) fail('Bitte bestätige, dass du die Bestellung abholst und im Laden bezahlst.', okIn);
+    }
     err.textContent = msg;
-    nameIn.setAttribute('aria-invalid', String(!!msg && !timeErr));
     if (msg) {
-      (timeErr ? times.closest('.ab-fs') : nameIn.closest('.ab-field')).after(err);   // die Meldung steht direkt unter dem Feld
-      (!timeErr ? nameIn : S.time === 'own' ? ownIn : times.querySelector('input')).focus({ preventScroll: true });
+      if (inp && inp.tagName === 'INPUT' && inp.type !== 'radio') inp.setAttribute('aria-invalid', 'true');
+      if (at) at.after(err);                                          // die Meldung steht direkt unter dem Feld
+      if (inp && inp.focus) inp.focus({ preventScroll: true });
       err.scrollIntoView({ block: 'center' });
     }
     save();
@@ -4898,66 +5146,115 @@ function ebAb(key) {
   /* Schritt 3: Bestellzettel, Nachricht, Absenden */
   /* Der Bestellschein, wie er bei euch in WhatsApp ankommt (*fett* ist WhatsApp-Formatierung) */
   const plain = (t) => String(t || '').replace(/[*_~`]/g, '').trim();      // Eingaben dürfen die Formatierung nicht stören
-  const message = () => {
+  const message = (viaWa) => {                                         // viaWa: der Kunde schickt es selbst per WhatsApp
     const rule = '––––––––––––––––––';
-    const sum = total();
-    const lines = ['*BESTELLSCHEIN · ZUM ABHOLEN*', 'Echte Bärliner Haunstetten · Nr. *' + S.code + '*', rule];
+    const sum = total(), d = direkt(), web = d && !viaWa;
+    const lines = [web ? '*WEBSITE-BESTELLUNG · ZUM ABHOLEN*' : '*BESTELLSCHEIN · ZUM ABHOLEN*', 'Echte Bärliner Haunstetten · Nr. *' + S.code + '*', rule];
     S.cart.forEach((it, i) => {
       if (i) lines.push('');
-      const l = line(it), d = details(it);
+      const l = line(it), dt = details(it);
       lines.push('*' + it.qty + '× ' + plain(title(it)) + '*' + (l != null ? ' · ' + euro(l) : ''));
-      if (d) lines.push(d);
+      if (dt) lines.push(dt);
     });
-    lines.push(rule, 'Abholung: *' + timeLabel() + '*', 'Name: *' + plain(S.name) + '*');
+    lines.push(rule, 'Abholung: *' + timeLabel() + '*', 'Name: *' + plain(fullName()) + '*');
+    if (d) lines.push('Handy: ' + telShow(S.tel), 'E-Mail: ' + plain(S.mail));
     if (S.note) lines.push('Anmerkung: ' + plain(S.note));
     if (sum != null) lines.push('Summe laut Speisekarte: *' + euro(sum) + '*');
     lines.push('Bezahlt wird beim Abholen.');
+    if (web) lines.push(rule, 'Direkt über die Website bestellt. Antworten in diesem Chat kommen beim Kunden nicht an – bei Fragen bitte die Handynummer anrufen.');
     return lines.join('\n');
   };
+  const dBtn = $('[data-ab-direct]'), dErr = $('.ab-send-err'), D_LABEL = dBtn.textContent;
+  const resetDirect = () => { dBtn.disabled = false; dBtn.textContent = D_LABEL; dBtn.classList.remove('is-busy'); dErr.textContent = ''; };
   const renderReceipt = () => {
     if (!S.code) S.code = 'EB-' + String(Math.floor(1000 + Math.random() * 9000));
+    const d = direkt();
     $$('.ab-code').forEach((c) => { c.textContent = S.code; });
     $('.ab-r-items').replaceChildren(...S.cart.map((it) => {
       const li = el('li');
-      const l = line(it), d = details(it);
+      const l = line(it), dt = details(it);
       li.append(el('b', '', it.qty + '×'), el('span', '', title(it)), el('em', '', l != null ? euro(l) : ''));
-      if (d) li.append(el('p', '', d));
+      if (dt) li.append(el('p', '', dt));
       return li;
     }));
     $('.ab-r-time').textContent = timeLabel();
-    $('.ab-r-name').textContent = S.name;
+    $('.ab-r-name').textContent = fullName();
+    $('.ab-r-tel').textContent = d ? S.tel : '';
+    $('.ab-r-mail').textContent = d ? S.mail : '';
+    $$('.ab-r-d').forEach((x) => { x.hidden = !d; });
     $('.ab-r-note').textContent = S.note;
     $('.ab-r-note').hidden = $('.ab-r-note-t').hidden = !S.note;
     const sum = total();
     $('.ab-r-foot').textContent = sum != null ? 'Summe laut Speisekarte: ' + euro(sum) + '. Bezahlt wird beim Abholen im Laden.' : 'Bezahlt wird beim Abholen im Laden.';
-    const text = message();
+    if (waDigits) $('#ab-h3 + .ab-lead').textContent = d ? 'So kommt deine Bestellung bei uns an. Mit dem Knopf unten ist sie verbindlich bestellt.' : 'So kommt deine Bestellung bei uns an.';
+    const text = message(true);
     const send = $('[data-ab-send]'), tel = $('[data-ab-tel]');
     if (waDigits) {
       send.href = $('[data-ab-again]').href = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent(text);
       /* Handy: WhatsApp direkt öffnen statt erst einen neuen Tab (in eingebetteten Ansichten bleibt es ein neuer Tab) */
       let top = true; try { top = window.top === window.self; } catch (e) { top = false; }
-      const direct = top && window.matchMedia('(pointer: coarse)').matches;
-      [send, $('[data-ab-again]')].forEach((a) => { if (direct) a.removeAttribute('target'); else a.target = '_blank'; });
+      const coarse = top && window.matchMedia('(pointer: coarse)').matches;
+      [send, $('[data-ab-again]')].forEach((a) => { if (coarse) a.removeAttribute('target'); else a.target = '_blank'; });
     }
-    send.hidden = !waDigits;
+    send.hidden = !waDigits || d;
+    $('[data-ab-direct]').hidden = !d;
+    $('[data-ab-copy]').hidden = d;
+    resetDirect();
     $('[data-ab-nosend]').hidden = !!waDigits;
     tel.hidden = !C.telefon;
     save();
   };
-  $('[data-ab-send]').addEventListener('click', () => setTimeout(() => { go(4); const name = S.name; S = fresh(); S.name = name; save(); renderCart(); }, 300));
-  $('[data-ab-copy]').addEventListener('click', () => {
-    const text = message();
-    const done = () => toast('Bestellung kopiert');
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done));
-    else fallbackCopy(text, done);
+
+  /* Fertig-Seite: bei WhatsApp „noch auf Senden tippen“, bei „Direkt hier“ ist die Bestellung schon raus */
+  const doneH = $('#ab-h4'), doneLead = $('.ab-done-lead'), DONE_H = doneH.textContent, DONE_LEAD = doneLead.innerHTML;
+  const done = (viaDirekt, info) => {
+    go(4);
+    doneH.textContent = viaDirekt ? (DEMO ? 'So sähe es aus' : 'Bestellung ist raus!') : DONE_H;
+    if (viaDirekt) doneLead.textContent = (DEMO ? 'Vorschau – gesendet wurde nichts. ' : '') + 'Danke, ' + info.name + '! Deine Bestellung ist abgeschickt. Abholung: ' + info.when + ' – bezahlt wird im Laden. Falls etwas unklar ist, rufen wir dich kurz an.';
+    else doneLead.innerHTML = DONE_LEAD;
+    $('[data-ab-again]').hidden = viaDirekt;
+    restart(); renderCart();
+  };
+  $('[data-ab-send]').addEventListener('click', () => setTimeout(() => done(false), 300));
+
+  /* „Jetzt verbindlich bestellen“: schickt den Bestellschein über CallMeBot an die Laden-Nummer.
+     Die Antwort kann eine Website ohne Server nicht lesen – ein Netzwerkfehler wird aber erkannt. */
+  const ping = (url) => new Promise((ok, fail) => {
+    if (window.fetch) {
+      let ctl = null; try { ctl = new AbortController(); } catch (e) { /* alter Browser */ }
+      const t = setTimeout(() => { if (ctl) ctl.abort(); fail(); }, 20000);
+      fetch(url, { mode: 'no-cors', cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer', signal: ctl ? ctl.signal : undefined })
+        .then(() => { clearTimeout(t); ok(); }, () => { clearTimeout(t); fail(); });
+    } else { const img = new Image(); img.onload = img.onerror = () => ok(); img.src = url; }
   });
-  const fallbackCopy = (text, done) => {
+  dBtn.addEventListener('click', () => {
+    if (dBtn.disabled || !direkt()) return;
+    const stop = direktStop();
+    if (stop) { dErr.textContent = stop; return; }
+    const info = { name: S.name, when: timeLabel() };
+    const bot = !!hpIn.value || Date.now() - shown2 < 3000;     // verstecktes Feld ausgefüllt oder in unter 3 Sekunden durch: kein Mensch
+    dBtn.disabled = true; dBtn.classList.add('is-busy'); dBtn.textContent = 'Wird gesendet …'; dErr.textContent = '';
+    if (bot || DEMO) { setTimeout(() => done(true, info), 900); return; }
+    const url = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent('+' + waDigits) + '&text=' + encodeURIComponent(message()) + '&apikey=' + encodeURIComponent(DKEY);
+    ping(url).then(() => { logSent(); done(true, info); }, () => {
+      resetDirect();
+      dErr.textContent = 'Das hat gerade nicht geklappt – bist du online? Versuch es nochmal oder schick die Bestellung per WhatsApp.';
+      $('[data-ab-send]').hidden = false;
+    });
+  });
+  $('[data-ab-copy]').addEventListener('click', () => {
+    const text = message(true);
+    const ok = () => toast('Bestellung kopiert');
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, () => fallbackCopy(text, ok));
+    else fallbackCopy(text, ok);
+  });
+  const fallbackCopy = (text, ok) => {
     const t = el('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
     dlg.append(t); t.select();
-    try { if (document.execCommand('copy')) done(); } catch (e) { /* egal */ }
+    try { if (document.execCommand('copy')) ok(); } catch (e) { /* egal */ }
     t.remove();
   };
-  $('[data-ab-new]').addEventListener('click', () => { const name = S.name; S = fresh(); S.name = name; go(1); });
+  $('[data-ab-new]').addEventListener('click', () => { restart(); go(1); });
 
   /* ---------- Öffnen und Schließen (#speisekarte oder #abholung in der Adresse, Zurück-Taste schließt) ---------- */
   const HASHES = ['#abholung', '#speisekarte'];
@@ -5025,116 +5322,6 @@ function ebAb(key) {
   renderCart();
   if (HASHES.includes(location.hash)) { setMode(location.hash === '#speisekarte' ? 'karte' : 'order'); show(); go(1, false); }
 })();
-</script>
-<script data-sec="standorte">
-/* --- Alle Standorte: Karte <-> Liste, Pfeile einzeichnen, Lichtpunkte auf den Pfeilen --- */
-(() => {
-  const sec = document.getElementById('standorte');
-  if (!sec) return;
-  const svgs = [...sec.querySelectorAll('.st-svg')];
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Grundkarte (Land, Seen, Flüsse, Grenzen) als eigene Ebene darunter: sie wird nur einmal gemalt,
-  // Pfeile, Punkte und Lichtpunkte darüber bewegen sich, ohne dass die ganze Karte jedes Bild neu gemalt wird
-  const LAND = '.st-de,.st-by,.st-lake,.st-river,.st-state,.st-border';
-  svgs.forEach((svg) => {
-    if (!svg.closest('.st-map')) return;
-    const parts = Array.from(svg.children).filter((c) => c.matches(LAND));
-    if (!parts.length) return;
-    const base = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    ['viewBox', 'preserveAspectRatio', 'class'].forEach((a) => { if (svg.hasAttribute(a)) base.setAttribute(a, svg.getAttribute(a)); });
-    base.classList.add('st-base');
-    base.setAttribute('aria-hidden', 'true'); base.setAttribute('focusable', 'false');
-    parts.forEach((c) => base.appendChild(c));
-    svg.parentNode.insertBefore(base, svg);
-    svg.stBase = base;
-  });
-
-  // Schrift, Punkte und Linien bleiben auf jedem Bildschirm gleich groß: --u = Karteneinheiten pro Pixel
-  const setU = (svg) => {
-    const w = svg.getBoundingClientRect().width;
-    const min = svg.classList.contains('st-svg-p') ? 340 : svg.classList.contains('st-lens-svg') ? 300 : 0;   // so breit wurde die Beschriftung geplant
-    if (w) { const u = (svg.viewBox.baseVal.width / Math.max(w, min)).toFixed(3); svg.style.setProperty('--u', u); if (svg.stBase) svg.stBase.style.setProperty('--u', u); }
-  };
-  svgs.forEach(setU);
-  if ('ResizeObserver' in window) { const ro = new ResizeObserver((es) => es.forEach((e) => setU(e.target))); svgs.forEach((s) => ro.observe(s)); }
-  else window.addEventListener('resize', () => svgs.forEach(setU));
-
-  // Eintrag in der Liste <-> Pfeil und Punkt auf der Karte
-  const on = (id) => {
-    sec.querySelectorAll('.is-on').forEach((e) => e.classList.remove('is-on'));
-    svgs.forEach((s) => s.classList.toggle('st-hl', !!id));
-    if (id) sec.querySelectorAll('[data-st~="' + id + '"]').forEach((e) => e.classList.add('is-on'));
-  };
-  sec.querySelectorAll('.st-item').forEach((a) => {
-    const id = a.classList.contains('is-home') ? null : a.dataset.st;
-    a.addEventListener('pointerenter', () => on(id));
-    a.addEventListener('pointerleave', () => on(null));
-    a.addEventListener('focus', () => on(id));
-    a.addEventListener('blur', () => on(null));
-  });
-  sec.querySelectorAll('.st-pt').forEach((g) => {
-    const ids = g.dataset.st.split(' ');
-    const item = sec.querySelector('.st-item[data-st="' + ids[0] + '"]');
-    const home = g.classList.contains('st-home');
-    g.addEventListener('pointerenter', () => { if (!home) on(ids[0]); if (ids.length > 1) ids.forEach((i) => sec.querySelectorAll('.st-item[data-st="' + i + '"]').forEach((e) => e.classList.add('is-on'))); });
-    g.addEventListener('pointerleave', () => on(null));
-    g.addEventListener('click', () => { if (!item) return; if (ids.length > 1) item.focus(); else if (item.tagName === 'A') item.click(); });
-  });
-
-  if (reduce || !('IntersectionObserver' in window)) return;
-
-  // kleine Lichtpunkte, die nacheinander die Pfeile entlanglaufen (nur auf der gerade sichtbaren Karte)
-  const NS = 'http://www.w3.org/2000/svg';
-  const runs = window.matchMedia('(max-width: 600px)').matches ? '1' : '2';   // Handy: einmal reicht, das spart Akku
-  const sparks = (svg) => {
-    const glow = svg.querySelector('radialGradient[id^="st-glow"]');
-    const arcs = [...svg.querySelectorAll('.st-route:not(.st-soon):not(.st-far) .st-arc')];
-    arcs.forEach((p, i) => {
-      const g = document.createElementNS(NS, 'g');
-      g.setAttribute('class', 'st-spark');
-      g.setAttribute('opacity', '0');
-      g.innerHTML = '<g class="st-u"><circle r="9" fill="url(#' + (glow ? glow.id : '') + ')"/><circle class="st-spark-core" r="2.2"/></g>';
-      const dur = Math.max(6, arcs.length * 0.75) + 's';
-      const move = document.createElementNS(NS, 'animateMotion');
-      [['dur', dur], ['repeatCount', runs], ['calcMode', 'linear'], ['keyPoints', '0;1;1'], ['keyTimes', '0;.2;1'], ['begin', 'indefinite']]
-        .forEach(([k, v]) => move.setAttribute(k, v));
-      const mp = document.createElementNS(NS, 'mpath');
-      mp.setAttribute('href', '#' + p.id);
-      move.appendChild(mp);
-      const fade = document.createElementNS(NS, 'animate');
-      [['attributeName', 'opacity'], ['values', '0;1;1;0;0'], ['keyTimes', '0;.03;.17;.21;1'], ['dur', dur], ['repeatCount', runs], ['begin', 'indefinite']]
-        .forEach(([k, v]) => fade.setAttribute(k, v));
-      g.append(move, fade);
-      p.parentNode.insertBefore(g, p.nextSibling);
-      const t = 0.75 * i;
-      try { move.beginElementAt(t); fade.beginElementAt(t); } catch (e) { g.remove(); }
-    });
-  };
-
-  sec.classList.add('st-anim');
-  const maps = sec.querySelector('.st-maps');
-  let started = false;
-  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
-    if (en.isIntersecting) {
-      sec.classList.remove('st-off');
-      if (!started) {
-        started = true;
-        sec.classList.add('st-go');
-        setTimeout(() => sec.classList.add('st-done'), 5000);   // Einzeichnen fertig: ab jetzt ohne Verzögerung
-        setTimeout(() => svgs.forEach((s) => { if (s.getBoundingClientRect().width) sparks(s); if (document.body.classList.contains('still')) s.pauseAnimations(); }), 2800);
-      } else if (!document.body.classList.contains('still')) svgs.forEach((s) => s.unpauseAnimations && s.unpauseAnimations());
-    } else if (started) {
-      sec.classList.add('st-off');                 // außerhalb des Bildschirms: Animationen anhalten
-      svgs.forEach((s) => s.pauseAnimations && s.pauseAnimations());
-    }
-  }), { threshold: 0.15 });
-  io.observe(maps);
-  document.querySelectorAll('.motion-toggle, .motion-toggle-link').forEach((b) => b.addEventListener('click', () => svgs.forEach((s) => {
-    if (document.body.classList.contains('still')) s.pauseAnimations(); else if (!sec.classList.contains('st-off')) s.unpauseAnimations();
-  })));
-})();
-
 </script>
 <script data-sec="handy">
 /* --- Handy: kompakte Übersicht (Karten zum Wischen, Eingeklapptes) und mitlaufende Wunsch-Döner-Vorschau --- */
