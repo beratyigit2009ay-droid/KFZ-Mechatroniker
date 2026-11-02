@@ -88,10 +88,10 @@ a{color:inherit}
 /* Kopfzeile */
 .site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(15,14,12,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}
-.logo{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.logo{display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none}
 .logo-word{font-weight:900;font-stretch:125%;font-size:clamp(17px,5.4vw,24px);letter-spacing:.02em;white-space:nowrap}
 .logo-word span{color:var(--gold)}
-.logo-sub{font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--muted)}
+.logo-sub{font-size:10.5px;font-weight:700;letter-spacing:.24em;line-height:1;white-space:nowrap;color:var(--muted)}
 .nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:600}
 .nav-links a{white-space:nowrap}
 .nav-links a:not(.btn){display:block;padding:12px 14px;text-decoration:none;border-radius:999px}
@@ -103,8 +103,8 @@ a{color:inherit}
 .menu-toggle[aria-expanded="true"] .i-close{display:block}
 @media (max-width:1240px){
   .menu-toggle{display:inline-flex}
-  .logo-sub{display:none}
-  .logo{min-height:48px;align-items:center}
+  .logo{min-height:48px;justify-content:center;gap:4px}
+  .logo-sub{font-size:10px;letter-spacing:.22em}
   .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;padding:8px 32px 20px;background:var(--ink);border-bottom:1px solid var(--line);box-shadow:0 20px 40px rgba(0,0,0,.4)}
   .nav-links.open{display:flex}
   .nav-links a:not(.btn){padding:16px 0;border-radius:0;border-bottom:1px solid var(--line);font-size:18px}
@@ -1775,9 +1775,9 @@ textarea.ab-input{min-height:88px;resize:vertical}
 
 <header class="site-header">
   <nav class="nav wrap" aria-label="Hauptmenü">
-    <a class="logo" href="#start" aria-label="Echte Bärliner Augsburg – zum Seitenanfang">
+    <a class="logo" href="#start" aria-label="Echte Bärliner Augsburg-Haunstetten – zum Seitenanfang">
       <span class="logo-word">ECHTE B<span>Ä</span>RLINER</span>
-      <span class="logo-sub">AUGSBURG</span>
+      <span class="logo-sub">AUGSBURG-HAUNSTETTEN</span>
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menü öffnen">
       <svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
@@ -1812,7 +1812,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
           Route planen</a>
       </div>
       <div class="facts enter" style="--i:4">
-        <div class="fact"><small>Adresse</small><span>Albert-Leidl-Str. 6, 86179 Augsburg</span></div>
+        <div class="fact"><small>Adresse</small><span>Albert-Leidl-Str. 6, 86179 Augsburg-Haunstetten</span></div>
         <div class="fact" data-needs="telefon"><small>Telefon</small><a class="js-tel js-tel-text" href="#">–</a></div>
       </div>
     </div>
@@ -2445,7 +2445,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <table class="hours">
           <caption>Öffnungszeiten</caption>
           <tbody id="hours-body">
-            <tr class="soon"><td colspan="2">Kommen in Kürze – schau bald wieder vorbei.</td></tr>
+            <tr><th scope="row">Montag</th><td>geschlossen</td></tr>
+            <tr><th scope="row">Dienstag</th><td>11:30 – 21:00</td></tr>
+            <tr><th scope="row">Mittwoch</th><td>11:30 – 21:00</td></tr>
+            <tr><th scope="row">Donnerstag</th><td>11:30 – 21:30</td></tr>
+            <tr><th scope="row">Freitag</th><td>11:30 – 21:00</td></tr>
+            <tr><th scope="row">Samstag</th><td>11:30 – 21:30</td></tr>
+            <tr><th scope="row">Sonntag</th><td>11:30 – 21:30</td></tr>
           </tbody>
         </table>
         <div class="actions">
@@ -3121,7 +3127,7 @@ const CONFIG = {
   allergeneGeprueft: false,   // erst auf true setzen, wenn die Angaben stimmen – dann verschwindet der Hinweis
   // Öffnungszeiten: '11:00-22:00', 'geschlossen' oder '' (= noch unbekannt).
   // Über Mitternacht geht auch, z. B. '11:00-02:00'.
-  oeffnungszeiten: { mo: '', di: '', mi: '', do: '', fr: '', sa: '', so: '' }
+  oeffnungszeiten: { mo: 'geschlossen', di: '11:30-21:00', mi: '11:30-21:00', do: '11:30-21:30', fr: '11:30-21:00', sa: '11:30-21:30', so: '11:30-21:30' }
 };
 
 /* Kleinster Preis aus CONFIG.karte, z. B. ebAb('sandwich') → 'ab 7,50 €' (Karten oben, FAQ) */
