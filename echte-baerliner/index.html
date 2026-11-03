@@ -1403,10 +1403,16 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-plus:hover{filter:brightness(1.08)}
 .ab-plus,.ab-form-b,.ab-meat button,.ab-opt>span,.ab-qty button,.ab-cats button{transition:transform .12s,filter .15s,background-color .15s,box-shadow .15s}
 .ab-plus:active,.ab-qty button:active{transform:scale(.88)}
-.ab-form-b:active,.ab-opt:active>span,.ab-cats button:active,.ab-row:has(.ab-go:active){transform:scale(.97)}
+.ab-form-b:active,.ab-opt:active>span,.ab-cats button:active{transform:scale(.97)}
 .ab-row .ab-go{position:static}
 .ab-row .ab-go::after{content:"";position:absolute;inset:0;border-radius:18px}
 .ab-row:has(.ab-go){cursor:pointer}
+/* Die ganze Zeile ist die Tippfläche (::after vom „+“). Transform oder Filter am Knopf würden sie beim Drücken auf Knopfgröße schrumpfen lassen –
+   dann trifft das Loslassen daneben und nichts passiert. Deshalb hier nur Farbe als Rückmeldung. */
+.ab-row .ab-go:hover,.ab-row .ab-go:active{transform:none;filter:none}
+.ab-row .ab-go:active{background:var(--gold-hi)}
+.ab-row:has(.ab-go:active){background:#2A2117;box-shadow:inset 0 0 0 1.5px var(--gold)}
+.ab-row,.ab-feature{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ab-step{display:flex;align-items:center;gap:4px}
 .ab-step output{min-width:20px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
 .ab-minus{background:var(--ink-3);color:var(--paper);box-shadow:inset 0 0 0 1px rgba(245,240,230,.16)}
@@ -5010,6 +5016,13 @@ function ebAb(key) {
   }));
   $('[data-ab-cart]').addEventListener('click', () => { if (step !== 1) go(1); $('.ab-cart').scrollIntoView({ block: 'start' }); });
   $$('[data-ab-go]').forEach((b) => b.addEventListener('click', () => go(+b.dataset.abGo)));
+  /* Tippen auf Name, Bild oder Preis wirkt wie „+“ (Gerichte, Teller, Snacks, Getränke) – auch wenn die große Tippfläche einmal nicht greift */
+  dlg.addEventListener('click', (e) => {
+    const r = e.target.closest('.ab-row, .ab-feature');
+    if (!r || e.target.closest('button, a, input, label, select, textarea')) return;
+    const g = r.querySelector('.ab-go, .ab-ft-go, .ab-plus:not(.ab-minus)');
+    if (g && !g.disabled) g.click();
+  });
 
   /* Schritt 2: Abholzeit, wie die Bestellung zu uns kommt, Name (bei „Direkt hier“ mit Nachname, Handy und E-Mail) */
   const times = $('.ab-times'), own = $('.ab-own'), ownIn = $('.ab-time'), hint = $('.ab-time-hint'), err = $('.ab-form .ab-err');
