@@ -4,6 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Echte Bärliner Augsburg-Haunstetten | Döner heiß vom Spieß</title>
+<script data-sec="testmodus">
+/* --- Testmodus (nur mit ?test in der Adresse): zeigt oben, was ein Tipp trifft, und Fehler – für Bildschirmfotos --- */
+window.EB_VERSION = '2026-11-03c';
+(() => {
+  if (!/[?&#]test\b/.test(location.search + location.hash)) return;
+  const box = document.createElement('div');
+  box.setAttribute('style', 'position:fixed;left:6px;right:6px;top:6px;z-index:2147483647;pointer-events:none;padding:8px 10px;border-radius:12px;background:rgba(0,0,0,.86);color:#9f9;font:12px/1.35 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-all;max-height:46vh;overflow:hidden');
+  const lines = [];
+  const d = (e) => { if (!e || !e.tagName) return String(e); let t = e.tagName.toLowerCase(); if (e.id) t += '#' + e.id; if (typeof e.className === 'string' && e.className) t += '.' + e.className.trim().split(/\s+/).slice(0, 2).join('.'); const tx = (e.textContent || '').trim().slice(0, 18); return t + (tx ? ' „' + tx + '“' : ''); };
+  const head = () => {
+    const dl = document.getElementById('abholung');
+    const open = Array.from(document.querySelectorAll('dialog[open]')).map((x) => d(x).split(' ')[0]).join(', ') || '–';
+    return 'TEST · Version ' + window.EB_VERSION + ' · ' + innerWidth + '×' + innerHeight + '\n' + navigator.userAgent.replace(/Mozilla\/5\.0 /, '').slice(0, 120) + '\noffen: ' + open + (dl ? ' · Schritt ' + (dl.dataset.step || '-') : '');
+  };
+  const draw = () => { box.textContent = head() + '\n' + lines.join('\n'); };
+  const log = (t) => { lines.push(t); while (lines.length > 9) lines.shift(); draw(); };
+  const add = () => { if (!box.isConnected) document.body.appendChild(box); draw(); };
+  if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+  const down = (e) => { const p = e.touches ? e.touches[0] : e; const hit = document.elementFromPoint(p.clientX, p.clientY); log('↓ ' + Math.round(p.clientX) + ',' + Math.round(p.clientY) + ' trifft ' + d(hit) + (hit && hit.closest && hit.closest('[inert]') ? ' [GESPERRT]' : '')); };
+  window.addEventListener('pointerdown' in window ? 'pointerdown' : 'touchstart', down, { capture: true, passive: true });
+  window.addEventListener('click', (e) => log('✓ Klick: ' + d(e.target)), true);
+  window.addEventListener('error', (e) => log('✗ Fehler: ' + (e.message || e.type) + ' (' + String(e.filename || '').split('/').pop() + ':' + (e.lineno || '') + ')'));
+  window.addEventListener('unhandledrejection', (e) => log('✗ Promise: ' + (e.reason && e.reason.message || e.reason)));
+  setInterval(draw, 1000);
+})();
+</script>
 <noscript><style>[data-needs],.js-only{display:none!important}</style></noscript>
 <meta name="description" content="Echte Bärliner in Augsburg-Haunstetten: Berliner Döner frisch vom Spieß – im Brot, in der Box oder auf dem Teller. Albert-Leidl-Straße 6, 86179 Augsburg.">
 <meta name="theme-color" content="#0F0E0C">
@@ -1440,7 +1466,11 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1001;height:-webkit-fit-content;height:fit-content;width:min(560px,calc(100% - 32px));max-width:none;max-height:90vh;max-height:min(90dvh,880px);margin:auto;padding:0;border:0;border-radius:26px;background:var(--ink-2);color:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 1px var(--line);overflow:hidden}
 .ab-sheet[open]{display:flex;flex-direction:column;animation:sh-in .28s cubic-bezier(.2,.8,.2,1)}
 .ab-sheet::backdrop{background:rgba(8,7,6,.7)}
-.ab-sheet.is-fallback[open]{box-shadow:0 0 0 100vmax rgba(8,7,6,.7),0 30px 80px rgba(0,0,0,.6)}
+.ab-sheet.is-fallback[open]{box-shadow:0 30px 80px rgba(0,0,0,.6)}
+/* Abgedunkelter Hintergrund hinter dem Gericht-Fenster: Tippen daneben schließt es */
+.ab-sheet-bg{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;background:rgba(8,7,6,.7);animation:ab-fade .2s ease-out}
+.ab-sheet-bg[hidden]{display:none}
+@keyframes ab-fade{from{opacity:0}}
 @keyframes sh-in{from{opacity:0;transform:translateY(24px) scale(.98)}}
 .ab-sh{display:flex;flex-direction:column;flex:1;min-height:0}
 .ab-sh-head{display:flex;align-items:center;gap:14px;padding:16px 14px 14px 18px;border-bottom:1px solid var(--line)}
@@ -4807,7 +4837,7 @@ function ebAb(key) {
   /* ---------- Warenkorb ---------- */
   const renderCart = () => {
     const n = S.cart.reduce((a, it) => a + it.qty, 0), sum = total();
-    const fa = document.activeElement, fq = fa && fa.closest && dlg.contains(fa) && !sheet.open ? (fa.dataset.abItemQ ? '[data-ab-item-q="' + fa.dataset.abItemQ + '"]' : fa.dataset.abEdit != null ? '[data-ab-edit="' + fa.dataset.abEdit + '"]' : '') : '';
+    const fa = document.activeElement, fq = fa && fa.closest && dlg.contains(fa) && !sheet.hasAttribute('open') ? (fa.dataset.abItemQ ? '[data-ab-item-q="' + fa.dataset.abItemQ + '"]' : fa.dataset.abEdit != null ? '[data-ab-edit="' + fa.dataset.abEdit + '"]' : '') : '';
     $('.ab-count').textContent = n;
     $('.ab-empty').hidden = !!S.cart.length;
     dlg.toggleAttribute('data-empty', !S.cart.length);
@@ -4871,6 +4901,13 @@ function ebAb(key) {
 
   /* ---------- Kurz zusammenstellen (kleines Fenster) ---------- */
   const sheet = $('.ab-sheet'), shForm = $('.ab-sh', sheet), shErr = $('.ab-sh-err', sheet), wish = $('.ab-wish', sheet);
+  const shBg = el('div', 'ab-sheet-bg'); shBg.hidden = true; sheet.parentNode.insertBefore(shBg, sheet);
+  shBg.addEventListener('click', () => closeSheet());
+  let shInerted = [];
+  const shInert = (on) => {
+    if (on) { shInerted = Array.from(dlg.children).filter((e) => e !== shBg && !e.contains(sheet) && !e.classList.contains('ab-toast') && !e.inert); shInerted.forEach((e) => { e.inert = true; }); }
+    else { shInerted.forEach((e) => { e.inert = false; }); shInerted = []; }
+  };
   const fs = (f) => $('[data-f="' + f + '"]', sheet);
   const opt = (type, name, value, label, sub, checked, dot) => {
     const l = el('label', 'ab-opt'), i = el('input'), s = el('span');
@@ -4951,16 +4988,18 @@ function ebAb(key) {
     wish.open = !!wishText();
     shErr.textContent = '';
     sheetSum();
-    if (!sheet.open) {
-      if (typeof sheet.showModal === 'function') { try { sheet.showModal(); } catch (e) { sheet.setAttribute('open', ''); } }
-      else sheet.setAttribute('open', '');
-      let modal = false; try { modal = sheet.matches(':modal'); } catch (e) { /* alter Browser */ }
-      sheet.classList.toggle('is-fallback', !modal);
+    if (!sheet.hasAttribute('open')) {
+      /* Bewusst kein zweites showModal() im Fenster: verschachtelte Dialoge behandeln iPhone-Browser anders als Chrome */
+      sheet.setAttribute('open', ''); sheet.classList.add('is-fallback'); shBg.hidden = false;
+      shInert(true);
     }
     $('.ab-sh-body', sheet).scrollTop = 0;
     $('#ab-sh-title').focus({ preventScroll: true });
   };
-  const closeSheet = () => { if (typeof sheet.close === 'function' && sheet.open) sheet.close(); else sheet.removeAttribute('open'); edit = -1; };
+  const closeSheet = () => {
+    if (sheet.hasAttribute('open')) { if (typeof sheet.close === 'function' && sheet.open) sheet.close(); else sheet.removeAttribute('open'); }
+    shBg.hidden = true; shInert(false); edit = -1;
+  };
   sheet.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet.classList.contains('is-fallback')) { e.preventDefault(); closeSheet(); } });
   const add = (item) => {
     const it = norm(item);
@@ -5274,12 +5313,19 @@ function ebAb(key) {
   /* Adresszeile: in eingebetteten Ansichten oder alten Browsern kann das gesperrt sein – dann eben ohne */
   const hist = (fn, a, b, c) => { try { history[fn](a, b, c); return true; } catch (e) { return false; } };
   let pushed = false, opener = null;
+  /* Die Seite hinter dem Fenster für Tastatur und Vorleser sperren – das Fenster selbst bleibt frei */
+  let inerted = [];
+  const setInert = (on) => {
+    if (on) { inerted = Array.from(document.body.children).filter((e) => !e.contains(dlg) && e.tagName !== 'SCRIPT' && !e.inert); inerted.forEach((e) => { e.inert = true; }); }
+    else { inerted.forEach((e) => { e.inert = false; }); inerted = []; }
+  };
   const show = () => {
     if (dlg.open) return;
     opener = document.activeElement;
-    if (typeof dlg.showModal === 'function') { try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); } }
-    else dlg.setAttribute('open', '');
+    /* Bewusst ohne showModal(): ein einfaches Vollbild-Fenster verhält sich auf iPhone und Android gleich */
+    dlg.setAttribute('open', '');
     document.documentElement.classList.add('ab-open');
+    setInert(true);
   };
   const open = (o = {}) => {
     const wasOpen = dlg.open;
@@ -5302,6 +5348,7 @@ function ebAb(key) {
     closeSheet();
     if (typeof dlg.close === 'function' && dlg.open) dlg.close(); else dlg.removeAttribute('open');
     document.documentElement.classList.remove('ab-open');
+    setInert(false);
     toastEl.classList.remove('is-on');
     if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true });
   };
@@ -5319,7 +5366,7 @@ function ebAb(key) {
   window.addEventListener('popstate', sync);
   window.addEventListener('hashchange', sync);
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dlg.hasAttribute('open') && !(typeof dlg.showModal === 'function') && !sheet.hasAttribute('open')) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !e.defaultPrevented && dlg.hasAttribute('open') && !sheet.hasAttribute('open')) close(); });
   $$('[data-ab-close]').forEach((b) => b.addEventListener('click', close));
 
   /* „Speisekarte“-Links öffnen die Speisekarte, „Bestellen“-Knöpfe die Bestellung (data-ab-open="sandwich|box|teller" fragt gleich nach der Soße) */
