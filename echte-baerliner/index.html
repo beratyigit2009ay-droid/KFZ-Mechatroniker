@@ -6,7 +6,7 @@
 <title>Echte Bärliner Augsburg-Haunstetten | Döner heiß vom Spieß</title>
 <script data-sec="testmodus">
 /* --- Testmodus (nur mit ?test in der Adresse): zeigt oben, was ein Tipp trifft, und Fehler – für Bildschirmfotos --- */
-window.EB_VERSION = '2026-11-03c';
+window.EB_VERSION = '2026-11-04a';
 (() => {
   if (!/[?&#]test\b/.test(location.search + location.hash)) return;
   const box = document.createElement('div');
@@ -1463,7 +1463,7 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-link:hover{color:var(--gold-hi)}
 
 /* Kurz zusammenstellen: kleines Fenster (Handy: von unten) */
-.ab-sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1001;height:-webkit-fit-content;height:fit-content;width:min(560px,calc(100% - 32px));max-width:none;max-height:90vh;max-height:min(90dvh,880px);margin:auto;padding:0;border:0;border-radius:26px;background:var(--ink-2);color:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 1px var(--line);overflow:hidden}
+.ab-sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1001;height:-webkit-fit-content;height:fit-content;width:min(560px,calc(100% - 32px));max-width:none;max-height:90vh;max-height:min(90dvh,880px);min-height:min(420px,85vh);margin:auto;padding:0;border:0;border-radius:26px;background:var(--ink-2);color:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 1px var(--line);overflow:hidden}
 .ab-sheet[open]{display:flex;flex-direction:column;animation:sh-in .28s cubic-bezier(.2,.8,.2,1)}
 .ab-sheet::backdrop{background:rgba(8,7,6,.7)}
 .ab-sheet.is-fallback[open]{box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -1472,7 +1472,8 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-sheet-bg[hidden]{display:none}
 @keyframes ab-fade{from{opacity:0}}
 @keyframes sh-in{from{opacity:0;transform:translateY(24px) scale(.98)}}
-.ab-sh{display:flex;flex-direction:column;flex:1;min-height:0}
+/* flex-basis auto (nicht 0): Safari rechnete sonst die Höhe des Fensters auf 0 */
+.ab-sh{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
 .ab-sh-head{display:flex;align-items:center;gap:14px;padding:16px 14px 14px 18px;border-bottom:1px solid var(--line)}
 .ab-sh-ico{flex:none;display:grid;place-items:center;width:58px;height:58px;border-radius:16px;background:var(--ink-3);color:var(--gold-hi)}
 .ab-sh-ico svg{width:44px;height:44px}
@@ -1482,7 +1483,7 @@ html.ab-open :is(main,body>.ticker,.site-header,.site-footer,.action-bar) *{anim
 .ab-sh-tt p{margin:3px 0 0;font-size:14px;line-height:1.4;color:var(--muted)}
 .ab-sh-x{flex:none;align-self:flex-start;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--ink-3);color:var(--paper);cursor:pointer}
 .ab-sh-x:hover{background:#34302A}
-.ab-sh-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:18px;padding:18px 18px 20px}
+.ab-sh-body{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:18px;padding:18px 18px 20px}
 .ab-sh-foot{display:flex;align-items:center;gap:12px;padding:14px 18px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
 .ab-sh-foot .btn{flex:1;min-width:0;padding:0 16px}
 .ab-fs{margin:0;padding:0;border:0;min-width:0}
@@ -1668,7 +1669,7 @@ textarea.ab-input{min-height:88px;resize:vertical}
   .ab-feature{flex-direction:column;align-items:flex-start;padding:16px}
   .ab-ico-big{width:84px;height:84px}.ab-ico-big svg{width:64px;height:64px}
   .ab-ft-go{width:100%}
-  .ab-sheet{top:auto;width:100%;max-height:92vh;max-height:92dvh;margin:0;border-radius:24px 24px 0 0}
+  .ab-sheet{top:auto;height:auto;width:100%;max-height:92vh;max-height:92dvh;margin:0;border-radius:24px 24px 0 0}
   .ab-sheet[open]{animation-name:sh-up}
   .ab-sh-body{padding:16px}
   .ab-sh-foot{padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
