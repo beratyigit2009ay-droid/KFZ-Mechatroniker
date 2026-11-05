@@ -6,7 +6,7 @@
 <title>Echte Bärliner Augsburg-Haunstetten | Döner heiß vom Spieß</title>
 <script data-sec="testmodus">
 /* --- Testmodus (nur mit ?test in der Adresse): zeigt oben, was ein Tipp trifft, und Fehler – für Bildschirmfotos --- */
-window.EB_VERSION = '2026-11-04b';
+window.EB_VERSION = '2026-11-05a';
 (() => {
   if (!/[?&#]test\b/.test(location.search + location.hash)) return;
   const box = document.createElement('div');
@@ -731,10 +731,11 @@ body.still .wd-piece,body.still .wd-sg path,body.still .wd-dialog[open]{animatio
 .sg-m4{background:#E9E1D2}
 .sg-scene{position:absolute;left:50%;top:18px;width:220px;height:170px;margin-left:-110px;transform:scale(var(--sgs));transform-origin:50% 0}
 .sg-scene>*{position:absolute}
-.sg-body{display:flex;flex-direction:column;gap:8px;padding:20px 24px 28px}
-.sg-no{font-weight:900;font-stretch:125%;font-size:54px;line-height:.9;letter-spacing:-.01em;color:#ECE5D8;transition:color .5s}
-.sg-on .sg-no{color:var(--gold)}
-.sg-body h3{margin:4px 0 0;font-weight:900;font-stretch:112%;font-size:22px;line-height:1.15;text-wrap:balance}
+.sg-body{display:flex;flex-direction:column;gap:8px;padding:24px 24px 28px}
+.sg-node svg{display:block}
+.sg-body::before{content:"";display:block;width:30px;height:5px;margin-bottom:6px;border-radius:3px;background:#ECE5D8;transition:width .5s cubic-bezier(.2,.8,.2,1),background-color .5s}
+.sg-on .sg-body::before{width:52px;background:var(--gold)}
+.sg-body h3{margin:0;font-weight:900;font-stretch:112%;font-size:23px;line-height:1.15;text-wrap:balance}
 .sg-body p{margin:0;font-size:16px;line-height:1.55;color:var(--muted-ink)}
 
 /* 1 – der Spieß dreht sich */
@@ -2183,14 +2184,14 @@ textarea.ab-input{min-height:88px;resize:vertical}
         <h2 class="display" id="sg-title" data-reveal>So entsteht<br>dein Döner.</h2>
         <svg class="squiggle" data-reveal viewBox="0 0 220 18" aria-hidden="true"><path pathLength="1" d="M3 9 Q 15 1 27 9 T 51 9 T 75 9 T 99 9 T 123 9 T 147 9 T 171 9 T 195 9 T 217 9"/></svg>
       </div>
-      <p class="sg-lead" data-reveal style="--d:.1s">In vier Schritten zu deinem Döner – frisch für dich gemacht.</p>
+      <p class="sg-lead" data-reveal style="--d:.1s">Alles frisch und direkt vor deinen Augen – so kommt dein Döner zu dir.</p>
     </div>
 
     <div class="sg-flow">
       <svg class="sg-line" aria-hidden="true" focusable="false"><path class="sg-track" d=""/><path class="sg-path" d=""/><circle class="sg-tip" r="7" cx="0" cy="0"/></svg>
       <ol class="sg-steps">
         <li class="sg-step">
-          <span class="sg-node" aria-hidden="true">1</span>
+          <span class="sg-node" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4.1 2-6 .5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
           <article class="sg-card" data-reveal style="--d:0s">
             <div class="sg-media sg-m1" aria-hidden="true">
               <div class="sg-scene">
@@ -2210,14 +2211,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
               </div>
             </div>
             <div class="sg-body">
-              <span class="sg-no" aria-hidden="true">01</span>
               <h3>Der Spieß dreht sich</h3>
               <p>Das Fleisch gart am Spieß vor der Hitze und wird außen schön knusprig.</p>
             </div>
           </article>
         </li>
         <li class="sg-step">
-          <span class="sg-node" aria-hidden="true">2</span>
+          <span class="sg-node" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 20l3.6-3.6"/><path d="M7.6 16.4 18.2 5.8c1.6 1.6 1.4 4.3-.6 6.3l-6.3 6.3z"/><path d="M5.6 18.4l1 1"/></svg></span>
           <article class="sg-card" data-reveal style="--d:.12s">
             <div class="sg-media sg-m2" aria-hidden="true">
               <div class="sg-scene">
@@ -2235,14 +2235,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
               </div>
             </div>
             <div class="sg-body">
-              <span class="sg-no" aria-hidden="true">02</span>
               <h3>Frisch abgeschnitten</h3>
               <p>Mit dem Messer wird das Fleisch frisch vom Spieß geschnitten – direkt vor deinen Augen.</p>
             </div>
           </article>
         </li>
         <li class="sg-step">
-          <span class="sg-node" aria-hidden="true">3</span>
+          <span class="sg-node" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 19C5 11 10 5.5 19.5 4.5 19.5 14 14 19 5 19z"/><path d="M5 19l9.5-9.5"/><path d="M10 14.2h3.6M12.3 11.8l.1-3"/></svg></span>
           <article class="sg-card" data-reveal style="--d:.24s">
             <div class="sg-media sg-m3" aria-hidden="true">
               <div class="sg-scene sg-s3">
@@ -2287,14 +2286,13 @@ textarea.ab-input{min-height:88px;resize:vertical}
               </div>
             </div>
             <div class="sg-body">
-              <span class="sg-no" aria-hidden="true">03</span>
               <h3>Salat und Soße drauf</h3>
               <p>Dazu kommen Tomaten, Gurken, Eisbergsalat und Rotkohl – und Kräuter-, Knoblauch- oder Scharfsoße obendrauf.</p>
             </div>
           </article>
         </li>
         <li class="sg-step">
-          <span class="sg-node" aria-hidden="true">4</span>
+          <span class="sg-node" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 12.5a9 7.5 0 0 0 18 0z"/><path d="M3.4 11.6c1-2.4 3.4-3.2 4.9-1.6 1-2.5 4.4-2.8 5.4-.5 1.6-1.9 4.6-1.3 5 1.1"/><path d="M8 16h.01M12 17.4h.01M16 16h.01" stroke-width="2.8"/></svg></span>
           <article class="sg-card" data-reveal style="--d:.36s">
             <div class="sg-media sg-m4" aria-hidden="true">
               <div class="sg-scene">
@@ -2305,7 +2303,6 @@ textarea.ab-input{min-height:88px;resize:vertical}
               </div>
             </div>
             <div class="sg-body">
-              <span class="sg-no" aria-hidden="true">04</span>
               <h3>Ab ins Brot, in die Box oder auf den Teller</h3>
               <p>Du entscheidest: Sandwich im Bärliner Fladenbrot, Dürüm-Wrap, Box oder Spezi Teller.</p>
             </div>
@@ -3809,7 +3806,7 @@ function ebAb(key) {
   var still = function () { return document.body.classList.contains('still'); };
   var f = function (n) { return Math.round(n * 10) / 10; };
 
-  /* Linie von Nummer zu Nummer – passt sich jedem Layout an (Reihe, 2x2, untereinander) */
+  /* Linie von Kreis zu Kreis – passt sich jedem Layout an (Reihe, 2x2, untereinander) */
   function node(li) {
     var n = li.querySelector('.sg-node');
     return { x: li.offsetLeft + n.offsetLeft + n.offsetWidth / 2, y: li.offsetTop + n.offsetTop + n.offsetHeight / 2, r: n.offsetHeight / 2, bottom: li.offsetTop + li.offsetHeight };
